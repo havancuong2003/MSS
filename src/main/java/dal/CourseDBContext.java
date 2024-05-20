@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CourseDBContext extends DBContext<Course> {
+
     public ArrayList<Course> getCourseList() {
         ArrayList<Course> courses = new ArrayList<>();
         try {
