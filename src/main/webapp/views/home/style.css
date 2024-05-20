@@ -225,7 +225,7 @@ form .input-field {
     padding: 16px 15px 0;
 }
 
-.input-field input:is(:focus, :valid)~label {
+.input-field input:is(:focus, :valid) ~ label {
     transform: translateY(-120%);
     color: #00bcd4;
     font-size: 0.75rem;
@@ -268,15 +268,27 @@ form button:hover {
 .form-content .bottom-link {
     text-align: center;
 }
-
-.form-popup .signup,
-.form-popup.show-signup .login {
+.form-popup .forgot-password,
+.form-popup .reset-password,
+.form-popup .input-token,
+.form-popup.show-forgot-password .login,
+.form-popup.show-reset-password .login,
+.form-popup.show-reset-password .forgot-password,
+.form-popup.show-input-token .login,
+.form-popup.show-input-token .forgot-password,
+.form-popup.show-input-token .reset-password {
     display: none;
 }
-
-.form-popup.show-signup .signup {
-    display: flex;
+.form-popup.show-forgot-password .forgot-password {
+    display: block;
 }
+.form-popup.show-reset-password .reset-password {
+    display: block;
+}
+.form-popup.show-input-token .input-token {
+    display: block;
+}
+
 
 .signup .policy-text {
     display: flex;
@@ -333,7 +345,7 @@ form button:hover {
     }
 
     .navbar .links a:hover {
-        color: #00BCD4;
+        color: #00bcd4;
     }
 
     .navbar .login-btn {
