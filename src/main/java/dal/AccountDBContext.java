@@ -63,4 +63,16 @@ public class AccountDBContext extends DBContext<Account> {
         }
         return a;
     }
+    public void changePassword(String username, String password) {
+
+        String query = "UPDATE account SET password = ? WHERE username = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, password);
+            statement.setString(2, username);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
