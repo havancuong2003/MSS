@@ -22,6 +22,12 @@ public class UpdateCourseDetailController extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id")) ;
         CourseDBContext cdb = new CourseDBContext();
         Course course = cdb.getCourseByID(id);
+        if (course == null||course.getDetail()==null||course.getCode()==null) {
+            req.setAttribute("exist",false);
+            req.setAttribute("ms","Course does not exist. Update course failed.");
+            req.getRequestDispatcher("views/course/update.jsp").forward(req,resp);
+            return;
+        }
         CategoryDBContext cateDB = new CategoryDBContext();
         ArrayList<Category> categories = cateDB.getAllCategory();
         ArrayList<Category> cate = new ArrayList<>();
@@ -40,6 +46,7 @@ public class UpdateCourseDetailController extends HttpServlet {
         req.setAttribute("course",course);
         req.setAttribute("cates", cate);
         req.setAttribute("id",id);
+        req.setAttribute("exist",true);
         req.getRequestDispatcher("views/course/update.jsp").forward(req,resp);
     }
 
@@ -68,7 +75,7 @@ public class UpdateCourseDetailController extends HttpServlet {
         }
         req.setAttribute("course",course);
         req.setAttribute("cates", cate);
-
+        req.setAttribute("exist",true);
         req.getRequestDispatcher("views/course/update.jsp").forward(req,resp);
     }
 }
