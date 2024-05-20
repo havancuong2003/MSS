@@ -31,17 +31,30 @@ public class AccountDBContext extends DBContext<Account> {
 
     @Override
     public Account get(int id) throws SQLException {
+        return null;
+    }
+
+
+    public Account getAccount(String username,String password) throws SQLException {
         Account a = null;
         try {
-            String sql = "select account_id, username, password from Account where account_id = ?";
+            String sql = "select account_id,username,password,fullname,phone,email,date_of_birth,address,photo,gender from Account where username = ? and password  =?";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);
+            stm.setString(1, username);
+            stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
             if(rs.next()){
                 a = new Account();
                 a.setId(rs.getInt("account_id"));
                 a.setUsername(rs.getString("username"));
                 a.setPassword(rs.getString("password"));
+                a.setFullname(rs.getString("fullname"));
+                a.setPhone(rs.getString("phone"));
+                a.setEmail(rs.getString("email"));
+                a.setDob(rs.getDate("date_of_birth"));
+                a.setAddress(rs.getString("address"));
+                a.setAvatar(rs.getString("photo"));
+                a.setGender(rs.getBoolean("gender"));
             }
             return a;
         }
