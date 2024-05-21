@@ -63,16 +63,30 @@ public class AccountDBContext extends DBContext<Account> {
         }
         return a;
     }
-    public void changePassword(String username, String password) {
+    public void changePassword(String email, String password) {
 
-        String query = "UPDATE account SET password = ? WHERE username = ?;";
+        String query = "UPDATE account SET password = ? WHERE email = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, password);
-            statement.setString(2, username);
+            statement.setString(2, email);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+    public ArrayList<String> getEmail(){
+        String sql = "Select email from account";
+        ArrayList<String> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(resultSet.getString("email"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
