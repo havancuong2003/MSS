@@ -4,12 +4,7 @@ const hideMenuBtn = navbarMenu.querySelector(".close-btn");
 const showPopupBtn = document.querySelector(".login-btn");
 const formPopup = document.querySelector(".form-popup");
 const hidePopupBtn = formPopup.querySelector(".close-btn");
-const forgotPasswordLink = document.getElementById("forgot-password-link");
-const loginLink = document.getElementById("login-link");
-const sendResetLinkBtn = document.getElementById("send-reset-link");
-const rememberedPasswordLink = document.querySelector(
-    ".reset-password .bottom-link a"
-);
+const signupLoginLink = formPopup.querySelectorAll(".bottom-link a");
 
 // Show mobile menu
 hamburgerBtn.addEventListener("click", () => {
@@ -17,7 +12,7 @@ hamburgerBtn.addEventListener("click", () => {
 });
 
 // Hide mobile menu
-hideMenuBtn.addEventListener("click", () => hamburgerBtn.click());
+hideMenuBtn.addEventListener("click", () =>  hamburgerBtn.click());
 
 // Show login popup
 showPopupBtn.addEventListener("click", () => {
@@ -27,29 +22,10 @@ showPopupBtn.addEventListener("click", () => {
 // Hide login popup
 hidePopupBtn.addEventListener("click", () => showPopupBtn.click());
 
-// Show forgot password form
-forgotPasswordLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    formPopup.classList.add("show-forgot-password");
-});
-
-// Show login form
-loginLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    formPopup.classList.remove("show-forgot-password");
-    formPopup.classList.remove("show-reset-password");
-});
-
-// Show reset password form
-sendResetLinkBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    formPopup.classList.remove("show-forgot-password");
-    formPopup.classList.add("show-reset-password");
-});
-
-// Navigate back to login form from reset password form
-rememberedPasswordLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    formPopup.classList.remove("show-reset-password");
-    formPopup.classList.remove("show-forgot-password");
+// Show or hide signup form
+signupLoginLink.forEach(link => {
+    link.addEventListener("click", (e) => {
+        e.preventDefault();
+        formPopup.classList[link.id === 'signup-link' ? 'add' : 'remove']("show-signup");
+    });
 });
