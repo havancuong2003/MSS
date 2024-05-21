@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.Array;
 import java.util.ArrayList;
 
-@WebServlet(name="addCourse",value = "/addCourse")
+    @WebServlet(name="addCourse",value = "/addCourse")
 public class AddCourseController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
