@@ -100,7 +100,7 @@
             <td>${course.id}</td>
             <td>${course.code}</td>
             <td>${course.detail}</td>
-            <td><a href="">ClickHere</a></td>
+            <td><a href="viewCourse?id=${course.id}">ClickHere</a></td>
         </tr>
     </c:forEach>
 </table>
