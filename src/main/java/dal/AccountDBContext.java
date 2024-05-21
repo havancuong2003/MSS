@@ -53,7 +53,7 @@ public class AccountDBContext extends DBContext<Account> {
                 a.setEmail(rs.getString("email"));
                 a.setDob(rs.getDate("date_of_birth"));
                 a.setAddress(rs.getString("address"));
-                a.setAvatar(rs.getString("photo"));
+                a.setAvatar(rs.getBlob("photo"));
                 a.setGender(rs.getBoolean("gender"));
             }
             return a;
