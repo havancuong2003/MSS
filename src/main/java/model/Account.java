@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Blob;
 import java.util.Date;
 
 public class Account implements IEntity {
@@ -12,7 +13,8 @@ public class Account implements IEntity {
     private boolean gender;
     private String address;
     private Date dob;
-    private String avatar;
+    private int role_id;
+    private Blob avatar;
 
 
 
@@ -20,7 +22,7 @@ public class Account implements IEntity {
 
     }
 
-    public Account(int id, String username, String password, String email, String fullname, String phone, boolean gender, String address, Date dob, String avatar) {
+    public Account(int id, String username, String password, String email, String fullname, String phone, boolean gender, String address, Date dob, int role_id, Blob avatar) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -30,6 +32,7 @@ public class Account implements IEntity {
         this.gender = gender;
         this.address = address;
         this.dob = dob;
+        this.role_id = role_id;
         this.avatar = avatar;
     }
 
@@ -105,11 +108,19 @@ public class Account implements IEntity {
         this.dob = dob;
     }
 
-    public String getAvatar() {
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
+    }
+
+    public Blob getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(Blob avatar) {
         this.avatar = avatar;
     }
 }
