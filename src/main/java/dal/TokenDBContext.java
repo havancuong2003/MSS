@@ -37,10 +37,10 @@ public class TokenDBContext extends DBContext<Token> {
         return null;
     }
 
-    public void saveToken(int accid, String token, long expirationTime) throws SQLException {
-        String query = "INSERT INTO password_reset_tokens (accid, token, expiration_time) VALUES (?, ?, ?)";
+    public void saveToken(String email , String token, long expirationTime) throws SQLException {
+        String query = "INSERT INTO password_reset_tokens (email, token, expiration_time) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, accid);
+            statement.setString(1, email);
             statement.setString(2, token);
             statement.setLong(3, expirationTime);
             statement.executeUpdate();
@@ -55,11 +55,10 @@ public class TokenDBContext extends DBContext<Token> {
         }
     }
 
-    public String getToken(String username) {
-        String query = " SELECT token FROM password_reset_tokens WHERE accid =\n" +
-                "       (SELECT account_id FROM account WHERE username =?)";
+    public String getToken(String email) {
+        String query = "SELECT token FROM swp391.password_reset_tokens where email = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, username);
+            statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getString("token");
@@ -69,6 +68,33 @@ public class TokenDBContext extends DBContext<Token> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public ArrayList<String> getEmailExistToken(){
+        String query ="SELECT email FROM swp391.password_reset_tokens";
+        ArrayList<String> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(resultSet.getString("email"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+    public void updateTokenForEmailExits(String email , String token, long expirationTime){
+        String sql ="UPDATE password_reset_tokens SET token = ?, expiration_time= ? WHERE (email = ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, token);
+            statement.setLong(2, expirationTime);
+            statement.setString(3, email);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

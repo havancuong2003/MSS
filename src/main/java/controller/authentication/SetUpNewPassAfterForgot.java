@@ -2,6 +2,7 @@ package controller.authentication;
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import dal.AccountDBContext;
 import jakarta.servlet.ServletException;
@@ -10,7 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/changePasswordServlet")
+@WebServlet("/ChangePasswordServlet")
 public class SetUpNewPassAfterForgot extends HttpServlet {
 
     @Override
@@ -20,23 +21,28 @@ public class SetUpNewPassAfterForgot extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        resp.setContentType("application/json");
         String newPassword = req.getParameter("newPassword");
-        String confirmPassword = req.getParameter("confirmPassword");
-
+        String emailToChange = req.getParameter("email_to_change");
+        PrintWriter out = resp.getWriter();
         try {
-            if (!newPassword.equals(confirmPassword)) {
-                throw new IllegalArgumentException("Mật khẩu mới và mật khẩu xác nhận không trùng khớp!");
+
+            if (newPassword == null || emailToChange == null) {
+                out.print("{\"error\": \"Missing parameters\"}");
+                return;
             }
 
             AccountDBContext acd = new AccountDBContext();
+            acd.changePassword(emailToChange, newPassword);
 
-            acd.changePassword("cuonghv", newPassword);
+            out.print("{\"success\": \"" + newPassword + "\"}");
 
-            req.getRequestDispatcher("changePassword.jsp").forward(req, resp); // Chuyển trang
         } catch (Exception e) {
-            req.setAttribute("error", e.getMessage());
-            req.getRequestDispatcher("changepass.jsp").forward(req, resp);
+            out.print("{\"error\": \"Error\"}");
+            e.printStackTrace();
+        } finally {
+            out.flush();
+            out.close();
         }
 
 

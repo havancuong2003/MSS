@@ -2,6 +2,7 @@ package controller.authentication;
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,24 +63,48 @@ public class GetTokenChangePassword extends HttpServlet {
 
     }
 
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String email = request.getParameter("email");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
         String token = UUID.randomUUID().toString();
         long expirationTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1); // 1 phút
 
-        try {
+        response.setContentType("text/html;charset=UTF-8");
 
-            tokenDBContext.saveToken(1, token, expirationTime);
-            EmailUtility.sendEmail(host, port, user, pass, "cuonghvhe176362@fpt.edu.vn", "Token to change password ", "Your token here: " + token + " The token will expire after 5 minutes");
+        try {
+            ArrayList<String>  t= tokenDBContext.getEmailExistToken();
+            if(t.contains(email)){
+                tokenDBContext.updateTokenForEmailExits(email,token,System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1));
+
+            }else {
+                tokenDBContext.saveToken(email, token, expirationTime);
+            }
+
+            EmailUtility.sendEmail(host, port, user, pass, email, "Token to change password", "Your token here: " + token + " The token will expire after 1 minute");
+
+            String jsonResponse = "{\"message\": \"Token has been sent to your email.\"}";
+            out.print(jsonResponse);
         } catch (SQLException e) {
-            throw new ServletException("Database error", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            String jsonResponse = "{\"error\": \"Database error.\"}";
+            out.print(jsonResponse);
+            e.printStackTrace(); // Thêm dòng này để log lỗi chi tiết
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            String jsonResponse = "{\"error\": \"Error sending email.\"}";
+            out.print(jsonResponse);
+            e.printStackTrace(); // Thêm dòng này để log lỗi chi tiết
+        } finally {
+            out.flush();
+            out.close();
         }
 
-        response.sendRedirect("checktoken");
     }
+
 
     private void startCleanupTask() {
         scheduler = Executors.newScheduledThreadPool(1);
