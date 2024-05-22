@@ -56,7 +56,7 @@ public class TokenDBContext extends DBContext<Token> {
     }
 
     public String getToken(String email) {
-        String query = "SELECT token FROM swp391.password_reset_tokens where email = ?";
+        String query = "SELECT token FROM password_reset_tokens where email = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -71,7 +71,7 @@ public class TokenDBContext extends DBContext<Token> {
     }
 
     public ArrayList<String> getEmailExistToken(){
-        String query ="SELECT email FROM swp391.password_reset_tokens";
+        String query ="SELECT email FROM password_reset_tokens";
         ArrayList<String> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
