@@ -114,6 +114,20 @@
             background-color: #6200ea;
             transform: translateY(2px);
         }
+        .container {
+            /*background-color: #ffffff;*/
+            /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+            /*border-radius: 8px;*/
+            /*padding: 20px;*/
+            /*max-width: 800px;*/
+            /*width: 100%;*/
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -121,37 +135,47 @@
     <img src="logo.png" alt="MyStudySpace Logo">
     <span>MyStudySpace</span>
 </header>
+
 <form action="updateCourse" method="POST">
-    <div>
-        <input type="hidden" name="cid" value="${requestScope.id}">
-        <h2>Course Information</h2>
-        <label for="code">Course's Code:</label>
-        <input type="text" id="code" name="code" value="${requestScope.course.code}">
+    <c:if test="${!requestScope.exist}">
+        <div class="container">
+            <p>${requestScope.ms}</p>
+            <a href="updateCourse?id=${requestScope.id}">Back</a>
+        </div>
+    </c:if>
+    <c:if test="${requestScope.exist}">
+        <div>
+            <input type="hidden" name="cid" value="${requestScope.id}">
+            <h2>Course Information</h2>
+            <label for="code">Course's Code:</label>
+            <input type="text" id="code" name="code" value="${requestScope.course.code}">
 
-        <label for="detail">Course's Detail:</label>
-        <input type="text" id="detail" name="detail" value="${requestScope.course.detail}">
+            <label for="detail">Course's Detail:</label>
+            <input type="text" id="detail" name="detail" value="${requestScope.course.detail}">
 
-        <h4>Grade Detail:</h4>
-        <table>
-            <tr>
-                <th>Grade Category</th>
-                <th>Grade Item</th>
-                <th>Weight</th>
-            </tr>
-            <c:forEach items="${requestScope.cates}" var="c">
-                <c:forEach items="${c.assessments}" var="a">
-                    <tr>
-                        <c:if test="${a.id eq c.fitemID}">
-                            <td rowspan="${c.count}">${c.categoryName}</td>
-                        </c:if>
-                        <td>${a.item}</td>
-                        <td>${a.weight} %</td>
-                    </tr>
+            <h4>Grade Detail:</h4>
+            <table>
+                <tr>
+                    <th>Grade Category</th>
+                    <th>Grade Item</th>
+                    <th>Weight</th>
+                </tr>
+                <c:forEach items="${requestScope.cates}" var="c">
+                    <c:forEach items="${c.assessments}" var="a">
+                        <tr>
+                            <c:if test="${a.id eq c.fitemID}">
+                                <td rowspan="${c.count}">${c.categoryName}</td>
+                            </c:if>
+                            <td>${a.item}</td>
+                            <td>${a.weight} %</td>
+                        </tr>
+                    </c:forEach>
                 </c:forEach>
-            </c:forEach>
-        </table>
-    </div>
-    <button type="submit">Save</button>
+            </table>
+        </div>
+        <button type="submit">Save</button> ${requestScope.ms}
+    </c:if>
 </form>
+
 </body>
 </html>
