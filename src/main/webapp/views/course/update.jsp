@@ -140,6 +140,7 @@
     <c:if test="${!requestScope.exist}">
         <div class="container">
             <p>${requestScope.ms}</p>
+            <a href="updateCourse?id=${requestScope.id}">Back</a>
         </div>
     </c:if>
     <c:if test="${requestScope.exist}">
@@ -172,7 +173,7 @@
                 </c:forEach>
             </table>
         </div>
-        <button type="submit">Save</button>
+        <button type="submit">Save</button> ${requestScope.ms}
     </c:if>
 </form>
 

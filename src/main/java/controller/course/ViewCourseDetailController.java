@@ -25,7 +25,7 @@ public class ViewCourseDetailController extends HttpServlet {
         Course course = cdb.getCourseByID(id);
         if (course == null||course.getDetail()==null||course.getCode()==null) {
             req.setAttribute("exist",false);
-            req.setAttribute("ms","Course does not exist. View course failed.");
+            req.setAttribute("ms","Course does not exist. View course failed!");
             req.getRequestDispatcher("views/course/detail.jsp").forward(req,resp);
             return;
         }

@@ -155,7 +155,7 @@
             // Tạo một thẻ input mới cho Assessment
             var newInput = document.createElement("input");
             newInput.type = "text";
-            newInput.name = "asscate" + cateId + "_" + assCount;  // Đặt tên cho thẻ input mới
+            newInput.name = "asscate" + cateId ;  // Đặt tên cho thẻ input mới
             newInput.required="";
             newInput.autocomplete="off";
 
@@ -166,7 +166,7 @@
 
             var newWeight = document.createElement("input")
             newWeight.type = "number";
-            newWeight.name = "weicate" + cateId + "_" + assCount;
+            newWeight.name = "weicate" + cateId ;
             newWeight.required="";
             newWeight.autocomplete="off";
 
