@@ -125,30 +125,37 @@
     <img src="logo.png" alt="MyStudySpace Logo">
     <span>MyStudySpace</span>
 </header>
-<div class="container">
-    <h2>Course Information</h2>
-    <p><strong>Code:</strong> ${requestScope.course.code}</p>
-    <p><strong>Detail:</strong> ${requestScope.course.detail}</p>
-    <h4>Grade Detail:</h4>
-    <table>
-        <tr>
-            <th>GRADE CATEGORY</th>
-            <th>GRADE ITEM</th>
-            <th>WEIGHT</th>
-        </tr>
-        <c:forEach items="${requestScope.cates}" var="c">
-            <c:forEach items="${c.assessments}" var="a">
-                <tr>
-                    <c:if test="${a.id eq c.fitemID}">
-                        <td rowspan="${c.count}">${c.categoryName}</td>
-                    </c:if>
-                    <td>${a.item}</td>
-                    <td>${a.weight} %</td>
-                </tr>
+<c:if test="${!requestScope.exist}">
+    <div class="container">
+        <p>${requestScope.ms}</p>
+    </div>
+</c:if>
+<c:if test="${requestScope.exist}">
+    <div class="container">
+        <h2>Course Information</h2>
+        <p><strong>Code:</strong> ${requestScope.course.code}</p>
+        <p><strong>Detail:</strong> ${requestScope.course.detail}</p>
+        <h4>Grade Detail:</h4>
+        <table>
+            <tr>
+                <th>GRADE CATEGORY</th>
+                <th>GRADE ITEM</th>
+                <th>WEIGHT</th>
+            </tr>
+            <c:forEach items="${requestScope.cates}" var="c">
+                <c:forEach items="${c.assessments}" var="a">
+                    <tr>
+                        <c:if test="${a.id eq c.fitemID}">
+                            <td rowspan="${c.count}">${c.categoryName}</td>
+                        </c:if>
+                        <td>${a.item}</td>
+                        <td>${a.weight} %</td>
+                    </tr>
+                </c:forEach>
             </c:forEach>
-        </c:forEach>
-    </table>
-    <a href="<%=request.getContextPath()%>/updateCourse?id=${requestScope.id}">Update Course Detail</a>
-</div>
+        </table>
+        <a href="<%=request.getContextPath()%>/updateCourse?id=${requestScope.id}">Update Course Detail</a>
+    </div>
+</c:if>
 </body>
 </html>
