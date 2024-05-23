@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import dal.AccountDBContext;
 import dal.TokenDBContext;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.mail.MessagingException;
@@ -77,6 +77,17 @@ public class GetTokenChangePassword extends HttpServlet {
         long expirationTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1); // 1 phút
 
         response.setContentType("text/html;charset=UTF-8");
+
+        AccountDBContext adbc = new AccountDBContext();
+        ArrayList<String> emails = adbc.getEmail();
+
+        if(!emails.contains(email)){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            String jsonResponse = "{\"error\": \"Email not exist in system.\"}";
+            out.print(jsonResponse);
+            return;
+        }
+
 
         try {
             ArrayList<String>  t= tokenDBContext.getEmailExistToken();

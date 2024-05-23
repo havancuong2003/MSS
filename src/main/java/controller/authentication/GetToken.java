@@ -28,7 +28,7 @@ public class GetToken extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
 
         try (PrintWriter out = resp.getWriter()) {
-            if (token != null && token.equals(token_input)) {
+            if (token != null && token.equals(token_input.trim())) {
                 out.print("{\"tokenValid\": true, \"email\": \"" + email_reset + "\"}");
             } else {
                 out.print("{\"tokenValid\": false}");
