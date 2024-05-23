@@ -55,14 +55,19 @@ public class LoadProfile extends HttpServlet {
         String account_id = request.getParameter("account_id").trim();
         String username = request.getParameter("account_username");
         String phone = request.getParameter("account_phone");
-        String email = request.getParameter("account_email");
         String currentpassword = request.getParameter("currentpassword");
         String newpassword = request.getParameter("newpassword");
         String confirm_newpassword = request.getParameter("confirmnewpassword");
         if(username != null && account_id != null) {
             String user_name = username.trim();
-            dao.editUserName(user_name,account_id);
-            response.sendRedirect("load-profile");
+            if(dao.getAccountByUserName(user_name) == null){
+                dao.editUserName(user_name,account_id);
+                response.sendRedirect("load-profile");
+            } else {
+                request.setAttribute("mess_username", "User name is already exist");
+                doGet(request, response);
+            }
+//            response.sendRedirect("load-profile");
         } else if (phone != null && account_id != null) {
             if(checkPhoneNumber(phone)){
                 String phone_number = phone.trim();

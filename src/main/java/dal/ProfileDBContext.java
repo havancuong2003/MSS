@@ -66,6 +66,33 @@ public class ProfileDBContext extends DBContext<Account> {
         return null;
     }
 
+    public Account getAccountByUserName(String username) {
+        try {
+            String sql = "select * from account where username = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setId(rs.getInt(1));
+                a.setUsername(rs.getString(2));
+                a.setPassword(rs.getString(3));
+                a.setFullname(rs.getString(4));
+                a.setPhone(rs.getString(5));
+                a.setEmail(rs.getString(6));
+                a.setDob(rs.getDate(7));
+                a.setAddress(rs.getString(8));
+                a.setRole_id(rs.getInt(9));
+                a.setAvatar((Blob) rs.getBlob(10));
+                a.setGender(rs.getBoolean(11));
+                return a;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public void editUserName(String username, String account_id) {
 
         String sql = "UPDATE account " +
@@ -163,8 +190,8 @@ public class ProfileDBContext extends DBContext<Account> {
     }
     public static void main(String[] args) {
         ProfileDBContext dao = new ProfileDBContext();
-        Account a = dao.getAccountByID("1");
-        dao.editEmail("dinhmanhquyen0203@gmail.com","1");
+        Account a = dao.getAccountByUserName("abcxyz");
+
         System.out.println(a.getFullname());
     }
 

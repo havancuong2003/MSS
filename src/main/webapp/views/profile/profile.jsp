@@ -66,6 +66,7 @@
                             </div>
                             <div class="col-sm-7 text-secondary">
                                 ${account.username}
+                                <div  class="text-danger">${mess_username}</div>
                             </div>
                             <div class="col-sm-2">
                                 <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editUserNameModal">Edit</button>
