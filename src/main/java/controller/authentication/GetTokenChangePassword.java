@@ -12,6 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import dal.TokenDBContext;
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -37,13 +38,15 @@ public class GetTokenChangePassword extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
+        Dotenv dotenv = Dotenv.load();
         tokenDBContext = new TokenDBContext();
         startCleanupTask();
         host = getServletContext().getInitParameter("host");
         port = getServletContext().getInitParameter("port");
-        user = getServletContext().getInitParameter("user");
-        pass = getServletContext().getInitParameter("pass");
-
+        user = dotenv.get("USER_EMAIL");
+        pass = dotenv.get("USER_PASS");
+        System.out.println("user"+user);
+        System.out.println("passs"+pass);
 
         if (host == null || port == null || user == null || pass == null) {
             try {

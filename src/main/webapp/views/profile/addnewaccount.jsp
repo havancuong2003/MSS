@@ -12,217 +12,14 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>MSS | Admin</title>
-<%--    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.jpg">--%>
-<%--    <link rel="stylesheet" href="templates/css/bootstrapmin.css">--%>
-<%--    <link rel="stylesheet" href="templates/css/fontawesome-all.min.css">--%>
-    <link rel="stylesheet" href="../css/boostrapmin.css">
+    <%--    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.jpg">--%>
+    <%--    <link rel="stylesheet" href="templates/css/bootstrapmin.css">--%>
+    <%--    <link rel="stylesheet" href="templates/css/fontawesome-all.min.css">--%>
+    <link rel="stylesheet" href="css/boostrapmin.css">
+    <link rel="stylesheet" href="css/addnewaccount.css">
 </head>
-<style>
-    /*
-    Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-    Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-    */
-    /*
-        Created on : May 18, 2024, 1:42:48 PM
-        Author     : DEll
-    */
-
-    body {
-        padding: 0px;
-        margin: 0px;
-        height: 100vh;
-    }
-
-    .no-padding-margin {
-        margin: 0px;
-        padding: 0px;
-    }
-
-    .body-content-left div a {
-        color: black;
-        text-decoration: none;
-    }
-
-    .side-bar {
-        background-color: rgba(0,0,0,0.1);
-        height: 100vh;
-        display: flex;
-    }
-
-    .header {
-        padding: 0px;
-        margin-top: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .slidebar-content {
-        list-style-type: none;
-    }
-
-    .bottom {
-        display: flex;
-        margin-right: 10px;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .bottom-fixed {
-        position: fixed;
-        bottom: 0;
-        padding: 10px;
-    }
-
-    .top-fixed {
-        position: fixed;
-        top: 0;
-        padding: 10px;
-    }
-
-    .img-info img{
-        width: 50px;
-        height: 50px;
-        border-radius: 30px;
-    }
-
-    .content a {
-        color: black;
-        text-decoration: none;
-        margin-left: 5px;
-        font-size: 20px;
-    }
-
-    /* Định dạng phần tiêu đề */
-    h2 {
-        font-size: 30px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    /* Định dạng thông báo lỗi */
-    h5 {
-        font-size: 16px;
-        margin-top: -10px;
-    }
-
-    /* Định dạng nhãn và ô nhập liệu */
-    .input-label {
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .form-group {
-        margin-bottom: 10px;
-    }
-
-    /* Định dạng nút */
-    .btn {
-        padding: 10px 20px;
-        font-size: 16px;
-    }
-
-    /* Định dạng ô nhập liệu */
-    .form-control {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-
-    /* Định dạng các ô nhập liệu cạnh nhau */
-    .name-input-style {
-        display: flex;
-    }
-
-    /* Định dạng các nút Reset và Add */
-    .form-group button {
-        margin-right: 10px;
-    }
-
-    /* Định dạng các nút radio */
-    input[type="radio"] {
-        margin-right: 5px;
-        vertical-align: middle;
-    }
-
-    .form-info {
-        display: flex;
-
-    }
-
-    .search-form {
-        position: relative;
-        display: flex;
-        align-items: center;
-        background-color: #f2f2f2;
-        border-radius: 20px;
-        padding: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-
-    .search-input {
-        border: 2px solid #00000008; /* Thêm border cho input */
-        background: transparent;
-        font-size: 16px;
-        padding: 8px 40px 6px 20px;
-        outline: none;
-        flex: 1;
-        border-radius: 20px; /* Bo tròn cả input */
-        width: 300px;
-    }
-
-    .search-button {
-        position: absolute;
-        right: 0;
-        background-color: transparent;
-        border: 2px solid transparent; /* Thêm border cho button */
-        padding: 8px;
-        border-radius: 20px; /* Bo tròn cả button */
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        display: none;
-    }
-
-    .search-icon {
-        color: #555;
-    }
-
-    .search-input:focus {
-        border-color: #007bff;
-    }
-
-
-    td button {
-        width: 80px;
-    }
-
-    .btn {
-        padding: 10px 15px;
-    }
-
-    .centered-button {
-        display: inline-block;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        margin-left: 45%; /* căn giữa ngang */
-        transition: background-color 0.3s; /* hiệu ứng chuyển đổi màu nền */
-    }
-
-    .centered-button:hover {
-        background-color: #ffd700; /* màu vàng */
-    }
-
-</style>
 <body>
-<div class="container-fluid">
+<div class="container-fluid container">
     <div class="row">
         <div class="col-lg-2 side-bar">
             <div class="top-fixed">
@@ -238,11 +35,11 @@
         <div class="col-lg-4" style="margin: 0px auto; padding-left: 50px">
             <h1 style="margin: 25px 0px">Create An Account</h1>
             <form action="add-New-Account" method="post">
-<%--                start--%>
+                <%--                start--%>
                 <div class="form-info">
                     <div class="form-group" style="margin-right: 18px">
                         <label for="name" class="input-label" >Full Name</label>
-                        <input type="text" id="fullname" class="form-control" name="fullname" placeholder="" required="required" value="${fullname}">
+                        <input type="text" id="fullname" class="form-control" name="fullname" placeholder="" required="required" value="${f_name}">
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 0px" >
@@ -278,12 +75,23 @@
                 <div class="form-group">
                     <p for="role" class="input-label">Role</p>
                     <label>
-                        <input type="radio" name="role" value="0" required ${role == 0 ? "checked" : ""}>
+                        <input type="radio" name="role" value="3" required ${role == 3 ? "checked" : ""}>
                         <span style="color: #979696;
                                       margin-bottom: 10px;
                                       font-weight: 500; margin-right: 50px; cursor: pointer">Teacher</span>
                     </label>
-
+                    <label>
+                        <input type="radio" name="role" value="2" required ${role == 2 ? "checked" : ""}>
+                        <span style="color: #979696;
+                                      margin-bottom: 10px;
+                                      font-weight: 500; margin-right: 50px; cursor: pointer">Staff</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="role" value="4" required ${role == 4 ? "checked" : ""}>
+                        <span style="color: #979696;
+                                      margin-bottom: 10px;
+                                      font-weight: 500; margin-right: 80px; cursor: pointer">Student</span>
+                    </label>
                     <label>
                         <input type="radio" name="role" value="1" required ${role == 1 ? "checked" : ""}>
                         <span style="color: #979696;
@@ -294,6 +102,7 @@
                 <div class="form-group">
                     <label for="password" class="input-label">Password</label>
                     <input id="password" type="password" class="form-control" name="password" placeholder="Enter password" required="required" oninput="validatePassword()">
+                    <span style="color: red; font-size: 15px; padding-left: 5px">${errorPassword}</span>
                 </div>
 
                 <div class="form-group">
@@ -311,6 +120,7 @@
 </div>
 
 </body>
+<script src="css/boostrapmin.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var password = document.getElementById("password");

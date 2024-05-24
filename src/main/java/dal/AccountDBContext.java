@@ -45,7 +45,7 @@ public class AccountDBContext extends DBContext<Account> {
             stm.setString(1, username);
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
+            if(rs.next()){
                 a = new Account();
                 a.setId(rs.getInt("account_id"));
                 a.setUsername(rs.getString("username"));
@@ -59,7 +59,8 @@ public class AccountDBContext extends DBContext<Account> {
                 a.setGender(rs.getBoolean("gender"));
             }
             return a;
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return a;
@@ -94,8 +95,8 @@ public class AccountDBContext extends DBContext<Account> {
     }
 
     //    LinhNTD 5/22/2024
-    public void insertAccount(String username, String password, String fullname, String phone, String email, int role_id, boolean gender) {
-        String query = "INSERT INTO `s1`.`account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public void insertAccount(String username, String password, String fullname, String phone, String email, int role_id, int gender) {
+        String query = "INSERT INTO `s1`.`account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setString(2, password);
@@ -103,7 +104,7 @@ public class AccountDBContext extends DBContext<Account> {
             statement.setString(4, phone);
             statement.setString(5, email);
             statement.setInt(6, role_id);
-            statement.setBoolean(7, gender);
+            statement.setInt(7, gender);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,6 +132,62 @@ public class AccountDBContext extends DBContext<Account> {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return accounts;
+    }
+
+    public boolean isUsernameExists(String username) {
+        String query = "SELECT COUNT(*) FROM account WHERE username = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isEmailExists(String email) {
+        String query = "SELECT COUNT(*) FROM account WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isPasswordExists(String password) {
+        String query = "SELECT COUNT(*) FROM account WHERE password = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, password);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isPhoneExists(String phonenumber) {
+        String query = "SELECT COUNT(*) FROM account WHERE phone = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, phonenumber);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

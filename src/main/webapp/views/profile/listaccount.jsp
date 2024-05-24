@@ -86,7 +86,23 @@
                 <td>${user.fullname}</td>
                 <td>${user.phone}</td>
                 <td>${user.email}</td>
-                <td>${user.role_id == 1 ? "Teacher" : "Student"}</td>
+                <c:choose>
+                    <c:when test="${user.role_id == 1}">
+                        <td>Admin</td>
+                    </c:when>
+                    <c:when test="${user.role_id == 2}">
+                        <td>Staff</td>
+                    </c:when>
+                    <c:when test="${user.role_id == 3}">
+                        <td>Teacher</td>
+                    </c:when>
+                    <c:when test="${user.role_id == 4}">
+                        <td>Student</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>Not found!</td>
+                    </c:otherwise>
+                </c:choose>
                 <td>${user.gender ? "Male" : "Female"}</td>
             </tr>
         </c:forEach>
