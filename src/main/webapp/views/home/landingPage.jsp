@@ -86,11 +86,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <!-- Forgot Password Form -->
             <div class="form-box forgot-password">
                 <div class="form-details">
-                    <h2>Forgot Password</h2>
-                    <p>
-                        Enter your email address and we'll send you a link to
-                        reset your password.
-                    </p>
+
                 </div>
                 <div class="form-content">
                     <h2>RESET PASSWORD</h2>
@@ -121,10 +117,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <!-- Input Token Form -->
             <div class="form-box input-token">
                 <div class="form-details">
-                    <h2>Enter Token</h2>
-                    <p>
-                        Enter the token you received in your email to proceed.
-                    </p>
+
                 </div>
                 <div class="form-content">
                     <h2>INPUT TOKEN</h2>
