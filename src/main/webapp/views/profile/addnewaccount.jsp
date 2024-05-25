@@ -102,7 +102,7 @@
                 <div class="form-group">
                     <label for="password" class="input-label">Password</label>
                     <input id="password" type="password" class="form-control" name="password" placeholder="Enter password" required="required" oninput="validatePassword()">
-                    <span style="color: red; font-size: 15px; padding-left: 5px">${errorPassword}</span>
+<%--                    <span style="color: red; font-size: 15px; padding-left: 5px">${errorPassword}</span>--%>
                 </div>
 
                 <div class="form-group">
@@ -120,7 +120,7 @@
 </div>
 
 </body>
-<script src="css/boostrapmin.js"></script>
+<script src="css/boostrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var password = document.getElementById("password");

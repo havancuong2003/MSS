@@ -33,13 +33,11 @@ public class AddNewAccountByAdmin extends HttpServlet {
 
         boolean isUsernameExists = con.isUsernameExists(username);
         boolean isEmailExists = con.isEmailExists(email);
-        boolean isPasswordExists = con.isPasswordExists(password);
         boolean isPhoneExists = con.isPhoneExists(phone);
 
-        if (isUsernameExists || isEmailExists || isPasswordExists || isPhoneExists) {
+        if (isUsernameExists || isEmailExists || isPhoneExists) {
             request.setAttribute("errorUsername", isUsernameExists ? "Username already exists" : "");
             request.setAttribute("errorEmail", isEmailExists ? "Email already exists" : "");
-            request.setAttribute("errorPassword", isPasswordExists ? "Password number already exists" : "");
             request.setAttribute("errorPhone", isPhoneExists ? "Phone already exists" : "");
             request.setAttribute("f_name", f_name);
             request.setAttribute("phone", phone);

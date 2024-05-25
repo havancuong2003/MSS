@@ -96,7 +96,7 @@ public class AccountDBContext extends DBContext<Account> {
 
     //    LinhNTD 5/22/2024
     public void insertAccount(String username, String password, String fullname, String phone, String email, int role_id, int gender) {
-        String query = "INSERT INTO `s1`.`account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO `account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setString(2, password);
@@ -162,20 +162,6 @@ public class AccountDBContext extends DBContext<Account> {
         return false;
     }
 
-    public boolean isPasswordExists(String password) {
-        String query = "SELECT COUNT(*) FROM account WHERE password = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, password);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     public boolean isPhoneExists(String phonenumber) {
         String query = "SELECT COUNT(*) FROM account WHERE phone = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -189,8 +175,5 @@ public class AccountDBContext extends DBContext<Account> {
         }
         return false;
     }
-
-
-
 
 }
