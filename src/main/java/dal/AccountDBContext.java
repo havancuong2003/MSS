@@ -1,7 +1,5 @@
 package dal;
-
 import java.sql.*;
-
 import model.Account;
 import model.IEntity;
 
@@ -175,5 +173,7 @@ public class AccountDBContext extends DBContext<Account> {
         }
         return false;
     }
+
+
 
 }

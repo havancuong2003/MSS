@@ -8,7 +8,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Website with Login & Signup Form | CodingNepal</title>
-        <!-- Google Fonts Link For Icons -->
+
         <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0"
@@ -65,11 +65,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
                     <form id="login-form">
                         <div class="input-field">
-                            <input type="text" name="username" required />
+                            <input type="text" name="username" id="username-login" required />
                             <label>UserName</label>
                         </div>
                         <div class="input-field">
-                            <input type="password" name="password" required />
+                            <input type="password" name="password" id="password-login" required />
                             <label>Password</label>
                         </div>
                         <a
@@ -86,15 +86,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <!-- Forgot Password Form -->
             <div class="form-box forgot-password">
                 <div class="form-details">
-                    <h2>Forgot Password</h2>
-                    <p>
-                        Enter your email address and we'll send you a link to
-                        reset your password.
-                    </p>
+
                 </div>
                 <div class="form-content">
                     <h2>RESET PASSWORD</h2>
-                    <h4 id=" #error_email" style="color: red">sádf</h4>
+                    <h4 id="error_email" style="color: red"></h4>
                     <form id="reset-password-token">
                         <div class="input-field">
                             <input
@@ -105,6 +101,8 @@ contentType="text/html;charset=UTF-8" language="java" %>
                             />
                             <label>Email</label>
                         </div>
+                        <div id="loading_email" style="display: none"> <jsp:include page="load.jsp" /></div>
+
                         <button type="submit" id="send-reset-link">
                             Send Reset Link
                         </button>
@@ -119,14 +117,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <!-- Input Token Form -->
             <div class="form-box input-token">
                 <div class="form-details">
-                    <h2>Enter Token</h2>
-                    <p>
-                        Enter the token you received in your email to proceed.
-                    </p>
+
                 </div>
                 <div class="form-content">
                     <h2>INPUT TOKEN</h2>
-                    <h4 id="error_token" style="color: red">asdas</h4>
+                    <h4 id="error_token" style="color: red"></h4>
                     <form id="token-form">
                         <div class="input-field">
                             <input
@@ -143,6 +138,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                             />
                             <label>Token</label>
                         </div>
+                        <div id="loading_token" style="display: none"> <jsp:include page="load.jsp" /></div>
                         <button type="submit" id="verify-token">
                             Verify Token
                         </button>
@@ -165,7 +161,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 <div class="form-content">
                     <h2>NEW PASSWORD</h2>
                     <h4 id="error_password" style="color: red"></h4>
-                    <!-- Thêm phần hiển thị lỗi -->
+
                     <form id="new-password-form">
                         <input
                             type="hidden"
@@ -191,7 +187,8 @@ contentType="text/html;charset=UTF-8" language="java" %>
                             />
                             <label>Confirm Password</label>
                         </div>
-                        <button type="submit">Reset Password</button>
+                        <div id="loading_resetPassword" style="display: none"> <jsp:include page="load.jsp" /></div>
+                        <button type="submit" id="reset-password">Reset Password</button>
                     </form>
                     <div class="bottom-link">
                         Remembered your password?
@@ -237,11 +234,23 @@ contentType="text/html;charset=UTF-8" language="java" %>
             forgotPasswordLink.addEventListener("click", (e) => {
                 e.preventDefault();
                 formPopup.classList.add("show-forgot-password");
+                $("#username-login").val("");
+                $("#password-login").val("");
             });
 
             // Show login form
             loginLink.addEventListener("click", (e) => {
                 e.preventDefault();
+                $("#username-login").val("");
+                $("#password-login").val("");
+                $("#new-password").val("");
+                $("#confirm-password").val("");
+                $("#token").val("");
+                $("#email").val("");
+                $("#error").text("");
+                $("#error_token").text("");
+                $("#error_password").text("");
+                $("#error_email").text("");
                 formPopup.classList.remove("show-forgot-password");
                 formPopup.classList.remove("show-reset-password");
             });
@@ -293,11 +302,17 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
                     if (!emailPattern.test(emailInput)) {
                         $("#error_email").text(
-                            "Vui lòng nhập địa chỉ email hợp lệ."
+                            "Please enter a valid email address."
                         );
-                        console.log("wow sai r");
+
                         return;
                     }
+                    $("#send-reset-link").css("opacity", "0");
+                    $("#send-reset-link").css("pointer-events", "none");
+
+                        $("#loading_email").css("display", "block");
+
+
 
                     const formData = $(this).serialize();
                     $.ajax({
@@ -307,20 +322,27 @@ contentType="text/html;charset=UTF-8" language="java" %>
                         dataType: "json",
                         success: function (response) {
                             console.log("response", response);
+                            $("#loading_email").css("display", "none");
+                            $("#send-reset-link").css("opacity", "1");
+                            $("#send-reset-link").css("pointer-events", "auto");
                             $("#email_reset").val(emailInput);
-                            $("#error_email").text(
-                                "Token đã được gửi thành công."
-                            );
+                            $("#error_email").text("")
+                            $("#email").val("");
                             formPopup.classList.remove("show-forgot-password");
                             formPopup.classList.add("show-input-token");
                             formPopup.classList.remove("show-reset-password");
+
                         },
                         error: function (xhr, status, error) {
+                            $("#loading_email").css("display", "none");
+                            $("#send-reset-link").css("opacity", "1");
+                            $("#send-reset-link").css("pointer-events", "auto");
                             if (xhr.status === 400) {
                                 const response = JSON.parse(xhr.responseText);
                                 $("#error_email").text(response.error);
+
                             } else {
-                                $("#error_email").text("Lỗi máy chủ: " + error);
+                                $("#error_email").text("Server error: " + error);
                             }
                         },
                     });
@@ -333,30 +355,68 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 $("#token-form").submit(function (event) {
                     event.preventDefault();
                     event.stopPropagation();
+                    $("#verify-token").css("opacity", "0");
+                    $("#loading_token").css("display", "block");
 
                     const formData = $(this).serialize();
                     $.ajax({
                         type: "POST",
                         url: "checktoken",
                         data: formData,
-                        dataType: "json", // Yêu cầu định dạng JSON từ máy chủ
+                        dataType: "json",
                         success: function (response) {
                             console.log("response token input", response);
+                            $("#verify-token").css("opacity", "1");
+                            $("#loading_token").css("display", "none");
                             if (response.tokenValid) {
+                                $("#token").val("");
+                                $("#error_token").text("");
                                 formPopup.classList.remove("show-input-token");
                                 formPopup.classList.add("show-reset-password");
                                 $("#email_to_change").val(response.email);
+
                             } else {
                                 $("#error_token").text(
-                                    "Token không hợp lệ hoặc đã hết hạn."
+                                    "Token is invalid or expired."
                                 );
                             }
                         },
                         error: function (xhr, status, error) {
-                            $("#error_token").text("Lỗi máy chủ: " + error);
+                            $("#verify-token").css("opacity", "1");
+                            $("#loading_token").css("display", "none");
+                            $("#error_token").text("Server error: " + error);
                         },
                     });
                 });
+            });
+
+
+
+            $("#resend-token-link").click(function (event) {
+                event.preventDefault();
+                const email = $("#email_reset").val();
+                $("#verify-token").css("opacity", "0");
+                $("#loading_token").css("display", "block");
+                $.ajax({
+                    type: "POST",
+                    url: "SendTokenServlet",
+                    data: { email: email },
+                    success: function (response) {
+                        $("#token").val("");
+                        $("#verify-token").css("opacity", "1");
+                        $("#loading_token").css("display", "none");
+                        $("#error_token").css("color", "green");
+                        $("#error_token").text("Token resend successfully.");
+                        console.log("response", response);
+                    },
+                    error: function (xhr, status, error) {
+                        $("#verify-token").css("opacity", "1");
+                        $("#loading_token").css("display", "none");
+                        console.error("Error resending token:", error);
+                        // Optionally show an error message
+                    }
+                });
+
             });
         </script>
 
@@ -372,7 +432,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
                     if (newPassword !== confirmPassword) {
                         $("#error_password").text(
-                            "Mật khẩu mới và mật khẩu xác nhận không khớp."
+                            "The new password and confirmation password do not match."
                         );
                         return;
                     }
@@ -381,25 +441,48 @@ contentType="text/html;charset=UTF-8" language="java" %>
                         newPassword: newPassword,
                         email_to_change: emailToChange,
                     };
+                    $("#reset-password").css("opacity", "0");
+                    $("#reset-password").css("pointer-events", "none");
 
+                    $("#loading_resetPassword").css("display", "block");
                     $.ajax({
                         type: "POST",
-                        url: "ChangePasswordServlet", // URL servlet xử lý thay đổi mật khẩu
+                        url: "ChangePasswordServlet",
                         data: formData,
                         dataType: "json",
                         success: function (response) {
-                            // Giả sử máy chủ trả về JSON với thuộc tính success
+
                             if (response.success) {
-                                alert("Mật khẩu đã được thay đổi thành công.");
-                                console.log(response);
+
+                                $("#new-password").val("");
+                                $("#confirm-password").val("");
+                                $("#email_to_change").val("");
+
+
+
+                                setTimeout(function () {
+                                    $("#error_password").css("color", "green");
+                                    $("#error_password").text("Password change successfully");
+
+                                },500)
+                               setTimeout(function () {
+
+                                   formPopup.classList.remove("show-reset-password");
+                                   $("#loading_resetPassword").css("display", "none");
+                                   $("#reset-password").css("opacity", "1");
+                                   $("#reset-password").css("pointer-events", "auto");
+                               },2000)
                             } else {
                                 $("#error_password").text(
-                                    response.error || "Lỗi không xác định."
+                                    response.error || "An unknown error."
                                 );
                             }
                         },
                         error: function (xhr, status, error) {
-                            $("#error_password").text("Lỗi máy chủ: " + error);
+                            $("#loading_resetPassword").css("display", "none");
+                            $("#reset-password").css("opacity", "1");
+                            $("#reset-password").css("pointer-events", "auto");
+                            $("#error_password").text("Server error: " + error);
                         },
                     });
                 });
