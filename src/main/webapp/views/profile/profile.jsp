@@ -140,11 +140,11 @@
                             </div>
                         </div>
                         <hr>
-                        <%--                        <div class="row">--%>
-                        <%--                            <div class="col-sm-12">--%>
-                        <%--                                <a class="btn btn-info" target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit Profile</a>--%>
-                        <%--                            </div>--%>
-                        <%--                        </div>--%>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info" target="__blank" href="#">Back to home</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
