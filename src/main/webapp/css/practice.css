@@ -1,0 +1,203 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgba(192, 192, 192, 0.37);
+}
+
+.containers {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgba(192, 192, 192, 0.37);
+}
+
+.headers {
+    background-color: #3ac6c6;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 70px;
+}
+
+.home-icon {
+    background-color: white;
+    padding: 10px;
+    font-size: 17px;
+    color: black;
+    text-decoration: none;
+}
+
+.home-icon img {
+    height: 24px;
+    margin-right: 10px;
+}
+
+.username {
+    margin-left: auto;
+}
+
+.contents {
+    display: flex;
+    flex-grow: 1;
+}
+
+.question-section {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.question-area {
+    background-color: rgb(181, 230, 29);
+    flex: 1;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    font-size: 24px;
+    border: 15px solid #b8860b;
+    border-radius: 10px;
+    box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.336);
+    position: relative;
+}
+
+.question-area p {
+    word-wrap: break-word;
+    max-width: 35vw;
+    max-height: 450px;
+    margin: 20px 0px 20px 20px;
+    background-color: rgba(255, 255, 255, 0.753);
+    display: inline-block;
+    padding: 10px;
+}
+
+.question-area img {
+    margin: 20px 30px 0px 20px;
+    height: 300px;
+    float: right;
+}
+
+.question-time {
+    position: absolute;
+    bottom: 10px;
+    right: 30px;
+    padding: 5px 20px;
+    background-color: #b8870b;
+    border-radius: 5px;
+    color: white;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    height: 30vh;
+    width: 100%;
+}
+
+.options div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.option-btn {
+    flex: 1 1 50%;
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 18px;
+    width: 30vw;
+    border: 5px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* ben phai */
+
+.sidebars {
+    flex: 1;
+    /* display: flex;
+    flex-direction: column; */
+    padding: 20px;
+    background-color: #3ac6c6;
+    margin: 40px 40px 60px 20px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.questions-list {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    overflow-y: scroll;
+    height: 500px;
+    display: grid;
+    border-radius: 5px;
+    grid-template-columns: auto auto auto auto auto;
+    grid-template-rows: 80px 80px 80px 80px;
+}
+
+.list-item {
+    padding: 10px;
+    background-color: #cedff0;
+    margin: 5px 0;
+    cursor: pointer;
+    height: 70px;
+    width: 70px;
+    text-align: center;
+    align-items: center;
+}
+
+.list-item.active {
+    background-color: red;
+    color: white;
+}
+
+.navigation-buttons {
+    margin-top: 20px;
+}
+
+.navigation-buttons-up {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-btn,
+.finish-btn {
+    width: 120px;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: white;
+    border: none;
+    color: black;
+    font-weight: 600;
+    font-size: 17px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.finish-btn {
+    background-color: #007bff;
+    font-size: 18px;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 150px;
+}
+
+.gray {
+    background-color: rgba(
+            107,
+            184,
+            119,
+            0.342
+    ); /* hoặc bất kỳ thuộc tính CSS nào bạn muốn */
+}
