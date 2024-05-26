@@ -96,7 +96,7 @@
                         <input type="radio" name="role" value="1" required ${role == 1 ? "checked" : ""}>
                         <span style="color: #979696;
                                       margin-bottom: 10px;
-                                      font-weight: 500; margin-right: 80px; cursor: pointer">Student</span>
+                                      font-weight: 500; margin-right: 80px; cursor: pointer">Admin</span>
                     </label>
                 </div>
                 <div class="form-group">
