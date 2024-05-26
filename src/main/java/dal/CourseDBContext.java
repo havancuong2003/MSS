@@ -9,6 +9,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CourseDBContext extends DBContext<Course> {
+
+    public ArrayList<Course> searchByCode(String txtSearch) {
+        ArrayList<Course> courses = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM course WHERE code like ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%"+txtSearch+"%");
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setCode(rs.getString("code"));
+                course.setDetail(rs.getString("detail"));
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
     public ArrayList<Course> getCourseList() {
         ArrayList<Course> courses = new ArrayList<>();
         try {
