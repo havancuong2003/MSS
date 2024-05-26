@@ -24,6 +24,8 @@ public class SetUpNewPassAfterForgot extends HttpServlet {
         resp.setContentType("application/json");
         String newPassword = req.getParameter("newPassword");
         String emailToChange = req.getParameter("email_to_change");
+        System.out.println(newPassword);
+        System.out.println(emailToChange);
         PrintWriter out = resp.getWriter();
         try {
 
