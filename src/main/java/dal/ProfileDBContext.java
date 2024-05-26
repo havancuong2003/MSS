@@ -68,9 +68,35 @@ public class ProfileDBContext extends DBContext<Account> {
 
     public Account getAccountByUserName(String username) {
         try {
-            String sql = "select * from account where username = ?";
+            String sql = "select * from account where username like ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setId(rs.getInt(1));
+                a.setUsername(rs.getString(2));
+                a.setPassword(rs.getString(3));
+                a.setFullname(rs.getString(4));
+                a.setPhone(rs.getString(5));
+                a.setEmail(rs.getString(6));
+                a.setDob(rs.getDate(7));
+                a.setAddress(rs.getString(8));
+                a.setRole_id(rs.getInt(9));
+                a.setAvatar((Blob) rs.getBlob(10));
+                a.setGender(rs.getBoolean(11));
+                return a;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public Account getAccountByUserPhone(String phone) {
+        try {
+            String sql = "select * from account where phone = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, phone);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
@@ -190,7 +216,7 @@ public class ProfileDBContext extends DBContext<Account> {
     }
     public static void main(String[] args) {
         ProfileDBContext dao = new ProfileDBContext();
-        Account a = dao.getAccountByUserName("abcxyz");
+        Account a = dao.getAccountByUserPhone("0335545681");
 
         System.out.println(a.getFullname());
     }

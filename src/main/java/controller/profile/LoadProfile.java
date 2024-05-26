@@ -69,12 +69,21 @@ public class LoadProfile extends HttpServlet {
             }
 //            response.sendRedirect("load-profile");
         } else if (phone != null && account_id != null) {
-            if(checkPhoneNumber(phone)){
-                String phone_number = phone.trim();
-                dao.editPhoneNumber(phone_number,account_id);
+            if(checkPhoneLength(phone) && checkPhoneCharacters(phone)){
+                if(dao.getAccountByUserPhone(phone) == null){
+                    String phone_number = phone.trim();
+                    dao.editPhoneNumber(phone_number,account_id);
+                    doGet(request,response);
+                } else {
+                    request.setAttribute("mess_phone", "The phone number is already exist");
+                    doGet(request,response);
+                }
+
+            } else if (!checkPhoneLength(phone)){
+                request.setAttribute("mess_phone", "The phone number must have 10 numbers");
                 doGet(request,response);
             } else {
-                request.setAttribute("mess_phone", "The phone number you just entered is invalid");
+                request.setAttribute("mess_phone", "The phone number is already exist");
                 doGet(request,response);
             }
         } else {
@@ -97,12 +106,24 @@ public class LoadProfile extends HttpServlet {
 
         }
     }
-    public boolean checkPhoneNumber(String phone) {
-        if(phone.length() != 10) {
-            return false;
-        }
-        for(char ch : phone.toCharArray()) {
-            if(Character.isLetter(ch)){
+//    public boolean checkPhoneNumber(String phone) {
+//        if(phone.length() != 10) {
+//            return false;
+//        }
+//        for(char ch : phone.toCharArray()) {
+//            if(Character.isLetter(ch)){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+    public boolean checkPhoneLength(String phone) {
+        return phone.length() == 10;
+    }
+
+    public boolean checkPhoneCharacters(String phone) {
+        for (char ch : phone.toCharArray()) {
+            if (Character.isLetter(ch)) {
                 return false;
             }
         }
