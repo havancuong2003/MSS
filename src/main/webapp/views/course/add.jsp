@@ -104,7 +104,7 @@
         function addCate() {
             var assCount = 0;
             cateCount++;  // Tăng biến đếm lên mỗi lần hàm được gọi
-
+            var newHr = document.createElement("hr");
             var newDiv = document.createElement("div");
             newDiv.id="assInput"+cateCount;
             // Tạo nhãn mới cho Category
@@ -135,6 +135,7 @@
             categoryContainer.id = "category" + cateCount;
 
             // Thêm nhãn, thẻ input, nút bấm và thẻ <br> vào div container
+            categoryContainer.appendChild(newHr);
             categoryContainer.appendChild(newLabel);
             categoryContainer.appendChild(newInput);
             categoryContainer.appendChild(newButton);
