@@ -79,11 +79,14 @@ public class LoadProfile extends HttpServlet {
                     doGet(request,response);
                 }
 
-            } else if (!checkPhoneLength(phone)){
+            } else if (!checkPhoneLength(phone) && checkPhoneCharacters(phone)){
                 request.setAttribute("mess_phone", "The phone number must have 10 numbers");
                 doGet(request,response);
+            } else if(!checkPhoneCharacters(phone) && checkPhoneLength(phone)) {
+                request.setAttribute("mess_phone", "The phone number must not have character");
+                doGet(request,response);
             } else {
-                request.setAttribute("mess_phone", "The phone number is already exist");
+                request.setAttribute("mess_phone", "The phone number must have 10 numbers no character");
                 doGet(request,response);
             }
         } else {
