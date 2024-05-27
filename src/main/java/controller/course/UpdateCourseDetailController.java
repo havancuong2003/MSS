@@ -58,11 +58,13 @@ public class UpdateCourseDetailController extends HttpServlet {
         CourseDBContext cdb = new CourseDBContext();
         ArrayList<Course> courses = cdb.getCourseList();
         for (Course c : courses) {
-            if (c.getCode().equals(code)||c.getDetail().equals(detail)) {
-                req.setAttribute("ms","This course already exists. Update course failed!");
-                req.setAttribute("id",id);
-                req.getRequestDispatcher("views/course/update.jsp").forward(req, resp);
-                return;
+            if (c.getId()!=id){
+                if (c.getCode().equals(code) || c.getDetail().equals(detail)) {
+                    req.setAttribute("ms", "This course already exists. Update course failed!");
+                    req.setAttribute("id", id);
+                    req.getRequestDispatcher("views/course/update.jsp").forward(req, resp);
+                    return;
+                }
             }
         }
         cdb.updateCourse(id,code,detail);
