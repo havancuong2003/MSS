@@ -140,7 +140,7 @@
     <c:if test="${!requestScope.exist}">
         <div class="container">
             <p>${requestScope.ms}</p>
-            <a href="updateCourse?id=${requestScope.id}">Back</a>
+            <a href="listCourse">Back</a>
         </div>
     </c:if>
     <c:if test="${requestScope.exist}">

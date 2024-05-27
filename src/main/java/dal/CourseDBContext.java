@@ -98,7 +98,7 @@ public class CourseDBContext extends DBContext<Course> {
 
     public void updateCourse(int id,String code, String detail){
         try {
-            String sql = "UPDATE `test`.`course`\n" +
+            String sql = "UPDATE course " +
                     "SET\n" +
                     "`code` = ?,\n" +
                     "`detail` = ?\n" +
