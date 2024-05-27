@@ -66,6 +66,7 @@
                             </div>
                             <div class="col-sm-7 text-secondary">
                                 ${account.username}
+                                <div  class="text-danger">${mess_username}</div>
                             </div>
                             <div class="col-sm-2">
                                 <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editUserNameModal">Edit</button>
@@ -139,11 +140,11 @@
                             </div>
                         </div>
                         <hr>
-                        <%--                        <div class="row">--%>
-                        <%--                            <div class="col-sm-12">--%>
-                        <%--                                <a class="btn btn-info" target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit Profile</a>--%>
-                        <%--                            </div>--%>
-                        <%--                        </div>--%>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info" target="__blank" href="#">Back to home</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

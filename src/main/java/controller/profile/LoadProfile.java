@@ -55,21 +55,38 @@ public class LoadProfile extends HttpServlet {
         String account_id = request.getParameter("account_id").trim();
         String username = request.getParameter("account_username");
         String phone = request.getParameter("account_phone");
-        String email = request.getParameter("account_email");
         String currentpassword = request.getParameter("currentpassword");
         String newpassword = request.getParameter("newpassword");
         String confirm_newpassword = request.getParameter("confirmnewpassword");
         if(username != null && account_id != null) {
             String user_name = username.trim();
-            dao.editUserName(user_name,account_id);
-            response.sendRedirect("load-profile");
+            if(dao.getAccountByUserName(user_name) == null){
+                dao.editUserName(user_name,account_id);
+                response.sendRedirect("load-profile");
+            } else {
+                request.setAttribute("mess_username", "User name is already exist");
+                doGet(request, response);
+            }
+//            response.sendRedirect("load-profile");
         } else if (phone != null && account_id != null) {
-            if(checkPhoneNumber(phone)){
-                String phone_number = phone.trim();
-                dao.editPhoneNumber(phone_number,account_id);
+            if(checkPhoneLength(phone) && checkPhoneCharacters(phone)){
+                if(dao.getAccountByUserPhone(phone) == null){
+                    String phone_number = phone.trim();
+                    dao.editPhoneNumber(phone_number,account_id);
+                    doGet(request,response);
+                } else {
+                    request.setAttribute("mess_phone", "The phone number is already exist");
+                    doGet(request,response);
+                }
+
+            } else if (!checkPhoneLength(phone) && checkPhoneCharacters(phone)){
+                request.setAttribute("mess_phone", "The phone number must have 10 numbers");
+                doGet(request,response);
+            } else if(!checkPhoneCharacters(phone) && checkPhoneLength(phone)) {
+                request.setAttribute("mess_phone", "The phone number must not have character");
                 doGet(request,response);
             } else {
-                request.setAttribute("mess_phone", "The phone number you just entered is invalid");
+                request.setAttribute("mess_phone", "The phone number must have 10 numbers no character");
                 doGet(request,response);
             }
         } else {
@@ -92,12 +109,24 @@ public class LoadProfile extends HttpServlet {
 
         }
     }
-    public boolean checkPhoneNumber(String phone) {
-        if(phone.length() != 10) {
-            return false;
-        }
-        for(char ch : phone.toCharArray()) {
-            if(Character.isLetter(ch)){
+//    public boolean checkPhoneNumber(String phone) {
+//        if(phone.length() != 10) {
+//            return false;
+//        }
+//        for(char ch : phone.toCharArray()) {
+//            if(Character.isLetter(ch)){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+    public boolean checkPhoneLength(String phone) {
+        return phone.length() == 10;
+    }
+
+    public boolean checkPhoneCharacters(String phone) {
+        for (char ch : phone.toCharArray()) {
+            if (Character.isLetter(ch)) {
                 return false;
             }
         }
