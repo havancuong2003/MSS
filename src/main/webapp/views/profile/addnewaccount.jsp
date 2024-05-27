@@ -20,7 +20,7 @@
 </head>
 <body>
 <div class="container-fluid container">
-    <div class="row">
+    <div class="row" style="display: grid;grid-template-columns: 30% 70%;">
         <div class="col-lg-2 side-bar">
             <div class="top-fixed">
                 <div class="content"><i class="fas fa-home" style="font-size: 20px;"></i><a href="admin?cp=1">Home</a></div>
@@ -37,13 +37,13 @@
             <form action="add-New-Account" method="post">
                 <%--                start--%>
                 <div class="form-info">
-                    <div class="form-group" style="margin-right: 18px">
-                        <label for="name" class="input-label" >Full Name</label>
-                        <input type="text" id="fullname" class="form-control" name="fullname" placeholder="" required="required" value="${f_name}">
+                    <div class="form-group" style="width: 100%">
+                        <label for="name" class="input-label" style="margin-right: 30px">Full Name</label>
+                        <input type="text" id="fullname" class="form-control" name="fullname" placeholder="" required="required" value="${f_name}" style="width: 40%">
                     </div>
                 </div>
-                <div class="form-group" style="margin-bottom: 0px" >
-                    <label for="name" class="input-label">Username</label>
+                <div class="form-group" style="margin-bottom: 20px" >
+                    <label for="name" class="input-label" style="margin-right: 30px">Username</label>
                     <input type="text" id="username" class="form-control" name="username" placeholder="" required="required" value="${username}">
                     <span style="color: red; font-size: 15px; padding-left: 5px">${errorUsername}</span>
                 </div>
@@ -100,7 +100,7 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <label for="password" class="input-label">Password</label>
+                    <label for="password" class="input-label" style="margin-right: 60px">Password</label>
                     <input id="password" type="password" class="form-control" name="password" placeholder="Enter password" required="required" oninput="validatePassword()">
 <%--                    <span style="color: red; font-size: 15px; padding-left: 5px">${errorPassword}</span>--%>
                 </div>
@@ -115,7 +115,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-lg-6 side-bar" style="background-color: white"></div>
+<%--        <div class="col-lg-6 side-bar" style="background-color: white"></div>--%>
     </div>
 </div>
 
