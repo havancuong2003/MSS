@@ -53,7 +53,7 @@ public class UpdateCourseDetailController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id")) ;
+        int id = Integer.parseInt(req.getParameter("cid")) ;
         String code  = req.getParameter("code");
         String detail = req.getParameter("detail");
         CourseDBContext cdb = new CourseDBContext();
