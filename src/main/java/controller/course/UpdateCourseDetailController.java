@@ -25,6 +25,7 @@ public class UpdateCourseDetailController extends HttpServlet {
         if (course == null||course.getDetail()==null||course.getCode()==null) {
             req.setAttribute("exist",false);
             req.setAttribute("ms","Course does not exist. Update course failed!");
+            req.setAttribute("id",id);
             req.getRequestDispatcher("views/course/update.jsp").forward(req,resp);
             return;
         }
@@ -52,7 +53,7 @@ public class UpdateCourseDetailController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("cid")) ;
+        int id = Integer.parseInt(req.getParameter("id")) ;
         String code  = req.getParameter("code");
         String detail = req.getParameter("detail");
         CourseDBContext cdb = new CourseDBContext();
