@@ -12,34 +12,29 @@
 <head>
     <style>
         /* Thiết lập kiểu cho bảng */
-
-        h1 {
-            text-align: center;
-            margin: 40px 0 40px 0 ;
-        }
+    .header{
+        background-color: green;
+        padding: 15px;
+        text-align: center;
+    }
+        /*h1 {*/
+        /*    text-align: center;*/
+        /*    margin: 40px 0 40px 0 ;*/
+        /*}*/
         h2 {
             text-align: center;
-            margin: 40px 0 20px 0 ;
-        }
-        .new-table {
-            background-color: #f2f2f2;
-            width: 80%; /* Chiều rộng bằng với bảng cũ */
-            margin: 40px auto; /* Canh giữa bảng và tạo khoảng cách với bảng cũ */
 
         }
 
-        /* Thiết lập kiểu cho cột dấu "|" */
-        .new-table td {
-            padding: 0 10px; /* Khoảng cách giữa dấu "|" và nội dung */
+        .nav_menu {
+
+            margin: 20px auto;
+            overflow: hidden;
+            width: 80%;
+            background-color: #333;
+            padding: 20px;
         }
 
-        /* Thiết lập căn chỉnh cho cột "Log Out" */
-        .logout-cell {
-            text-align: right;
-            width: 100%;
-
-
-        }
         table {
             width: 80%; /* Giữ bảng ở trung tâm và chiếm 80% chiều rộng của trang */
             margin: 0 auto; /* Canh giữa bảng */
@@ -65,36 +60,72 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        input{
+            width: 20%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            background-position: 10px 10px;
+            padding: 12px 20px 12px 40px;
+        }
+        .form-row {
+            margin-left: 10%;
+            display: flex;
+            align-items: center;
+            margin-right: 50px;
+        }
+        .form-row input {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .title-search {
+            font-size: 20px; /* Kích thước chữ */
+            font-weight: bold; /* Độ đậm */
+            color: #333; /* Màu chữ */
+            align-items: center;
+            text-align: center; /* Căn giữa văn bản */
 
-
+        }
     </style>
+
+
+
 </head>
-<body>
-<h1>Course List</h1>
-<table class="new-table">
-    <tr>
-        <td>
-            <a href="">Home</a>
-        </td>
-        <td>
-            |
-        </td>
-        <td>
-            CourseList
-        </td>
-        <td class="logout-cell" >
-            <a href="">Log Out</a>
-        </td>
-    </tr>
-</table>
+
+<div class="header">
+    <h1 style="color:white,font-size:200%;">
+        View All Course
+    </h1>
+</div>
+<div class="nav_menu">
+    <a style="color:white" href="#">Home</a>
+    <a style="color:white">|</a>
+    <a style="color:white">Course List</a>
+    <a style="color:white; float: right;" href="#">Log Out</a>
+<%--    float:right  move an element to the right side of its parent element--%>
+</div>
+
+<form >
+    <div class="form-row">
+        <div class="title-search">Course you want</div>
+        <input id="searchCode" oninput="SearchItem()"  type="text" name="searchCode" placeholder="Search...">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
 <h2>Course List</h2>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Code</th>
-        <th>Name of Code</th>
-        <th>Details</th>
-    </tr>
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Code</th>
+            <th>Name of Code</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody id="TableBodyData"
     <c:forEach var="course" items="${courses}">
         <tr>
             <td>${course.id}</td>
@@ -103,6 +134,35 @@
             <td><a href="viewCourse?id=${course.id}">ClickHere</a></td>
         </tr>
     </c:forEach>
+    </tbody>
+
 </table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+function SearchItem(){
+    let code = $("#searchCode").val()
+    $.ajax({
+        url: "/MyStudySpace_war_exploded/listCourse",
+        method: "POST",
+        dataType: "JSON",
+        data: {
+            searchCode: code
+        },
+        success: function (data) {
+           let listCourse = data
+            let bodyTable = $("#TableBodyData")
+            bodyTable.html("");
+            let htmlValue = ''
+            listCourse.forEach((c)=>{
+                htmlValue +="<tr><td>"+c.id+"</td><td>"+c.code+"</td><td>"+c.detail+"</td><td><a href='viewCourse?id="+c.id+"'>ClickHere</a></td></tr>"
+            })
+            bodyTable.html(htmlValue);
+        },
+        error: function (Error) {
+            console.log(Error)
+        }
+    });
+}
+</script>
 </body>
 </html>
