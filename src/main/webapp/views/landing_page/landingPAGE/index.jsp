@@ -1580,7 +1580,22 @@
                 data: formData,
                 dataType: "json",
                 success: function (response) {
-                    window.location.href = "mystudyspace";
+                   console.log("response", response.role);
+                   switch (response.role) {
+                       case "1":
+                           window.location.href = "${pageContext.request.contextPath}/admin/dashboard";
+                           break;
+                       case "2":
+                           window.location.href = "${pageContext.request.contextPath}/staff/dashboard";
+                           break;
+                       case "4":
+                           window.location.href = "${pageContext.request.contextPath}/student/dashboard";
+                           break;
+                       case "3":
+                           window.location.href = "${pageContext.request.contextPath}/teacher/dashboard";
+                           break;
+
+                   }
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status === 401) {

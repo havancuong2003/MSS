@@ -38,7 +38,7 @@ public class AccountDBContext extends DBContext<Account> {
     public Account getAccount(String username, String password) throws SQLException {
         Account a = null;
         try {
-            String sql = "select account_id,username,password,fullname,phone,email,date_of_birth,address,photo,gender from Account where username = ? and password  =?";
+            String sql = "select account_id,username,password,fullname,phone,email,date_of_birth,address,photo,gender,role_id from Account where username = ? and password  =?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setString(2, password);
@@ -55,6 +55,7 @@ public class AccountDBContext extends DBContext<Account> {
                 a.setAddress(rs.getString("address"));
                 a.setAvatar(rs.getBlob("photo"));
                 a.setGender(rs.getBoolean("gender"));
+                a.setRole_id(rs.getInt("role_id"));
             }
             return a;
         }
@@ -78,7 +79,7 @@ public class AccountDBContext extends DBContext<Account> {
     }
 
     public ArrayList<String> getEmail() {
-        String sql = "Select email from account";
+            String sql = "Select email from account";
         ArrayList<String> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try (ResultSet resultSet = statement.executeQuery()) {
