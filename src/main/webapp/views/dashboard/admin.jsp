@@ -168,8 +168,8 @@
             <div class="profile-info">
                 <img src="data:image/jpeg;base64,${photoBase64}" alt="">
                 <div>
-                    <span id="profileFullName">FullName</span>
-                    <span id="profileRole" class="role">Role</span>
+                    <span id="profileFullName">${requestScope.account.fullname}</span>
+                    <span id="profileRole" class="role">${requestScope.roleName}</span>
                 </div>
             </div>
             <div class="profile-actions">
