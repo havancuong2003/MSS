@@ -163,13 +163,13 @@
         <span class="sp">MyStudySpace</span>
     </div>
     <div class="profile-container">
-        <img src="profile.png" alt="" class="profile-img" onclick="toggleProfileDropdown()">
+        <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()">
         <div id="profileDropdown" class="profile-dropdown">
             <div class="profile-info">
-                <img src="profile.png" alt="">
+                <img src="data:image/jpeg;base64,${photoBase64}" alt="">
                 <div>
-                    <span id="profileFullName">FullName</span>
-                    <span id="profileRole" class="role">Role</span>
+                    <span id="profileFullName">${requestScope.account.fullname}</span>
+                    <span id="profileRole" class="role">${requestScope.roleName}</span>
                 </div>
             </div>
             <div class="profile-actions">
