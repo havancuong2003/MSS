@@ -1541,6 +1541,7 @@
         formPopup.classList.add("show-forgot-password");
         $("#username-login").val("");
         $("#password-login").val("");
+        $("#error").text("");
     });
 
     // Show login form
