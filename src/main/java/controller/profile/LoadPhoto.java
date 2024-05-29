@@ -1,5 +1,6 @@
 package controller.profile;
 
+import dal.AccountDBContext;
 import dal.ProfileDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -41,6 +42,13 @@ public class LoadPhoto extends HttpServlet {
             e.printStackTrace();
         }
         request.setAttribute("account", acc);
+
+
+        AccountDBContext adbc = new AccountDBContext();
+        String role = adbc.getRoleByRoleID(account.getRole_id());
+
+        request.setAttribute("role", role);
+
         request.getRequestDispatcher("views/profile/profile.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

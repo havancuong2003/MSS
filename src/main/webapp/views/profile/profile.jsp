@@ -142,7 +142,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12">
-                                <a class="btn btn-info" target="__blank" href="${role}/dashboard">Back to home</a>
+                                <a class="btn btn-info"  href="${pageContext.request.contextPath}/${role}/dashboard">Back to home</a>
                             </div>
                         </div>
                     </div>
