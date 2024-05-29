@@ -47,7 +47,7 @@ public class LoadProfile extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        request.setAttribute("account", acc);
+//        request.setAttribute("account", acc);
         request.getRequestDispatcher("views/profile/profile.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
