@@ -175,6 +175,20 @@ public class AccountDBContext extends DBContext<Account> {
         return false;
     }
 
+    public String getRoleByRoleID(int role_id) {
+        String query = "SELECT description FROM role WHERE role_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, role_id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getString("description");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
 }

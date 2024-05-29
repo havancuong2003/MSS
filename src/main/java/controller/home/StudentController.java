@@ -1,5 +1,6 @@
 package controller.home;
 
+import dal.AccountDBContext;
 import dal.ProfileDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,7 +22,10 @@ public class StudentController extends HttpServlet {
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("account");
 
-
+        AccountDBContext adbc = new AccountDBContext();
+        int roleID = account.getRole_id();
+        String roleName= adbc.getRoleByRoleID(roleID);
+        req.setAttribute("roleName", roleName);
         ProfileDBContext dao = new ProfileDBContext();
 
         int getAccountID = account.getId();
