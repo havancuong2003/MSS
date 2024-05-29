@@ -145,10 +145,10 @@
             dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
         }
 
-        function logout() {
-            // Add your logout logic here
-            alert('Logged out');
-        }
+        // function logout() {
+        //     // Add your logout logic here
+        //     alert('Logged out');
+        // }
 
         function toggleSubMenu(menuId) {
             var submenu = document.getElementById(menuId);
@@ -175,7 +175,7 @@
             <div class="profile-actions">
                 <a href="<%=request.getContextPath()%>/load-profile"><i class="fas fa-user"></i> My Profile</a>
                 <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
-                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
     </div>
