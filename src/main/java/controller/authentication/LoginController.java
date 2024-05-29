@@ -34,7 +34,8 @@ public class LoginController extends HttpServlet {
             if (account != null) {
                 req.getSession().setAttribute("account", account);
                 resp.setStatus(HttpServletResponse.SC_OK);
-                out.print("{\"role\": \""+account.getRole_id()+"\"}");
+                String description = adbc.getRoleByRoleID(account.getRole_id());
+                out.print("{\"role\": \""+description+"\"}");
             } else {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 String errorMessage = "Username or password is incorrect";

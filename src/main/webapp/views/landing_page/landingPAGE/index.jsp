@@ -1582,16 +1582,16 @@
                 success: function (response) {
                    console.log("response", response.role);
                    switch (response.role) {
-                       case "1":
+                       case "admin":
                            window.location.href = "${pageContext.request.contextPath}/admin/dashboard";
                            break;
-                       case "2":
+                       case "staff":
                            window.location.href = "${pageContext.request.contextPath}/staff/dashboard";
                            break;
-                       case "4":
+                       case "student":
                            window.location.href = "${pageContext.request.contextPath}/student/dashboard";
                            break;
-                       case "3":
+                       case "teacher":
                            window.location.href = "${pageContext.request.contextPath}/teacher/dashboard";
                            break;
 

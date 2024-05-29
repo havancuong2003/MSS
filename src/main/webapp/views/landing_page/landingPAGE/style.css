@@ -88,8 +88,6 @@ header {
 .navbar .login-btn {
     border: none;
     outline: none;
-    background: #fff;
-    color: #275360;
     font-size: 1rem;
     font-weight: 600;
     padding: 10px 18px;
