@@ -1,5 +1,6 @@
 package controller.home;
 
+import dal.AccountDBContext;
 import dal.ProfileDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,9 +19,14 @@ import java.util.Base64;
 public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("account");
 
+        AccountDBContext adbc = new AccountDBContext();
+        int roleID = account.getRole_id();
+        String roleName= adbc.getRoleByRoleID(roleID);
+        req.setAttribute("roleName", roleName);
 
         ProfileDBContext dao = new ProfileDBContext();
 
