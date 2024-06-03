@@ -1,5 +1,6 @@
 package controller.profile;
 
+import dal.AccountDBContext;
 import dal.ProfileDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -18,6 +19,7 @@ import java.util.Base64;
 @WebServlet(name = "loadProfile", value = "/load-profile")
 @MultipartConfig()
 public class LoadProfile extends HttpServlet {
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ProfileDBContext dao = new ProfileDBContext();
         HttpSession session = request.getSession();
@@ -25,6 +27,12 @@ public class LoadProfile extends HttpServlet {
         int account_id = account.getId();
         String accountId = String.valueOf(account_id);
         Account acc = dao.getAccountByID(accountId);
+
+        AccountDBContext adbc = new AccountDBContext();
+        String role = adbc.getRoleByRoleID(account.getRole_id());
+
+        request.setAttribute("role", role);
+
         if(acc.getAvatar() == null){
             request.setAttribute("img","");
         } else {
@@ -47,9 +55,12 @@ public class LoadProfile extends HttpServlet {
                 e.printStackTrace();
             }
         }
-//        request.setAttribute("account", acc);
+
+        request.setAttribute("account", acc);
         request.getRequestDispatcher("views/profile/profile.jsp").forward(request, response);
     }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProfileDBContext dao = new ProfileDBContext();
         String account_id = request.getParameter("account_id").trim();

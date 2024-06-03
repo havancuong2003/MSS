@@ -1,7 +1,7 @@
 package controller.course;
 
-import dal.AssessmentDBContext;
-import dal.CategoryDBContext;
+import dal.GradeItemDBContext;
+import dal.GradeCategoryDBContext;
 import dal.CourseDBContext;
 import model.Assessment;
 import model.Category;
@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 
     @WebServlet(name="addCourse",value = "/addCourse")
@@ -31,8 +30,8 @@ public class AddCourseController extends HttpServlet {
         course.setCode(code);
         course.setDetail(detail);
         int total = 0;
-        AssessmentDBContext assDB = new AssessmentDBContext();
-        CategoryDBContext catDB = new CategoryDBContext();
+        GradeItemDBContext assDB = new GradeItemDBContext();
+        GradeCategoryDBContext catDB = new GradeCategoryDBContext();
         CourseDBContext courseDB = new CourseDBContext();
         ArrayList<Course> courses = courseDB.getCourseList();
         for (Course c : courses) {
