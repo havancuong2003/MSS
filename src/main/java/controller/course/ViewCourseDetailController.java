@@ -1,7 +1,7 @@
 package controller.course;
 
-import dal.AssessmentDBContext;
-import dal.CategoryDBContext;
+import dal.GradeItemDBContext;
+import dal.GradeCategoryDBContext;
 import dal.CourseDBContext;
 import model.Assessment;
 import model.Category;
@@ -29,7 +29,7 @@ public class ViewCourseDetailController extends HttpServlet {
             req.getRequestDispatcher("views/course/detail.jsp").forward(req,resp);
             return;
         }
-        CategoryDBContext cateDB = new CategoryDBContext();
+        GradeCategoryDBContext cateDB = new GradeCategoryDBContext();
         ArrayList<Category> categories = cateDB.getAllCategory();
         ArrayList<Category> cate = new ArrayList<>();
         for (Category c : categories){
@@ -37,7 +37,7 @@ public class ViewCourseDetailController extends HttpServlet {
                 cate.add(c);
             }
         }
-        AssessmentDBContext assDB = new AssessmentDBContext();
+        GradeItemDBContext assDB = new GradeItemDBContext();
         for (Category c :cate ){
             ArrayList<Assessment> assessments = assDB.getAssessment(c.getId());
             c.setAssessments(assessments);
