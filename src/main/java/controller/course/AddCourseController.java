@@ -35,7 +35,7 @@ public class AddCourseController extends HttpServlet {
         CourseDBContext courseDB = new CourseDBContext();
         ArrayList<Course> courses = courseDB.getCourseList();
         for (Course c : courses) {
-            if (c.getCode().equals(code)||c.getDetail().equals(detail)) {
+            if (c.getCode().equalsIgnoreCase(code)||c.getDetail().equalsIgnoreCase(detail)) {
                 req.setAttribute("ms","This course already exists. Add course failed!");
                 req.getRequestDispatcher("views/course/add.jsp").forward(req, resp);
                 return;
