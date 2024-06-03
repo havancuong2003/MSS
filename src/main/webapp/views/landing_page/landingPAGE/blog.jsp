@@ -27,46 +27,47 @@
 
 <body>
     <!-- Topbar Start -->
-    <div class="container-fluid d-none d-lg-block">
-        <div class="row align-items-center py-4 px-xl-5">
-            <div class="col-lg-3">
-                <a href="" class="text-decoration-none">
-                    <h1 class="m-0"><span class="text-primary">E</span>COURSES</h1>
-                </a>
-            </div>
-            <div class="col-lg-3 text-right">
-                <div class="d-inline-flex align-items-center">
-                    <i class="fa fa-2x fa-map-marker-alt text-primary mr-3"></i>
-                    <div class="text-left">
-                        <h6 class="font-weight-semi-bold mb-1">Our Office</h6>
-                        <small>123 Street, New York, USA</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 text-right">
-                <div class="d-inline-flex align-items-center">
-                    <i class="fa fa-2x fa-envelope text-primary mr-3"></i>
-                    <div class="text-left">
-                        <h6 class="font-weight-semi-bold mb-1">Email Us</h6>
-                        <small>info@example.com</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 text-right">
-                <div class="d-inline-flex align-items-center">
-                    <i class="fa fa-2x fa-phone text-primary mr-3"></i>
-                    <div class="text-left">
-                        <h6 class="font-weight-semi-bold mb-1">Call Us</h6>
-                        <small>+012 345 6789</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
+<%--    <div class="container-fluid d-none d-lg-block">--%>
+<%--        <div class="row align-items-center py-4 px-xl-5">--%>
+<%--            <div class="col-lg-3">--%>
+<%--                <a href="" class="text-decoration-none">--%>
+<%--                    <h1 class="m-0"><span class="text-primary">E</span>COURSES</h1>--%>
+<%--                </a>--%>
+<%--            </div>--%>
+<%--            <div class="col-lg-3 text-right">--%>
+<%--                <div class="d-inline-flex align-items-center">--%>
+<%--                    <i class="fa fa-2x fa-map-marker-alt text-primary mr-3"></i>--%>
+<%--                    <div class="text-left">--%>
+<%--                        <h6 class="font-weight-semi-bold mb-1">Our Office</h6>--%>
+<%--                        <small>123 Street, New York, USA</small>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--            <div class="col-lg-3 text-right">--%>
+<%--                <div class="d-inline-flex align-items-center">--%>
+<%--                    <i class="fa fa-2x fa-envelope text-primary mr-3"></i>--%>
+<%--                    <div class="text-left">--%>
+<%--                        <h6 class="font-weight-semi-bold mb-1">Email Us</h6>--%>
+<%--                        <small>info@example.com</small>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--            <div class="col-lg-3 text-right">--%>
+<%--                <div class="d-inline-flex align-items-center">--%>
+<%--                    <i class="fa fa-2x fa-phone text-primary mr-3"></i>--%>
+<%--                    <div class="text-left">--%>
+<%--                        <h6 class="font-weight-semi-bold mb-1">Call Us</h6>--%>
+<%--                        <small>+012 345 6789</small>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--    <!-- Topbar End -->--%>
 
 
-    <!-- Navbar Start -->
+    <jsp:include page="toolbarHeader.jsp" />
+<%--    <!-- Navbar Start -->--%>
     <div class="container-fluid">
         <div class="row border-top px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
@@ -101,7 +102,7 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav py-0">
-                            <a href="index.jsp" class="nav-item nav-link">Home</a>
+                            <a href="${pageContext.request.contextPath}/mystudyspace" class="nav-item nav-link">Home</a>
                             <a href="about.jsp" class="nav-item nav-link">About</a>
                             <a href="course.jsp" class="nav-item nav-link">Courses</a>
                             <a href="teacher.jsp" class="nav-item nav-link">Teachers</a>
@@ -121,7 +122,6 @@
         </div>
     </div>
     <!-- Navbar End -->
-
 
     <!-- Header Start -->
     <div class="container-fluid page-header" style="margin-bottom: 90px;">
