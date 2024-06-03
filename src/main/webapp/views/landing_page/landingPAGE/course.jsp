@@ -114,7 +114,11 @@
                             </div>
                             <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                         </div>
-                        <a class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block" href="">Join Now</a>
+                        <button
+                                class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block login-btn"
+                        >
+                            LOG IN
+                        </button>
                     </div>
                 </nav>
             </div>
@@ -420,19 +424,19 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+<jsp:include page="../popupLogin.jsp"/>
+<%--    <!-- JavaScript Libraries -->--%>
+<%--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>--%>
+<%--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>--%>
+<%--    <script src="lib/easing/easing.min.js"></script>--%>
+<%--    <script src="lib/owlcarousel/owl.carousel.min.js"></script>--%>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<%--    <!-- Contact Javascript File -->--%>
+<%--    <script src="mail/jqBootstrapValidation.min.js"></script>--%>
+<%--    <script src="mail/contact.js"></script>--%>
 
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+<%--    <!-- Template Javascript -->--%>
+<%--    <script src="js/main.js"></script>--%>
 </body>
 
 </html>

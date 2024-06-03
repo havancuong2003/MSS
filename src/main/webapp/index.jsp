@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>ECOURSES - Online Courses HTML Template</title>
+    <title>My Study Space - Online Learning</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Free HTML Templates" name="keywords" />
     <meta content="Free HTML Templates" name="description" />
@@ -45,7 +45,7 @@
         <div class="col-lg-3">
             <a href="" class="text-decoration-none">
                 <h1 class="m-0">
-                    <span class="text-primary">E</span>COURSES
+                    <span class="text-primary">MY</span>STUDYSPACE
                 </h1>
             </a>
         </div>
@@ -58,7 +58,7 @@
                     <h6 class="font-weight-semi-bold mb-1">
                         Our Office
                     </h6>
-                    <small>123 Street, New York, USA</small>
+                    <small>FPT University Ha Noi</small>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
                 <i class="fa fa-2x fa-envelope text-primary mr-3"></i>
                 <div class="text-left">
                     <h6 class="font-weight-semi-bold mb-1">Email Us</h6>
-                    <small>info@example.com</small>
+                    <small>mss@fpt.edu.vn</small>
                 </div>
             </div>
         </div>
@@ -82,6 +82,8 @@
         </div>
     </div>
 </div>
+
+<%--<jsp:include page="views/landing_page/landingPAGE/toolbarHeader.jsp"   />--%>
 <!-- Topbar End -->
 
 <!-- Navbar Start -->
@@ -1482,322 +1484,322 @@
 ><i class="fa fa-angle-double-up"></i
 ></a>
 
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/lib/easing/easing.min.js"></script>
-<script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/lib/owlcarousel/owl.carousel.min.js"></script>
+<%--<!-- JavaScript Libraries -->--%>
+<%--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>--%>
+<%--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>--%>
+<%--<script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/lib/easing/easing.min.js"></script>--%>
+<%--<script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/lib/owlcarousel/owl.carousel.min.js"></script>--%>
 
-<%--<!-- Contact Javascript File -->--%>
-<%--<script src="mail/jqBootstrapValidation.min.js"></script>--%>
-<%--<script src="mail/contact.js"></script>--%>
+<%--&lt;%&ndash;<!-- Contact Javascript File -->&ndash;%&gt;--%>
+<%--&lt;%&ndash;<script src="mail/jqBootstrapValidation.min.js"></script>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<script src="mail/contact.js"></script>&ndash;%&gt;--%>
 
-<!-- Template Javascript -->
-<script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/js/main.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    const navbarMenu = document.querySelector(".navbar .links");
-    // const hamburgerBtn = document.querySelector(".hamburger-btn");
-    //     const hideMenuBtn = navbarMenu.querySelector(".close-btn");
-    const showPopupBtn = document.querySelector(".login-btn");
-    const formPopup = document.querySelector(".form-popup");
-    const hidePopupBtn = formPopup.querySelector(".close-btn");
-    const forgotPasswordLink = document.getElementById(
-        "forgot-password-link"
-    );
-    const loginLink = document.getElementById("login-link");
-    const sendResetLinkBtn = document.getElementById("send-reset-link");
-    const rememberedPasswordLink = document.querySelector(
-        ".reset-password .bottom-link a"
-    );
+<%--<!-- Template Javascript -->--%>
+<%--<script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/js/main.js"></script>--%>
+<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>--%>
+<%--<script>--%>
+<%--   // const navbarMenu = document.querySelector(".navbar .links");--%>
+<%--    // const hamburgerBtn = document.querySelector(".hamburger-btn");--%>
+<%--    //     const hideMenuBtn = navbarMenu.querySelector(".close-btn");--%>
+<%--    const showPopupBtn = document.querySelector(".login-btn");--%>
+<%--    const formPopup = document.querySelector(".form-popup");--%>
+<%--    const hidePopupBtn = formPopup.querySelector(".close-btn");--%>
+<%--    const forgotPasswordLink = document.getElementById(--%>
+<%--        "forgot-password-link"--%>
+<%--    );--%>
+<%--    const loginLink = document.getElementById("login-link");--%>
+<%--    const sendResetLinkBtn = document.getElementById("send-reset-link");--%>
+<%--    const rememberedPasswordLink = document.querySelector(--%>
+<%--        ".reset-password .bottom-link a"--%>
+<%--    );--%>
 
-    // Show mobile menu
-    // hamburgerBtn.addEventListener("click", () => {
-    //     navbarMenu.classList.toggle("show-menu");
-    // });
+<%--    // Show mobile menu--%>
+<%--    // hamburgerBtn.addEventListener("click", () => {--%>
+<%--    //     navbarMenu.classList.toggle("show-menu");--%>
+<%--    // });--%>
 
-    // Hide mobile menu
-    //    hideMenuBtn.addEventListener("click", () => hamburgerBtn.click());
+<%--    // Hide mobile menu--%>
+<%--    //    hideMenuBtn.addEventListener("click", () => hamburgerBtn.click());--%>
 
-    // Show login popup
-    showPopupBtn.addEventListener("click", () => {
-        document.body.classList.toggle("show-popup");
-    });
+<%--    // Show login popup--%>
+<%--    showPopupBtn.addEventListener("click", () => {--%>
+<%--        document.body.classList.toggle("show-popup");--%>
+<%--    });--%>
 
-    // Hide login popup
-    hidePopupBtn.addEventListener("click", () => showPopupBtn.click());
+<%--    // Hide login popup--%>
+<%--    hidePopupBtn.addEventListener("click", () => showPopupBtn.click());--%>
 
-    // Show forgot password form
-    forgotPasswordLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        formPopup.classList.add("show-forgot-password");
-        $("#username-login").val("");
-        $("#password-login").val("");
-        $("#error").text("");
-    });
+<%--    // Show forgot password form--%>
+<%--    forgotPasswordLink.addEventListener("click", (e) => {--%>
+<%--        e.preventDefault();--%>
+<%--        formPopup.classList.add("show-forgot-password");--%>
+<%--        $("#username-login").val("");--%>
+<%--        $("#password-login").val("");--%>
+<%--        $("#error").text("");--%>
+<%--    });--%>
 
-    // Show login form
-    loginLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        $("#username-login").val("");
-        $("#password-login").val("");
-        $("#new-password").val("");
-        $("#confirm-password").val("");
-        $("#token").val("");
-        $("#email").val("");
-        $("#error").text("");
-        $("#error_token").text("");
-        $("#error_password").text("");
-        $("#error_email").text("");
-        formPopup.classList.remove("show-forgot-password");
-        formPopup.classList.remove("show-reset-password");
-    });
+<%--    // Show login form--%>
+<%--    loginLink.addEventListener("click", (e) => {--%>
+<%--        e.preventDefault();--%>
+<%--        $("#username-login").val("");--%>
+<%--        $("#password-login").val("");--%>
+<%--        $("#new-password").val("");--%>
+<%--        $("#confirm-password").val("");--%>
+<%--        $("#token").val("");--%>
+<%--        $("#email").val("");--%>
+<%--        $("#error").text("");--%>
+<%--        $("#error_token").text("");--%>
+<%--        $("#error_password").text("");--%>
+<%--        $("#error_email").text("");--%>
+<%--        formPopup.classList.remove("show-forgot-password");--%>
+<%--        formPopup.classList.remove("show-reset-password");--%>
+<%--    });--%>
 
-    rememberedPasswordLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        formPopup.classList.remove("show-reset-password");
-        formPopup.classList.remove("show-forgot-password");
-    });
-</script>
+<%--    rememberedPasswordLink.addEventListener("click", (e) => {--%>
+<%--        e.preventDefault();--%>
+<%--        formPopup.classList.remove("show-reset-password");--%>
+<%--        formPopup.classList.remove("show-forgot-password");--%>
+<%--    });--%>
+<%--</script>--%>
 
-<script>
-    $(document).ready(function () {
-        $("#login-form").submit(function (event) {
-            console.log("login");
-            event.preventDefault(); // Prevent default form submission
-            event.stopPropagation(); // Prevent event propagation
-            const formData = $(this).serialize();
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/login",
-                data: formData,
-                dataType: "json",
-                success: function (response) {
-                    console.log("response", response.role);
-                    switch (response.role) {
-                        case "admin":
-                            window.location.href = "${pageContext.request.contextPath}/admin/dashboard";
-                            break;
-                        case "staff":
-                            window.location.href = "${pageContext.request.contextPath}/staff/dashboard";
-                            break;
-                        case "student":
-                            window.location.href = "${pageContext.request.contextPath}/student/dashboard";
-                            break;
-                        case "teacher":
-                            window.location.href = "${pageContext.request.contextPath}/teacher/dashboard";
-                            break;
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
+<%--        $("#login-form").submit(function (event) {--%>
+<%--            console.log("login");--%>
+<%--            event.preventDefault(); // Prevent default form submission--%>
+<%--            event.stopPropagation(); // Prevent event propagation--%>
+<%--            const formData = $(this).serialize();--%>
+<%--            $.ajax({--%>
+<%--                type: "POST",--%>
+<%--                url: "${pageContext.request.contextPath}/login",--%>
+<%--                data: formData,--%>
+<%--                dataType: "json",--%>
+<%--                success: function (response) {--%>
+<%--                    console.log("response", response.role);--%>
+<%--                    switch (response.role) {--%>
+<%--                        case "admin":--%>
+<%--                            window.location.href = "${pageContext.request.contextPath}/admin/dashboard";--%>
+<%--                            break;--%>
+<%--                        case "staff":--%>
+<%--                            window.location.href = "${pageContext.request.contextPath}/staff/dashboard";--%>
+<%--                            break;--%>
+<%--                        case "student":--%>
+<%--                            window.location.href = "${pageContext.request.contextPath}/student/dashboard";--%>
+<%--                            break;--%>
+<%--                        case "teacher":--%>
+<%--                            window.location.href = "${pageContext.request.contextPath}/teacher/dashboard";--%>
+<%--                            break;--%>
 
-                    }
-                },
-                error: function (xhr, status, error) {
-                    if (xhr.status === 401) {
-                        // Handle login error
-                        const response = JSON.parse(xhr.responseText);
-                        $("#error").text(response); // Display error message
-                    } else {
-                        // Handle other errors
-                        $("#error").text("Error: " + error); // Display error message
-                    }
-                },
-            });
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $("#reset-password-token").submit(function (event) {
-            event.preventDefault();
-            event.stopPropagation();
+<%--                    }--%>
+<%--                },--%>
+<%--                error: function (xhr, status, error) {--%>
+<%--                    if (xhr.status === 401) {--%>
+<%--                        // Handle login error--%>
+<%--                        const response = JSON.parse(xhr.responseText);--%>
+<%--                        $("#error").text(response); // Display error message--%>
+<%--                    } else {--%>
+<%--                        // Handle other errors--%>
+<%--                        $("#error").text("Error: " + error); // Display error message--%>
+<%--                    }--%>
+<%--                },--%>
+<%--            });--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
+<%--        $("#reset-password-token").submit(function (event) {--%>
+<%--            event.preventDefault();--%>
+<%--            event.stopPropagation();--%>
 
-            const emailInput = $("#email").val();
-            const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+<%--            const emailInput = $("#email").val();--%>
+<%--            const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;--%>
 
-            if (!emailPattern.test(emailInput)) {
-                $("#error_email").text(
-                    "Please enter a valid email address."
-                );
+<%--            if (!emailPattern.test(emailInput)) {--%>
+<%--                $("#error_email").text(--%>
+<%--                    "Please enter a valid email address."--%>
+<%--                );--%>
 
-                return;
-            }
-            $("#send-reset-link").css("opacity", "0");
-            $("#send-reset-link").css("pointer-events", "none");
+<%--                return;--%>
+<%--            }--%>
+<%--            $("#send-reset-link").css("opacity", "0");--%>
+<%--            $("#send-reset-link").css("pointer-events", "none");--%>
 
-            $("#loading_email").css("display", "block");
+<%--            $("#loading_email").css("display", "block");--%>
 
-            const formData = $(this).serialize();
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/SendTokenServlet",
-                data: formData,
-                dataType: "json",
-                success: function (response) {
-                    console.log("response", response);
-                    $("#loading_email").css("display", "none");
-                    $("#send-reset-link").css("opacity", "1");
-                    $("#send-reset-link").css("pointer-events", "auto");
-                    $("#email_reset").val(emailInput);
-                    $("#error_email").text("");
-                    $("#email").val("");
-                    formPopup.classList.remove("show-forgot-password");
-                    formPopup.classList.add("show-input-token");
-                    formPopup.classList.remove("show-reset-password");
-                },
-                error: function (xhr, status, error) {
-                    $("#loading_email").css("display", "none");
-                    $("#send-reset-link").css("opacity", "1");
-                    $("#send-reset-link").css("pointer-events", "auto");
-                    if (xhr.status === 400) {
-                        const response = JSON.parse(xhr.responseText);
-                        $("#error_email").text(response.error);
-                    } else {
-                        $("#error_email").text(
-                            "Server error: " + error
-                        );
-                    }
-                },
-            });
-        });
-    });
-</script>
+<%--            const formData = $(this).serialize();--%>
+<%--            $.ajax({--%>
+<%--                type: "POST",--%>
+<%--                url: "${pageContext.request.contextPath}/SendTokenServlet",--%>
+<%--                data: formData,--%>
+<%--                dataType: "json",--%>
+<%--                success: function (response) {--%>
+<%--                    console.log("response", response);--%>
+<%--                    $("#loading_email").css("display", "none");--%>
+<%--                    $("#send-reset-link").css("opacity", "1");--%>
+<%--                    $("#send-reset-link").css("pointer-events", "auto");--%>
+<%--                    $("#email_reset").val(emailInput);--%>
+<%--                    $("#error_email").text("");--%>
+<%--                    $("#email").val("");--%>
+<%--                    formPopup.classList.remove("show-forgot-password");--%>
+<%--                    formPopup.classList.add("show-input-token");--%>
+<%--                    formPopup.classList.remove("show-reset-password");--%>
+<%--                },--%>
+<%--                error: function (xhr, status, error) {--%>
+<%--                    $("#loading_email").css("display", "none");--%>
+<%--                    $("#send-reset-link").css("opacity", "1");--%>
+<%--                    $("#send-reset-link").css("pointer-events", "auto");--%>
+<%--                    if (xhr.status === 400) {--%>
+<%--                        const response = JSON.parse(xhr.responseText);--%>
+<%--                        $("#error_email").text(response.error);--%>
+<%--                    } else {--%>
+<%--                        $("#error_email").text(--%>
+<%--                            "Server error: " + error--%>
+<%--                        );--%>
+<%--                    }--%>
+<%--                },--%>
+<%--            });--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
 
-<script>
-    $(document).ready(function () {
-        $("#token-form").submit(function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            $("#verify-token").css("opacity", "0");
-            $("#loading_token").css("display", "block");
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
+<%--        $("#token-form").submit(function (event) {--%>
+<%--            event.preventDefault();--%>
+<%--            event.stopPropagation();--%>
+<%--            $("#verify-token").css("opacity", "0");--%>
+<%--            $("#loading_token").css("display", "block");--%>
 
-            const formData = $(this).serialize();
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/checktoken",
-                data: formData,
-                dataType: "json",
-                success: function (response) {
-                    console.log("response token input", response);
-                    $("#verify-token").css("opacity", "1");
-                    $("#loading_token").css("display", "none");
-                    if (response.tokenValid) {
-                        $("#token").val("");
-                        $("#error_token").text("");
-                        formPopup.classList.remove("show-input-token");
-                        formPopup.classList.add("show-reset-password");
-                        $("#email_to_change").val(response.email);
-                    } else {
-                        $("#error_token").text(
-                            "Token is invalid or expired."
-                        );
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $("#verify-token").css("opacity", "1");
-                    $("#loading_token").css("display", "none");
-                    $("#error_token").text("Server error: " + error);
-                },
-            });
-        });
-    });
+<%--            const formData = $(this).serialize();--%>
+<%--            $.ajax({--%>
+<%--                type: "POST",--%>
+<%--                url: "${pageContext.request.contextPath}/checktoken",--%>
+<%--                data: formData,--%>
+<%--                dataType: "json",--%>
+<%--                success: function (response) {--%>
+<%--                    console.log("response token input", response);--%>
+<%--                    $("#verify-token").css("opacity", "1");--%>
+<%--                    $("#loading_token").css("display", "none");--%>
+<%--                    if (response.tokenValid) {--%>
+<%--                        $("#token").val("");--%>
+<%--                        $("#error_token").text("");--%>
+<%--                        formPopup.classList.remove("show-input-token");--%>
+<%--                        formPopup.classList.add("show-reset-password");--%>
+<%--                        $("#email_to_change").val(response.email);--%>
+<%--                    } else {--%>
+<%--                        $("#error_token").text(--%>
+<%--                            "Token is invalid or expired."--%>
+<%--                        );--%>
+<%--                    }--%>
+<%--                },--%>
+<%--                error: function (xhr, status, error) {--%>
+<%--                    $("#verify-token").css("opacity", "1");--%>
+<%--                    $("#loading_token").css("display", "none");--%>
+<%--                    $("#error_token").text("Server error: " + error);--%>
+<%--                },--%>
+<%--            });--%>
+<%--        });--%>
+<%--    });--%>
 
-    $("#resend-token-link").click(function (event) {
-        event.preventDefault();
-        const email = $("#email_reset").val();
-        $("#verify-token").css("opacity", "0");
-        $("#loading_token").css("display", "block");
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/SendTokenServlet",
-            data: { email: email },
-            success: function (response) {
-                $("#token").val("");
-                $("#verify-token").css("opacity", "1");
-                $("#loading_token").css("display", "none");
-                $("#error_token").css("color", "green");
-                $("#error_token").text("Token resend successfully.");
-                console.log("response", response);
-            },
-            error: function (xhr, status, error) {
-                $("#verify-token").css("opacity", "1");
-                $("#loading_token").css("display", "none");
-                console.error("Error resending token:", error);
-                // Optionally show an error message
-            },
-        });
-    });
-</script>
+<%--    $("#resend-token-link").click(function (event) {--%>
+<%--        event.preventDefault();--%>
+<%--        const email = $("#email_reset").val();--%>
+<%--        $("#verify-token").css("opacity", "0");--%>
+<%--        $("#loading_token").css("display", "block");--%>
+<%--        $.ajax({--%>
+<%--            type: "POST",--%>
+<%--            url: "${pageContext.request.contextPath}/SendTokenServlet",--%>
+<%--            data: { email: email },--%>
+<%--            success: function (response) {--%>
+<%--                $("#token").val("");--%>
+<%--                $("#verify-token").css("opacity", "1");--%>
+<%--                $("#loading_token").css("display", "none");--%>
+<%--                $("#error_token").css("color", "green");--%>
+<%--                $("#error_token").text("Token resend successfully.");--%>
+<%--                console.log("response", response);--%>
+<%--            },--%>
+<%--            error: function (xhr, status, error) {--%>
+<%--                $("#verify-token").css("opacity", "1");--%>
+<%--                $("#loading_token").css("display", "none");--%>
+<%--                console.error("Error resending token:", error);--%>
+<%--                // Optionally show an error message--%>
+<%--            },--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
 
-<script>
-    $(document).ready(function () {
-        $("#new-password-form").submit(function (event) {
-            event.preventDefault();
-            event.stopPropagation();
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
+<%--        $("#new-password-form").submit(function (event) {--%>
+<%--            event.preventDefault();--%>
+<%--            event.stopPropagation();--%>
 
-            const newPassword = $("#new-password").val();
-            const confirmPassword = $("#confirm-password").val();
-            const emailToChange = $("#email_to_change").val();
+<%--            const newPassword = $("#new-password").val();--%>
+<%--            const confirmPassword = $("#confirm-password").val();--%>
+<%--            const emailToChange = $("#email_to_change").val();--%>
 
-            if (newPassword !== confirmPassword) {
-                $("#error_password").text(
-                    "The new password and confirmation password do not match."
-                );
-                return;
-            }
+<%--            if (newPassword !== confirmPassword) {--%>
+<%--                $("#error_password").text(--%>
+<%--                    "The new password and confirmation password do not match."--%>
+<%--                );--%>
+<%--                return;--%>
+<%--            }--%>
 
-            const formData = {
-                newPassword: newPassword,
-                email_to_change: emailToChange,
-            };
-            $("#reset-password").css("opacity", "0");
-            $("#reset-password").css("pointer-events", "none");
+<%--            const formData = {--%>
+<%--                newPassword: newPassword,--%>
+<%--                email_to_change: emailToChange,--%>
+<%--            };--%>
+<%--            $("#reset-password").css("opacity", "0");--%>
+<%--            $("#reset-password").css("pointer-events", "none");--%>
 
-            $("#loading_resetPassword").css("display", "block");
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/ChangePasswordServlet",
-                data: formData,
-                dataType: "json",
-                success: function (response) {
-                    if (response.success) {
-                        $("#new-password").val("");
-                        $("#confirm-password").val("");
-                        $("#email_to_change").val("");
+<%--            $("#loading_resetPassword").css("display", "block");--%>
+<%--            $.ajax({--%>
+<%--                type: "POST",--%>
+<%--                url: "${pageContext.request.contextPath}/ChangePasswordServlet",--%>
+<%--                data: formData,--%>
+<%--                dataType: "json",--%>
+<%--                success: function (response) {--%>
+<%--                    if (response.success) {--%>
+<%--                        $("#new-password").val("");--%>
+<%--                        $("#confirm-password").val("");--%>
+<%--                        $("#email_to_change").val("");--%>
 
-                        setTimeout(function () {
-                            $("#error_password").css("color", "green");
-                            $("#error_password").text(
-                                "Password change successfully"
-                            );
-                        }, 500);
-                        setTimeout(function () {
-                            formPopup.classList.remove(
-                                "show-reset-password"
-                            );
-                            $("#loading_resetPassword").css(
-                                "display",
-                                "none"
-                            );
-                            $("#reset-password").css("opacity", "1");
-                            $("#reset-password").css(
-                                "pointer-events",
-                                "auto"
-                            );
-                        }, 2000);
-                    } else {
-                        $("#error_password").text(
-                            response.error || "An unknown error."
-                        );
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $("#loading_resetPassword").css("display", "none");
-                    $("#reset-password").css("opacity", "1");
-                    $("#reset-password").css("pointer-events", "auto");
-                    $("#error_password").text("Server error: " + error);
-                },
-            });
-        });
-    });
-</script>
+<%--                        setTimeout(function () {--%>
+<%--                            $("#error_password").css("color", "green");--%>
+<%--                            $("#error_password").text(--%>
+<%--                                "Password change successfully"--%>
+<%--                            );--%>
+<%--                        }, 500);--%>
+<%--                        setTimeout(function () {--%>
+<%--                            formPopup.classList.remove(--%>
+<%--                                "show-reset-password"--%>
+<%--                            );--%>
+<%--                            $("#loading_resetPassword").css(--%>
+<%--                                "display",--%>
+<%--                                "none"--%>
+<%--                            );--%>
+<%--                            $("#reset-password").css("opacity", "1");--%>
+<%--                            $("#reset-password").css(--%>
+<%--                                "pointer-events",--%>
+<%--                                "auto"--%>
+<%--                            );--%>
+<%--                        }, 2000);--%>
+<%--                    } else {--%>
+<%--                        $("#error_password").text(--%>
+<%--                            response.error || "An unknown error."--%>
+<%--                        );--%>
+<%--                    }--%>
+<%--                },--%>
+<%--                error: function (xhr, status, error) {--%>
+<%--                    $("#loading_resetPassword").css("display", "none");--%>
+<%--                    $("#reset-password").css("opacity", "1");--%>
+<%--                    $("#reset-password").css("pointer-events", "auto");--%>
+<%--                    $("#error_password").text("Server error: " + error);--%>
+<%--                },--%>
+<%--            });--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
 </body>
 </html>
