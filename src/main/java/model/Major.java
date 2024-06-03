@@ -1,18 +1,10 @@
 package model;
 
-public class Course implements IEntity{
+public class Major implements IEntity{
+
     private int id;
-    private String code ;
+    private String code;
     private String detail;
-    private boolean status;
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 
     public int getId() {
         return id;
