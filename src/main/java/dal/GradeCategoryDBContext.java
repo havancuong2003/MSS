@@ -8,28 +8,28 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CategoryDBContext extends DBContext<Category> {
+public class GradeCategoryDBContext extends DBContext<Category> {
     public void add(Category category,int id) {
         try {
-            String sql = "insert into category(`grade_category`,`course_id`) values(?,?)";
+            String sql = "insert into grade_category(`name`,`course_id`) values(?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, category.getCategoryName());
             stm.setInt(2, id);
             stm.executeUpdate();
         } catch (SQLException e) {
-            Logger.getLogger(CategoryDBContext.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(GradeCategoryDBContext.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
     public ArrayList<Category> getAllCategory() {
         ArrayList<Category> categories = new ArrayList<>();
         try {
-            String sql = "select * from category";
+            String sql = "select * from grade_category";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Category category = new Category();
-                category.setCategoryName(rs.getString("grade_category"));
+                category.setCategoryName(rs.getString("name"));
                 category.setId(rs.getInt("id"));
                 Course c = new Course();
                 c.setId(rs.getInt("course_id"));
@@ -37,7 +37,7 @@ public class CategoryDBContext extends DBContext<Category> {
                 categories.add(category);
             }
         } catch (SQLException e) {
-            Logger.getLogger(CategoryDBContext.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(GradeCategoryDBContext.class.getName()).log(Level.SEVERE, null, e);
         }
         return categories;
     }

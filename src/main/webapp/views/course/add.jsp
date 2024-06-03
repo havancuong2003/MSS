@@ -66,6 +66,7 @@
             font-size: 16px;
         }
 
+
         .input-group {
             display: flex;
             align-items: center;
@@ -73,7 +74,12 @@
         }
 
         .input-group input[type="text"], .input-group input[type="number"] {
-            width: calc(50% - 10px);
+            width: calc(30% - 10px);
+            margin-bottom: 10px;
+        }
+
+        .input-group input[type="text"] {
+            width: calc(33% - 10px);
         }
 
         button {
@@ -107,7 +113,10 @@
             var newHr = document.createElement("hr");
             var newDiv = document.createElement("div");
             newDiv.id="assInput"+cateCount;
+            var cateDiv = document.createElement("div");
+            cateDiv.style = "display: block";
             // Tạo nhãn mới cho Category
+            var cateInputDiv = document.createElement("div");
             var newLabel = document.createElement("label");
             newLabel.innerText = "Name Category: ";
             newLabel.className="text";
@@ -115,32 +124,38 @@
             // Tạo một thẻ input mới cho Category
             var newInput = document.createElement("input");
             newInput.type = "text";
+            newInput.style = "width: 50%";
             newInput.name = "cate" + cateCount;  // Đặt tên cho thẻ input mới
             newInput.required="";
             newInput.autocomplete="off";
+            cateInputDiv.appendChild(newLabel);
+            cateInputDiv.appendChild(newInput);
             // Tạo nút bấm để thêm Assessment
+            var cateButtonDiv = document.createElement("div");
             var newButton = document.createElement("button");
             newButton.type = "button";
+            newButton.style= "margin-left: 5%";
             newButton.onclick = function () {
                 assCount++;
                 addAss(cateCount, assCount);
             };
             newButton.innerText = "Add Assessment";
-
+            cateInputDiv.appendChild(newButton);
+            cateDiv.appendChild(cateInputDiv);
+            // cateDiv.appendChild(cateButtonDiv);
             // Tạo một thẻ <br> để ngắt dòng sau mỗi input
             var br = document.createElement("br");
-
+            var newHr2 = document.createElement("hr");
             // Tạo một div container cho mỗi Category và các Assessment của nó
             var categoryContainer = document.createElement("div");
             categoryContainer.id = "category" + cateCount;
 
             // Thêm nhãn, thẻ input, nút bấm và thẻ <br> vào div container
             categoryContainer.appendChild(newHr);
-            categoryContainer.appendChild(newLabel);
-            categoryContainer.appendChild(newInput);
-            categoryContainer.appendChild(newButton);
+            categoryContainer.appendChild(cateDiv);
             categoryContainer.appendChild(br);
             categoryContainer.appendChild(newDiv);
+            categoryContainer.appendChild(newHr2);
             // Thêm div container vào div có id="cateInput"
             var container = document.getElementById("cateInput");
             container.appendChild(categoryContainer);
@@ -193,15 +208,15 @@
     <span>MyStudySpace</span>
 </header>
 <form action="addCourse" method="POST">
-    <p>Code: <input type="text" name="code"/></p>
-    <p>Detail: <input type="text" name="detail"/></p>
+    <p>Code: <input type="text" style="width: calc(95% - 20px); margin-left: 1%" name="code"/></p>
+    <p>Detail: <input type="text" style="width: calc(95% - 20px);" name="detail"/></p>
     <div id="cateInput" class="coolinput">
         <div id="assInput" class="coolinput">
 
         </div>
     </div>
     <br>
-    <button type="button" onclick="addCate()">Add Category</button><br><br>
+    <button type="button" onclick="addCate()">Add Category</button><br><br><br><br>
     <button type="submit" style="background-color: cornflowerblue">Add Course</button>
     ${requestScope.ms}
 </form>
