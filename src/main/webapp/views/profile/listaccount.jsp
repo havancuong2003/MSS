@@ -66,6 +66,12 @@
 <body>
 <div class="container">
     <h1>User List</h1>
+    <div>
+        <form action="list-account"  method="post">
+            <input type="text" name="searchName" value="${searchName}" />
+            <button>Search</button>
+        </form>
+    </div>
     <table class="user-table">
         <thead>
         <tr>
@@ -79,33 +85,42 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="user" items="${listaccount}">
-            <tr>
-                <td>${user.username}</td>
-                <td>${user.password}</td>
-                <td>${user.fullname}</td>
-                <td>${user.phone}</td>
-                <td>${user.email}</td>
-                <c:choose>
-                    <c:when test="${user.role_id == 1}">
-                        <td>Admin</td>
-                    </c:when>
-                    <c:when test="${user.role_id == 2}">
-                        <td>Staff</td>
-                    </c:when>
-                    <c:when test="${user.role_id == 3}">
-                        <td>Teacher</td>
-                    </c:when>
-                    <c:when test="${user.role_id == 4}">
-                        <td>Student</td>
-                    </c:when>
-                    <c:otherwise>
-                        <td>Not found!</td>
-                    </c:otherwise>
-                </c:choose>
-                <td>${user.gender ? "Male" : "Female"}</td>
-            </tr>
-        </c:forEach>
+        <c:choose>
+            <c:when test="${listaccount.size() == 0}">
+                <tr>
+                    <td colspan="7" style="color: red; text-align: center">No Data</td>
+                </tr>
+            </c:when>
+            <c:otherwise>
+                <c:forEach var="user" items="${listaccount}">
+                    <tr>
+                        <td>${user.username}</td>
+                        <td>${user.password}</td>
+                        <td>${user.fullname}</td>
+                        <td>${user.phone}</td>
+                        <td>${user.email}</td>
+                        <c:choose>
+                            <c:when test="${user.role_id == 1}">
+                                <td>Admin</td>
+                            </c:when>
+                            <c:when test="${user.role_id == 2}">
+                                <td>Staff</td>
+                            </c:when>
+                            <c:when test="${user.role_id == 3}">
+                                <td>Teacher</td>
+                            </c:when>
+                            <c:when test="${user.role_id == 4}">
+                                <td>Student</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>Not found!</td>
+                            </c:otherwise>
+                        </c:choose>
+                        <td>${user.gender ? "Male" : "Female"}</td>
+                    </tr>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
         </tbody>
     </table>
 </div>
