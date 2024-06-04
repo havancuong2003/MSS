@@ -29,11 +29,11 @@ public class Practice extends HttpServlet {
         questions.add(new Question(6, "What is the chemical symbol for water?", "H", "O", "W", "H2O", "D", "The chemical symbol for water is H2O."));
         questions.add(new Question(7, "Which planet is known as the Red Planet?", "Mercury", "Venus", "Mars", "Neptune", "C", "Mars is known as the Red Planet."));
         questions.add(new Question(8, "What is the main component of air?", "Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen", "C", "The main component of air is Nitrogen."));
-        questions.add(new Question(9, "Who wrote the play 'Romeo and Juliet'?", "William Shakespeare", "Jane Austen", "Charles Dickens", "Mark Twain", "A", "William Shakespeare wrote the play 'Romeo and Juliet'."));
-        questions.add(new Question(10, "What is the largest mammal in the world?", "Elephant", "Giraffe", "Blue whale", "Lion", "C", "The largest mammal in the world is the Blue whale."));
-        questions.add(new Question(11, "What is the hardest natural substance on Earth?", "Diamond", "Gold", "Platinum", "Silver", "A", "Diamond is the hardest natural substance on Earth."));
-        questions.add(new Question(12, "Which country is known as the Land of the Rising Sun?", "China", "South Korea", "Japan", "Vietnam", "C", "Japan is known as the Land of the Rising Sun."));
-        questions.add(new Question(13, "What is the chemical symbol for gold?", "Au", "Ag", "G", "H2O", "A", "The chemical symbol for gold is Au."));
+//        questions.add(new Question(9, "Who wrote the play 'Romeo and Juliet'?", "William Shakespeare", "Jane Austen", "Charles Dickens", "Mark Twain", "A", "William Shakespeare wrote the play 'Romeo and Juliet'."));
+//        questions.add(new Question(10, "What is the largest mammal in the world?", "Elephant", "Giraffe", "Blue whale", "Lion", "C", "The largest mammal in the world is the Blue whale."));
+//        questions.add(new Question(11, "What is the hardest natural substance on Earth?", "Diamond", "Gold", "Platinum", "Silver", "A", "Diamond is the hardest natural substance on Earth."));
+//        questions.add(new Question(12, "Which country is known as the Land of the Rising Sun?", "China", "South Korea", "Japan", "Vietnam", "C", "Japan is known as the Land of the Rising Sun."));
+//        questions.add(new Question(13, "What is the chemical symbol for gold?", "Au", "Ag", "G", "H2O", "A", "The chemical symbol for gold is Au."));
         for (int i = 0; i < questions.size(); i++ ){
             listanswer.add(0);
         }
