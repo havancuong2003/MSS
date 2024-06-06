@@ -45,8 +45,7 @@ public class GetTokenChangePassword extends HttpServlet {
         port = getServletContext().getInitParameter("port");
         user = dotenv.get("USER_EMAIL");
         pass = dotenv.get("USER_PASS");
-        System.out.println("user"+user);
-        System.out.println("passs"+pass);
+
 
         if (host == null || port == null || user == null || pass == null) {
             try {
@@ -107,12 +106,12 @@ public class GetTokenChangePassword extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             String jsonResponse = "{\"error\": \"Database error.\"}";
             out.print(jsonResponse);
-            e.printStackTrace(); // Thêm dòng này để log lỗi chi tiết
+            e.printStackTrace();
         } catch (MessagingException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             String jsonResponse = "{\"error\": \"Error sending email.\"}";
             out.print(jsonResponse);
-            e.printStackTrace(); // Thêm dòng ullnày để log lỗi chi tiết
+            e.printStackTrace();
         } finally {
             out.flush();
             out.close();
