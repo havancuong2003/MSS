@@ -22,9 +22,9 @@ public class GetToken extends HttpServlet {
         String token_input = req.getParameter("token");
         String email_reset = req.getParameter("email_reset");
         TokenDBContext tdbc = new TokenDBContext();
-        String token = tdbc.getToken(email_reset); // Lấy token từ cơ sở dữ liệu sử dụng email_reset
+        String token = tdbc.getToken(email_reset);
 
-        resp.setContentType("application/json"); // Thiết lập kiểu nội dung phản hồi là JSON
+        resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
         try (PrintWriter out = resp.getWriter()) {
@@ -33,7 +33,7 @@ public class GetToken extends HttpServlet {
             } else {
                 out.print("{\"tokenValid\": false}");
             }
-            out.flush(); // Đảm bảo dữ liệu được ghi ra ngay lập tức
+            out.flush();
         }
     }
 }
