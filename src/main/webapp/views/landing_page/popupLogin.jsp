@@ -39,6 +39,35 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="${pageContext.request.contextPath}/views/landing_page/landingPAGE/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/landing_page/landingPAGE/style.css" />
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+        .success-message {
+            color: green;
+            font-size: 0.9em;
+        }
+        .input-field {
+            position: relative;
+        }
+
+        .input-field i {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666; /* Màu của biểu tượng */
+        }
+
+        .input-field i:hover {
+            color: #333; /* Màu khi di chuột qua */
+        }
+
+    </style>
+<%--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">--%>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
 
@@ -61,6 +90,7 @@
             <h4 id="error" style="color: red"></h4>
 
             <form id="login-form">
+
                 <div class="input-field">
                     <input
                             type="text"
@@ -78,6 +108,7 @@
                             required
                     />
                     <label>Password</label>
+                    <i class="bi bi-eye-fill" id="toggle-password-login" onclick="togglePasswordVisibility('password-login')"></i>
                 </div>
                 <a
                         href="#"
@@ -165,6 +196,7 @@
             <h4 id="error_password" style="color: red"></h4>
 
             <form id="new-password-form">
+                <div id="error_new_password" class="error-message"></div>
                 <input
                         type="hidden"
                         id="email_to_change"
@@ -172,22 +204,15 @@
                         name="email_to_change"
                 />
                 <div class="input-field">
-                    <input
-                            type="password"
-                            id="new-password"
-                            name="new-password"
-                            required
-                    />
-                    <label>New Password</label>
+                    <input type="password" id="new-password" name="new-password" required/>
+                    <label for="new-password">New Password</label>
+                    <i class="bi bi-eye-fill" id="toggle-new-password" onclick="togglePasswordVisibility('new-password')"></i>
                 </div>
+                <div id="error_confirm_password" class="error-message"></div>
                 <div class="input-field">
-                    <input
-                            type="password"
-                            id="confirm-password"
-                            name="confirm-password"
-                            required
-                    />
-                    <label>Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required/>
+                    <label for="confirm-password">Confirm Password</label>
+                    <i class="bi bi-eye-fill" id="toggle-confirm-password" onclick="togglePasswordVisibility('confirm-password')"></i>
                 </div>
                 <div id="loading_email" style="display: none">
                     <jsp:include page="landingPAGE/load.jsp" />
@@ -449,78 +474,269 @@
         });
     });
 </script>
-
 <script>
-    $(document).ready(function () {
-        $("#new-password-form").submit(function (event) {
-            event.preventDefault();
-            event.stopPropagation();
+    function togglePasswordVisibility(inputId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById("toggle-" + inputId);
 
-            const newPassword = $("#new-password").val();
-            const confirmPassword = $("#confirm-password").val();
-            const emailToChange = $("#email_to_change").val();
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye-fill");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye-fill");
+        }
+    }
+</script>
+<script>
+    // function togglePasswordVisibility(inputId) {
+    //     const passwordInput = document.getElementById(inputId);
+    //     const checkbox = document.getElementById(`show-\${inputId}`);
+    //     if (checkbox.checked) {
+    //         passwordInput.type = 'text';
+    //     } else {
+    //         passwordInput.type = 'password';
+    //     }
+    // }
 
-            if (newPassword !== confirmPassword) {
-                $("#error_password").text(
-                    "The new password and confirmation password do not match."
-                );
-                return;
+    function checkNewPassword(newPassword) {
+        let errorMessages = [
+
+            { message: 'Thiếu ít nhất một chữ số.', resolved: false },
+            { message: 'Thiếu ít nhất một chữ cái thường.', resolved: false },
+            { message: 'Thiếu ít nhất một chữ cái hoa.', resolved: false },
+            { message: 'Thiếu ít nhất một ký tự đặc biệt.', resolved: false },
+            { message: 'Chứa khoảng trắng.', resolved: false },
+            { message: 'Độ dài phải nằm trong khoảng từ 8 đến 20 ký tự.', resolved: false }
+        ];
+
+        if (newPassword.trim() !== '') {
+            if (/[0-9]/.test(newPassword)) {
+                errorMessages[0].resolved = true; // Lỗi chữ số được giải quyết
             }
+            if (/[a-z]/.test(newPassword)) {
+                errorMessages[1].resolved = true; // Lỗi chữ cái thường được giải quyết
+            }
+            if (/[A-Z]/.test(newPassword)) {
+                errorMessages[2].resolved = true; // Lỗi chữ cái hoa được giải quyết
+            }
+            if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword)) {
+                errorMessages[3].resolved = true; // Lỗi ký tự đặc biệt được giải quyết
+            }
+            if (!/\s/.test(newPassword)) {
+                errorMessages[4].resolved = true; // Lỗi khoảng trắng được giải quyết
+            }
+            if (newPassword.length >= 8 && newPassword.length <= 20) {
+                errorMessages[5].resolved = true; // Lỗi độ dài được giải quyết
+            }
+        }
 
-            const formData = {
-                newPassword: newPassword,
-                email_to_change: emailToChange,
-            };
-            $("#reset-password").css("opacity", "0");
-            $("#reset-password").css("pointer-events", "none");
+        return errorMessages;
+    }
 
-            $("#loading_resetPassword").css("display", "block");
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/ChangePasswordServlet",
-                data: formData,
-                dataType: "json",
-                success: function (response) {
-                    if (response.success) {
-                        $("#new-password").val("");
-                        $("#confirm-password").val("");
-                        $("#email_to_change").val("");
+    function checkConfirmPassword(newPassword, confirmPassword) {
 
-                        setTimeout(function () {
-                            $("#error_password").css("color", "green");
+        return newPassword === confirmPassword;
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const newPasswordInput = document.getElementById('new-password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const errorNewPassword = document.getElementById('error_new_password');
+        const errorConfirmPassword = document.getElementById('error_confirm_password');
+        const resetPasswordButton = document.getElementById('reset-password');
+
+        const checkAllDone = () => {
+            const newErrorMessages = checkNewPassword(newPasswordInput.value);
+            const isConfirmPasswordValid = checkConfirmPassword(newPasswordInput.value, confirmPasswordInput.value);
+            return newErrorMessages.every(error => error.resolved) && isConfirmPasswordValid
+        }
+
+        function validateForm() {
+            const newPasswordValue = newPasswordInput.value;
+            const confirmPasswordValue = confirmPasswordInput.value;
+            const newErrorMessages = checkNewPassword(newPasswordValue);
+
+            errorNewPassword.innerHTML = newErrorMessages.map(error => error.resolved ? `<span class="success-message">\${error.message}</span>` : `<span class="error-message">\${error.message}</span>`).join('<br>');
+
+            const isNewPasswordValid = newErrorMessages.every(error => error.resolved);
+            const isConfirmPasswordValid = checkConfirmPassword(newPasswordValue, confirmPasswordValue);
+
+            errorConfirmPassword.innerHTML = isNewPasswordValid && isConfirmPasswordValid ? '' : 'Mật khẩu xác nhận không khớp.';
+            errorConfirmPassword.className = isNewPasswordValid && isConfirmPasswordValid ? 'success-message' : 'error-message';
+        }
+
+        resetPasswordButton.addEventListener('click', function () {
+            validateForm();
+        });
+
+        newPasswordInput.addEventListener('input', validateForm);
+        confirmPasswordInput.addEventListener('input', validateForm);
+
+        // Kích hoạt validate ngay từ khi tải trang
+        validateForm();
+
+
+            $(document).ready(function () {
+            $("#new-password-form").submit(function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const newPassword = $("#new-password").val();
+                const confirmPassword = $("#confirm-password").val();
+                const emailToChange = $("#email_to_change").val();
+
+                // if (newPassword !== confirmPassword) {
+                //     $("#error_password").text(
+                //         "The new password and confirmation password do not match."
+                //     );
+                //     return;
+                // }
+                const check = checkAllDone();
+                console.log(check);
+                if (!check) {
+                    $("#error_password").text("Please check your password");
+                    return;
+                }
+
+                const formData = {
+                    newPassword: newPassword,
+                    email_to_change: emailToChange,
+                };
+                $("#reset-password").css("opacity", "0");
+                $("#reset-password").css("pointer-events", "none");
+
+                $("#loading_resetPassword").css("display", "block");
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/ChangePasswordServlet",
+                    data: formData,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            $("#new-password").val("");
+                            $("#confirm-password").val("");
+                            $("#email_to_change").val("");
+
+                            setTimeout(function () {
+                                $("#error_password").css("color", "green");
+                                $("#error_password").text(
+                                    "Password change successfully"
+                                );
+                            }, 500);
+                            setTimeout(function () {
+                                formPopup.classList.remove(
+                                    "show-reset-password"
+                                );
+                                $("#loading_resetPassword").css(
+                                    "display",
+                                    "none"
+                                );
+                                $("#reset-password").css("opacity", "1");
+                                $("#reset-password").css(
+                                    "pointer-events",
+                                    "auto"
+                                );
+                            }, 2000);
+                        } else {
                             $("#error_password").text(
-                                "Password change successfully"
+                                response.error || "An unknown error."
                             );
-                        }, 500);
-                        setTimeout(function () {
-                            formPopup.classList.remove(
-                                "show-reset-password"
-                            );
-                            $("#loading_resetPassword").css(
-                                "display",
-                                "none"
-                            );
-                            $("#reset-password").css("opacity", "1");
-                            $("#reset-password").css(
-                                "pointer-events",
-                                "auto"
-                            );
-                        }, 2000);
-                    } else {
-                        $("#error_password").text(
-                            response.error || "An unknown error."
-                        );
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $("#loading_resetPassword").css("display", "none");
-                    $("#reset-password").css("opacity", "1");
-                    $("#reset-password").css("pointer-events", "auto");
-                    $("#error_password").text("Server error: " + error);
-                },
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        $("#loading_resetPassword").css("display", "none");
+                        $("#reset-password").css("opacity", "1");
+                        $("#reset-password").css("pointer-events", "auto");
+                        $("#error_password").text("Server error: " + error);
+                    },
+                });
             });
         });
-    });
+
+});
 </script>
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
+<%--        $("#new-password-form").submit(function (event) {--%>
+<%--            event.preventDefault();--%>
+<%--            event.stopPropagation();--%>
+
+<%--            const newPassword = $("#new-password").val();--%>
+<%--            const confirmPassword = $("#confirm-password").val();--%>
+<%--            const emailToChange = $("#email_to_change").val();--%>
+
+<%--            // if (newPassword !== confirmPassword) {--%>
+<%--            //     $("#error_password").text(--%>
+<%--            //         "The new password and confirmation password do not match."--%>
+<%--            //     );--%>
+<%--            //     return;--%>
+<%--            // }--%>
+<%--            const check = checkAllDone();--%>
+<%--            console.log(check);--%>
+<%--            if (!check) {--%>
+<%--                $("#error_password").text("Please check your password");--%>
+<%--                return;--%>
+<%--            }--%>
+
+<%--            const formData = {--%>
+<%--                newPassword: newPassword,--%>
+<%--                email_to_change: emailToChange,--%>
+<%--            };--%>
+<%--            $("#reset-password").css("opacity", "0");--%>
+<%--            $("#reset-password").css("pointer-events", "none");--%>
+
+<%--            $("#loading_resetPassword").css("display", "block");--%>
+<%--            $.ajax({--%>
+<%--                type: "POST",--%>
+<%--                url: "${pageContext.request.contextPath}/ChangePasswordServlet",--%>
+<%--                data: formData,--%>
+<%--                dataType: "json",--%>
+<%--                success: function (response) {--%>
+<%--                    if (response.success) {--%>
+<%--                        $("#new-password").val("");--%>
+<%--                        $("#confirm-password").val("");--%>
+<%--                        $("#email_to_change").val("");--%>
+
+<%--                        setTimeout(function () {--%>
+<%--                            $("#error_password").css("color", "green");--%>
+<%--                            $("#error_password").text(--%>
+<%--                                "Password change successfully"--%>
+<%--                            );--%>
+<%--                        }, 500);--%>
+<%--                        setTimeout(function () {--%>
+<%--                            formPopup.classList.remove(--%>
+<%--                                "show-reset-password"--%>
+<%--                            );--%>
+<%--                            $("#loading_resetPassword").css(--%>
+<%--                                "display",--%>
+<%--                                "none"--%>
+<%--                            );--%>
+<%--                            $("#reset-password").css("opacity", "1");--%>
+<%--                            $("#reset-password").css(--%>
+<%--                                "pointer-events",--%>
+<%--                                "auto"--%>
+<%--                            );--%>
+<%--                        }, 2000);--%>
+<%--                    } else {--%>
+<%--                        $("#error_password").text(--%>
+<%--                            response.error || "An unknown error."--%>
+<%--                        );--%>
+<%--                    }--%>
+<%--                },--%>
+<%--                error: function (xhr, status, error) {--%>
+<%--                    $("#loading_resetPassword").css("display", "none");--%>
+<%--                    $("#reset-password").css("opacity", "1");--%>
+<%--                    $("#reset-password").css("pointer-events", "auto");--%>
+<%--                    $("#error_password").text("Server error: " + error);--%>
+<%--                },--%>
+<%--            });--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
+
 </body>
 </html>
