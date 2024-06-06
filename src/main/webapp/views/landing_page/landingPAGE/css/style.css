@@ -4132,9 +4132,12 @@ input[type="button"].btn-block {
 .navbar-nav {
   display: flex;
   flex-direction: column;
-  padding-left: 20%;
+  padding-left: 0;
   margin-bottom: 0;
   list-style: none;
+}
+.nav-header{
+  padding-left: 20%;
 }
 
 .navbar-nav .nav-link {
@@ -9763,7 +9766,7 @@ h6,
 }
 
 .navbar-light .navbar-nav .nav-link {
-  padding: 20px 15px;
+  padding: 20px 40px;
   color: #44425A;
   font-size: 18px;
   font-weight: 500;

@@ -25,7 +25,7 @@ public class TokenCleanupListener implements ServletContextListener {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }, 0, 1, TimeUnit.MINUTES); // Xóa token sau mỗi phút
+        }, 0, 1, TimeUnit.SECONDS); // Xóa token sau mỗi giây
     }
 
     @Override

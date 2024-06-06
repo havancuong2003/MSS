@@ -39,6 +39,40 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="${pageContext.request.contextPath}/views/landing_page/landingPAGE/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/landing_page/landingPAGE/style.css" />
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+        .success-message {
+            color: green;
+            font-size: 0.9em;
+        }
+        .input-field {
+            position: relative;
+        }
+
+        .input-field i {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+
+        .input-field i:hover {
+            color: #333;
+        }
+        .disabled-link {
+            pointer-events: none;
+            cursor: not-allowed;
+            color: red;
+        }
+
+    </style>
+<%--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">--%>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
 
@@ -61,6 +95,7 @@
             <h4 id="error" style="color: red"></h4>
 
             <form id="login-form">
+
                 <div class="input-field">
                     <input
                             type="text"
@@ -78,6 +113,7 @@
                             required
                     />
                     <label>Password</label>
+                    <i class="bi bi-eye-fill" id="toggle-password-login" onclick="togglePasswordVisibility('password-login')"></i>
                 </div>
                 <a
                         href="#"
@@ -106,7 +142,7 @@
                     />
                     <label>Email</label>
                 </div>
-                <div id="loading_email" style="display: none">
+                <div id="loading_resetPassword" style="display: none">
                     <jsp:include page="landingPAGE/load.jsp" />
                 </div>
 
@@ -127,6 +163,8 @@
         <div class="form-content">
             <h2>INPUT TOKEN</h2>
             <h4 id="error_token" style="color: red"></h4>
+<%--            <div id="countdown"></div>--%>
+            <input type="hidden" id="countdown-seconds"  />
             <form id="token-form">
                 <div class="input-field">
                     <input
@@ -143,7 +181,7 @@
                     />
                     <label>Token</label>
                 </div>
-                <div id="loading_email" style="display: none">
+                <div id="loading_email_send_token" style="display: none">
                     <jsp:include page="landingPAGE/load.jsp" />
                 </div>
                 <button type="submit" id="verify-token">
@@ -152,7 +190,7 @@
             </form>
             <div class="bottom-link">
                 Didn't receive the token?
-                <a href="#" id="resend-token-link">Resend Token</a>
+                <a href="#" id="resend-token-link">Resend Token</a><span style="color: #FF6600" id="countdown"></span>
             </div>
         </div>
     </div>
@@ -165,6 +203,7 @@
             <h4 id="error_password" style="color: red"></h4>
 
             <form id="new-password-form">
+                <div id="error_new_password" class="error-message"></div>
                 <input
                         type="hidden"
                         id="email_to_change"
@@ -172,24 +211,17 @@
                         name="email_to_change"
                 />
                 <div class="input-field">
-                    <input
-                            type="password"
-                            id="new-password"
-                            name="new-password"
-                            required
-                    />
-                    <label>New Password</label>
+                    <input type="password" id="new-password" name="new-password" required/>
+                    <label for="new-password">New Password</label>
+                    <i class="bi bi-eye-fill" id="toggle-new-password" onclick="togglePasswordVisibility('new-password')"></i>
                 </div>
+                <div id="error_confirm_password" class="error-message"></div>
                 <div class="input-field">
-                    <input
-                            type="password"
-                            id="confirm-password"
-                            name="confirm-password"
-                            required
-                    />
-                    <label>Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required/>
+                    <label for="confirm-password">Confirm Password</label>
+                    <i class="bi bi-eye-fill" id="toggle-confirm-password" onclick="togglePasswordVisibility('confirm-password')"></i>
                 </div>
-                <div id="loading_email" style="display: none">
+                <div id="loading_email_new_password" style="display: none">
                     <jsp:include page="landingPAGE/load.jsp" />
                 </div>
                 <button type="submit" id="reset-password">
@@ -211,17 +243,14 @@
 <script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/lib/easing/easing.min.js"></script>
 <script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/lib/owlcarousel/owl.carousel.min.js"></script>
 
-<%--<!-- Contact Javascript File -->--%>
-<%--<script src="mail/jqBootstrapValidation.min.js"></script>--%>
-<%--<script src="mail/contact.js"></script>--%>
+
 
 <!-- Template Javascript -->
 <script src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/js/main.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     const navbarMenu = document.querySelector(".navbar .links");
-    // const hamburgerBtn = document.querySelector(".hamburger-btn");
-    //     const hideMenuBtn = navbarMenu.querySelector(".close-btn");
+
     const showPopupBtn = document.querySelector(".login-btn");
     const formPopup = document.querySelector(".form-popup");
     const hidePopupBtn = formPopup.querySelector(".close-btn");
@@ -234,15 +263,7 @@
         ".reset-password .bottom-link a"
     );
 
-    // Show mobile menu
-    // hamburgerBtn.addEventListener("click", () => {
-    //     navbarMenu.classList.toggle("show-menu");
-    // });
 
-    // Hide mobile menu
-    //    hideMenuBtn.addEventListener("click", () => hamburgerBtn.click());
-
-    // Show login popup
     showPopupBtn.addEventListener("click", () => {
         document.body.classList.toggle("show-popup");
     });
@@ -327,6 +348,7 @@
         });
     });
 </script>
+
 <script>
     $(document).ready(function () {
         $("#reset-password-token").submit(function (event) {
@@ -346,7 +368,7 @@
             $("#send-reset-link").css("opacity", "0");
             $("#send-reset-link").css("pointer-events", "none");
 
-            $("#loading_email").css("display", "block");
+            $("#loading_resetPassword").css("display", "block");
 
             const formData = $(this).serialize();
             $.ajax({
@@ -356,18 +378,55 @@
                 dataType: "json",
                 success: function (response) {
                     console.log("response", response);
-                    $("#loading_email").css("display", "none");
+                    $("#loading_resetPassword").css("display", "none");
                     $("#send-reset-link").css("opacity", "1");
                     $("#send-reset-link").css("pointer-events", "auto");
                     $("#email_reset").val(emailInput);
                     $("#error_email").text("");
                     $("#email").val("");
+
+                    $('#resend-token-link').css("display", "none");
                     formPopup.classList.remove("show-forgot-password");
                     formPopup.classList.add("show-input-token");
                     formPopup.classList.remove("show-reset-password");
+
+
+                    $('#countdown-seconds').val(response.expirationTime);
+                    // Thời gian hết hạn (ở đây là một timestamp dưới dạng số nguyên, tính bằng milliseconds)
+                    const expirationTime = $('#countdown-seconds').val(); // Thay bằng giá trị thực tế từ database
+                    console.log("expirationTime", expirationTime);
+                    console.log("count",$('#countdown-seconds').val());
+                    // Chuyển đổi expirationTime từ milliseconds sang giây
+                    // Kiểm tra nếu expirationTime là null, ẩn phần đếm ngược
+                    if (expirationTime === null) {
+                        document.getElementById('countdown').innerText = 'NUll roi';
+                    } else {
+                        // Nếu không phải null, tiến hành đếm ngược như bình thường
+                        const expirationTimeInSeconds = Math.floor(expirationTime / 1000);
+                        let countdownInterval;
+
+                        function updateCountdown() {
+                            const currentTime = Math.floor(Date.now() / 1000);
+                            const timeRemaining = expirationTimeInSeconds - currentTime;
+
+                            if (timeRemaining <= 0) {
+                                $('#resend-token-link').css("display", "block");
+                                $('#countdown').css("display", "none");
+                                clearInterval(countdownInterval);
+                            } else {
+                                const hours = Math.floor(timeRemaining / 3600);
+                                const minutes = Math.floor((timeRemaining % 3600) / 60);
+                                const seconds = timeRemaining % 60;
+                                document.getElementById('countdown').innerText = `Remaining time for the next token deposit: \${hours} h \${minutes} m \${seconds} s`;
+                            }
+                        }
+
+                        countdownInterval = setInterval(updateCountdown, 1000);
+                        updateCountdown();
+                    }
                 },
                 error: function (xhr, status, error) {
-                    $("#loading_email").css("display", "none");
+                    $("#loading_resetPassword").css("display", "none");
                     $("#send-reset-link").css("opacity", "1");
                     $("#send-reset-link").css("pointer-events", "auto");
                     if (xhr.status === 400) {
@@ -426,6 +485,7 @@
     $("#resend-token-link").click(function (event) {
         event.preventDefault();
         const email = $("#email_reset").val();
+        $("#loading_email_send_token").css("display", "block");
         $("#verify-token").css("opacity", "0");
         $("#loading_token").css("display", "block");
         $.ajax({
@@ -433,94 +493,232 @@
             url: "${pageContext.request.contextPath}/SendTokenServlet",
             data: { email: email },
             success: function (response) {
+                $("#loading_email_send_token").css("display", "none");
                 $("#token").val("");
                 $("#verify-token").css("opacity", "1");
                 $("#loading_token").css("display", "none");
                 $("#error_token").css("color", "green");
                 $("#error_token").text("Token resend successfully.");
                 console.log("response", response);
+
+                $('#countdown').css("display", "block");
+
+                $('#resend-token-link').css("display", "none");
+                $('#countdown-seconds').val(response.expirationTime);
+                // Thời gian hết hạn (ở đây là một timestamp dưới dạng số nguyên, tính bằng milliseconds)
+                const expirationTime = $('#countdown-seconds').val(); // Thay bằng giá trị thực tế từ database
+                console.log("expirationTime", expirationTime);
+                console.log("count",$('#countdown-seconds').val());
+                // Chuyển đổi expirationTime từ milliseconds sang giây
+                // Kiểm tra nếu expirationTime là null, ẩn phần đếm ngược
+                if (expirationTime === null) {
+                    document.getElementById('countdown').innerText = 'NUll roi';
+                } else {
+                    // Nếu không phải null, tiến hành đếm ngược như bình thường
+                    const expirationTimeInSeconds = Math.floor(expirationTime / 1000);
+                    let countdownInterval;
+
+                    function updateCountdown() {
+                        const currentTime = Math.floor(Date.now() / 1000);
+                        const timeRemaining = expirationTimeInSeconds - currentTime;
+
+                        if (timeRemaining <= 0) {
+                            $('#resend-token-link').css("display", "block");
+                            $('#countdown').css("display", "none");
+                            clearInterval(countdownInterval);
+                        } else {
+                            const hours = Math.floor(timeRemaining / 3600);
+                            const minutes = Math.floor((timeRemaining % 3600) / 60);
+                            const seconds = timeRemaining % 60;
+                            document.getElementById('countdown').innerText = `Remaining time for the next token deposit: \${hours} h \${minutes} m \${seconds} s`;
+                        }
+                    }
+
+                    countdownInterval = setInterval(updateCountdown, 1000);
+                    updateCountdown();
+                }
             },
             error: function (xhr, status, error) {
                 $("#verify-token").css("opacity", "1");
                 $("#loading_token").css("display", "none");
+                $("#loading_email_send_token").css("display", "none");
                 console.error("Error resending token:", error);
                 // Optionally show an error message
             },
         });
     });
 </script>
-
 <script>
-    $(document).ready(function () {
-        $("#new-password-form").submit(function (event) {
-            event.preventDefault();
-            event.stopPropagation();
+    function togglePasswordVisibility(inputId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById("toggle-" + inputId);
 
-            const newPassword = $("#new-password").val();
-            const confirmPassword = $("#confirm-password").val();
-            const emailToChange = $("#email_to_change").val();
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye-fill");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye-fill");
+        }
+    }
+</script>
+<script>
 
-            if (newPassword !== confirmPassword) {
-                $("#error_password").text(
-                    "The new password and confirmation password do not match."
-                );
-                return;
+
+    function checkNewPassword(newPassword) {
+        let errorMessages = [
+
+            { message: 'Missing at least one digit.', resolved: false },
+            { message: 'Missing at least one lower case letter.', resolved: false },
+            { message: 'Missing at least one capital letter.', resolved: false },
+            { message: 'Missing at least one special character.', resolved: false },
+            { message: 'Contains whitespace.', resolved: false },
+            { message: 'The length must be between 8 and 20 characters.', resolved: false }
+        ];
+
+        if (newPassword.trim() !== '') {
+            if (/[0-9]/.test(newPassword)) {
+                errorMessages[0].resolved = true;
             }
+            if (/[a-z]/.test(newPassword)) {
+                errorMessages[1].resolved = true;
+            }
+            if (/[A-Z]/.test(newPassword)) {
+                errorMessages[2].resolved = true;
+            }
+            if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword)) {
+                errorMessages[3].resolved = true;
+            }
+            if (!/\s/.test(newPassword)) {
+                errorMessages[4].resolved = true;
+            }
+            if (newPassword.length >= 8 && newPassword.length <= 20) {
+                errorMessages[5].resolved = true;
+            }
+        }
 
-            const formData = {
-                newPassword: newPassword,
-                email_to_change: emailToChange,
-            };
-            $("#reset-password").css("opacity", "0");
-            $("#reset-password").css("pointer-events", "none");
+        return errorMessages;
+    }
 
-            $("#loading_resetPassword").css("display", "block");
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/ChangePasswordServlet",
-                data: formData,
-                dataType: "json",
-                success: function (response) {
-                    if (response.success) {
-                        $("#new-password").val("");
-                        $("#confirm-password").val("");
-                        $("#email_to_change").val("");
+    function checkConfirmPassword(newPassword, confirmPassword) {
 
-                        setTimeout(function () {
-                            $("#error_password").css("color", "green");
+        return newPassword === confirmPassword;
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const newPasswordInput = document.getElementById('new-password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const errorNewPassword = document.getElementById('error_new_password');
+        const errorConfirmPassword = document.getElementById('error_confirm_password');
+        const resetPasswordButton = document.getElementById('reset-password');
+
+        const checkAllDone = () => {
+            const newErrorMessages = checkNewPassword(newPasswordInput.value);
+            const isConfirmPasswordValid = checkConfirmPassword(newPasswordInput.value, confirmPasswordInput.value);
+            return newErrorMessages.every(error => error.resolved) && isConfirmPasswordValid
+        }
+
+        function validateForm() {
+            const newPasswordValue = newPasswordInput.value;
+            const confirmPasswordValue = confirmPasswordInput.value;
+            const newErrorMessages = checkNewPassword(newPasswordValue);
+
+            errorNewPassword.innerHTML = newErrorMessages.map(error => error.resolved ? `<span class="success-message">\${error.message}</span>` : `<span class="error-message">\${error.message}</span>`).join('<br>');
+
+            const isNewPasswordValid = newErrorMessages.every(error => error.resolved);
+            const isConfirmPasswordValid = checkConfirmPassword(newPasswordValue, confirmPasswordValue);
+
+            errorConfirmPassword.innerHTML = isNewPasswordValid && isConfirmPasswordValid ? '' : 'Password do not match';
+            errorConfirmPassword.className = isNewPasswordValid && isConfirmPasswordValid ? 'success-message' : 'error-message';
+        }
+
+        resetPasswordButton.addEventListener('click', function () {
+            validateForm();
+        });
+
+        newPasswordInput.addEventListener('input', validateForm);
+        confirmPasswordInput.addEventListener('input', validateForm);
+
+        // Kích hoạt validate ngay từ khi tải trang
+        validateForm();
+
+
+            $(document).ready(function () {
+            $("#new-password-form").submit(function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const newPassword = $("#new-password").val();
+                const confirmPassword = $("#confirm-password").val();
+                const emailToChange = $("#email_to_change").val();
+
+
+                const check = checkAllDone();
+                console.log(check);
+                if (!check) {
+                    $("#error_password").text("Please check your password");
+                    return;
+                }
+
+                const formData = {
+                    newPassword: newPassword,
+                    email_to_change: emailToChange,
+                };
+                $("#reset-password").css("opacity", "0");
+                $("#reset-password").css("pointer-events", "none");
+
+                $("#loading_email_new_password").css("display", "block");
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/ChangePasswordServlet",
+                    data: formData,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            $("#new-password").val("");
+                            $("#confirm-password").val("");
+                            $("#email_to_change").val("");
+
+                            setTimeout(function () {
+                                $("#error_password").css("color", "green");
+                                $("#error_password").text(
+                                    "Password change successfully"
+                                );
+                            }, 500);
+                            setTimeout(function () {
+                                formPopup.classList.remove(
+                                    "show-reset-password"
+                                );
+                                $("#loading_email_new_password").css(
+                                    "display",
+                                    "none"
+                                );
+                                $("#reset-password").css("opacity", "1");
+                                $("#reset-password").css(
+                                    "pointer-events",
+                                    "auto"
+                                );
+                            }, 2000);
+                        } else {
                             $("#error_password").text(
-                                "Password change successfully"
+                                response.error || "An unknown error."
                             );
-                        }, 500);
-                        setTimeout(function () {
-                            formPopup.classList.remove(
-                                "show-reset-password"
-                            );
-                            $("#loading_resetPassword").css(
-                                "display",
-                                "none"
-                            );
-                            $("#reset-password").css("opacity", "1");
-                            $("#reset-password").css(
-                                "pointer-events",
-                                "auto"
-                            );
-                        }, 2000);
-                    } else {
-                        $("#error_password").text(
-                            response.error || "An unknown error."
-                        );
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $("#loading_resetPassword").css("display", "none");
-                    $("#reset-password").css("opacity", "1");
-                    $("#reset-password").css("pointer-events", "auto");
-                    $("#error_password").text("Server error: " + error);
-                },
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        $("#loading_resetPassword").css("display", "none");
+                        $("#reset-password").css("opacity", "1");
+                        $("#reset-password").css("pointer-events", "auto");
+                        $("#error_password").text("Server error: " + error);
+                    },
+                });
             });
         });
-    });
+
+});
 </script>
 </body>
 </html>
