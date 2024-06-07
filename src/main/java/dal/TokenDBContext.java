@@ -85,16 +85,21 @@ public class TokenDBContext extends DBContext<Token> {
         return result;
 
     }
-    public void updateTokenForEmailExits(String email , String token, long expirationTime){
-        String sql ="UPDATE password_reset_tokens SET token = ?, expiration_time= ? WHERE (email = ?)";
+    public long getExpirationTimeForEmail(String email){
+        long expirationTime = 0;
+        String sql ="select expiration_time from password_reset_tokens  WHERE (email = ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, token);
-            statement.setLong(2, expirationTime);
-            statement.setString(3, email);
-            statement.executeUpdate();
+
+            statement.setString(1, email);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getLong("expiration_time");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return expirationTime;
     }
 }
 

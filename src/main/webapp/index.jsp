@@ -155,7 +155,7 @@
                         class="collapse navbar-collapse justify-content-between"
                         id="navbarCollapse"
                 >
-                    <div class="navbar-nav py-0">
+                    <div class="navbar-nav nav-header py-0">
                         <a
                                 href="${pageContext.request.contextPath}/mystudyspace"
                                 class="nav-item nav-link active"
@@ -359,7 +359,7 @@
                         </h4>
                         <img
                                 class="img-fluid mx-auto mb-3"
-                                src="${pageContext.request.contextPath}/views/landing_page/landingPAGE/img/testimonial-1.jpg"
+                                src="views/landing_page/landingPAGE/img/testimonial-1.jpg"
                                 alt=""
                         />
                         <h5 class="m-0">Malcolm X</h5>
