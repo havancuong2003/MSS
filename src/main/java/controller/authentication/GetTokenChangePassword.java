@@ -45,8 +45,7 @@ public class GetTokenChangePassword extends HttpServlet {
         port = getServletContext().getInitParameter("port");
         user = dotenv.get("USER_EMAIL");
         pass = dotenv.get("USER_PASS");
-        System.out.println("user"+user);
-        System.out.println("passs"+pass);
+
 
         if (host == null || port == null || user == null || pass == null) {
             try {
@@ -67,7 +66,6 @@ public class GetTokenChangePassword extends HttpServlet {
     }
 
 
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
@@ -75,44 +73,47 @@ public class GetTokenChangePassword extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         String token = UUID.randomUUID().toString();
-        long expirationTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(3); // 3m
+        long expirationTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1); // 3m
 
 //        response.setContentType("text/html;charset=UTF-8");
 
         AccountDBContext adbc = new AccountDBContext();
         ArrayList<String> emails = adbc.getEmail();
 
-        if(!emails.contains(email)){
+        if (!emails.contains(email)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             String jsonResponse = "{\"error\": \"Email not exist in system.\"}";
             out.print(jsonResponse);
             return;
         }
 
-
+String jsonResponse = null;
         try {
-            ArrayList<String>  t= tokenDBContext.getEmailExistToken();
-            if(t.contains(email)){
-                tokenDBContext.updateTokenForEmailExits(email,token,System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(3));
+            ArrayList<String> t = tokenDBContext.getEmailExistToken();
+            if (t.contains(email)) {
+                expirationTime = tokenDBContext.getExpirationTimeForEmail(email);
+                jsonResponse = "{\"message\": \"Token exist.\", \"expirationTime\": " + expirationTime + "}";
 
-            }else {
+
+            } else {
                 tokenDBContext.saveToken(email, token, expirationTime);
+                EmailUtility.sendEmail(host, port, user, pass, email, "Token to change password", "Your token here: " + token + " The token will expire after 1 minute");
+                 jsonResponse = "{\"message\": \"Token has been sent to your email.\", \"expirationTime\": " + expirationTime + "}";
+
             }
 
-            EmailUtility.sendEmail(host, port, user, pass, email, "Token to change password", "Your token here: " + token + " The token will expire after 1 minute");
 
-            String jsonResponse = "{\"message\": \"Token has been sent to your email.\"}";
             out.print(jsonResponse);
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            String jsonResponse = "{\"error\": \"Database error.\"}";
+             jsonResponse = "{\"error\": \"Database error.\"}";
             out.print(jsonResponse);
-            e.printStackTrace(); // Thêm dòng này để log lỗi chi tiết
+            e.printStackTrace();
         } catch (MessagingException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            String jsonResponse = "{\"error\": \"Error sending email.\"}";
+             jsonResponse = "{\"error\": \"Error sending email.\"}";
             out.print(jsonResponse);
-            e.printStackTrace(); // Thêm dòng ullnày để log lỗi chi tiết
+            e.printStackTrace();
         } finally {
             out.flush();
             out.close();
