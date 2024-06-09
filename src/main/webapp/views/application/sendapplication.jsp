@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: FPT
@@ -126,15 +127,18 @@
         <p>Bộ phận xử lý đơn sẽ trả lời đơn/email của sinh viên</p>
         <p>Sinh viên cần cân nhắc trước khi gửi đơn/email với cùng một nội dung để nhận được trả lời/giải quyết nhanh nhất theo quy định.</p>
     </div>
-    <form action="application" method="post">
+    <form action="send-application" method="post">
         <table>
             <tr>
                 <td><label for="application">Application type:</label></td>
                 <td>
                     <select name="applicationCategory" id="application">
                         <option value="0">Choose Application Type (Chọn loại đơn)</option>
+<%--                        <c:forEach var="o" items="${listApplicationCategory}">--%>
+<%--                            <option value="${o.category_id}">${o.description}</option>--%>
+<%--                        </c:forEach>--%>
                         <c:forEach var="o" items="${listApplicationCategory}">
-                            <option value="${o.category_id}">${o.description}</option>
+                            <option value="${o.category_id}" ${category_id == o.category_id ? 'selected' : ''}>${o.description}</option>
                         </c:forEach>
                     </select>
                 </td>
@@ -150,6 +154,11 @@
             <tr>
                 <td colspan="2" style="text-align: center;">
                     <input type="submit" value="Submit">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: right;">
+                    <a href="#" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #004080; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
                 </td>
             </tr>
         </table>
