@@ -192,11 +192,11 @@ html {
     width: 150px;
 }
 
-.gray {
-    background-color: rgba(
-            107,
-            184,
-            119,
-            0.342
-    ); /* hoặc bất kỳ thuộc tính CSS nào bạn muốn */
+/*.gray {*/
+/*    background-color: rgba(*/
+/*            107,*/
+/*            184,*/
+/*            119,*/
+/*            0.342*/
+/*    ); !* hoặc bất kỳ thuộc tính CSS nào bạn muốn *!*/
 }
