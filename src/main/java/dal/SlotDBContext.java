@@ -1,13 +1,10 @@
 package dal;
 
-import model.Course;
 import model.TimeSlot;
 
 import java.sql.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SlotDBContext extends DBContext<TimeSlot> {
     @Override
@@ -29,6 +26,7 @@ public class SlotDBContext extends DBContext<TimeSlot> {
         }
         return slots;
     }
+
     @Override
     public void insert(TimeSlot entity) {
 

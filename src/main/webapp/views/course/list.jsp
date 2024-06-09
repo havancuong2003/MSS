@@ -109,38 +109,33 @@
 
 <form >
     <div class="form-row">
-        <div class="title-search">Enter code:</div>
-        <input id="searchCode" oninput="SearchItem()"  type="text" name="searchCode" placeholder="Search by code or detail...">
-
+        <div class="title-search">Course you want</div>
+        <input id="searchCode" oninput="SearchItem()"  type="text" name="searchCode" placeholder="Search...">
+        <button type="submit">Submit</button>
     </div>
 </form>
 
 <h2>Course List</h2>
 <table border="1">
     <thead>
-    <tr>
-        <th>ID</th>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Credit</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
+        <tr>
+            <th>ID</th>
+            <th>Code</th>
+            <th>Name of Code</th>
+            <th>Details</th>
+        </tr>
     </thead>
-    <tbody id="TableBodyData">
+    <tbody id="TableBodyData"
     <c:forEach var="course" items="${courses}">
         <tr>
             <td>${course.id}</td>
             <td>${course.code}</td>
             <td>${course.detail}</td>
-            <td>${course.description}</td>
-            <td>${course.credit}</td>
-            <td>${course.status}</td>
-            <td><a href="viewCourse?id=${course.id}">View Details</a></td>
+            <td><a href="viewCourse?id=${course.id}">ClickHere</a></td>
         </tr>
     </c:forEach>
     </tbody>
+
 </table>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -158,8 +153,8 @@ function SearchItem(){
             let bodyTable = $("#TableBodyData")
             bodyTable.html("");
             let htmlValue = ''
-            listCourse.forEach((c) => {
-                htmlValue += "<tr><td>" + c.id + "</td><td>" + c.code + "</td><td>" + c.detail + "</td><td>" + c.description + "</td><td>" + c.credit + "</td><td>" + c.status + "</td><td><a href='viewCourse?id=" + c.id + "'>ClickHere</a></td></tr>";
+            listCourse.forEach((c)=>{
+                htmlValue +="<tr><td>"+c.id+"</td><td>"+c.code+"</td><td>"+c.detail+"</td><td><a href='viewCourse?id="+c.id+"'>ClickHere</a></td></tr>"
             })
             bodyTable.html(htmlValue);
         },
