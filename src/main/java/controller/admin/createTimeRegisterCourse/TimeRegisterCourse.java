@@ -1,7 +1,7 @@
 package controller.admin.createTimeRegisterCourse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dal.adminDAO.TimePeriodsDBContext;
+import dal.TimePeriodsDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

@@ -1,10 +1,9 @@
-package util.createGroupHelper;
+package util;
 
 import dal.CourseDBContext;
 import dal.GroupDBContext;
 import model.Course;
 import model.Student;
-import util.GetCurrentTerm;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

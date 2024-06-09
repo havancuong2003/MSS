@@ -1,6 +1,5 @@
-package dal.adminDAO;
+package dal;
 
-import dal.DBContext;
 import model.TimePeriods;
 
 import java.sql.*;
