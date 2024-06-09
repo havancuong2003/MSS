@@ -32,6 +32,29 @@ public class CourseDBContext extends DBContext<Course> {
         return courses;
     }
 
+    public ArrayList<Course> searchCourse(String txtSearch) {
+        ArrayList<Course> courses = new ArrayList<>();
+
+        try {
+            String sql = "SELECT c.id, c.code,c.detail, c.credit FROM course c  WHERE (c.code like ? or c.detail like ?) limit 3";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%"+txtSearch+"%");
+            stm.setString(2, "%"+txtSearch+"%");
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setCode(rs.getString("code"));
+                course.setDetail(rs.getString("detail"));
+                course.setCredit(rs.getInt("credit"));
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return courses;
+    }
+
     public ArrayList<Course> getCourseList() {
         ArrayList<Course> courses = new ArrayList<>();
         try {
@@ -53,10 +76,13 @@ public class CourseDBContext extends DBContext<Course> {
 
     public void addCourse(Course course) {
         try {
-            String sql = "insert into course (`code`,`detail`) values(?,?)";
+            String sql = "insert into course (`code`,`detail`,`status`,`description`,`credit`) values(?,?,?,?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, course.getCode());
             stm.setString(2, course.getDetail());
+            stm.setBoolean(3, course.isStatus());
+            stm.setString(4, course.getDescription());
+            stm.setInt(5, course.getCredit());
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);

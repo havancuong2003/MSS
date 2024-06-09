@@ -1,10 +1,41 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Course implements IEntity{
     private int id;
     private String code ;
     private String detail;
     private boolean status;
+    private String description;
+    private int credit;
+    private ArrayList<Integer> preCourseID;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
+
+
+    public ArrayList<Integer> getPreCourseID() {
+        return preCourseID;
+    }
+
+    public void setPreCourseID(ArrayList<Integer> preCourseID) {
+        this.preCourseID = preCourseID;
+    }
 
     public boolean isStatus() {
         return status;

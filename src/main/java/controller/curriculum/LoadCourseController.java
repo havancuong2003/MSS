@@ -24,7 +24,7 @@ public class LoadCourseController extends HttpServlet {
 //        String mid = req.getParameter("mid");
         CourseDBContext cdb = new CourseDBContext();
         PrintWriter out = resp.getWriter();
-        ArrayList<Course> courses = cdb.searchByCode(codeCourse);
+        ArrayList<Course> courses = cdb.searchCourse(codeCourse);
         Gson gson = new Gson();
         String JsonString = gson.toJson(courses);
         resp.getWriter().write(JsonString);
