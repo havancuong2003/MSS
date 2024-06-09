@@ -1,19 +1,16 @@
 package model;
 
-public class Course implements IEntity{
+public class Course implements IEntity {
     private int id;
-    private String code ;
+    private String code;
     private String detail;
+    private String description;
+    private int credit;
     private boolean status;
 
-    public boolean isStatus() {
-        return status;
-    }
+    public Course() {}
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -36,5 +33,29 @@ public class Course implements IEntity{
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

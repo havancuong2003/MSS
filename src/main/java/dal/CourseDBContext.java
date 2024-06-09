@@ -12,18 +12,19 @@ public class CourseDBContext extends DBContext<Course> {
 
     public ArrayList<Course> searchByCode(String txtSearch) {
         ArrayList<Course> courses = new ArrayList<>();
-
         try {
-            String sql = "SELECT * FROM course WHERE code like ?";
+            String sql = "SELECT id, code, detail, description, credit, status FROM course WHERE code LIKE ?";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, "%"+txtSearch+"%");
+            stm.setString(1, "%" + txtSearch + "%");
             ResultSet rs = stm.executeQuery();
-
             while (rs.next()) {
                 Course course = new Course();
                 course.setId(rs.getInt("id"));
                 course.setCode(rs.getString("code"));
                 course.setDetail(rs.getString("detail"));
+                course.setDescription(rs.getString("description"));
+                course.setCredit(rs.getInt("credit"));
+                course.setStatus(rs.getBoolean("status"));
                 courses.add(course);
             }
         } catch (SQLException e) {
@@ -35,7 +36,7 @@ public class CourseDBContext extends DBContext<Course> {
     public ArrayList<Course> getCourseList() {
         ArrayList<Course> courses = new ArrayList<>();
         try {
-            String sql = "select id,code,detail from course";
+            String sql = "SELECT id, code, detail, description, credit, status FROM course";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -43,6 +44,9 @@ public class CourseDBContext extends DBContext<Course> {
                 course.setId(rs.getInt("id"));
                 course.setCode(rs.getString("code"));
                 course.setDetail(rs.getString("detail"));
+                course.setDescription(rs.getString("description"));
+                course.setCredit(rs.getInt("credit"));
+                course.setStatus(rs.getBoolean("status"));
                 courses.add(course);
             }
         } catch (SQLException e) {
