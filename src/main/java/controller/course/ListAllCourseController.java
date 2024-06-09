@@ -26,8 +26,8 @@ public class ListAllCourseController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json"); // config cho giá trị xử lý controller
+        resp.setCharacterEncoding("UTF-8"); // config text type
         CourseDBContext dbContext = new CourseDBContext();
         String searchCode = req.getParameter("searchCode");
         ArrayList<Course> courses = dbContext.searchByCode(searchCode);
