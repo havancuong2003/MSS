@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Answer;
 import model.QuestionDetail;
 
 import java.io.IOException;
@@ -32,15 +33,16 @@ public class Practice extends HttpServlet {
 //        questionDetail.add(new QuestionDetail(11, "What is the hardest natural substance on Earth?", "Diamond", "Gold", "Platinum", "Silver", "A", "Diamond is the hardest natural substance on Earth."));
 //        questionDetail.add(new QuestionDetail(12, "Which country is known as the Land of the Rising Sun?", "China", "South Korea", "Japan", "Vietnam", "C", "Japan is known as the Land of the Rising Sun."));
 //        questionDetail.add(new QuestionDetail(13, "What is the chemical symbol for gold?", "Au", "Ag", "G", "H2O", "A", "The chemical symbol for gold is Au."));
+
         PracticeDBContext context = new PracticeDBContext();
         questionDetail = context.getAllQuestionDetailByExerciseIdAndCourseId(1, 1);
         for (int i = 0; i < questionDetail.size(); i++ ){
             listanswer.add(0);
         }
-        if(questionDetail.size() > 13){
-            questionDetail = new ArrayList<>(questionDetail.subList(0, 13));
-            listanswer = new ArrayList<>(listanswer.subList(0, 13));
-        }
+//        if(questionDetail.size() > 13){
+//            questionDetail = new ArrayList<>(questionDetail.subList(0, 13));
+//            listanswer = new ArrayList<>(listanswer.subList(0, 13));
+//        }
         req.setAttribute("choosenAnswer", listanswer.get(indexquestion));
         req.setAttribute("question", questionDetail.get(indexquestion));
         req.setAttribute("size", questionDetail.size());
@@ -57,6 +59,8 @@ public class Practice extends HttpServlet {
             int result = Result();
             request.setAttribute("size", questionDetail.size());
             request.setAttribute("result", result);
+            listanswer.clear();
+            indexquestion = 0;
             request.getRequestDispatcher("result").forward(request, response);
         }
         if (option.equals("next")) {
@@ -86,27 +90,14 @@ public class Practice extends HttpServlet {
     public static int Result(){
         int result  = 0;
         int answer = 0;
-        for (int i = 0; i < questionDetail.size(); i++){
-            answer = 0;
-            switch (questionDetail.get(i).getAnswerTrue()){
-                case "A":
-                    answer = 1;
-                    break;
-                case "B":
-                    answer = 2;
-                    break;
-                case "C":
-                    answer = 3;
-                    break;
-                case "D":
-                    answer = 4;
-                    break;
-            }
-            if(listanswer.get(i) == answer){
-                result += 1;
+        for (int i = 0; i < questionDetail.size(); i++) {
+            int actual = listanswer.get(i);
+            for(int j = 0; j < questionDetail.get(i).getAnswers().size(); j++){
+                if(questionDetail.get(i).getAnswers().get(j).getStatus() == 1 && (j + 1) == actual){
+                    result = result + 1;
+                }
             }
         }
-
         return result;
     }
 

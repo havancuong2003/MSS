@@ -89,22 +89,13 @@ public class PracticeDBContext  extends DBContext<Account>{
             questionDetail.setQuestionId(question.getQuestionid());
             questionDetail.setQuestionDetail(question.getQuestion());
             ArrayList<Answer> answerlist = getAllAnswerByQuestionId(question.getQuestionid());
-            questionDetail.setAnswerA(answerlist.get(0).getAnswer());
-            questionDetail.setAnswerB(answerlist.get(1).getAnswer());
-            questionDetail.setAnswerC(answerlist.get(2).getAnswer());
-            questionDetail.setAnswerD(answerlist.get(3).getAnswer());
-            if(answerlist.get(0).getStatus() == 1){
-                questionDetail.setAnswerTrue("A");
-            } else if(answerlist.get(1).getStatus() == 1){
-                questionDetail.setAnswerTrue("B");
-            } else if(answerlist.get(2).getStatus() == 1){
-                questionDetail.setAnswerTrue("C");
-            } else if(answerlist.get(3).getStatus() == 1){
-                questionDetail.setAnswerTrue("D");
-            } else {
-                questionDetail.setAnswerTrue("None");
+            if(answerlist.size()> 3){
+                questionDetail.setAnswers(answerlist);
+                questionDetailList.add(questionDetail);
+            }else {
+                continue;
             }
-            questionDetailList.add(questionDetail);
+
         }
 
         return questionDetailList;

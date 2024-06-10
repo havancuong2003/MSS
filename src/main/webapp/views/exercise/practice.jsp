@@ -41,12 +41,12 @@
             </div>
             <div class="options">
                 <div>
-                    <button class="option-btn ${choosenAnswer == 1 ? 'gray' : ''}" data-answer="1">A. ${question.answerA}</button>
-                    <button class="option-btn ${choosenAnswer == 3 ? 'gray' : ''}" data-answer="3">C. ${question.answerC}</button>
+                    <button class="option-btn ${choosenAnswer == 1 ? 'gray' : ''}" data-answer="1">A. ${question.getAnswers().get(0).getAnswer()}</button>
+                    <button class="option-btn ${choosenAnswer == 3 ? 'gray' : ''}" data-answer="3">C. ${question.getAnswers().get(2).getAnswer()}</button>
                 </div>
                 <div>
-                    <button class="option-btn ${choosenAnswer == 2 ? 'gray' : ''}" data-answer="2">B. ${question.answerB}</button>
-                    <button class="option-btn ${choosenAnswer == 4 ? 'gray' : ''}" data-answer="4">D. ${question.answerD}</button>
+                    <button class="option-btn ${choosenAnswer == 2 ? 'gray' : ''}" data-answer="2">B. ${question.getAnswers().get(1).getAnswer()}</button>
+                    <button class="option-btn ${choosenAnswer == 4 ? 'gray' : ''}" data-answer="4">D. ${question.getAnswers().get(3).getAnswer()}</button>
                 </div>
             </div>
         </div>

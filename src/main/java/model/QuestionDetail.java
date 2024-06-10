@@ -1,40 +1,20 @@
 package model;
 
+import java.util.ArrayList;
+
 public class QuestionDetail {
     private int questionId;
     private String questionDetail;
-    private String answerA;
-    private String answerB;
-    private String answerC;
-    private String answerD;
-    private String answerTrue;
-    private String explain;
+    private ArrayList<Answer> answers;
+    private String type;
 
     public QuestionDetail() { }
 
-    public QuestionDetail(int questionId, String questionDetail, String answerA, String answerB, String answerC, String answerD, String answerTrue, String explain) {
+    public QuestionDetail(int questionId, String questionDetail, ArrayList<Answer> answers, String type) {
         this.questionId = questionId;
         this.questionDetail = questionDetail;
-        this.answerA = answerA;
-        this.answerB = answerB;
-        this.answerC = answerC;
-        this.answerD = answerD;
-        this.answerTrue = answerTrue;
-        this.explain = explain;
-    }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "questionId=" + questionId +
-                ", questionDetail='" + questionDetail + '\'' +
-                ", answerA='" + answerA + '\'' +
-                ", answerB='" + answerB + '\'' +
-                ", answerC='" + answerC + '\'' +
-                ", answerD='" + answerD + '\'' +
-                ", answerTrue='" + answerTrue + '\'' +
-                ", explain='" + explain + '\'' +
-                '}';
+        this.answers = answers;
+        this.type = type;
     }
 
     public int getQuestionId() {
@@ -53,51 +33,19 @@ public class QuestionDetail {
         this.questionDetail = questionDetail;
     }
 
-    public String getAnswerA() {
-        return answerA;
+    public ArrayList<Answer> getAnswers() {
+        return answers;
     }
 
-    public void setAnswerA(String answerA) {
-        this.answerA = answerA;
+    public void setAnswers(ArrayList<Answer> answers) {
+        this.answers = answers;
     }
 
-    public String getAnswerB() {
-        return answerB;
+    public String getType() {
+        return type;
     }
 
-    public void setAnswerB(String answerB) {
-        this.answerB = answerB;
-    }
-
-    public String getAnswerC() {
-        return answerC;
-    }
-
-    public void setAnswerC(String answerC) {
-        this.answerC = answerC;
-    }
-
-    public String getAnswerD() {
-        return answerD;
-    }
-
-    public void setAnswerD(String answerD) {
-        this.answerD = answerD;
-    }
-
-    public String getAnswerTrue() {
-        return answerTrue;
-    }
-
-    public void setAnswerTrue(String answerTrue) {
-        this.answerTrue = answerTrue;
-    }
-
-    public String getExplain() {
-        return explain;
-    }
-
-    public void setExplain(String explain) {
-        this.explain = explain;
+    public void setType(String type) {
+        this.type = type;
     }
 }
