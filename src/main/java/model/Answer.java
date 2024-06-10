@@ -4,12 +4,12 @@ public class Answer {
     private int answerid;
     private String answer;
     private int status;
-    private Question question;
+    private QuestionDetail question;
 
     public Answer() {
     }
 
-    public Answer(int answerid, Question question, int status, String answer) {
+    public Answer(int answerid, QuestionDetail question, int status, String answer) {
         this.answerid = answerid;
         this.question = question;
         this.status = status;
@@ -28,7 +28,7 @@ public class Answer {
         return status;
     }
 
-    public Question getQuestion() {
+    public QuestionDetail getQuestion() {
         return question;
     }
 
@@ -44,7 +44,7 @@ public class Answer {
         this.status = status;
     }
 
-    public void setQuestion(Question question) {
+    public void setQuestion(QuestionDetail question) {
         this.question = question;
     }
 }
