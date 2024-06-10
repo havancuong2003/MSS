@@ -159,22 +159,22 @@
 
 <!--pop-up logout-->
 <!-- co the cop mau cho pop-up khac -->
-<div class="modal fade" id="log-out" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Are you sure to finish?</h1>
-            </div>
-            <div class="modal-body" style="display: flex; justify-content: space-between;">
-                <button type="button" class="btn btn-danger" class="btn-close" data-bs-dismiss="modal">No</button>
-                <a href="result.html" class="btn btn-primary" style="text-decoration: none; color:white">
-                    Yes
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+<%--<div class="modal fade" id="log-out" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"--%>
+<%--     aria-labelledby="staticBackdropLabel" aria-hidden="true">--%>
+<%--    <div class="modal-dialog modal-dialog-centered">--%>
+<%--        <div class="modal-content">--%>
+<%--            <div class="modal-header">--%>
+<%--                <h1 class="modal-title fs-5">Are you sure to finish?</h1>--%>
+<%--            </div>--%>
+<%--            <div class="modal-body" style="display: flex; justify-content: space-between;">--%>
+<%--                <button type="button" class="btn btn-danger" class="btn-close" data-bs-dismiss="modal">No</button>--%>
+<%--                <a href="result.html" class="btn btn-primary" style="text-decoration: none; color:white">--%>
+<%--                    Yes--%>
+<%--                </a>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 <script>
     //check overflow
