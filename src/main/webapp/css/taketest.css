@@ -1,0 +1,198 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgba(192, 192, 192, 0.37);
+}
+
+.containers {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgba(192, 192, 192, 0.37);
+}
+
+.headers {
+    background-color: #9fb4e2;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 70px;
+}
+
+.home-icon{
+    background-color: white;
+    padding: 10px;
+    font-size: 17px;
+    color: black;
+    text-decoration: none;
+}
+
+.home-icon img {
+    height: 24px;
+    margin-right: 10px;
+}
+
+.username {
+    margin-left: auto;
+}
+
+.contents {
+    display: flex;
+    flex-grow: 1;
+}
+
+.question-section {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid rgb(223, 4, 4);
+    background-color: #f5f5f5;
+}
+
+.question-area {
+
+    flex: 1;
+    display: flex;
+    font-size: 24px;
+    position: relative;
+}
+
+.question-area p{
+    word-wrap: break-word;
+    max-width: 35vw;
+    max-height: 450px;
+    margin: 20px 0px 20px 20px;
+    background-color: rgba(255, 255, 255, 0.753);
+    display: inline-block;
+    padding: 10px;
+}
+
+.question-area img{
+    margin: 20px 30px 0px 20px;
+    height: 300px;
+    float: right;
+}
+
+
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    height: 30vh;
+    width: 100%;
+
+}
+
+.option-btn:hover{
+    border: 2px solid grey;
+}
+
+.options div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.option-btn {
+    flex: 1 1 50%;
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.986);
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 18px;
+    width: 30vw;
+    border-radius: 10px;
+
+}
+
+/* ben phai */
+
+.sidebars {
+    flex: 1;
+    /* display: flex;
+    flex-direction: column; */
+    padding: 20px;
+    background-color: #a6accc63;
+    margin: 40px 40px 60px 20px;
+    position: fixed;
+    right: 0;
+}
+
+.sidebarclone{
+    width: 30%;
+}
+
+.questions-list {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    overflow-y: scroll;
+    height: 500px;
+    display: grid;
+    border-radius: 5px;
+    grid-template-columns: auto auto auto auto auto;
+    grid-template-rows: 80px 80px 80px 80px;
+}
+
+.list-item {
+    padding: 10px;
+    background-color: #cedff0;
+    margin: 5px 0;
+    cursor: pointer;
+    height: 70px;
+    width: 70px;
+    text-align: center;
+    align-items: center;
+}
+
+.list-item.active {
+    background-color: red;
+    color: white;
+}
+
+.navigation-buttons {
+    margin-top: 20px;
+}
+
+.navigation-buttons-up{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-btn, .finish-btn {
+    width: 120px;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: rgb(131, 193, 255);
+    border: none;
+    color: rgb(19, 10, 10);
+    font-weight: 600;
+    font-size: 17px;
+    border-radius: 5px;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.finish-btn {
+    background-color: #0073ee;
+    font-size: 18px;
+    color: white;
+    bottom: 20px;
+    border-radius: 15px;
+}
+
+.navigation-buttons-down{
+    display: flex;
+    justify-content: right;
+}
+
+.gray {
+    background-color: rgba(107, 184, 119, 0.342); /* hoặc bất kỳ thuộc tính CSS nào bạn muốn */
+}
