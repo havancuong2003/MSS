@@ -4,23 +4,23 @@ package model;
 import java.util.Date;
 
 
-public class TimePeriods implements IEntity{
+public class TimePeriods implements IEntity {
     private int id;
     private Date startChangeClass;
     private Date endChangeClass;
     private Date startRegister;
     private Date endRegister;
     private String status;
-    private String description;
+    private Semester semester;
 
-    public TimePeriods(int id, Date startChangeClass, Date endChangeClass, Date startRegister, Date endRegister, String status, String description) {
+    public TimePeriods(int id, Date startChangeClass, Date endChangeClass, Date startRegister, Date endRegister, String status, Semester semester) {
         this.id = id;
         this.startChangeClass = startChangeClass;
         this.endChangeClass = endChangeClass;
         this.startRegister = startRegister;
         this.endRegister = endRegister;
         this.status = status;
-        this.description = description;
+        this.semester = semester;
     }
 
     public TimePeriods() {
@@ -74,11 +74,11 @@ public class TimePeriods implements IEntity{
         this.status = status;
     }
 
-    public String getDescription() {
-        return description;
+    public Semester getSemester() {
+        return semester;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSemester(Semester semester) {
+        this.semester = semester;
     }
 }

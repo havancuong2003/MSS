@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CreateGroupHelper {
-    private static String currentTerm = GetCurrentTerm.currentTerm;
+    private static int currentTerm = GetCurrentTerm.currentTerm;
     private static int totalStudentPerGroup = 3;
 
     public static void main(String[] args) throws SQLException {
