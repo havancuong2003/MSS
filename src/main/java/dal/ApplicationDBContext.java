@@ -173,11 +173,11 @@ public class ApplicationDBContext extends DBContext<Application> {
                 "JOIN account acc ON s.acc_id = acc.account_id " +
                 "JOIN status_category sc ON a.status_id = sc.status_id " +
                 "ORDER BY CASE WHEN a.status_id = 1 THEN 0 ELSE 1 END , a.application_id DESC " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, (index-1)*5);
+            statement.setInt(1, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Application a = new Application();
@@ -243,13 +243,13 @@ public class ApplicationDBContext extends DBContext<Application> {
                 "JOIN account acc ON s.acc_id = acc.account_id " +
                 "JOIN status_category sc ON a.status_id = sc.status_id " +
                 "WHERE acc.username LIKE ? " +
-                "ORDER BY a.application_id " +
-                "LIMIT 5 OFFSET ?";
+                "ORDER BY CASE WHEN a.status_id = 1 THEN 0 ELSE 1 END , a.application_id DESC " +
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, "%" + username + "%");
-            statement.setInt(2, (index-1)*5);
+            statement.setInt(2, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Application a = new Application();
@@ -316,12 +316,12 @@ public class ApplicationDBContext extends DBContext<Application> {
                 "JOIN status_category sc ON a.status_id = sc.status_id " +
                 "WHERE a.category_id = ? " +
                 "ORDER BY a.application_id " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, category_id);
-            statement.setInt(2, (index-1)*5);
+            statement.setInt(2, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Application a = new Application();
@@ -389,12 +389,12 @@ public class ApplicationDBContext extends DBContext<Application> {
                 "JOIN status_category sc ON a.status_id = sc.status_id " +
                 "WHERE a.status_id = ? " +
                 "ORDER BY a.application_id " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, status);
-            statement.setInt(2, (index-1)*5);
+            statement.setInt(2, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Application a = new Application();
@@ -463,13 +463,13 @@ public class ApplicationDBContext extends DBContext<Application> {
                 "JOIN status_category sc ON a.status_id = sc.status_id " +
                 "WHERE a.status_id = ? AND a.category_id = ? " +
                 "ORDER BY a.application_id " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, status);
             statement.setString(2,category_id);
-            statement.setInt(3, (index-1)*5);
+            statement.setInt(3, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Application a = new Application();

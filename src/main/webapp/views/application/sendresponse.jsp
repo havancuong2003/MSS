@@ -1,15 +1,15 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   Created by IntelliJ IDEA.
   User: FPT
-  Date: 6/5/2024
-  Time: 2:32 PM
+  Date: 6/9/2024
+  Time: 9:49 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Send application</title>
+    <title>Title</title>
     <style>
 
         body {
@@ -120,25 +120,33 @@
 </head>
 <body>
 <div class="form-container">
-    <h2>Application Form</h2>
+    <c:if test="${status == '2'}">
+        <h2>Response Form</h2>
+    </c:if>
+    <c:if test="${status == '3'}">
+        <h2>Reject Form</h2>
+    </c:if>
     <div class="note">
-        <p><strong>Send an application to Academic Administration dept (Gửi đơn cho Phòng quản lý đào tạo)</strong></p>
-        <p><strong>Lưu ý: V/v gửi đơn/email đến các phòng ban</strong></p>
-        <p>Bộ phận xử lý đơn sẽ trả lời đơn/email của sinh viên</p>
-        <p>Sinh viên cần cân nhắc trước khi gửi đơn/email với cùng một nội dung để nhận được trả lời/giải quyết nhanh nhất theo quy định.</p>
+        <c:if test="${status == '2'}">
+            <p><strong>Send an response to Student (Gửi phản hồi cho sinh viên )</strong></p>
+        </c:if>
+        <c:if test="${status == '3'}">
+            <p><strong>Send an reason reject to Student (Gửi phản hồi cho sinh viên )</strong></p>
+        </c:if>
     </div>
-    <form action="send-application" method="post">
+    <form action="send-response" method="post" onsubmit="disableSubmitButton()">
+        <input type="hidden" value="${email}" name="email">
+        <input type="hidden" value="${application_id}" name="application_id">
+        <input type="hidden" value="${status}" name="status">
+        <input type="hidden" value="${reject}" name="reject">
         <table>
             <tr>
                 <td><label for="application">Application type:</label></td>
                 <td>
                     <select name="applicationCategory" id="application">
                         <option value="0">Choose Application Type (Chọn loại đơn)</option>
-<%--                        <c:forEach var="o" items="${listApplicationCategory}">--%>
-<%--                            <option value="${o.category_id}">${o.description}</option>--%>
-<%--                        </c:forEach>--%>
                         <c:forEach var="o" items="${listApplicationCategory}">
-                            <option value="${o.category_id}" ${category_id == o.category_id ? 'selected' : ''}>${o.description}</option>
+                            <option value="${o.category_id}" ${category_id == o.category_id ? "selected" : ""}>${o.description}</option>
                         </c:forEach>
                     </select>
                 </td>
@@ -147,23 +155,36 @@
                 <td><label for="reason">Reason (Lý do):</label></td>
                 <td><textarea style="resize: none" name="reason" id="reason" rows="4" cols="50" required> ${reason}</textarea></td>
             </tr>
+            <tr>
+                <td><label>Response (Phản hồi):</label></td>
+                <td><textarea style="resize: none" name="response" id="response" rows="4" cols="50">${response}</textarea></td>
+            </tr>
             <td colspan="2">
-                <p class="mess_wrong">${mess_wrong}</p>
-                <p class="mess_success">${mess_success}</p>
+                <p style="color: green; text-align: center">${mess_response}</p>
+                <c:if test="${mess_response_check != null }">
+                    <p style="color: red">${mess_response_check}</p>
+                </c:if>
             </td>
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <input type="submit" value="Submit">
+                    <input type="submit"  id="submit-button" value="Submit">
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style="text-align: right;">
-                    <a href="#" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #004080; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
+                    <a href="manage-application" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #004080; color: white; text-decoration: none; border-radius: 4px;">Back Manage Application</a>
                 </td>
             </tr>
         </table>
     </form>
 </div>
 
+<script>
+    function disableSubmitButton() {
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.value = 'Processing...';
+    }
+</script>
 </body>
 </html>

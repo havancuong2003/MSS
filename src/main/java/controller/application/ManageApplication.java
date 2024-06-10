@@ -32,31 +32,31 @@ public class ManageApplication extends HttpServlet {
         int index = Integer.parseInt(indexPage);
         if(status == null && applicationCategory == null){
             count = dao.getTotalApplication();
-            endPage = count/5;
+            endPage = count/10;
             listApplication = dao.pagingApplication(index);
             status = "0";
             applicationCategory = "0";
         } else {
             if(status.equals("0") && !applicationCategory.equals("0")){
                 count = dao.getTotalApplicationByCategory(applicationCategory);
-                endPage = count/5;
+                endPage = count/10;
                 listApplication = dao.pagingApplicationByCategory(index, applicationCategory);
             } else if(!status.equals("0") && applicationCategory.equals("0")){
                 count = dao.getTotalApplicationByStatus(status);
-                endPage = count/5;
+                endPage = count/10;
                 listApplication = dao.pagingApplicationByStatus(index,status);
             }  else if(!status.equals("0") && !applicationCategory.equals("0")){
                 count = dao.getTotalApplicationByStatusAndCategory(status,applicationCategory);
-                endPage = count/5;
+                endPage = count/10;
                 listApplication = dao.pagingApplicationByStatusAndCategory(index,status,applicationCategory);
             } else {
 //                request.setAttribute("mess", "You must choose status or application type");
                 count = dao.getTotalApplication();
-                endPage = count/5;
+                endPage = count/10;
                 listApplication = dao.pagingApplication(index);
             }
         }
-        if(count % 5 != 0){
+        if(count % 10 != 0){
             endPage++;
         }
 

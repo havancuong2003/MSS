@@ -32,9 +32,9 @@ public class SearchApplication extends HttpServlet {
         if(searchtxt != null) {
             request.setAttribute("searchtxt", searchtxt);
             count = dao.getTotalApplicationByUserName(searchtxt);
-            endPage = count / 5;
+            endPage = count / 10;
             listApplication = dao.pagingApplicationByUserName(index, searchtxt);
-            if(count %5 !=0){
+            if(count %10 !=0){
                 endPage++;
             }
             List<Application_category> listApplicationCategory = dao.getApplicationCategory();
@@ -45,7 +45,7 @@ public class SearchApplication extends HttpServlet {
             request.setAttribute("listApplication", listApplication);
             request.getRequestDispatcher("views/application/manageapplication.jsp").forward(request, response);
         } else {
-            response.sendRedirect("show-application");
+            response.sendRedirect("manage-application");
         }
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

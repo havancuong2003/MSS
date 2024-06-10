@@ -279,7 +279,7 @@
                         <a style="color: white" href="send-response?application_id=${o.application_id}&reject=1">Reject</a>
                     </button>
                 </c:if>
-                <c:if test="${o.applicationStatus.status_id == 2}">
+                <c:if test="${o.applicationStatus.status_id == 2 || o.applicationStatus.status_id == 3}">
                     <div style="text-align: center">
                         <form id="viewResponseForm" action="send-response" method="get">
                             <input type="hidden" name="application_id" value="${o.application_id}">

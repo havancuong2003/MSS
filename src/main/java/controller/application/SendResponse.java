@@ -14,14 +14,14 @@ import model.Response;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -36,7 +36,10 @@ public class SendResponse extends HttpServlet {
         List<Application_category> listApplicationCategory = dao.getApplicationCategory();
         String reject = request.getParameter("reject");
         String status = "";
-        if(reject.equals("1")){
+        if(reject == null){
+            reject = "-1";
+        }
+        if(reject!= null &&reject.equals("1")){
             status = "3";
         } else {
             status = "2";
@@ -50,18 +53,21 @@ public class SendResponse extends HttpServlet {
         request.setAttribute("reason", a.getReason());
         request.setAttribute("category_id",a.getApplicationCategory().getCategory_id());
         request.setAttribute("listApplicationCategory", listApplicationCategory);
-        request.getRequestDispatcher("response.jsp").forward(request, response);
+        request.getRequestDispatcher("views/application/sendresponse.jsp").forward(request, response);
 
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String responsetxt = request.getParameter("response");
         String response_text = responsetxt.trim();
         String email = request.getParameter("email");
+        System.out.println("Email: " + email);
         String status = request.getParameter("status");
+        System.out.println("Status: " + status);
         String application_id = request.getParameter("application_id");
         ApplicationDBContext dao = new ApplicationDBContext();
         ResponseDBContext responseDAO = new ResponseDBContext();
         if(response_text == null || checkResponseCharacter(response_text)){
+            request.setAttribute("response", response_text);
             request.setAttribute("mess_response_check","You must input at least ten character");
             doGet(request, response);
         } else {
@@ -73,21 +79,20 @@ public class SendResponse extends HttpServlet {
                     request.setAttribute("mess_response","Send reason reject successfully");
                     List<Application_category> listApplicationCategory = dao.getApplicationCategory();
                     request.setAttribute("listApplicationCategory", listApplicationCategory);
-                    request.getRequestDispatcher("response.jsp").forward(request, response);
+                    request.getRequestDispatcher("views/application/sendresponse.jsp").forward(request, response);
                 } else {
                     request.setAttribute("mess_response","Send response failed");
                     doGet(request, response);
                 }
             } else {
-                if(sendEmailResponse(responsetxt,email)){
-
+                if(sendEmailResponse(response_text,email)){
                     dao.editApplicationStatus(application_id);
                     responseDAO.insertResponse(response_text,application_id);
                     request.setAttribute("status",status);
                     request.setAttribute("mess_response","Send response successfully");
                     List<Application_category> listApplicationCategory = dao.getApplicationCategory();
                     request.setAttribute("listApplicationCategory", listApplicationCategory);
-                    request.getRequestDispatcher("response.jsp").forward(request, response);
+                    request.getRequestDispatcher("views/application/sendresponse.jsp").forward(request, response);
                 } else {
                     request.setAttribute("mess_response","Send response failed");
                     doGet(request, response);
