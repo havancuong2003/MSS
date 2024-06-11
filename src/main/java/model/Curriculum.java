@@ -5,7 +5,6 @@ public class Curriculum implements IEntity{
     private Major major;
     private int term;
     private Course course;
-    private Course prequisiteCourse;
     private String description;
 
     public String getDescription() {
@@ -48,11 +47,4 @@ public class Curriculum implements IEntity{
         this.course = course;
     }
 
-    public Course getPrequisiteCourse() {
-        return prequisiteCourse;
-    }
-
-    public void setPrequisiteCourse(Course prequisiteCourse) {
-        this.prequisiteCourse = prequisiteCourse;
-    }
 }

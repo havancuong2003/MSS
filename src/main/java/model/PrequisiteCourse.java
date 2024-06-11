@@ -1,10 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+
 public class PrequisiteCourse implements IEntity{
 
     private int id;
     private Course course;
     private Course preCourse;
+
+
 
     public int getId() {
         return id;

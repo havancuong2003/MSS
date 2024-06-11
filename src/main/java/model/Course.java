@@ -10,6 +10,15 @@ public class Course implements IEntity{
     private String description;
     private int credit;
     private ArrayList<Integer> preCourseID;
+    private String preCoursesString;
+
+    public String getPreCoursesString() {
+        return preCoursesString;
+    }
+
+    public void setPreCoursesString(String preCoursesString) {
+        this.preCoursesString = preCoursesString;
+    }
 
     public String getDescription() {
         return description;

@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 public class CourseDBContext extends DBContext<Course> {
 
+
     public ArrayList<Course> searchByCode(String txtSearch) {
         ArrayList<Course> courses = new ArrayList<>();
 
@@ -36,7 +37,7 @@ public class CourseDBContext extends DBContext<Course> {
         ArrayList<Course> courses = new ArrayList<>();
 
         try {
-            String sql = "SELECT c.id, c.code,c.detail, c.credit FROM course c  WHERE (c.code like ? or c.detail like ?) limit 3";
+            String sql = "SELECT c.id, c.code,c.detail, c.credit FROM course c  WHERE (c.code like ? or c.detail like ? and c.status = 1) limit 3";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, "%"+txtSearch+"%");
             stm.setString(2, "%"+txtSearch+"%");
@@ -76,13 +77,14 @@ public class CourseDBContext extends DBContext<Course> {
 
     public void addCourse(Course course) {
         try {
-            String sql = "insert into course (`code`,`detail`,`status`,`description`,`credit`) values(?,?,?,?,?)";
+            String sql = "insert into course (`code`,`detail`,`status`,`description`,`credit`,`status`) values(?,?,?,?,?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, course.getCode());
             stm.setString(2, course.getDetail());
             stm.setBoolean(3, course.isStatus());
             stm.setString(4, course.getDescription());
             stm.setInt(5, course.getCredit());
+            stm.setBoolean(6, true);
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);

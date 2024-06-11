@@ -30,41 +30,44 @@
     <p>${requestScope.ms}</p>
 </form>
 <c:if test="${requestScope.mid != null}">
-    <form method="post" action="/addCourseToCurriculum">
+    <form method="post" action="addCourseToCurriculum">
+        <input type="hidden" id="mid" name="mid" value="${requestScope.mid}"/>
         <p>Course: <input oninput="searchCourse()" type="text" name="codeCourse"/></p>
-    </form>
-    <input type="hidden" id="mid" value="${requestScope.mid}"/>
-    <p>Course table:</p>
-    <div>
-        <table >
-            <thead>
-            <tr>
-                <th>Code</th>
-                <th>Detail</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody id="CourseTableBodyData">
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <p>Major Curriculum</p>
-        <table>
-            <thead>
-            <tr>
-                <td>Code</td>
-                <td>Description</td>
-                <td>Prequisite Course</td>
-                <td>TermNo</td>
-                <td></td>
-            </tr>
-            </thead>
-            <tbody id="CurTableBodyData">
 
-            </tbody>
-        </table>
-    </div>
+        <p>Course table:</p>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Detail</th>
+                    <th>Prequisite Course</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="CourseTableBodyData">
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <p>Major Curriculum</p>
+            <table>
+                <thead>
+                <tr>
+                    <td>Code</td>
+                    <td>Description</td>
+                    <td>TermNo</td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody id="CurTableBodyData">
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="addedCourseIds" name="addedCourseIds" value=""/>
+        <button type="submit">Save</button> ${requestScope.msSave}
+    </form>
 </c:if>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
@@ -74,7 +77,7 @@
         console.log(mid);
         console.log(codeCourse);
         $.ajax({
-            url: "${pageContext.request.contextPath}/loadCourse",
+            url: "${pageContext.request.contextPath}/loadCourseCur",
             type: "GET",
             dataType: "JSON",
             data: {
@@ -86,45 +89,61 @@
                 let bodyTable = $("#CourseTableBodyData")
                 bodyTable.html("");
                 let htmlValue = ''
-                listCourse.forEach((c)=>{
-                    htmlValue +="<tr><td>"+c.code+"</td><td>"+c.detail+"</td><td><button onclick='addToCur("+c.code+","+c.id+")'>Add</button></td></tr>"
+                listCourse.forEach((c) => {
+                    htmlValue += "<tr><td>" + c.code + "</td><td>" + c.detail + "</td><td>" + c.preCoursesString + "</td><td><button type='button' onclick='addToCur(\"" + c.id + "\", \"" + c.code + "\")'>Add</button></td></tr>"
                 })
                 bodyTable.html(htmlValue);
-        }
+            }
         });
     }
 </script>
 <script>
-    function addToCur(code,id) {
-        var tr = document.createElement("tr");
-        var td1 = document.createElement("td");
-        td1.innerText = code;
-        tr.appendChild(td1);
-        var td2 = document.createElement("td");
-        var inputDes = document.createElement("input");
-        inputDes.type = "text";
-        inputDes.placeholder="Description...";
-        inputDes.name = "description"+ code;
-        td2.appendChild(inputDes);
-        tr.appendChild(td2);
-        var td3 = document.createElement("td");
-        var inputPre = document.createElement("input");
-        inputPre.type = "text";
-        inputPre.placeholder="Course...";
-        inputPre.name = "preCourse"+ code;
-        td3.appendChild(inputPre);
-        tr.appendChild(td3);
-        var td4 = document.createElement("td");
-        var inputTerm = document.createElement("input");
-        inputTerm.type = "text";
-        inputTerm.placeholder="TermNo...";
-        inputTerm.name = "termNo"+ code;
-        td4.appendChild(inputTerm);
-        tr.appendChild(td4);
-        var td5 = document.createElement("td");
-        var button = document.createElement("button");
-        button.type = "button";
-        document.getElementById("CurTableBodyData").appendChild(tr);
+    function addToCur(id, code) {
+        // Check if the course code already exists in the table
+        let exists = false;
+        $("#CurTableBodyData tr").each(function () {
+            if ($(this).find('td:first').text() === code) {
+                exists = true;
+                return false; // Exit the each loop
+            }
+        });
+
+        if (exists) {
+            alert("Course already added to the curriculum.");
+            return;
+        }
+
+        // Add course ID to hidden input
+        let addedCourseIds = $("#addedCourseIds").val();
+        if (addedCourseIds) {
+            addedCourseIds += "," + id;
+        } else {
+            addedCourseIds = id;
+        }
+        $("#addedCourseIds").val(addedCourseIds);
+
+        // Add row to table
+        let bodyTable = $("#CurTableBodyData");
+        let htmlValue = "<tr data-id='" + id + "'>" +
+            "<td>" + code + "</td>" +
+            "<td><input type='text' name='description"+id+"' required/></td>" +
+            "<td><input type='number' name='termNo"+id+"' min='1' max='9' required/></td>" +
+            "<td><button type='button' onclick='removeRow(this)'>Remove</button></td>" +
+            "</tr>";
+        bodyTable.append(htmlValue);
+    }
+
+    function removeRow(button) {
+        let row = $(button).closest('tr');
+        let id = row.data('id');
+
+        // Remove course ID from hidden input
+        let addedCourseIds = $("#addedCourseIds").val().split(",");
+        addedCourseIds = addedCourseIds.filter(courseId => courseId !== id.toString());
+        $("#addedCourseIds").val(addedCourseIds.join(","));
+
+        // Remove row from table
+        row.remove();
     }
 </script>
 </body>
