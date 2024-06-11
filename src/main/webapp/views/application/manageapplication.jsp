@@ -284,7 +284,7 @@
                         <form id="viewResponseForm" action="send-response" method="get">
                             <input type="hidden" name="application_id" value="${o.application_id}">
                             <button id="viewResponseButton" class="btn btn-primary" type="button">
-                                <a style="color: white" href="#">View Response</a>
+                                View Response
                             </button>
                         </form>
                     </div>
@@ -377,7 +377,8 @@
 
     // Use jQuery instead of $ to avoid conflicts
     jQuery(document).ready(function($) {
-        $('#viewResponseButton').click(function(event) {
+        // $('#viewResponseButton').click(function(event) {
+            $(document).on('click', '#viewResponseButton', function(event) {
             event.preventDefault(); // Prevent the default button click behavior
 
             // Get the application_id from the hidden input field

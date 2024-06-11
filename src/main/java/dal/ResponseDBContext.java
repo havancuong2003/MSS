@@ -1,6 +1,5 @@
-package dal.adminDAO;
+package dal;
 
-import dal.DBContext;
 import model.Response;
 
 import java.sql.PreparedStatement;
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ResponseDBContext extends DBContext<Response> {
+public class ResponseDBContext extends DBContext<Response>{
     public void insertResponse(String response, String application_id) {
         String sql = "INSERT INTO response (response, application_id) VALUES (?, ?)";
         try {
@@ -41,7 +40,6 @@ public class ResponseDBContext extends DBContext<Response> {
         }
         return null;
     }
-
     @Override
     public ArrayList<Response> list() {
         return null;

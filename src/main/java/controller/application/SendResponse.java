@@ -1,7 +1,7 @@
 package controller.application;
 
 import dal.ApplicationDBContext;
-import dal.adminDAO.ResponseDBContext;
+import dal.ResponseDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,22 +9,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Application;
 import model.Application_category;
-import model.Response;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
+
 @WebServlet(name = "SendResponse", value = "/send-response")
 public class SendResponse extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
