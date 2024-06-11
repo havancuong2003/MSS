@@ -4,7 +4,6 @@ import model.Account;
 import model.Answer;
 import model.Question;
 import model.QuestionDetail;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

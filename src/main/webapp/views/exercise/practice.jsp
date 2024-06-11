@@ -110,7 +110,7 @@
 </div>
 
 <!--pop-up logout-->
-<!-- co the cop mau cho pop-up khac -->
+
 <div
         class="modal fade"
         id="log-out"
