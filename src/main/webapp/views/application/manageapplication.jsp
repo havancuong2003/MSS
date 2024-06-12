@@ -59,7 +59,7 @@
         }
 
         .form-container form button {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: #ffffff;
             border: none;
             padding: 8px 16px;
@@ -81,7 +81,7 @@
         }
 
         thead th {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: #ffffff;
             padding: 10px;
             text-align: left;
@@ -184,7 +184,7 @@
         }
 
         .pagination li a {
-            color: #007bff;
+            color: #FF6600;
             min-width: 30px;
             padding: 6px 12px;
             text-decoration: none;
@@ -205,9 +205,9 @@
         }
 
         .pagination li.active a {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: white;
-            border-color: #007bff;
+            border-color: #FF6600;
         }
 
         .pagination li.disabled a {
@@ -272,7 +272,7 @@
             <td>${o.reason}</td>
             <td style="width: 217px">
                 <c:if test="${o.applicationStatus.status_id == 1}">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" style="background-color: #FF6600;">
                         <a style="color: white" href="send-response?application_id=${o.application_id}&reject=0">Response</a>
                     </button>
                     <button class="btn btn-danger">
@@ -304,7 +304,7 @@
     </table>
     <tr>
         <td colspan="7" style="text-align: right;">
-            <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #004080; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
+            <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #FF6600; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
         </td>
     </tr>
     <div class="pagination-container">

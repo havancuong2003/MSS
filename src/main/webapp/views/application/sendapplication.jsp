@@ -35,13 +35,13 @@
 
         h2 {
             text-align: center;
-            color: #004080; /* Dark blue text */
+            color: #FF6600; /* Dark blue text */
         }
 
         .note {
-            background-color: #e6f2ff; /* Light blue note background */
+            background-color: #FFB366; /* Light blue note background */
             padding: 10px;
-            border-left: 5px solid #004080; /* Dark blue border */
+            border-left: 5px solid #FF6600; /* Dark blue border */
             margin-bottom: 20px;
         }
 
@@ -61,7 +61,7 @@
 
         label {
             font-weight: bold;
-            color: #004080; /* Dark blue text */
+            color: #FF6600; /* Dark blue text */
         }
 
         select, textarea, input[type="submit"] {
@@ -74,7 +74,7 @@
         }
 
         input[type="submit"] {
-            background-color: #004080; /* Dark blue button */
+            background-color: #FF6600; /* Dark blue button */
             color: white;
             cursor: pointer;
             border: none;
@@ -158,7 +158,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: right;">
-                    <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #004080; color: white; text-decoration: none; border-radius: 4px;">Back to home</a>
+                    <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #FF6600; color: white; text-decoration: none; border-radius: 4px;">Back to home</a>
                 </td>
             </tr>
         </table>
