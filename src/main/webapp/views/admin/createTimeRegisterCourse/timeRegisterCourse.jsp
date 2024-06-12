@@ -38,33 +38,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+<%--<form id="myForm">--%>
+<%--    <c:choose>--%>
+<%--        <c:when test="${timePeriods.startRegister == null}">--%>
+<%--            Register time from: <input type="date" id="startDate" name="startDate"/> to <input type="date" id="endDate" name="endDate"/>--%>
+<%--        </c:when>--%>
+<%--        <c:otherwise>--%>
+<%--            Update Time Register time from:--%>
+<%--            <input type="date" id="startDate" name="startDate" value="${timePeriods.startRegister}"/>--%>
+<%--            to <input type="date" id="endDate" name="endDate" value="${timePeriods.endRegister}"/>--%>
+<%--        </c:otherwise>--%>
+<%--    </c:choose>--%>
+<%--    <button id="btn" type="submit">Submit</button>--%>
+<%--</form>--%>
+
 <form id="myForm">
     <h1 id="error" style="color: red"></h1>
-    <input type="hidden" name="description" value="${timePeriods.description}">
+    <input type="hidden" name="description" value="${timePeriods != null ? timePeriods.semester.detail : ''}">
 
     <c:choose>
-        <c:when test="${timePeriods.startRegister == null}">
-
-            Register time from: <input type="date" id="startDate" name="startDate"/> to <input type="date" id="endDate"
-                                                                                              name="endDate"/>
-
-
+        <c:when test="${timePeriods == null}">
+            Register time from: <input type="date" id="startDate" name="startDate"/> to <input type="date" id="endDate" name="endDate"/>
         </c:when>
         <c:otherwise>
-
             Update Time Register time from:
-
             <input type="date" id="startDate" name="startDate" value="${timePeriods.startRegister}"/>
-
-
             to <input type="date" id="endDate" name="endDate" value="${timePeriods.endRegister}"/>
-
         </c:otherwise>
     </c:choose>
-
-
     <button id="btn" type="submit">Submit</button>
-
 </form>
 
 <script>
@@ -100,7 +102,7 @@
                     // Handle error response from backend here
                     console.error('Error:', error);
                     console.error('status:', status);
-                    console.error('xhr:', xhr.responseJSON);
+                    console.error('xhr:', xhr);
                     $('#error').text(xhr.responseJSON);
                 }
             });

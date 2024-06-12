@@ -1,7 +1,7 @@
 package controller.admin.createTimeRegisterCourse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dal.adminDAO.TimePeriodsDBContext;
+import dal.TimePeriodsDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,22 +15,17 @@ import java.time.LocalDate;
 
 @WebServlet("/admin/registerTime")
 public class TimeRegisterCourse extends HttpServlet {
-    private final String CURRENT_TERM = GetCurrentTerm.currentTerm;
+    private final int CURRENT_TERM = GetCurrentTerm.currentTerm;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
         TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(CURRENT_TERM);
-        if (timePeriods == null) {
-            req.setAttribute("timePeriods", "null");
-        } else {
-
-
-            req.setAttribute("timePeriods", timePeriods);
-        }
-
+        req.setAttribute("timePeriods", timePeriods);
         req.getRequestDispatcher("../views/admin/createTimeRegisterCourse/timeRegisterCourse.jsp").forward(req, resp);
     }
+
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -91,11 +86,11 @@ public class TimeRegisterCourse extends HttpServlet {
         String description = req.getParameter("description");
 
         if (!description.equals("SU24")) {
-            timePeriodsDBContext.createTimeRegister(startDate_raw, endDate_raw, "SU24");
+            timePeriodsDBContext.createTimeRegister(startDate_raw, endDate_raw, CURRENT_TERM);
             resp.getWriter().print("{\"res\": \"add successfully\"}");
 
         } else {
-            timePeriodsDBContext.updateTimeRegister(startDate_raw, endDate_raw, "SU24");
+            timePeriodsDBContext.updateTimeRegister(startDate_raw, endDate_raw, CURRENT_TERM);
             resp.getWriter().print("{\"res\": \"update successfully\"}");
 
         }
