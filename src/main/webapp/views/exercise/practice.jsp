@@ -55,10 +55,18 @@
                 <c:forEach var="i" begin="1" end="${size}">
                     <c:choose>
                         <c:when test="${i == (current + 1)}">
-                            <div class="list-item active">${i}</div>
+                            <div class="list-item active" style="background-color: red !important,
+                                    <c:if test="${listanswer.get(i - 1) != 0  && listanswer.get(i - 1) != null}">
+                                        background-color:#92bfbf
+                                    </c:if>"
+                            >${i}</div>
                         </c:when>
                         <c:otherwise>
-                            <div class="list-item">${i}</div>
+                            <div class="list-item"
+                                    <c:if test="${listanswer.get(i - 1) != 0 && listanswer.get(i - 1) != null}">
+                                        style="background-color:#92bfbf"
+                                    </c:if>
+                            >${i}</div>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
@@ -205,6 +213,8 @@
             }
         });
     });
+
+    //xử lí chọn câu hỏi tương ứng
 
     //thời gian đồng hồ
     document.addEventListener("DOMContentLoaded", function () {
