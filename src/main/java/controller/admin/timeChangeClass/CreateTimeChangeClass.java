@@ -1,7 +1,7 @@
 package controller.admin.timeChangeClass;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dal.adminDAO.TimePeriodsDBContext;
+import dal.TimePeriodsDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 
 @WebServlet("/admin/timeChangeClass")
 public class CreateTimeChangeClass extends HttpServlet {
-    private final String CURRENT_TERM = GetCurrentTerm.currentTerm;
+    private final int CURRENT_TERM = GetCurrentTerm.currentTerm;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
@@ -89,12 +89,12 @@ public class CreateTimeChangeClass extends HttpServlet {
         String description = req.getParameter("description");
 
         if(!description.equals("SU24")){
-            timePeriodsDBContext.createTimeChangeGroup(startDate_raw, endDate_raw,"SU24");
+            timePeriodsDBContext.createTimeChangeGroup(startDate_raw, endDate_raw,CURRENT_TERM);
             resp.getWriter().print("{\"res\": \"add successfully\"}");
 
         }
         else {
-            timePeriodsDBContext.updateTimeChangeClass(startDate_raw, endDate_raw,"SU24");
+            timePeriodsDBContext.updateTimeChangeClass(startDate_raw, endDate_raw,CURRENT_TERM);
             resp.getWriter().print("{\"res\": \"update successfully\"}");
 
         }

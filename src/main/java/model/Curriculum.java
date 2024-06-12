@@ -1,27 +1,26 @@
 package model;
 
-public class Curriculum implements IEntity{
-    private int id;
+import java.util.ArrayList;
+
+public class  Curriculum implements IEntity{
+
     private Major major;
-    private int term;
-    private Course course;
-    private Course prequisiteCourse;
-    private String description;
+    private ArrayList<Term> terms;
 
-    public String getDescription() {
-        return description;
+    public Curriculum( Major major, ArrayList<Term> terms) {
+        this.major = major;
+        this.terms = terms;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public Curriculum() {
     }
 
-    public int getId() {
-        return id;
+    public ArrayList<Term> getTerms() {
+        return terms;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTerms(ArrayList<Term> terms) {
+        this.terms = terms;
     }
 
     public Major getMajor() {
@@ -32,27 +31,5 @@ public class Curriculum implements IEntity{
         this.major = major;
     }
 
-    public int getTerm() {
-        return term;
-    }
 
-    public void setTerm(int term) {
-        this.term = term;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public Course getPrequisiteCourse() {
-        return prequisiteCourse;
-    }
-
-    public void setPrequisiteCourse(Course prequisiteCourse) {
-        this.prequisiteCourse = prequisiteCourse;
-    }
 }
