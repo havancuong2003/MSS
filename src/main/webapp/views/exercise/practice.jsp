@@ -36,7 +36,7 @@
                 <!-- tùy chọn thời gian, điểm , index của câu -->
 <%--                <div class="question-time">00:01:10</div>--%>
                 <!-- <div class="question-time">1/10</div> -->
-                <!-- <div class="question-time">1 đ</div> -->
+
 
             </div>
             <div class="options">
