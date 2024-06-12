@@ -1,5 +1,5 @@
 package util;
 
 public class GetCurrentTerm {
-    public static String currentTerm = "SU24";
+    public static int currentTerm = 1;
 }

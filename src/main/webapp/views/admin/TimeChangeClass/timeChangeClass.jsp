@@ -40,7 +40,7 @@
 <body>
 <form id="myForm">
     <h1 id="error" style="color: red"></h1>
-    <input type="hidden" name="description" value="${timePeriods.description}">
+    <input type="hidden" name="description" value="${timePeriods != null ? timePeriods.semester.detail : ''}">
     <c:choose>
         <c:when test="${timePeriods.startChangeClass == null}">
 
@@ -95,6 +95,7 @@
                     }, 2000); // Đợi 2 giây trước khi thực hiện
                 },
                 error: function (xhr, status, error) {
+                    $('#btn').attr('disabled', false).text('Submit'); // Bật nút Submit trở lại
                     // Handle error response from backend here
                     console.error('Error:', error);
                     console.error('status:', status);
