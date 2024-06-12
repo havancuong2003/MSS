@@ -302,6 +302,11 @@
             </tbody>
         </c:forEach>
     </table>
+    <tr>
+        <td colspan="7" style="text-align: right;">
+            <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #004080; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
+        </td>
+    </tr>
     <div class="pagination-container">
         <%--        <div class="hint-text">Showing <b>4</b> out of <b>25</b> entries</div>--%>
         <ul class="pagination">

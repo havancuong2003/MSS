@@ -60,48 +60,7 @@ public class ApplicationDBContext extends DBContext<Application> {
         }
     }
 
-    //    public List<Application> getApplication() {
-//        ArrayList<Application> listApplication = new ArrayList<>();
-//        try {
-//            String sql = "SELECT * " +
-//                    "FROM application a " +
-//                    "JOIN application_category ac ON a.category_id = ac.category_id " +
-//                    "JOIN student s ON a.student_id = s.student_id " +
-//                    "JOIN account acc ON s.account_id = acc.account_id";
-//
-//            PreparedStatement statement = connection.prepareStatement(sql);
-//            ResultSet rs = statement.executeQuery();
-//            while (rs.next()) {
-//                Application a = new Application();
-//                a.setApplication_id(rs.getInt("application_id"));
-//                a.setReason(rs.getString("reason"));
-//                a.setStatus(rs.getInt("status"));
-//                Application_category ac = new Application_category();
-//                ac.setCategory_id(rs.getInt("category_id"));
-//                ac.setDescription(rs.getString("description"));
-//                a.setApplicationCategory(ac);
-//                Student s = new Student();
-//                s.setStudent_id(rs.getInt("student_id"));
-//                account acc = new account();
-//                acc.setAccount_id(rs.getInt("account_id"));
-//                acc.setUsername(rs.getString("username"));
-//                acc.setPassword(rs.getString("password"));
-//                acc.setFullname(rs.getString("fullname"));
-//                acc.setPhone(rs.getString("phone"));
-//                acc.setEmail(rs.getString("email"));
-//                acc.setDate_of_birth(rs.getDate("date_of_birth"));
-//                acc.setAddress(rs.getString("address"));
-//                acc.setPhoto((Blob) rs.getBlob("photo"));
-//                acc.setGender(rs.getString("gender"));
-//                s.setAccount(acc);
-//                a.setStudent(s);
-//                listApplication.add(a);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return listApplication;
-//    }
+
     public Application getApplicationById(String appication_id) {
         try {
             String sql = "SELECT * " +
@@ -534,12 +493,42 @@ public class ApplicationDBContext extends DBContext<Application> {
         }
     }
 
+    public Student getStudentByAccountID(String account_id) {
+
+        try {
+            String sql = "select * from student s join account a on s.acc_id = a.account_id where acc_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, account_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Student s = new Student();
+                s.setId(rs.getString(1));
+                Account a = new Account();
+                a.setId(rs.getInt("account_id"));
+                a.setUsername(rs.getString("username"));
+                a.setPassword(rs.getString("password"));
+                a.setFullname(rs.getString("fullname"));
+                a.setPhone(rs.getString("phone"));
+                a.setEmail(rs.getString("email"));
+                a.setDob(rs.getDate("date_of_birth"));
+                a.setAddress(rs.getString("address"));
+                a.setRole_id(rs.getInt("role_id"));
+                a.setAvatar((Blob) rs.getBlob("photo"));
+                a.setGender(rs.getBoolean("gender"));
+                s.setAccount(a);
+                s.setCurrentTerm(rs.getString("current_term"));
+                return s;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         ApplicationDBContext dao = new ApplicationDBContext();
-        List<Application_category> list = dao.getApplicationCategory();
-        for (Application_category application_category : list) {
-            System.out.println(application_category.getDescription());
-        }
+        Student student = dao.getStudentByAccountID("2");
+        System.out.println(student.getCurrentTerm());
     }
 
     @Override

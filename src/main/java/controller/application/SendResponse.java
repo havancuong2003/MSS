@@ -1,5 +1,6 @@
 package controller.application;
 
+import dal.AccountDBContext;
 import dal.ApplicationDBContext;
 import dal.ResponseDBContext;
 import jakarta.servlet.ServletException;
@@ -7,6 +8,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Account;
 import model.Application;
 import model.Application_category;
 
@@ -27,8 +30,6 @@ public class SendResponse extends HttpServlet {
         ApplicationDBContext dao = new ApplicationDBContext();
         ResponseDBContext rdao = new ResponseDBContext();
         String application_id = request.getParameter("application_id");
-//        Response r = rdao.getResponseByApplicationId(application_id);
-//        String res = r.getResponse();
         List<Application_category> listApplicationCategory = dao.getApplicationCategory();
         String reject = request.getParameter("reject");
         String status = "";
@@ -42,12 +43,14 @@ public class SendResponse extends HttpServlet {
         }
         Application a = dao.getApplicationById(application_id);
 //        request.setAttribute("response", res);
+        if(a != null){
+            request.setAttribute("email",a.getStudent().getAccount().getEmail());
+            request.setAttribute("reason", a.getReason());
+            request.setAttribute("category_id",a.getApplicationCategory().getCategory_id());
+        }
         request.setAttribute("reject", reject);
         request.setAttribute("status",status);
         request.setAttribute("application_id", application_id);
-        request.setAttribute("email",a.getStudent().getAccount().getEmail());
-        request.setAttribute("reason", a.getReason());
-        request.setAttribute("category_id",a.getApplicationCategory().getCategory_id());
         request.setAttribute("listApplicationCategory", listApplicationCategory);
         request.getRequestDispatcher("views/application/sendresponse.jsp").forward(request, response);
 

@@ -1,12 +1,16 @@
 package controller.application;
 
+import dal.AccountDBContext;
 import dal.ApplicationDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Account;
 import model.Application_category;
+import model.Student;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +21,11 @@ public class SendApplication extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ApplicationDBContext dao = new ApplicationDBContext();
         List<Application_category> listApplicationCategory = dao.getApplicationCategory();
+        AccountDBContext adbc = new AccountDBContext();
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        String role = adbc.getRoleByRoleID(account.getRole_id());
+        request.setAttribute("role", role);
         request.setAttribute("listApplicationCategory", listApplicationCategory);
         request.getRequestDispatcher("views/application/sendapplication.jsp").forward(request, response);
     }
@@ -24,7 +33,11 @@ public class SendApplication extends HttpServlet {
         String applicationCategory_id = request.getParameter("applicationCategory");
         String reason = request.getParameter("reason");
         String reasontxt = reason.trim();
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        int account_id = account.getId();
         ApplicationDBContext dao = new ApplicationDBContext();
+        Student student = dao.getStudentByAccountID(String.valueOf(account_id));
         if(applicationCategory_id.equals("0")){
             request.setAttribute("reason",reasontxt);
             request.setAttribute("mess_wrong","You must choose application type");
@@ -36,7 +49,7 @@ public class SendApplication extends HttpServlet {
                 request.setAttribute("mess_wrong", "You must input at least ten character");
                 doGet(request,response);
             } else {
-                dao.insertApplication(reasontxt,"1",applicationCategory_id);
+                dao.insertApplication(reasontxt, student.getId(), applicationCategory_id);
                 request.setAttribute("mess_success","Send application successfully");
                 doGet(request,response);
             }

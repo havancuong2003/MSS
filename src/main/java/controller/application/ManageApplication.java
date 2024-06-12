@@ -1,11 +1,14 @@
 package controller.application;
 
+import dal.AccountDBContext;
 import dal.ApplicationDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Account;
 import model.Application;
 import model.Application_category;
 import model.Application_status;
@@ -20,6 +23,11 @@ public class ManageApplication extends HttpServlet {
         ApplicationDBContext dao = new ApplicationDBContext();
         List<Application_category> listApplicationCategory = dao.getApplicationCategory();
         List<Application_status> listApplicationStatusCategory = dao.getApplicationStatusCategory();
+        AccountDBContext adbc = new AccountDBContext();
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        String role = adbc.getRoleByRoleID(account.getRole_id());
+        request.setAttribute("role", role);
         String status = request.getParameter("status");
         String applicationCategory = request.getParameter("applicationCategory");
         String indexPage = request.getParameter("page");

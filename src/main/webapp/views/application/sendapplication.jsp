@@ -158,7 +158,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: right;">
-                    <a href="#" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #004080; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
+                    <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #004080; color: white; text-decoration: none; border-radius: 4px;">Back to home</a>
                 </td>
             </tr>
         </table>

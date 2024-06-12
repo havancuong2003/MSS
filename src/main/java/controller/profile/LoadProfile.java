@@ -30,7 +30,6 @@ public class LoadProfile extends HttpServlet {
 
         AccountDBContext adbc = new AccountDBContext();
         String role = adbc.getRoleByRoleID(account.getRole_id());
-
         request.setAttribute("role", role);
 
         if(acc.getAvatar() == null){
