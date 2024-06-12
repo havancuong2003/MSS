@@ -77,14 +77,13 @@ public class CourseDBContext extends DBContext<Course> {
 
     public void addCourse(Course course) {
         try {
-            String sql = "insert into course (`code`,`detail`,`status`,`description`,`credit`,`status`) values(?,?,?,?,?,?)";
+            String sql = "insert into course (`code`,`detail`,`status`,`description`,`credit`) values(?,?,?,?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, course.getCode());
             stm.setString(2, course.getDetail());
             stm.setBoolean(3, course.isStatus());
             stm.setString(4, course.getDescription());
             stm.setInt(5, course.getCredit());
-            stm.setBoolean(6, true);
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
