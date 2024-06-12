@@ -35,13 +35,13 @@ public class GroupDBContext extends DBContext<Group> {
         return null;
     }
 
-    public ArrayList<Student> getStudentRegister(int courseID, String detail) {
+    public ArrayList<Student> getStudentRegister(int courseID, int semesterID) {
         ArrayList<Student> students = new ArrayList<>();
-        String sql = "select student_id from registercourse r join semester s on r.semester = s.id where course_id = ? and detail = ?";
+        String sql = "select student_id from registercourse r join semester s on r.semester = s.id where course_id = ? and s.id = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, courseID);
-            stm.setString(2, detail);
+            stm.setInt(2, semesterID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                Student s = getStudentByID(rs.getString("student_id"));

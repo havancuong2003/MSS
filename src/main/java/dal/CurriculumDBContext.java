@@ -4,8 +4,12 @@ import model.Course;
 import model.Curriculum;
 import model.Major;
 import model.PrequisiteCourse;
+import model.Major;
+import model.Term;
 
 import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -13,32 +17,32 @@ import java.util.logging.Logger;
 
 public class CurriculumDBContext extends DBContext<Curriculum>{
 
-    public ArrayList<Curriculum> getCurriculumList(int majorId) {
-        ArrayList<Curriculum> curriculums = new ArrayList<>();
-        try {
-            String sql = "select id,major_id,term,course_id,description from curriculum where major_id = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1,majorId);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Course c = new Course();
-                c.setId(rs.getInt("course_id"));
-                Major m = new Major();
-                m.setId(rs.getInt("major_id"));
-                Curriculum curriculum = new Curriculum();
-                curriculum.setId(rs.getInt("id"));
-                curriculum.setMajor(m);
-                curriculum.setCourse(c);
-                curriculum.setTerm(rs.getInt("term"));
-                curriculum.setDescription(rs.getString("description"));
-                curriculums.add(curriculum);
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(CurriculumDBContext.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return curriculums;
-
-    }
+//    public ArrayList<Curriculum> getCurriculumList(int majorId) {
+//        ArrayList<Curriculum> curriculums = new ArrayList<>();
+//        try {
+//            String sql = "select id,major_id,term,course_id,description from curriculum where major_id = ?";
+//            PreparedStatement stm = connection.prepareStatement(sql);
+//            stm.setInt(1,majorId);
+//            ResultSet rs = stm.executeQuery();
+//            while (rs.next()) {
+//                Course c = new Course();
+//                c.setId(rs.getInt("course_id"));
+//                Major m = new Major();
+//                m.setId(rs.getInt("major_id"));
+//                Curriculum curriculum = new Curriculum();
+//                curriculum.setId(rs.getInt("id"));
+//                curriculum.setMajor(m);
+//                curriculum.setCourse(c);
+//                curriculum.setTerm(rs.getInt("term"));
+//                curriculum.setDescription(rs.getString("description"));
+//                curriculums.add(curriculum);
+//            }
+//        } catch (SQLException e) {
+//            Logger.getLogger(CurriculumDBContext.class.getName()).log(Level.SEVERE, null, e);
+//        }
+//        return curriculums;
+//
+//    }
 
     public void AddCourseToCurriculum(int majorid, int courseid, int term, String description) {
         try {
@@ -121,4 +125,37 @@ public class CurriculumDBContext extends DBContext<Curriculum>{
     public Curriculum get(int id) throws SQLException {
         return null;
     }
+
+public ArrayList<Term> getTermForCurriculum(int majorId) throws SQLException {
+    ArrayList<Term> terms = new ArrayList<>();
+    String sql = "select distinct term_id  from curriculum c where major_id=?";
+    PreparedStatement stm = connection.prepareStatement(sql);
+    stm.setInt(1, majorId);
+    ResultSet rs = stm.executeQuery();
+    while (rs.next()) {
+        Term term = new Term();
+        term.setId(rs.getInt("term_id"));
+//        term.setTermDetail(rs.getString("name"));
+        term.setCourses(getCourseForCurriculum(rs.getInt("term_id"),majorId));
+        terms.add(term);
+    }
+    return terms;
+}
+
+public ArrayList<Course> getCourseForCurriculum(int termId,int majorId) throws SQLException {
+    ArrayList<Course> courses = new ArrayList<>();
+    String sql = "select distinct course_id  from curriculum c where major_id=? and term_id=?";
+    PreparedStatement stm = connection.prepareStatement(sql);
+    stm.setInt(1, majorId);
+    stm.setInt(2, termId);
+    ResultSet rs = stm.executeQuery();
+    while (rs.next()) {
+        Course course = new Course();
+        course.setId(rs.getInt("course_id"));
+        courses.add(course);
+    }
+    return courses;
+}
+
+
 }
