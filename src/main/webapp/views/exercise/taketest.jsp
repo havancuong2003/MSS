@@ -17,21 +17,11 @@
     <link rel="stylesheet" href="./css/bootstrapmin.css" />
     <script src="./css/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        // function sendAnswer(questionIndex, answerIndex) {
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "test",
-        //         data: { questionIndex: questionIndex, choosenAnswer: answerIndex },
-        //         success: function(response) {
-        //             console.log(response);
-        //         },
-        //         error: function() {
-        //             alert("Error sending answer");
-        //         }
-        //     });
-        // }
-    </script>
+    <style>
+        .isChoosenAnswer{
+            background-color:#92bfbf;
+        }
+    </style>
 </head>
 
 <body>
@@ -47,16 +37,16 @@
             <c:forEach items="${questionDetails}" var="ques" varStatus="status">
                 <div class="question-section" id="question-${status.index}">
                     <div class="question-area">
-                        <p id="questionText">${ques.getQuestionDetail()}</p>
+                        <p id="questionText">${status.index + 1}. ${ques.getQuestionDetail()}</p>
                     </div>
                     <div class="options">
                         <div>
-                            <button class="option-btn" onclick="handleClick(${status.index}, 1, this)">${ques.getAnswers().get(0).getAnswer()}</button>
-                            <button class="option-btn" onclick="handleClick(${status.index}, 3, this)">${ques.getAnswers().get(2).getAnswer()}</button>
+                            <button class="option-btn ${listanswer.get(status.index) == 1 ? 'gray' : ''}" onclick="handleClick(${status.index}, 1, this)">${ques.getAnswers().get(0).getAnswer()}</button>
+                            <button class="option-btn ${listanswer.get(status.index) == 3 ? 'gray' : ''}" onclick="handleClick(${status.index}, 3, this)">${ques.getAnswers().get(2).getAnswer()}</button>
                         </div>
                         <div>
-                            <button class="option-btn" onclick="handleClick(${status.index}, 2, this)">${ques.getAnswers().get(1).getAnswer()}</button>
-                            <button class="option-btn" onclick="handleClick(${status.index}, 4, this)">${ques.getAnswers().get(3).getAnswer()}</button>
+                            <button class="option-btn ${listanswer.get(status.index) == 2 ? 'gray' : ''}" onclick="handleClick(${status.index}, 2, this)">${ques.getAnswers().get(1).getAnswer()}</button>
+                            <button class="option-btn ${listanswer.get(status.index) == 4 ? 'gray' : ''}" onclick="handleClick(${status.index}, 4, this)">${ques.getAnswers().get(3).getAnswer()}</button>
                         </div>
                     </div>
                 </div>
@@ -67,23 +57,15 @@
         <div class="sidebars">
             <div class="questions-list">
                 <c:forEach var="i" begin="1" end="${size}">
-                    <c:choose>
-                        <c:when test="${i == (current + 1)}">
-                            <div class="list-item active" style="background-color: red !important,
-                            <c:if test="${listanswer.get(i - 1) != 0  && listanswer.get(i - 1) != null}">
-                                    background-color:#92bfbf
-                                    </c:if>"
-                            >${i}</div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="list-item"
+                            <div class="list-item
                                     <c:if test="${listanswer.get(i - 1) != 0 && listanswer.get(i - 1) != null}">
-                                        style="background-color:#92bfbf"
-                                    </c:if>
+                                        isChoosenAnswer
+                                    </c:if> " id="list-item-${i - 1}"
                             >${i}</div>
-                        </c:otherwise>
-                    </c:choose>
                 </c:forEach>
+<%--                <c:forEach var="i" begin="1" end="${size}">--%>
+<%--                    <div class="list-item" id="list-item-${i - 1}">${i}</div>--%>
+<%--                </c:forEach>--%>
 
             </div>
             <div class="navigation-buttons">
@@ -92,13 +74,7 @@
 
 
                 </div>
-<%--                <form action="test" method="post">--%>
-<%--                    <input type="hidden" name="option" value="finish">--%>
-<%--                    <div class="navigation-buttons-down">--%>
-<%--                        <button class="finish-btn" data-bs-target="#log-out" data-bs-toggle="modal">Finish</button>--%>
-<%--                    </div>--%>
-<%--                </form>--%>
-
+                <div class="question-time">00:00:10</div>
                 <div class="navigation-buttons-down">
                     <button class="finish-btn" data-bs-target="#log-out" data-bs-toggle="modal">Finish</button>
                 </div>
@@ -124,7 +100,7 @@
                         Are you sure to finish?
                     </h1>
                 </div>
-                <form action="test" method="post">
+                <form action="test" method="post" id="finishForm">
 
 
                     <div
@@ -169,10 +145,26 @@
 
     // xu li ajaax vaf check answer thro cau hoi
     document.addEventListener('DOMContentLoaded', () => {
+        // tích ô nào kéo đê ô ấy
+        const listItems = document.querySelectorAll('.list-item');
+
+        listItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const questionId = item.id.split('-')[2];
+                const questionSection = document.getElementById("question-" + questionId);
+
+                if (questionSection) {
+                    questionSection.scrollIntoView({ behavior: 'smooth' });
+                    listItems.forEach(li => li.classList.remove('active'));
+                    item.classList.add('active');
+                }
+            });
+        });
+
         // Hàm xử lý khi nút được nhấp
         window.handleClick = (questionId, answerId, button) => {
-            sendAnswer(questionId, answerId);
-            toggleGrayClass(questionId, button);
+            sendAnswer(questionId, answerId);//nhaapj cau tra loi vao serrvlet
+            toggleGrayClass(questionId, button);// check nut ddax basm chua, tach theo cau hoi
         };
 
         function sendAnswer(questionIndex, answerIndex) {
@@ -200,11 +192,14 @@
 
                 if (isGray) {
                     button.classList.remove('gray');
+                    document.getElementById("list-item-" + questionId).classList.remove('isChoosenAnswer');
+                    sendAnswer(questionId, 0);  /// an lai eset cau tra loi ề 0
                 } else {
                     optionButtons.forEach(btn => {
                         btn.classList.remove('gray');
                     });
                     button.classList.add('gray');
+                    document.getElementById("list-item-" + questionId).classList.add('isChoosenAnswer');
                 }
             } else {
                 console.error("No question section found for questionId: " + questionId);
@@ -218,18 +213,24 @@
     //thời gian đồng hồ
     document.addEventListener("DOMContentLoaded", function () {
         let questionTimeElement = document.querySelector(".question-time");
+
+        // Lấy thời gian ban đầu từ nội dung của phần tử question-time
         let timeParts = questionTimeElement.textContent.split(":");
         let hours = parseInt(timeParts[0], 10);
         let minutes = parseInt(timeParts[1], 10);
         let seconds = parseInt(timeParts[2], 10) || 0;
 
         function updateTime() {
+            // Cập nhật thời gian
             if (seconds === 0) {
                 if (minutes === 0) {
                     if (hours === 0) {
                         clearInterval(countdownInterval);
                         questionTimeElement.textContent = "00:00:00";
-                        window.location.href = "result.html"
+                        let form = document.getElementById("finishForm");
+                        if (form) {
+                            form.submit();
+                        }
                         return;
                     } else {
                         hours--;
@@ -244,15 +245,21 @@
                 seconds--;
             }
 
+            // Định dạng và hiển thị lại thời gian
             let hoursString = hours.toString().padStart(2, '0');
             let minutesString = minutes.toString().padStart(2, '0');
             let secondsString = seconds.toString().padStart(2, '0');
 
-            questionTimeElement.textContent = `${hoursString}:${minutesString}:${secondsString}`;
+            questionTimeElement.textContent = hoursString + ":" + minutesString + ":" + secondsString;
         }
 
+        // Khởi tạo đếm ngược ban đầu
+        updateTime();
+
+        // Cập nhật thời gian mỗi giây
         let countdownInterval = setInterval(updateTime, 1000);
     });
+
 </script>
 <script src="./js/bootstrap.min.js"></script>
 </body>s

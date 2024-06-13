@@ -147,8 +147,12 @@ body, html {
 }
 
 .list-item.active {
-    background-color: red;
+    background-color: red !important;
     color: white;
+}
+
+.list-item .isChoosenAnswer{
+    background-color:#92bfbf;
 }
 
 .navigation-buttons {

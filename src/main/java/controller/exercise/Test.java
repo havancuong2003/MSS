@@ -20,12 +20,15 @@ public class Test extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         PracticeDBContext context = new PracticeDBContext();
-        questionDetail = context.getAllQuestionDetailByExerciseIdAndCourseId(1, 1);
+        int exerciseId = Integer.parseInt(req.getParameter("exerciseId"));
+        int courseId = Integer.parseInt(req.getParameter("courseId"));
+        questionDetail = context.getAllQuestionDetailByExerciseIdAndCourseId(exerciseId, courseId);
         for (int i = 0; i < questionDetail.size(); i++ ){
             listanswer.add(0);
         }
         req.setAttribute("questionDetails",questionDetail);
         req.setAttribute("size", questionDetail.size());
+        req.setAttribute("listanswer", listanswer);
         req.getRequestDispatcher("views/exercise/taketest.jsp").forward(req, resp);
     }
     @Override
