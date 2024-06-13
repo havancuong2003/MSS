@@ -1,142 +1,126 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: -MSI-
-  Date: 6/10/2024
-  Time: 4:22 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <title>Student Options</title>
+   <style>
+
+       body {
+           font-family: Arial, sans-serif;
+           margin: 20px;
+           background-color: #f7f7f7; /* light gray background */
+       }
+
+       h1, h2 {
+           color: #FF8C00; /* orange tone */
+           margin-bottom: 10px;
+       }
+
+       table {
+           border-collapse: collapse;
+           width: 100%;
+           border: 1px solid #ddd; /* light gray border */
+       }
+
+       th, td {
+           border: 1px solid #ddd; /* light gray border */
+           padding: 10px;
+           text-align: left;
+           background-color: #FFFFFF; /* white background */
+       }
+
+       th {
+           background-color: #F7F7F7; /* light gray background */
+       }
+
+       tr:nth-child(even) {
+           background-color: #F2F2F2; /* light gray background */
+       }
+
+       select {
+           width: 100%;
+           padding: 10px;
+           margin-bottom: 20px;
+           border: 1px solid #ddd; /* light gray border */
+           background-color: #FFFFFF; /* white background */
+       }
+
+       input[type="submit"] {
+           background-color: #FF8C00; /* orange tone */
+           color: #FFFFFF; /* white text */
+           padding: 10px 20px;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+       }
+
+       input[type="submit"]:hover {
+           background-color: #FFA07A; /* darker orange tone */
+       }
+
+       a {
+           text-decoration: none;
+           color: #FF8C00; /* orange tone */
+       }
+
+       a:hover {
+           color: #FFA07A; /* darker orange tone */
+       }
+   </style>
+</head>
 <body>
-<style>
-    /* CSS */
-    .register-screen {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
 
-    .register-screen h1 {
-        margin-top: 0;
-    }
-
-    .register-screen h2 {
-        margin-bottom: 10px;
-    }
-
-    .register-screen form {
-        margin-top: 20px;
-    }
-
-    .register-screen ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .register-screen li {
-        margin-bottom: 10px;
-    }
-
-    .register-screen input[type="search"] {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-    }
-
-    .register-screen input[type="checkbox"] {
-        margin-right: 10px;
-    }
-
-    .register-screen button[type="submit"] {
-        background-color: #4CAF50;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .register-screen button[type="submit"]:hover {
-        background-color: #3e8e41;
-    }
-
-    span {
-        margin-left: 10px;
-    }
-</style>
-<div class="register-screen">
-    <h1>Đăng ký môn học</h1>
-
-    <!-- Form for regular course registration -->
-    <form id="regular-courses-form" action="register_courses_regular.php" method="post">
-        <h2>Đăng ký học</h2>
-        <input type="search" name="search" placeholder="Tìm kiếm môn học">
-        <ul id="regular-courses-list">
-            <!-- Regular courses will be dynamically inserted here -->
-        </ul>
-        <button type="submit">Đăng ký</button>
-    </form>
-
-    <!-- Form for retaking/improving courses -->
-    <form id="improve-courses-form" action="register_courses_improve.php" method="post">
-        <h2>Đăng ký học lại / cải thiện</h2>
-        <input type="search" name="search" placeholder="Tìm kiếm môn học">
-        <ul id="improve-courses-list">
-            <!-- Retake/improvement courses will be dynamically inserted here -->
-        </ul>
-        <button type="submit">Đăng ký học lại / cải thiện</button>
-    </form>
-</div>
-
-<script>
-    // Sample data for courses
-    const courses = [
-        { id: 1, name: 'Môn 1', type: 'regular' },
-        { id: 2, name: 'Môn 2', type: 'not_allowed', reason: 'trượt 1 nên ko đc học 2' },
-        { id: 3, name: 'Môn 3 (Cải thiện điểm)', type: 'improve' },
-        { id: 4, name: 'Môn 4 (Học lại)', type: 'retake' },
-        { id: 5, name: 'Môn 5', type: 'regular' },
-        { id: 6, name: 'Môn 6', type: 'not_allowed' },
-        { id: 7, name: 'Môn 7', type: 'regular' },
-    ];
-
-    // Function to categorize and display courses
-    function displayCourses() {
-        const regularCoursesList = document.getElementById('regular-courses-list');
-        const improveCoursesList = document.getElementById('improve-courses-list');
-
-        courses.forEach(course => {
-            const li = document.createElement('li');
-            if (course.type === 'regular') {
-                li.innerHTML = `<input type="checkbox" name="courses[]" value="\${course.id}">\${course.name}`;
-                regularCoursesList.appendChild(li);
-            } else if (course.type === 'improve') {
-                li.innerHTML = `<input type="checkbox" name="courses[]" value="\${course.id}">\${course.name}`;
-                improveCoursesList.appendChild(li);
-            } else if (course.type === 'retake') {
-                li.innerHTML = `<input type="checkbox" name="courses[]" value="\${course.id}">\${course.name}`;
-                improveCoursesList.appendChild(li);
-            } else if (course.type === 'not_allowed') {
-                li.innerHTML = `<strike>\${course.name}</strike>\${course.reason ? `<span>\${course.reason}</span>` : ''}`;
-                if (course.reason) {
-                    improveCoursesList.appendChild(li);
-                } else {
-                    regularCoursesList.appendChild(li);
-                }
-            }
-        });
-    }
-
-    // Initialize display
-    displayCourses();
-</script>
-
+<a href="dashboard">Back</a>
+<h1>Students can only register for 5 courses in a semester</h1>
+<h2> Course List Registered --- Number registered: ${totalRegister}</h2>
+<table>
+    <thead>
+    <tr>
+        <th>NO</th>
+        <th>CODE</th>
+        <th>DETAIL</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="course" items="${courseRegistered}">
+        <tr>
+            <td>${course.id}</td>
+            <td>${course.code}</td>
+            <td>${course.detail}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+<!-- Form for registering for courses -->
+<h2>Register Next for Courses</h2>
+<form action="RegisterCourse" method="post">
+    <select name="coursesToRegister">
+        <c:forEach var="course" items="${courseRegister}">
+            <option value="${course.id}">${course.code}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" value="Submit">
+</form>
+<h2>Register Improve for Courses</h2>
+<form action="RegisterCourse" method="post">
+    <select name="coursesToRegister">
+        <c:forEach var="course" items="${courseImprove}">
+            <option value="${course.id}">${course.code}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" value="Submit">
+</form>
+<h2>Register Learn Again  for Courses</h2>
+<form action="RegisterCourse" method="post">
+    <select name="coursesToRegister">
+        <c:forEach var="course" items="${courseLearnAgain}">
+            <option value="${course.id}">${course.code}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" value="Submit">
+</form>
 </body>
 </html>
-
