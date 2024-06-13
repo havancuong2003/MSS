@@ -14,7 +14,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Interface</title>
     <link rel="stylesheet" href="./css/taketest.css">
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrapmin.css" />
+    <script src="./css/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        // function sendAnswer(questionIndex, answerIndex) {
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "test",
+        //         data: { questionIndex: questionIndex, choosenAnswer: answerIndex },
+        //         success: function(response) {
+        //             console.log(response);
+        //         },
+        //         error: function() {
+        //             alert("Error sending answer");
+        //         }
+        //     });
+        // }
+    </script>
 </head>
 
 <body>
@@ -27,154 +44,118 @@
     </div>
     <div class="contents">
         <div class="question-section">
-            <div class="question-section 1">
-                <div class="question-area">
-                    <p id="questionText">1 + 1 =
-                        ?aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxxxxxxxxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                        <!-- tùy chọn thời gian, điểm , index của câu -->
-                        <!-- <div class="question-time">00:01:10</div> -->
-                        <!-- <div class="question-time">1/10</div> -->
-                        <!-- <div class="question-time">1 đ</div> -->
-                </div>
-                <div class="options">
-                    <div>
-                        <button class="option-btn">A. 0</button>
-                        <button class="option-btn">C. 4</button>
+            <c:forEach items="${questionDetails}" var="ques" varStatus="status">
+                <div class="question-section" id="question-${status.index}">
+                    <div class="question-area">
+                        <p id="questionText">${ques.getQuestionDetail()}</p>
                     </div>
-                    <div>
-                        <button class="option-btn">B. 3</button>
-                        <button class="option-btn">D. 5</button>
+                    <div class="options">
+                        <div>
+                            <button class="option-btn" onclick="handleClick(${status.index}, 1, this)">${ques.getAnswers().get(0).getAnswer()}</button>
+                            <button class="option-btn" onclick="handleClick(${status.index}, 3, this)">${ques.getAnswers().get(2).getAnswer()}</button>
+                        </div>
+                        <div>
+                            <button class="option-btn" onclick="handleClick(${status.index}, 2, this)">${ques.getAnswers().get(1).getAnswer()}</button>
+                            <button class="option-btn" onclick="handleClick(${status.index}, 4, this)">${ques.getAnswers().get(3).getAnswer()}</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="question-section 2">
-                <div class="question-area">
-                    <p id="questionText">1 + 1 =
-                        ?aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxxxxxxxxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            </c:forEach>
 
-                        <!-- tùy chọn thời gian, điểm , index của câu -->
-                        <!-- <div class="question-time">00:01:10</div> -->
-                        <!-- <div class="question-time">1/10</div> -->
-                        <!-- <div class="question-time">1 đ</div> -->
-                </div>
-                <div class="options">
-                    <div>
-                        <button class="option-btn">A. 0</button>
-                        <button class="option-btn">C. 4</button>
-                    </div>
-                    <div>
-                        <button class="option-btn">B. 3</button>
-                        <button class="option-btn">D. 5</button>
-                    </div>
-                </div>
-            </div>
-            <div class="question-section 3">
-                <div class="question-area">
-                    <p id="questionText">1 + 1 =
-                        ?aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxxxxxxxxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-                        <!-- tùy chọn thời gian, điểm , index của câu -->
-                        <!-- <div class="question-time">00:01:10</div> -->
-                        <!-- <div class="question-time">1/10</div> -->
-                        <!-- <div class="question-time">1 đ</div> -->
-                </div>
-                <div class="options">
-                    <div>
-                        <button class="option-btn">A. 0</button>
-                        <button class="option-btn">C. 4</button>
-                    </div>
-                    <div>
-                        <button class="option-btn">B. 3</button>
-                        <button class="option-btn">D. 5</button>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="sidebarclone"></div>
         <div class="sidebars">
             <div class="questions-list">
-                <div class="list-item">1</div>
-                <div class="list-item">2</div>
-                <div class="list-item">3</div>
-                <div class="list-item">4</div>
-                <div class="list-item">5</div>
-                <div class="list-item active">6</div>
-                <div class="list-item">7</div>
-                <div class="list-item">8</div>
-                <div class="list-item">9</div>
-                <div class="list-item">1</div>
-                <div class="list-item">2</div>
-                <div class="list-item">3</div>
-                <div class="list-item">4</div>
-                <div class="list-item">5</div>
-                <div class="list-item">6</div>
-                <div class="list-item">7</div>
-                <div class="list-item">8</div>
-                <div class="list-item">9</div>
-                <div class="list-item">1</div>
-                <div class="list-item">2</div>
-                <div class="list-item">3</div>
-                <div class="list-item">4</div>
-                <div class="list-item">5</div>
-                <div class="list-item">6</div>
-                <div class="list-item">7</div>
-                <div class="list-item">8</div>
-                <div class="list-item">9</div>
-                <div class="list-item">1</div>
-                <div class="list-item">2</div>
-                <div class="list-item">3</div>
-                <div class="list-item">4</div>
-                <div class="list-item">5</div>
-                <div class="list-item">6</div>
-                <div class="list-item">7</div>
-                <div class="list-item">8</div>
-                <div class="list-item">9</div>
+                <c:forEach var="i" begin="1" end="${size}">
+                    <c:choose>
+                        <c:when test="${i == (current + 1)}">
+                            <div class="list-item active" style="background-color: red !important,
+                            <c:if test="${listanswer.get(i - 1) != 0  && listanswer.get(i - 1) != null}">
+                                    background-color:#92bfbf
+                                    </c:if>"
+                            >${i}</div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="list-item"
+                                    <c:if test="${listanswer.get(i - 1) != 0 && listanswer.get(i - 1) != null}">
+                                        style="background-color:#92bfbf"
+                                    </c:if>
+                            >${i}</div>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
 
             </div>
             <div class="navigation-buttons">
                 <div class="navigation-buttons-up">
-                    <form action="" method="">
-                        <input type="hidden" name="question-index" value="">
-                        <input type="hidden" name="question-answer" value="">
-                        <button class="nav-btn">Back</button>
-                    </form>
 
-                    <form action="" method="">
-                        <input type="hidden" name="question-index" value="">
-                        <input type="hidden" name="question-answer" value="">
-                        <button class="nav-btn">Next</button>
-                    </form>
 
 
                 </div>
+<%--                <form action="test" method="post">--%>
+<%--                    <input type="hidden" name="option" value="finish">--%>
+<%--                    <div class="navigation-buttons-down">--%>
+<%--                        <button class="finish-btn" data-bs-target="#log-out" data-bs-toggle="modal">Finish</button>--%>
+<%--                    </div>--%>
+<%--                </form>--%>
+
                 <div class="navigation-buttons-down">
                     <button class="finish-btn" data-bs-target="#log-out" data-bs-toggle="modal">Finish</button>
                 </div>
 
+
             </div>
         </div>
     </div>
+
+    <div
+            class="modal fade"
+            id="log-out"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">
+                        Are you sure to finish?
+                    </h1>
+                </div>
+                <form action="test" method="post">
+
+
+                    <div
+                            class="modal-body"
+                            style="display: flex; justify-content: space-between"
+                    >
+                        <button
+                                type="button"
+                                class="btn btn-danger"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                        >
+                            No
+                        </button>
+                        <input type="hidden" name="option" value="finish">
+                        <button
+                                href="result.html"
+                                class="btn btn-primary"
+                                style="text-decoration: none; color: white"
+                        >
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
-
-<!--pop-up logout-->
-<!-- co the cop mau cho pop-up khac -->
-<%--<div class="modal fade" id="log-out" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"--%>
-<%--     aria-labelledby="staticBackdropLabel" aria-hidden="true">--%>
-<%--    <div class="modal-dialog modal-dialog-centered">--%>
-<%--        <div class="modal-content">--%>
-<%--            <div class="modal-header">--%>
-<%--                <h1 class="modal-title fs-5">Are you sure to finish?</h1>--%>
-<%--            </div>--%>
-<%--            <div class="modal-body" style="display: flex; justify-content: space-between;">--%>
-<%--                <button type="button" class="btn btn-danger" class="btn-close" data-bs-dismiss="modal">No</button>--%>
-<%--                <a href="result.html" class="btn btn-primary" style="text-decoration: none; color:white">--%>
-<%--                    Yes--%>
-<%--                </a>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
 
 <script>
     //check overflow
@@ -185,29 +166,54 @@
         }
     });
 
-    //check tích câu trả lời
-    // Lấy tất cả các nút lựa chọn
-    const optionButtons = document.querySelectorAll('.option-btn');
 
-    // Lặp qua từng nút và thêm sự kiện click
-    optionButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Kiểm tra xem nút đó đã được đỏ chưa
-            const isGray = button.classList.contains('gray');
+    // xu li ajaax vaf check answer thro cau hoi
+    document.addEventListener('DOMContentLoaded', () => {
+        // Hàm xử lý khi nút được nhấp
+        window.handleClick = (questionId, answerId, button) => {
+            sendAnswer(questionId, answerId);
+            toggleGrayClass(questionId, button);
+        };
 
-            // Nếu đã đỏ, hãy loại bỏ màu đỏ
-            if (isGray) {
-                button.classList.remove('gray');
-            } else {
-                // Nếu chưa đỏ, hãy loại bỏ màu đỏ từ tất cả các nút khác
-                optionButtons.forEach(btn => {
-                    btn.classList.remove('gray');
+        function sendAnswer(questionIndex, answerIndex) {
+                $.ajax({
+                    type: "POST",
+                    url: "test",
+                    data: { questionIndex: questionIndex, choosenAnswer: answerIndex },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function() {
+                        alert("Error sending answer");
+                    }
                 });
-                // Thêm màu đỏ cho nút được click
-                button.classList.add('gray');
             }
-        });
+
+
+        // Hàm thêm hoặc loại bỏ lớp 'gray' chỉ trong phạm vi của câu hỏi
+        function toggleGrayClass(questionId, button){
+            const isGray = button.classList.contains('gray');
+            const questionSection = document.getElementById("question-" + questionId);
+
+            if (questionSection) {
+                const optionButtons = questionSection.querySelectorAll('.option-btn');
+
+                if (isGray) {
+                    button.classList.remove('gray');
+                } else {
+                    optionButtons.forEach(btn => {
+                        btn.classList.remove('gray');
+                    });
+                    button.classList.add('gray');
+                }
+            } else {
+                console.error("No question section found for questionId: " + questionId);
+            }
+        };
     });
+
+
+
 
     //thời gian đồng hồ
     document.addEventListener("DOMContentLoaded", function () {

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 @WebServlet(name="test",value = "/test")
 public class Test extends HttpServlet {
     private static ArrayList<QuestionDetail> questionDetail = new ArrayList<>();
-    private static int indexquestion = 0;
     private static ArrayList<Integer> listanswer = new ArrayList<>();
 
     @Override
@@ -25,47 +24,29 @@ public class Test extends HttpServlet {
         for (int i = 0; i < questionDetail.size(); i++ ){
             listanswer.add(0);
         }
-        req.setAttribute("choosenAnswer", listanswer.get(indexquestion));
-        req.setAttribute("question", questionDetail.get(indexquestion));
+        req.setAttribute("questionDetails",questionDetail);
         req.setAttribute("size", questionDetail.size());
-        req.setAttribute("current", indexquestion);
         req.getRequestDispatcher("views/exercise/taketest.jsp").forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if(request.getParameter("questionIndex") != null && request.getParameter("choosenAnswer") != null){
+            int questionIndex = Integer.parseInt(request.getParameter("questionIndex"));
+            int choosenAnswer = Integer.parseInt(request.getParameter("choosenAnswer"));
+            listanswer.set(questionIndex, choosenAnswer);
+//            response.getWriter().write("Received questionIndex: " + questionIndex + ", choosenAnswer: " + choosenAnswer);
+        }
+
         String option = request.getParameter("option");
-        int choosenAnswer = Integer.parseInt(request.getParameter("choosenAnswer"));
-        if(option.equals("finish")){
-            listanswer.set(indexquestion, choosenAnswer);
+
+        if (option != null && option.equals("finish")) {
             int result = Result();
             request.setAttribute("size", questionDetail.size());
             request.setAttribute("result", result);
             listanswer.clear();
-            indexquestion = 0;
             request.getRequestDispatcher("result").forward(request, response);
         }
-        if (option.equals("next")) {
-            listanswer.set(indexquestion, choosenAnswer);
-            if(indexquestion == questionDetail.size() - 1){
-                request.setAttribute("msg", "There is no more question");
-            }else{
-                indexquestion++;
-            }
-        }else{
-            listanswer.set(indexquestion, choosenAnswer);
-            if(indexquestion == 0){
-                request.setAttribute("msg", "There is no question owr ddanwfg trc");
-            }else{
-                indexquestion--;
-            }
-        }
-        request.setAttribute("choosenAnswer", listanswer.get(indexquestion));
-        request.setAttribute("size", questionDetail.size());
-        request.setAttribute("current", indexquestion);
-        request.setAttribute("question", questionDetail.get(indexquestion));
-        request.setAttribute("listanswer", listanswer);
-        request.getRequestDispatcher("views/exercise/practice.jsp").forward(request, response);
 
     }
 
