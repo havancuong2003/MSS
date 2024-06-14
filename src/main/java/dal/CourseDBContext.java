@@ -5,11 +5,15 @@ import model.Course;
 import java.sql.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CourseDBContext extends DBContext<Course> {
 
+
+    public CourseDBContext() {
+    }
 
     public ArrayList<Course> searchByCode(String txtSearch) {
         ArrayList<Course> courses = new ArrayList<>();
@@ -116,6 +120,7 @@ public class CourseDBContext extends DBContext<Course> {
                 course.setId(rs.getInt("id"));
                 course.setCode(rs.getString("code"));
                 course.setDetail(rs.getString("detail"));
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -140,6 +145,40 @@ public class CourseDBContext extends DBContext<Course> {
         }
 
     }
+
+//   public HashMap<Integer,ArrayList<Course>> getCoursePrerequisite(){
+//       HashMap<Integer,ArrayList<Course>> courses = new HashMap<>();
+//       try {
+//           String sql = "SELECT distinct course_id FROM prequisite_course";
+//           PreparedStatement stm = connection.prepareStatement(sql);
+//           ResultSet rs = stm.executeQuery();
+//           while (rs.next()) {
+//            int courseID = rs.getInt("course_id");
+//           ArrayList<Course> listPrerequisite =getPrerequisiteCourseByCourseID(courseID);
+//           courses.put(courseID,listPrerequisite);
+//           }
+//       } catch (SQLException e) {
+//           throw new RuntimeException(e);
+//       }
+//       return courses;
+//   }
+
+   public ArrayList<Course> getPrerequisiteCourseByCourseID(int courseID){
+       ArrayList<Course> courses = new ArrayList<>();
+       try {
+           String sql = "SELECT * FROM prequisite_course where course_id = ?";
+           PreparedStatement stm = connection.prepareStatement(sql);
+           stm.setInt(1, courseID);
+           ResultSet rs = stm.executeQuery();
+           while (rs.next()) {
+              Course course = getCourseByID(rs.getInt("pre_course_id"));
+               courses.add(course);
+           }
+       } catch (SQLException e) {
+           throw new RuntimeException(e);
+       }
+       return courses;
+   }
 
     @Override
     public ArrayList<Course> list() {

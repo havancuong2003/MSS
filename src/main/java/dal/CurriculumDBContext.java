@@ -37,6 +37,8 @@ public class CurriculumDBContext extends DBContext<Curriculum>{
         }
         return c;
     }
+    CourseDBContext courseDBContext = new CourseDBContext();
+
 
     public void AddCourseToCurriculum(int majorid, int courseid, int term, String description) {
         try {
@@ -93,7 +95,7 @@ public class CurriculumDBContext extends DBContext<Curriculum>{
     }
 
 
-    
+
 
     @Override
     public ArrayList<Curriculum> list() {
@@ -123,29 +125,52 @@ public class CurriculumDBContext extends DBContext<Curriculum>{
 public ArrayList<Term> getTermForCurriculum(int majorId) throws SQLException {
     ArrayList<Term> terms = new ArrayList<>();
     String sql = "select distinct term_id  from curriculum c where major_id=?";
+  try {
+      PreparedStatement stm = connection.prepareStatement(sql);
+      stm.setInt(1, majorId);
+      ResultSet rs = stm.executeQuery();
+      while (rs.next()) {
+          Term term = new Term();
+          term.setId(rs.getInt("term_id"));
+          term.setCourses(getCourseForCurriculum(rs.getInt("term_id"),majorId));
+          term.setMajor(getMajorByID(majorId));
+          terms.add(term);
+      }
+  } catch (SQLException e) {
+      e.printStackTrace();
+  }
+    return terms;
+}
+
+public Major getMajorByID(int id) throws SQLException {
+        Major major = null;
+    String sql = "select * from major where id=?";
     PreparedStatement stm = connection.prepareStatement(sql);
-    stm.setInt(1, majorId);
+    stm.setInt(1, id);
     ResultSet rs = stm.executeQuery();
     while (rs.next()) {
-        Term term = new Term();
-        term.setId(rs.getInt("term_id"));
-//        term.setTermDetail(rs.getString("name"));
-        term.setCourses(getCourseForCurriculum(rs.getInt("term_id"),majorId));
-        terms.add(term);
+         major = new Major();
+        major.setId(rs.getInt("id"));
+        major.setCode(rs.getString("code"));
+        major.setDetail(rs.getString("detail"));
+        return major;
     }
-    return terms;
+    return major;
 }
 
 public ArrayList<Course> getCourseForCurriculum(int termId,int majorId) throws SQLException {
     ArrayList<Course> courses = new ArrayList<>();
-    String sql = "select distinct course_id  from curriculum c where major_id=? and term_id=?";
+    String sql = "select distinct course_id ,c.description as descriptionPre,cr.description from curriculum c join course cr on c.course_id = cr.id where major_id=? and term_id=?";
     PreparedStatement stm = connection.prepareStatement(sql);
     stm.setInt(1, majorId);
     stm.setInt(2, termId);
     ResultSet rs = stm.executeQuery();
     while (rs.next()) {
-        Course course = new Course();
-        course.setId(rs.getInt("course_id"));
+        Course course = courseDBContext.getCourseByID(rs.getInt("course_id"));
+        ArrayList<Course> coursePrerequisite = courseDBContext.getPrerequisiteCourseByCourseID(rs.getInt("course_id"));
+       course.setPrerequisiteCourses(coursePrerequisite);
+       course.setDescriptionPrerequisiteCourses(rs.getString("descriptionPre"));
+       course.setDescription(rs.getString("description"));
         courses.add(course);
     }
     return courses;

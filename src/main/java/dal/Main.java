@@ -1,8 +1,8 @@
 package dal;
 
-import model.Account;
+
 import model.Course;
-import model.Student;
+import model.Teacher;
 import model.Term;
 
 import java.sql.SQLException;
@@ -24,6 +24,16 @@ public class Main {
             }
             System.out.println("------------------------");
         }
+     GroupDBContext g = new GroupDBContext();
+//      g.deleteEnrollment(1);
+//      g.deleteGroup(1);
+//      g.setIsCreateIsFalse(1);
+        Teacher t = g.getTeacherByID("teacher1");
+        System.out.println(t.getId());
+
     }
 
+
 }
+
+

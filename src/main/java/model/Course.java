@@ -55,18 +55,29 @@ public class Course implements IEntity{
         this.preCourseID = preCourseID;
     }
     private ArrayList<Course> prerequisiteCourses;
+    private String descriptionPrerequisiteCourses;
 
-    public Course(int id, String code, String detail, boolean status, String description, ArrayList<Course> prerequisiteCourses) {
+    public Course(int id, String code, String detail, boolean status, String description, ArrayList<Course> prerequisiteCourses,String descriptionPrerequisiteCourses) {
         this.id = id;
         this.code = code;
         this.detail = detail;
         this.status = status;
         this.description = description;
         this.prerequisiteCourses = prerequisiteCourses;
+        this.descriptionPrerequisiteCourses = descriptionPrerequisiteCourses;
     }
 
     public Course() {
     }
+
+    public String getDescriptionPrerequisiteCourses() {
+        return descriptionPrerequisiteCourses;
+    }
+
+    public void setDescriptionPrerequisiteCourses(String descriptionPrerequisiteCourses) {
+        this.descriptionPrerequisiteCourses = descriptionPrerequisiteCourses;
+    }
+
 
 
     public ArrayList<Course> getPrerequisiteCourses() {
