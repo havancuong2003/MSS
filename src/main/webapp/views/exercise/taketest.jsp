@@ -74,7 +74,7 @@
 
 
                 </div>
-                <div class="question-time">00:00:10</div>
+                <div class="question-time">00:00:50</div>
                 <div class="navigation-buttons-down">
                     <button class="finish-btn" data-bs-target="#log-out" data-bs-toggle="modal">Finish</button>
                 </div>
@@ -220,7 +220,17 @@
         let minutes = parseInt(timeParts[1], 10);
         let seconds = parseInt(timeParts[2], 10) || 0;
 
+        // Kiểm tra nếu có thời gian đếm ngược được lưu trong localStorage
+        if (sessionStorage.getItem('countdownHours') !== null &&
+            sessionStorage.getItem('countdownMinutes') !== null &&
+            sessionStorage.getItem('countdownSeconds') !== null) {
+            hours = parseInt(sessionStorage.getItem('countdownHours'));
+            minutes = parseInt(sessionStorage.getItem('countdownMinutes'));
+            seconds = parseInt(sessionStorage.getItem('countdownSeconds'));
+        }
+
         function updateTime() {
+            sessionStorage.clear();
             // Cập nhật thời gian
             if (seconds === 0) {
                 if (minutes === 0) {
@@ -231,6 +241,7 @@
                         if (form) {
                             form.submit();
                         }
+                        // Xóa tất cả dữ liệu trong localStorage
                         return;
                     } else {
                         hours--;
@@ -251,8 +262,12 @@
             let secondsString = seconds.toString().padStart(2, '0');
 
             questionTimeElement.textContent = hoursString + ":" + minutesString + ":" + secondsString;
-        }
 
+            // Lưu trạng thái của thời gian đếm ngược vào localStorage
+            sessionStorage.setItem('countdownHours', hours);
+            sessionStorage.setItem('countdownMinutes', minutes);
+            sessionStorage.setItem('countdownSeconds', seconds);
+        }
         // Khởi tạo đếm ngược ban đầu
         updateTime();
 
