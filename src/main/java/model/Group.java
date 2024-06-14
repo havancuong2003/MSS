@@ -8,8 +8,16 @@ public class Group implements IEntity{
     private String link;
     private Semester semester;
     private Course course;
-    private String PIC;
+    private Teacher teacher;
     private ArrayList<Student> students;
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 
     public int getId() {
         return id;
@@ -51,21 +59,15 @@ public class Group implements IEntity{
         this.course = course;
     }
 
-    public String getPIC() {
-        return PIC;
-    }
 
-    public void setPIC(String PIC) {
-        this.PIC = PIC;
-    }
 
-    public Group(int id, String name, String link, Semester semester, Course course, String PIC, ArrayList<Student> students) {
+    public Group(int id, String name, String link, Semester semester, Course course, Teacher teacher, ArrayList<Student> students) {
         this.id = id;
         this.name = name;
         this.link = link;
         this.semester = semester;
         this.course = course;
-        this.PIC = PIC;
+        this.teacher = teacher;
         this.students = students;
     }
 

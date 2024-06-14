@@ -103,43 +103,62 @@
             background-color: #6200ea;
             transform: translateY(3px);
         }
+        .tag {
+            display: inline-block;
+            padding: 5px;
+            background-color: #e1e1e1;
+            border-radius: 3px;
+            margin: 5px;
+        }
+        .tag button {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 2px 5px;
+            cursor: pointer;
+        }
     </style>
     <script>
         var cateCount = 0;
 
         function addCate() {
+            if (cateCount >= 5) {
+                alert("You can only add 5 assessment items !");
+                return;
+            }
             var assCount = 0;
             cateCount++;  // Tăng biến đếm lên mỗi lần hàm được gọi
             var newHr = document.createElement("hr");
             var newDiv = document.createElement("div");
-            newDiv.id="assInput"+cateCount;
+            newDiv.id = "assInput" + cateCount;
             var cateDiv = document.createElement("div");
             cateDiv.style = "display: block";
             // Tạo nhãn mới cho Category
             var cateInputDiv = document.createElement("div");
             var newLabel = document.createElement("label");
-            newLabel.innerText = "Name Category: ";
-            newLabel.className="text";
-            newLabel.htmlFor="name";
+            newLabel.innerText = "Name Assessment: ";
+            newLabel.className = "text";
+            newLabel.htmlFor = "name";
             // Tạo một thẻ input mới cho Category
             var newInput = document.createElement("input");
             newInput.type = "text";
             newInput.style = "width: 50%";
             newInput.name = "cate" + cateCount;  // Đặt tên cho thẻ input mới
-            newInput.required="";
-            newInput.autocomplete="off";
+            newInput.required = "";
+            newInput.autocomplete = "off";
             cateInputDiv.appendChild(newLabel);
             cateInputDiv.appendChild(newInput);
             // Tạo nút bấm để thêm Assessment
             var cateButtonDiv = document.createElement("div");
             var newButton = document.createElement("button");
             newButton.type = "button";
-            newButton.style= "margin-left: 5%";
+            newButton.style = "margin-left: 5%";
             newButton.onclick = function () {
                 assCount++;
                 addAss(cateCount, assCount);
             };
-            newButton.innerText = "Add Assessment";
+            newButton.innerText = "Add Grade Item";
             cateInputDiv.appendChild(newButton);
             cateDiv.appendChild(cateInputDiv);
             // cateDiv.appendChild(cateButtonDiv);
@@ -162,29 +181,32 @@
         }
 
         function addAss(cateId, assCount) {
-
+            if (assCount >= 10) {
+                alert("You can only add 10 grade items for an assessment!");
+                return;
+            }
             // Tạo nhãn mới cho Assessment
             var newLabel = document.createElement("label");
-            newLabel.innerText = "Name Assessment: ";
-            newLabel.className="text";
-            newLabel.htmlFor="input";
+            newLabel.innerText = "Grade Item: ";
+            newLabel.className = "text";
+            newLabel.htmlFor = "input";
             // Tạo một thẻ input mới cho Assessment
             var newInput = document.createElement("input");
             newInput.type = "text";
-            newInput.name = "asscate" + cateId ;  // Đặt tên cho thẻ input mới
-            newInput.required="";
-            newInput.autocomplete="off";
+            newInput.name = "asscate" + cateId;  // Đặt tên cho thẻ input mới
+            newInput.required = "";
+            newInput.autocomplete = "off";
 
             var weiLabel = document.createElement("label");
             weiLabel.innerText = "Weight (%): ";
-            weiLabel.className="text";
-            weiLabel.htmlFor="input";
+            weiLabel.className = "text";
+            weiLabel.htmlFor = "input";
 
             var newWeight = document.createElement("input")
             newWeight.type = "number";
-            newWeight.name = "weicate" + cateId ;
-            newWeight.required="";
-            newWeight.autocomplete="off";
+            newWeight.name = "weicate" + cateId;
+            newWeight.required = "";
+            newWeight.autocomplete = "off";
 
             // Tạo một div container để chứa các thẻ input trong cùng một dòng
             var inputGroup = document.createElement("div");
@@ -209,16 +231,105 @@
 </header>
 <form action="addCourse" method="POST">
     <p>Code: <input type="text" style="width: calc(95% - 20px); margin-left: 1%" name="code"/></p>
-    <p>Detail: <input type="text" style="width: calc(95% - 20px);" name="detail"/></p>
+    <p>Name: <input type="text" style="width: calc(95% - 20px);" name="detail"/></p>
+    <p>Description: <input type="text" style="width: calc(90% - 20px);" name="description"/></p>
+    <p>Credit: <input type="number" style="width: calc(94% - 20px);" name="credit"/></p>
+    <p>Prerequisite: <input oninput="searchCourse()" type="text" style="width: calc(87% - 20px);" name="codeCourse"/></p>
+    <table>
+        <thead>
+        <tr>
+            <td>Code</td>
+            <td>Name</td>
+            <td>Credit</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody id="CourseTableBodyData">
+        </tbody>
+    </table>
+    <h2>Prequisite Courses: </h2>
+    <div id="preList">
+
+    </div>
+    <input type="hidden" id="tagData" name="tagData"/>
+
     <div id="cateInput" class="coolinput">
         <div id="assInput" class="coolinput">
 
         </div>
     </div>
     <br>
-    <button type="button" onclick="addCate()">Add Category</button><br><br><br><br>
+    <button type="button" onclick="addCate()">Add Assessment Item</button>
+    <br><br><br><br>
     <button type="submit" style="background-color: cornflowerblue">Add Course</button>
     ${requestScope.ms}
 </form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function searchCourse() {
+        // let mid = document.getElementById("mid").value;
+        let codeCourse = document.getElementsByName("codeCourse")[0].value;
+        // console.log(mid);
+        console.log(codeCourse);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/loadCourse",
+            type: "GET",
+            dataType: "JSON",
+            data: {
+                codeCourse: codeCourse
+            },
+            success: function (data) {
+                let listCourse = data
+                let bodyTable = $("#CourseTableBodyData")
+                bodyTable.html("");
+                let htmlValue = ''
+                listCourse.forEach((c)=>{
+                    htmlValue += "<tr><td>" + c.code + "</td><td>" + c.detail + "</td><td>" + c.credit + "</td><td><button type='button' onclick='addToPre(\"" + c.id + "\", \"" + c.code + "\")'>Add</button></td></tr>";
+                })
+                bodyTable.html(htmlValue);
+            }
+        });
+    }
+    var addedTags = [];
+    function addToPre(id, code) {
+        if (addedTags.some(tag => tag.id === id)) {
+            alert("This tag is already added.");
+            return;
+        }
+
+        if (addedTags.length >= 3) {
+            alert("You can only add up to 3 tags.");
+            return;
+        }
+
+        var tagList = document.getElementById("preList");
+        var tag = document.createElement("span");
+        tag.className = "tag";
+        tag.id = id; // Gán ID cho thẻ span để xác định tag khi xóa
+        tag.innerHTML = code + '<button onclick="removeTag(this)">X</button>';
+        tagList.appendChild(tag);
+
+        addedTags.push({id: id, code: code});
+        prepareData(); // Cập nhật dữ liệu thẻ tag
+    }
+    function prepareData() {
+        var tagDataInput = document.getElementById("tagData");
+        var tagIds = [...document.querySelectorAll("#preList .tag")].map(tag => tag.id); // Lấy ra mảng các id của các tag trong preList
+        tagDataInput.value = tagIds.join(","); // Nối các id lại với nhau bằng dấu phẩy và gán vào trường ẩn `tagData`
+    }
+    function removeTag(button) {
+        var tag = button.parentElement;
+        tag.parentElement.removeChild(tag);
+        var id = tag.id; // Lấy ID từ thuộc tính "id" của thẻ tag
+
+        // Loại bỏ tag từ danh sách
+        addedTags = addedTags.filter(tag => tag.id !== id);
+
+        // Cập nhật giá trị tagData sau khi xóa tag
+        prepareData();
+    }
+
+
+</script>
 </body>
 </html>
