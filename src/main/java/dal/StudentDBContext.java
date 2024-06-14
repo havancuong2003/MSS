@@ -136,5 +136,35 @@ public class StudentDBContext extends DBContext<Student> {
         return courses;
     }
 
+    public String getStudentID(String username){
+        String sql = "select id from student s join account a on s.acc_id = a.account_id where a.username =?";
+        String id = "";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,username);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                id = rs.getString("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public String registerCourse(String studentID, int courseID, int semester){
+        String sql = "INSERT INTO registercourse (student_id, course_id, semester) VALUES (?,?,?)";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,studentID);
+            stm.setInt(2,courseID);
+            stm.setInt(3,semester);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }
