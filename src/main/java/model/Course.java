@@ -8,6 +8,52 @@ public class Course implements IEntity{
     private String detail;
     private boolean status;
     private String description;
+    private int credit;
+    private ArrayList<Integer> preCourseID;
+    private String preCoursesString;
+    private boolean isChecked;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getPreCoursesString() {
+        return preCoursesString;
+    }
+
+    public void setPreCoursesString(String preCoursesString) {
+        this.preCoursesString = preCoursesString;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
+
+
+    public ArrayList<Integer> getPreCourseID() {
+        return preCourseID;
+    }
+
+    public void setPreCourseID(ArrayList<Integer> preCourseID) {
+        this.preCourseID = preCourseID;
+    }
     private ArrayList<Course> prerequisiteCourses;
     private String descriptionPrerequisiteCourses;
 
@@ -32,13 +78,7 @@ public class Course implements IEntity{
         this.descriptionPrerequisiteCourses = descriptionPrerequisiteCourses;
     }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public ArrayList<Course> getPrerequisiteCourses() {
         return prerequisiteCourses;

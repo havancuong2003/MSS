@@ -5,6 +5,9 @@ import java.util.ArrayList;
 public class  Curriculum implements IEntity{
 
     private Major major;
+    private int term;
+    private Course course;
+    private String description;
     private ArrayList<Term> terms;
 
     public Curriculum( Major major, ArrayList<Term> terms) {
