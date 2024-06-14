@@ -11,6 +11,15 @@ public class Course implements IEntity{
     private int credit;
     private ArrayList<Integer> preCourseID;
     private String preCoursesString;
+    private boolean isChecked;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
     public String getPreCoursesString() {
         return preCoursesString;

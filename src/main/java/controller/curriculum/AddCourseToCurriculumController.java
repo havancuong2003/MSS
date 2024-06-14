@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Course;
 import model.Curriculum;
 import model.PrequisiteCourse;
+import model.Term;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,68 +48,66 @@ public class AddCourseToCurriculumController extends HttpServlet {
                 idList.add(Integer.parseInt(ids[i]));
             }
             CurriculumDBContext cudb = new CurriculumDBContext();
-            ArrayList<Curriculum> curriculums = cudb.getCurriculumList(Integer.parseInt(mid));
+            Curriculum cur = cudb.getCurriculum(Integer.parseInt(mid));
             PrequisiteCourseDBContext predb = new PrequisiteCourseDBContext();
             ArrayList<PrequisiteCourse> preCourses = predb.getPrequisiteCourseList();
             ArrayList<Integer> successID = new ArrayList<>();
             for (Integer id : idList) {
+                if (checkCourseAlreadyInCurriculum(id, cur)) {
+                    req.setAttribute("msSave", "A course in your list was already in curriculum! Add course to curriculum failed!");
+                    req.setAttribute("mid", req.getParameter("mid"));
+                    req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
+                    return;
+                }
                 if (checkCourseHaveNoPre(id, preCourses)) {
-                    int term = Integer.parseInt(req.getParameter("termNo" + id));
-                    if (courseInATerm(curriculums, term) == 6) {
-                        req.setAttribute("msSave", "You can only add up to 6 courses in a term!" +
-                                "So you cannot add  any more courses to the " + term + " term. Add course to curriculum failed!");
+                    String description = req.getParameter("description" + id);
+                    int termNo = Integer.parseInt(req.getParameter("termNo" + id));
+                    if (courseInATerm(cur, termNo) >= 6) {
+                        req.setAttribute("msSave", "You can't add more than 6 courses in a term! Term: " + termNo
+                                + "already have 6 courses! Add course to curriculum failed!");
                         req.setAttribute("mid", req.getParameter("mid"));
                         req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
                         return;
                     } else {
-                        if (successID.contains(id)) {
-                        }else {
-                            successID.add(id);
-                        }
-
+                        successID.add(id);
                     }
                 } else {
-                    for (PrequisiteCourse pc : preCourses) {
-                        if (id == pc.getCourse().getId()) {
-                            ArrayList<Course> courses = new ArrayList<>();
-                            courses.add(pc.getPreCourse());
-                            if (check(curriculums, courses)) {
-                                int term = Integer.parseInt(req.getParameter("termNo" + id));
-                                if (courseInATerm(curriculums, term) == 6) {
-                                    req.setAttribute("msSave", "You can only add up to 6 courses in a term!" +
-                                            "So you cannot add " + pc.getCourse().getDetail() + "to the " + term + " term.  Add course to curriculum failed!");
-                                    req.setAttribute("mid", req.getParameter("mid"));
-                                    req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
-                                    return;
-                                } else {
-                                    if (successID.contains(id)) {
-                                    }else {
-                                        successID.add(id);
-                                    }
-                                }
-                            }else {
-                                req.setAttribute("msSave", "The course " + pc.getCourse().getCode() + " has pre-requisite courses that you have not added yet!" +
-                                        "Add course to curriculum failed!");
-                                req.setAttribute("mid", req.getParameter("mid"));
-                                req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
-                                return;
-                            }
+                    ArrayList<Course> preCoursesList = getPrequisiteCourse(id, preCourses);
+                    String description = req.getParameter("description" + id);
+                    int termNo = Integer.parseInt(req.getParameter("termNo" + id));
+                    if (courseInATerm(cur, termNo) >= 6) {
+                        req.setAttribute("msSave", "You can't add more than 6 courses in a term! Term: " + termNo
+                                + "already have 6 courses! Add course to curriculum failed!");
+                        req.setAttribute("mid", req.getParameter("mid"));
+                        req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
+                        return;
+                    } else {
+                        if (checkContainAllPreCourse(preCoursesList, cur, termNo)) {
+                            successID.add(id);
+                        }else {
+                            req.setAttribute("msSave", "Prequisite of course is not in curriculum or that's course was study in the term later of the course you add!\n" +
+                                    " Add course to curriculum failed!");
+                            req.setAttribute("mid", req.getParameter("mid"));
+                            req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
+                            return;
                         }
                     }
+                    successID.add(id);
                 }
             }
             for (Integer id : successID) {
-                int term = Integer.parseInt(req.getParameter("termNo" + id));
                 String description = req.getParameter("description" + id);
-                if (description == null||description.isEmpty()||description.isBlank()) {
-                    description = "";
-                }
-                cudb.AddCourseToCurriculum(Integer.parseInt(mid), id, term, description);
+                int termNo = Integer.parseInt(req.getParameter("termNo" + id));
+                cudb.AddCourseToCurriculum(Integer.parseInt(mid), id, termNo, description);
             }
-            req.setAttribute("msSave", "Add course to curriculum successfully!");
+            req.setAttribute("msSave", "Add course to curriculum success!");
             req.setAttribute("mid", req.getParameter("mid"));
             req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
+            return;
+
         }
+
+
     }
 
     public boolean checkCourseHaveNoPre(int id, ArrayList<PrequisiteCourse> preCourses) {
@@ -120,26 +119,56 @@ public class AddCourseToCurriculumController extends HttpServlet {
         return true;
     }
 
-    public int courseInATerm(ArrayList<Curriculum> curs, int term) {
-        int count = 0;
-        for (Curriculum c : curs) {
-            if (c.getTerm() == term) {
-                count++;
+    public int courseInATerm(Curriculum c, int term) {
+        for (Term t : c.getTerms()) {
+            if (t.getId() == term) {
+                return t.getCourses().size();
             }
         }
-        return count;
+        return 0;
     }
 
-    public boolean check(ArrayList<Curriculum> curs, ArrayList<Course> courses) {
-        ArrayList<Integer> idCourseCur = new ArrayList<>();
-        for (Curriculum c : curs) {
-            idCourseCur.add(c.getCourse().getId());
+    public ArrayList<Course> getPrequisiteCourse(int course_id, ArrayList<PrequisiteCourse> preCourses) {
+        ArrayList<Course> courses = new ArrayList<>();
+        for (PrequisiteCourse pc : preCourses) {
+            if (course_id == pc.getCourse().getId()) {
+                courses.add(pc.getPreCourse());
+            }
         }
-        for (Course c : courses) {
-            if (idCourseCur.contains(c.getId())) {
-                return true;
+        return courses;
+    }
+
+    public boolean checkCourseAlreadyInCurriculum(int course_id, Curriculum c) {
+        for (Term t : c.getTerms()) {
+            for (Course course : t.getCourses()) {
+                if (course_id == course.getId()) {
+                    return true;
+                }
             }
         }
         return false;
     }
+
+    public boolean checkContainAllPreCourse(ArrayList<Course> preCourse, Curriculum c, int term) {
+        boolean containAll = true;
+        for (Course pc : preCourse) {
+            for (Term t : c.getTerms()) {
+                for (Course cou : t.getCourses()) {
+                    if (pc.getId() == cou.getId() && t.getId() < term) {
+                        pc.setChecked(true);
+                        break;
+                    }
+                }
+            }
+        }
+        for (Course pc : preCourse) {
+            if (!pc.isChecked()) {
+                containAll = false;
+                break;
+            }
+        }
+        return containAll;
+    }
+
+
 }

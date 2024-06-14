@@ -17,7 +17,26 @@ import java.util.logging.Logger;
 
 public class CurriculumDBContext extends DBContext<Curriculum>{
 
-    public void
+    public Curriculum getCurriculum (int majorid){
+        Curriculum c = new Curriculum();
+        TermDBContext tdb = new TermDBContext();
+        ArrayList<Term> terms = new ArrayList<>();
+        try {
+            String sql = "select distinct c.major_id, c.term from curriculum c where c.major_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, majorid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                int t = rs.getInt("term");
+                Term term = tdb.getTerm(t, majorid);
+                terms.add(term);
+            }
+            c.setTerms(terms);
+        }catch (SQLException e) {
+            Logger.getLogger(CurriculumDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return c;
+    }
 
     public void AddCourseToCurriculum(int majorid, int courseid, int term, String description) {
         try {
