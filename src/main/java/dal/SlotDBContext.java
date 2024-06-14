@@ -1,10 +1,14 @@
 package dal;
 
+import model.Course;
+import model.Slot;
 import model.TimeSlot;
 
 import java.sql.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SlotDBContext extends DBContext<TimeSlot> {
     @Override
@@ -25,6 +29,19 @@ public class SlotDBContext extends DBContext<TimeSlot> {
             e.printStackTrace();
         }
         return slots;
+    }
+
+    public void addSlot(Slot slot) {
+        try {
+            String sql = "INSERT INTO slot (detail, start, end) VALUES (?, ?, ?)";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, slot.getDetail());
+            stm.setTime(2, slot.getStartTime());
+            stm.setTime(3, slot.getEndTime());
+            stm.execute();
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     @Override
