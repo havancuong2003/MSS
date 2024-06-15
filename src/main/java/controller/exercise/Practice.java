@@ -73,7 +73,7 @@ public class Practice extends HttpServlet {
         }else{
             listanswer.set(indexquestion, choosenAnswer);
             if(indexquestion == 0){
-                request.setAttribute("msg", "There is no question owr ddanwfg trc");
+                request.setAttribute("msg", "There is no question before");
             }else{
                 indexquestion--;
             }
