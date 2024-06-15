@@ -2,11 +2,10 @@ package model;
 
 public class Teacher extends Account implements IEntity{
 
-    private int id;
+    private String id;
     private Account account;
 
-    public Teacher(int id, Account account) {
-        super();
+    public Teacher(String id, Account account) {
         this.id = id;
         this.account = account;
     }
@@ -14,11 +13,11 @@ public class Teacher extends Account implements IEntity{
     public Teacher() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
