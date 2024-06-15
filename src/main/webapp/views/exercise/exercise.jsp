@@ -323,7 +323,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 </body>
-
+<!-- Create Modal HTML -->
 <!-- Create Modal HTML -->
 <div id="createQuizModal" class="modal fade" style="z-index: 9999;"
      role="dialog">
