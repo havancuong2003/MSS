@@ -81,7 +81,7 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #003366; /* Darker blue on hover */
+            background-color: #FFA500; /* Darker blue on hover */
         }
 
         .mess_wrong {
@@ -134,9 +134,6 @@
                 <td>
                     <select name="applicationCategory" id="application">
                         <option value="0">Choose Application Type (Chọn loại đơn)</option>
-<%--                        <c:forEach var="o" items="${listApplicationCategory}">--%>
-<%--                            <option value="${o.category_id}">${o.description}</option>--%>
-<%--                        </c:forEach>--%>
                         <c:forEach var="o" items="${listApplicationCategory}">
                             <option value="${o.category_id}" ${category_id == o.category_id ? 'selected' : ''}>${o.description}</option>
                         </c:forEach>
@@ -158,7 +155,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: right;">
-                    <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #FF6600; color: white; text-decoration: none; border-radius: 4px;">Back to home</a>
+                    <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Back to home</a>
                 </td>
             </tr>
         </table>
