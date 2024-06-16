@@ -28,7 +28,7 @@ public class StudentController extends HttpServlet {
         req.setAttribute("roleName", roleName);
         ProfileDBContext dao = new ProfileDBContext();
 
-        int getAccountID = account.getId();
+        int getAccountID = account.getAid();
         String accountId = String.valueOf(getAccountID);
         Account acc = dao.getAccountByID(accountId);
         if (acc.getAvatar() == null) {

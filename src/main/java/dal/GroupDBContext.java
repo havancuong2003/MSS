@@ -83,7 +83,7 @@ public class GroupDBContext extends DBContext<Group> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 a = new Account();
-                a.setId(rs.getInt("account_id"));
+                a.setAid(rs.getInt("account_id"));
                 a.setUsername(rs.getString("username"));
                 a.setPassword(rs.getString("password"));
                 a.setFullname(rs.getString("fullname"));
@@ -227,7 +227,7 @@ public class GroupDBContext extends DBContext<Group> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 t = new Teacher();
-                t.setId(rs.getInt("id"));
+                t.setAid(rs.getInt("id"));
                 t.setAccount(getAccountByID(rs.getInt("acc_id")));
                 return t;
             }
@@ -349,5 +349,10 @@ public class GroupDBContext extends DBContext<Group> {
         return list;
     }
 
+    public static void main(String[] args) {
+        GroupDBContext dao = new GroupDBContext();
+        Teacher teacher =   dao.getTeacherByID("t1");
+        System.out.println(teacher.getUsername());
+    }
 
 }
