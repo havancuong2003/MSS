@@ -193,6 +193,11 @@
 <%--            <a href="<%=request.getContextPath()%>/addCourse"><i class="fas fa-plus"></i> Add New Course</a>--%>
 <%--            <a href="<%=request.getContextPath()%>/listCourse"><i class="fas fa-list"></i> Course List</a>--%>
 <%--        </div>--%>
+        <a href="groupList"><i class="fas fa-chalkboard-teacher"></i> View All Classes</a>
+        <a href="RegisterCourse"><i class="fas fa-book"></i> Register Course</a>
+        <a href="viewCurriculum"><i class="fas fa-graduation-cap"></i> View Curriculum</a>
+
+
     </div>
     <div class="content">
         <!-- Nội dung dashboard -->

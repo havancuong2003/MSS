@@ -52,7 +52,7 @@ public class StudentDBContext extends DBContext<Student> {
 
     public ArrayList<Course> getAllCourseRegisterForStudent(int termId, int majorId,String username) {
         ArrayList<Course> courses = new ArrayList<>();
-        String sql = "SELECT * FROM curriculum c left join registercourse r on c.course_id = r.course_id\n" +
+        String sql = "SELECT  distinct c.course_id FROM curriculum c left join registercourse r on c.course_id = r.course_id\n" +
                 "left join student s on s.id = r.student_id\n" +
                 "                WHERE c.term_id <= ?\n" +
                 "                AND c.major_id = ?\n" +
