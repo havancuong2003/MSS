@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "ManageApplication", value = "/manage-application")
+@WebServlet(name = "ManageApplication", value = "/admin/manage-application")
 public class ManageApplication extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ApplicationDBContext dao = new ApplicationDBContext();
@@ -71,6 +71,9 @@ public class ManageApplication extends HttpServlet {
         for(Application application : listApplication){
             application.setReason(getCharacterOfReason(application.getReason()) + "...");
         }
+        if(listApplication.size() == 0){
+            request.setAttribute("mess","No data found");
+        }
 
         request.setAttribute("tag",index);
         request.setAttribute("endPage", endPage);
@@ -79,7 +82,7 @@ public class ManageApplication extends HttpServlet {
         request.setAttribute("listApplicationStatusCategory",listApplicationStatusCategory);
         request.setAttribute("listApplicationCategory", listApplicationCategory);
         request.setAttribute("listApplication", listApplication);
-        request.getRequestDispatcher("views/application/manageapplication.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/application/manageapplication.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

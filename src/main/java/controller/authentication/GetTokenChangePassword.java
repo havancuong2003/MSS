@@ -87,7 +87,7 @@ public class GetTokenChangePassword extends HttpServlet {
             return;
         }
 
-String jsonResponse = null;
+        String jsonResponse = null;
         try {
             ArrayList<String> t = tokenDBContext.getEmailExistToken();
             if (t.contains(email)) {
@@ -98,7 +98,7 @@ String jsonResponse = null;
             } else {
                 tokenDBContext.saveToken(email, token, expirationTime);
                 EmailUtility.sendEmail(host, port, user, pass, email, "Token to change password", "Your token here: " + token + " The token will expire after 1 minute");
-                 jsonResponse = "{\"message\": \"Token has been sent to your email.\", \"expirationTime\": " + expirationTime + "}";
+                jsonResponse = "{\"message\": \"Token has been sent to your email.\", \"expirationTime\": " + expirationTime + "}";
 
             }
 
@@ -106,12 +106,12 @@ String jsonResponse = null;
             out.print(jsonResponse);
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-             jsonResponse = "{\"error\": \"Database error.\"}";
+            jsonResponse = "{\"error\": \"Database error.\"}";
             out.print(jsonResponse);
             e.printStackTrace();
         } catch (MessagingException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-             jsonResponse = "{\"error\": \"Error sending email.\"}";
+            jsonResponse = "{\"error\": \"Error sending email.\"}";
             out.print(jsonResponse);
             e.printStackTrace();
         } finally {

@@ -15,6 +15,11 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         AttendanceDBContext attdb = new AttendanceDBContext();
         System.out.println(attdb.getAttendancesForTeacher(1).get(0).isPresent());
+     StudentDBContext studentDBContext = new StudentDBContext();
+     ArrayList<Course> c = studentDBContext.getAllCourseRegisterForStudent(3,1,"student1");
+     for (Course course : c) {
+         System.out.println(course.getCode());
+     }
     }
 
 
