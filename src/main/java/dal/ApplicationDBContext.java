@@ -88,7 +88,7 @@ public class ApplicationDBContext extends DBContext<Application> {
                 Student s = new Student();
                 s.setId(rs.getString("student_id"));
                 Account acc = new Account();
-                acc.setId(rs.getInt("account_id"));
+                acc.setAid(rs.getInt("account_id"));
                 acc.setUsername(rs.getString("username"));
                 acc.setPassword(rs.getString("password"));
                 acc.setFullname(rs.getString("fullname"));
@@ -153,7 +153,7 @@ public class ApplicationDBContext extends DBContext<Application> {
                 Student s = new Student();
                 s.setId(rs.getString("student_id"));
                 Account acc = new Account();
-                acc.setId(rs.getInt("account_id"));
+                acc.setAid(rs.getInt("account_id"));
                 acc.setUsername(rs.getString("username"));
                 acc.setPassword(rs.getString("password"));
                 acc.setFullname(rs.getString("fullname"));
@@ -225,7 +225,7 @@ public class ApplicationDBContext extends DBContext<Application> {
                 Student s = new Student();
                 s.setId(rs.getString("student_id"));
                 Account acc = new Account();
-                acc.setId(rs.getInt("account_id"));
+                acc.setAid(rs.getInt("account_id"));
                 acc.setUsername(rs.getString("username"));
                 acc.setPassword(rs.getString("password"));
                 acc.setFullname(rs.getString("fullname"));
@@ -297,7 +297,7 @@ public class ApplicationDBContext extends DBContext<Application> {
                 Student s = new Student();
                 s.setId(rs.getString("student_id"));
                 Account acc = new Account();
-                acc.setId(rs.getInt("account_id"));
+                acc.setAid(rs.getInt("account_id"));
                 acc.setUsername(rs.getString("username"));
                 acc.setPassword(rs.getString("password"));
                 acc.setFullname(rs.getString("fullname"));
@@ -370,7 +370,7 @@ public class ApplicationDBContext extends DBContext<Application> {
                 Student s = new Student();
                 s.setId(rs.getString("student_id"));
                 Account acc = new Account();
-                acc.setId(rs.getInt("account_id"));
+                acc.setAid(rs.getInt("account_id"));
                 acc.setUsername(rs.getString("username"));
                 acc.setPassword(rs.getString("password"));
                 acc.setFullname(rs.getString("fullname"));
@@ -445,7 +445,7 @@ public class ApplicationDBContext extends DBContext<Application> {
                 Student s = new Student();
                 s.setId(rs.getString("student_id"));
                 Account acc = new Account();
-                acc.setId(rs.getInt("account_id"));
+                acc.setAid(rs.getInt("account_id"));
                 acc.setUsername(rs.getString("username"));
                 acc.setPassword(rs.getString("password"));
                 acc.setFullname(rs.getString("fullname"));
@@ -504,7 +504,7 @@ public class ApplicationDBContext extends DBContext<Application> {
                 Student s = new Student();
                 s.setId(rs.getString(1));
                 Account a = new Account();
-                a.setId(rs.getInt("account_id"));
+                a.setAid(rs.getInt("account_id"));
                 a.setUsername(rs.getString("username"));
                 a.setPassword(rs.getString("password"));
                 a.setFullname(rs.getString("fullname"));

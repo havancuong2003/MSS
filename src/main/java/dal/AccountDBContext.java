@@ -1,7 +1,6 @@
 package dal;
 import java.sql.*;
 import model.Account;
-import model.IEntity;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class AccountDBContext extends DBContext<Account> {
             ResultSet rs = stm.executeQuery();
             if(rs.next()){
                 a = new Account();
-                a.setId(rs.getInt("account_id"));
+                a.setAid(rs.getInt("account_id"));
                 a.setUsername(rs.getString("username"));
                 a.setPassword(rs.getString("password"));
                 a.setFullname(rs.getString("fullname"));

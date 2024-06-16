@@ -11,6 +11,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SlotDBContext extends DBContext<TimeSlot> {
+    public ArrayList<Slot> getSlots() {
+        String sql = "select id,detail,start,end from slot";
+        ArrayList<Slot> slots = new ArrayList<>();
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Slot slot = new Slot();
+                slot.setId(rs.getInt("id"));
+                slot.setDetail(rs.getString("detail"));
+                slot.setStartTime(rs.getTime("start"));
+                slot.setEndTime(rs.getTime("end"));
+                slots.add(slot);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(SlotDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return slots;
+    }
+
+
     @Override
     public ArrayList<TimeSlot> list() {
         String sql = "select id,detail from slot";

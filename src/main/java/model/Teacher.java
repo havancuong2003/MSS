@@ -14,12 +14,12 @@ public class Teacher extends Account implements IEntity{
     public Teacher() {
     }
 
-    public int getId() {
+    public int getAid() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAid(int aid) {
+        this.id = aid;
     }
 
     public Account getAccount() {
