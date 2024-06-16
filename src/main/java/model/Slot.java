@@ -1,12 +1,24 @@
 package model;
 import java.sql.*;
 
-public class Slot implements IEntity{
+import java.sql.Time;
+
+public class Slot implements IEntity {
     private int id;
     private String detail;
-    private Time start ;
-    private Time end ;
+    private Time startTime;
+    private Time endTime;
 
+    public Slot() {
+
+    }
+
+    public Slot(int id, String detail, Time startTime, Time endTime) {
+        this.id=id;
+        this.detail = detail;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
     public int getId() {
         return id;
     }
@@ -23,19 +35,19 @@ public class Slot implements IEntity{
         this.detail = detail;
     }
 
-    public Time getStart() {
-        return start;
+    public Time getEndTime() {
+        return endTime;
     }
 
-    public void setStart(Time start) {
-        this.start = start;
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
     }
 
-    public Time getEnd() {
-        return end;
+    public Time getStartTime() {
+        return startTime;
     }
 
-    public void setEnd(Time end) {
-        this.end = end;
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
     }
 }

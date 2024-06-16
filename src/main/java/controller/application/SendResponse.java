@@ -24,7 +24,7 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
-@WebServlet(name = "SendResponse", value = "/send-response")
+@WebServlet(name = "SendResponse", value = "/admin/send-response")
 public class SendResponse extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ApplicationDBContext dao = new ApplicationDBContext();
@@ -52,7 +52,7 @@ public class SendResponse extends HttpServlet {
         request.setAttribute("status",status);
         request.setAttribute("application_id", application_id);
         request.setAttribute("listApplicationCategory", listApplicationCategory);
-        request.getRequestDispatcher("views/application/sendresponse.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/application/sendresponse.jsp").forward(request, response);
 
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -63,6 +63,7 @@ public class SendResponse extends HttpServlet {
         String status = request.getParameter("status");
         System.out.println("Status: " + status);
         String application_id = request.getParameter("application_id");
+        String reject = request.getParameter("reject");
         ApplicationDBContext dao = new ApplicationDBContext();
         ResponseDBContext responseDAO = new ResponseDBContext();
         if(response_text == null || checkResponseCharacter(response_text)){
@@ -74,11 +75,12 @@ public class SendResponse extends HttpServlet {
                 if(sendEmailReject(response_text,email)){
                     dao.editApplicationReject(application_id);
                     responseDAO.insertResponse(response_text,application_id);
+                    request.setAttribute("reject",reject);
                     request.setAttribute("status",status);
                     request.setAttribute("mess_response","Send reason reject successfully");
                     List<Application_category> listApplicationCategory = dao.getApplicationCategory();
                     request.setAttribute("listApplicationCategory", listApplicationCategory);
-                    request.getRequestDispatcher("views/application/sendresponse.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/application/sendresponse.jsp").forward(request, response);
                 } else {
                     request.setAttribute("mess_response","Send response failed");
                     doGet(request, response);
@@ -87,11 +89,12 @@ public class SendResponse extends HttpServlet {
                 if(sendEmailResponse(response_text,email)){
                     dao.editApplicationStatus(application_id);
                     responseDAO.insertResponse(response_text,application_id);
+                    request.setAttribute("reject",reject);
                     request.setAttribute("status",status);
                     request.setAttribute("mess_response","Send response successfully");
                     List<Application_category> listApplicationCategory = dao.getApplicationCategory();
                     request.setAttribute("listApplicationCategory", listApplicationCategory);
-                    request.getRequestDispatcher("views/application/sendresponse.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/application/sendresponse.jsp").forward(request, response);
                 } else {
                     request.setAttribute("mess_response","Send response failed");
                     doGet(request, response);

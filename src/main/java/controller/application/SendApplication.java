@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-@WebServlet(name = "SendApplication", value = "/send-application")
+@WebServlet(name = "SendApplication", value = "/student/send-application")
 public class SendApplication extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ApplicationDBContext dao = new ApplicationDBContext();
@@ -27,7 +27,7 @@ public class SendApplication extends HttpServlet {
         String role = adbc.getRoleByRoleID(account.getRole_id());
         request.setAttribute("role", role);
         request.setAttribute("listApplicationCategory", listApplicationCategory);
-        request.getRequestDispatcher("views/application/sendapplication.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/application/sendapplication.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String applicationCategory_id = request.getParameter("applicationCategory");
