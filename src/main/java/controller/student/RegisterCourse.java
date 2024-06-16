@@ -35,7 +35,7 @@ public class RegisterCourse extends HttpServlet {
         if (account != null) {
             try {
                 int currentTerm = s.getCurrentTermOfStudent(account.getUsername());
-                req.setAttribute("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 2, 1, account.getUsername()));
+                req.setAttribute("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
                 req.setAttribute("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
                 req.setAttribute("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
                 req.setAttribute("courseRegistered", s.getCoursesRegistered(account.getUsername(), currentTerm));

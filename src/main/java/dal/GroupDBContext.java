@@ -237,7 +237,7 @@ public class GroupDBContext extends DBContext<Group> {
         return t;
     }
 
-    public ArrayList<String> getInfoRegisterCourse(int semesterID){
+    public ArrayList<String> getInfoRegisterCourse(int semesterID) {
         ArrayList<String> list = new ArrayList<>();
         String sql = "SELECT student_id,code FROM registercourse r join course c on c.id =r.course_id where r.semester =? order by student_id;";
         try {
@@ -245,9 +245,9 @@ public class GroupDBContext extends DBContext<Group> {
             stm.setInt(1, semesterID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-               String student_id =rs.getString("student_id");
-               String code = rs.getString("code");
-               list.add(student_id+";"+code);
+                String student_id = rs.getString("student_id");
+                String code = rs.getString("code");
+                list.add(student_id + ";" + code);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -255,6 +255,99 @@ public class GroupDBContext extends DBContext<Group> {
         return list;
     }
 
+    public ArrayList<Group> getGroupForStudent(int semesterID, String username) {
+        ArrayList<Group> list = new ArrayList<>();
+        String sql = "SELECT e.group_id,g.course_id FROM enrollment e join `group` g on g.id=e.group_id join student s on s.id=e.student_id join account a on a.account_id=s.acc_id where g.semester_id=? and a.username = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, semesterID);
+            stm.setString(2, username);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Group g = new Group();
+                g.setId(rs.getInt("group_id"));
+                g.setCourse(courseDBContext.getCourseByID(rs.getInt("course_id")));
+                list.add(g);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+//    public Group getGroupByID(int groupID) {
+//        Group g = null;
+//        String sql = "select * from `group` where id = ?";
+//        try {
+//            PreparedStatement stm = connection.prepareStatement(sql);
+//            stm.setInt(1, groupID);
+//            ResultSet rs = stm.executeQuery();
+//            while (rs.next()) {
+//                g = new Group();
+//                g.setId(rs.getInt("id"));
+//                g.setCourse(courseDBContext.getCourseByID(rs.getInt("course_id")));
+//                g.setTeacher(getTeacherByID(rs.getString("pic")));
+//                g.setName(rs.getString("name"));
+//                g.setLink(rs.getString("link"));
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return g;
+//    }
+
+    public String getRole(int roleID) {
+        String sql = "select description from role where id=?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, roleID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getString("description");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Group getGroupInfo(int groupID) {
+        Group g = null;
+        String sql = "SELECT distinct e.group_id,e.Detail,g.name,g.link,g.semester_id,g.course_id,g.PIC FROM enrollment e join `group` g on g.id=e.group_id where group_id=?\n" ;
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, groupID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                g = new Group();
+                g.setId(rs.getInt("group_id"));
+                g.setCourse(courseDBContext.getCourseByID(rs.getInt("course_id")));
+                g.setTeacher(getTeacherByID(rs.getString("pic")));
+                g.setName(rs.getString("name"));
+                g.setLink(rs.getString("link"));
+                g.setStudents(getStudentForGroupByGroupID(groupID));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return g;
+    }
+
+    public ArrayList<Student> getStudentForGroupByGroupID(int groupID) {
+        String sql = "select student_id from enrollment where group_id=?";
+        ArrayList<Student> list = new ArrayList<>();
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, groupID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                list.add(getStudentByID(rs.getString("student_id")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
 
 
 }
