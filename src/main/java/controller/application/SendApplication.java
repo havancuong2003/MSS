@@ -35,7 +35,7 @@ public class SendApplication extends HttpServlet {
         String reasontxt = reason.trim();
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
-        int account_id = account.getAid();
+        int account_id = account.getId();
         ApplicationDBContext dao = new ApplicationDBContext();
         Student student = dao.getStudentByAccountID(String.valueOf(account_id));
         if(applicationCategory_id.equals("0")){

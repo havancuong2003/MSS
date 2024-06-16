@@ -30,7 +30,7 @@ public class AdminController extends HttpServlet {
 
         ProfileDBContext dao = new ProfileDBContext();
 
-        int getAccountID = account.getAid();
+        int getAccountID = account.getId();
         String accountId = String.valueOf(getAccountID);
         Account acc = dao.getAccountByID(accountId);
         if (acc.getAvatar() == null) {

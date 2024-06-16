@@ -24,7 +24,7 @@ public class LoadProfile extends HttpServlet {
         ProfileDBContext dao = new ProfileDBContext();
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
-        int account_id = account.getAid();
+        int account_id = account.getId();
         String accountId = String.valueOf(account_id);
         Account acc = dao.getAccountByID(accountId);
 

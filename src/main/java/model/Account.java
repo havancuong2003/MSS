@@ -37,11 +37,11 @@ public class Account implements IEntity {
         this.avatar = avatar;
     }
 
-    public int getAid() {
+    public int getId() {
         return aid;
     }
 
-    public void setAid(int aid) {
+    public void setId(int aid) {
         this.aid = aid;
     }
 
