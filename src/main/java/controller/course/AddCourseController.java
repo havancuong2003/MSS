@@ -3,6 +3,7 @@ package controller.course;
 import dal.GradeItemDBContext;
 import dal.GradeCategoryDBContext;
 import dal.CourseDBContext;
+import dal.PrequisiteCourseDBContext;
 import model.Assessment;
 import model.Category;
 import model.Course;
@@ -26,9 +27,16 @@ public class AddCourseController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String code = req.getParameter("code");
         String detail = req.getParameter("detail");
+        String description = req.getParameter("description");
+        int credit = Integer.parseInt(req.getParameter("credit"));
+        boolean status = true;
         Course course = new Course();
         course.setCode(code);
         course.setDetail(detail);
+        course.setDescription(description);
+        course.setCredit(credit);
+        course.setStatus(status);
+
         int total = 0;
         GradeItemDBContext assDB = new GradeItemDBContext();
         GradeCategoryDBContext catDB = new GradeCategoryDBContext();
@@ -94,7 +102,26 @@ public class AddCourseController extends HttpServlet {
                     }
                 }
             }
-            req.setAttribute("ms", "Course added successfully!");
+
+            ArrayList<Course> newCourses = courseDB.getCourseList();
+            int couID = 0;
+            for (Course c : newCourses) {
+                if (c.getCode().equals(course.getCode())) {
+                    couID = c.getId();
+                }
+            }
+            String tagData = req.getParameter("tagData");
+            if (tagData==null||tagData.isEmpty()||tagData.isBlank()) {
+
+            }else {
+                String[] tags = tagData.split(",");
+                PrequisiteCourseDBContext preDB = new PrequisiteCourseDBContext();
+                for (int i = 0; i < tags.length; i++) {
+                    preDB.addPrequisiteCourse(couID, Integer.parseInt(tags[i]));
+                }
+            }
+            resp.sendRedirect("viewCourse?id="+couID);
+            return;
         }
         req.getRequestDispatcher("views/course/add.jsp").forward(req, resp);
     }

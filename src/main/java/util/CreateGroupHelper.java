@@ -13,7 +13,9 @@ public class CreateGroupHelper {
     private static int totalStudentPerGroup = 3;
 
     public static void main(String[] args) throws SQLException {
-        allocateClasses();
+        GroupDBContext gdbc = new GroupDBContext();
+      //  allocateClasses();
+       // gdbc.setCreateGroupInSemester(1);
     }
 
     public static void allocateClasses() throws SQLException {
@@ -23,6 +25,8 @@ public class CreateGroupHelper {
         for (Course course : courses) {
             allocateClassesForCourse(course);
         }
+        GroupDBContext gdbc = new GroupDBContext();
+        gdbc.setCreateGroupInSemester(1);
     }
 
 
