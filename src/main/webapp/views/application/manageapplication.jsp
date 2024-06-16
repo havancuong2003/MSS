@@ -68,7 +68,7 @@
         }
 
         .form-container form button:hover {
-            background-color: #0056b3;
+            background-color: #FFA500;
         }
 
         table {
@@ -275,7 +275,7 @@
                     <button class="btn btn-primary" style="background-color: #FF6600;">
                         <a style="color: white" href="send-response?application_id=${o.application_id}&reject=0">Response</a>
                     </button>
-                    <button class="btn btn-danger">
+                    <button class="btn btn-danger" style="background-color: #FF0000">
                         <a style="color: white" href="send-response?application_id=${o.application_id}&reject=1">Reject</a>
                     </button>
                 </c:if>
@@ -302,9 +302,10 @@
             </tbody>
         </c:forEach>
     </table>
+    <p style="text-align: center; font-style: italic;font-size: 18px;margin: 20px 0">${mess}</p>
     <tr>
         <td colspan="7" style="text-align: right;">
-            <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #FF6600; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
+            <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
         </td>
     </tr>
     <div class="pagination-container">

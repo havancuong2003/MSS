@@ -81,7 +81,7 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #003366; /* Darker blue on hover */
+            background-color: #FFA500; /* Darker blue on hover */
         }
 
         .mess_wrong {
@@ -120,17 +120,17 @@
 </head>
 <body>
 <div class="form-container">
-    <c:if test="${status == '2'}">
+    <c:if test="${status == 2}">
         <h2>Response Form</h2>
     </c:if>
-    <c:if test="${status == '3'}">
+    <c:if test="${status == 3}">
         <h2>Reject Form</h2>
     </c:if>
     <div class="note">
-        <c:if test="${status == '2'}">
+        <c:if test="${status == 2}">
             <p><strong>Send an response to Student (Gửi phản hồi cho sinh viên )</strong></p>
         </c:if>
-        <c:if test="${status == '3'}">
+        <c:if test="${status == 3}">
             <p><strong>Send an reason reject to Student (Gửi phản hồi cho sinh viên )</strong></p>
         </c:if>
     </div>

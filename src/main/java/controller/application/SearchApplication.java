@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "SearchApplication", value = "/search-application")
+@WebServlet(name = "SearchApplication", value = "/admin/search-application")
 public class SearchApplication extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String search = request.getParameter("search");
@@ -51,7 +51,7 @@ public class SearchApplication extends HttpServlet {
             request.setAttribute("listApplicationCategory", listApplicationCategory);
             request.setAttribute("listApplicationStatusCategory",listApplicationStatusCategory);
             request.setAttribute("listApplication", listApplication);
-            request.getRequestDispatcher("views/application/manageapplication.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/application/manageapplication.jsp").forward(request, response);
         } else {
             response.sendRedirect("manage-application");
         }

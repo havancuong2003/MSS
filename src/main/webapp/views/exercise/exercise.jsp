@@ -237,9 +237,9 @@
     </style>
 </head>
 <body>
-<%--<div class="back">--%>
-<%--    <img src="https://mega.com.vn/media/news/2707_background-pp-hoc-tap-lam-slide3.jpg" class="bgimg" type="jpg/jpeg">--%>
-<%--</div>--%>
+<div class="back">
+    <img src="https://mega.com.vn/media/news/2707_background-pp-hoc-tap-lam-slide3.jpg" class="bgimg" type="jpg/jpeg">
+</div>
 
 <div class="container-fluid text-center">
     <div class="row1">

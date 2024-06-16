@@ -10,7 +10,7 @@ import model.Response;
 
 import java.io.IOException;
 
-@WebServlet(name = "viewResponse", value = "/view-response")
+@WebServlet(name = "viewResponse", value = "/admin/view-response")
 public class ViewResponse extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ResponseDBContext rdao = new ResponseDBContext();
