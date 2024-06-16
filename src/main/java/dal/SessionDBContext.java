@@ -31,6 +31,7 @@ public class SessionDBContext extends DBContext<Session> {
                 g.setCourse(c);
                 s.setGroup(g);
                 s.setDate(rs.getDate("date"));
+                r.setDetail(rs.getString("room"));
                 s.setRoom(r);
                 s.setSlot(sl);
                 sl.setId(rs.getInt("slot_id"));
@@ -39,7 +40,7 @@ public class SessionDBContext extends DBContext<Session> {
                 sl.setEndTime(rs.getTime("end"));
                 s.setSlot(sl);
                 s.setTaken(rs.getBoolean("isTaken"));
-
+                s.setId(rs.getInt("id"));
                 sessions.add(s);
             }
         } catch (SQLException e) {

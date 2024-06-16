@@ -5,7 +5,7 @@ public class Attendance implements IEntity {
     private int id;
     private Session session;
     private Student student;
-    private boolean isPresent;
+    private boolean present;
     private String description;
     private Date date;
 
@@ -34,11 +34,11 @@ public class Attendance implements IEntity {
     }
 
     public boolean isPresent() {
-        return isPresent;
+        return present;
     }
 
     public void setPresent(boolean present) {
-        isPresent = present;
+        this.present = present;
     }
 
     public String getDescription() {

@@ -8,15 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Schedule</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Title</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,6 +56,7 @@
         }
 
         select {
+            margin-top: 10px;
             width: 50%; /* reduce the width of the select box */
             padding: 10px;
             border: 1px solid #ccc;
@@ -204,7 +199,7 @@
     </div>
 </header>
 <div class="container">
-    <h1>Teacher Schedule</h1>
+    <h1>Student Schedule</h1>
     <form id="weekForm" action="processDates" method="post">
         <div class="form-group">
             <label for="weekSelect">Select Week:</label>
@@ -231,7 +226,6 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
     function getWeeksInYear(year) {
@@ -304,7 +298,7 @@
         const fday = document.getElementById('startDate').value;
         const lday = document.getElementById('endDate').value;
         $.ajax({
-            url: "${pageContext.request.contextPath}/loadTeacherSchedule",
+            url: "${pageContext.request.contextPath}/loadStudentSchedule",
             type: "GET",
             dataType: "JSON",
             data: {
@@ -313,7 +307,7 @@
                 lday: lday
             },
             success: function (data) {
-                var sessions = data.sessions;
+                var attendances = data.attendances;
                 var slots = data.slots;
                 var date = data.date;
                 var bodyTable = $("#weekTableBody");
@@ -324,19 +318,20 @@
                     date.forEach(function (d) {
                         console.log(d);
                         htmlValue += "<td>";
-                        sessions.forEach(function (session) {
+                        attendances.forEach(function (att) {
                             // console.log(session.slot.id);
                             // console.log(session.date);
-                            if (session.slot.id === slot.id && session.date === d) {
-                                htmlValue += ""+session.group.name+" - "+session.group.course.code+" - "+session.room.detail+"<br>";
-                                htmlValue += "<form action='takeAttendance' method='GET'>";
-                                htmlValue += "<input type='hidden' name='sesid' value='"+session.id+"'>";
-                                if (session.isTaken) {
-                                    htmlValue += "<input type='submit' value='View'>";
+                            if (att.session.slot.id === slot.id && att.session.date === d) {
+                                htmlValue += ""+att.session.group.name+" - "+att.session.group.course.code+" - "+att.session.room.detail+"<br>";
+                                if (att.session.isTaken){
+                                    if (att.isPresent){
+                                        htmlValue += "Present<br>";
+                                    }else {
+                                        htmlValue += "Absent<br>";
+                                    }
                                 }else {
-                                    htmlValue += "<input type='submit' value='Take'>";
+                                    htmlValue += "Not Yet<br>";
                                 }
-                                htmlValue += "</form>";
                             }
                         });
                         htmlValue += "</td>";

@@ -1,19 +1,41 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <!-- Thêm Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .sp{
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding-left: 10px;
         }
         header {
             display: flex;
@@ -94,50 +116,6 @@
         .profile-actions a:hover {
             color: #0056b3;
         }
-        .main-container {
-            display: flex;
-            flex: 1;
-            height: calc(100vh - 71px); /* Chiều cao của header */
-        }
-        .sidebar {
-            width: 250px;
-            background-color: #333;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            padding-top: 20px;
-            box-sizing: border-box;
-        }
-        .sidebar a {
-            padding: 15px 20px;
-            text-decoration: none;
-            color: white;
-            display: block;
-            transition: background 0.3s;
-        }
-        .sidebar a:hover {
-            background-color: #575757;
-        }
-        .sidebar .submenu a {
-            padding-left: 40px;
-            font-size: 14px;
-        }
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #f1f1f1;
-            overflow-y: auto;
-        }
-        .sp{
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            font-weight: 600;
-            background: linear-gradient(90deg, #ff8a00, #e52e71);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            padding-left: 10px;
-        }
     </style>
     <script>
         function toggleProfileDropdown() {
@@ -168,7 +146,7 @@
             <div class="profile-info">
                 <img src="data:image/jpeg;base64,${photoBase64}" alt="">
                 <div>
-                    <span id="profileFullName">${sessionScope.account.fullname}</span>
+                    <span id="profileFullName">${requestScope.account.fullname}</span>
                     <span id="profileRole" class="role">${requestScope.roleName}</span>
                 </div>
             </div>
@@ -180,23 +158,46 @@
         </div>
     </div>
 </header>
-<div class="main-container">
-    <div class="sidebar">
-        <a href="#" onclick="toggleSubMenu('homeSubMenu')"><i class="fas fa-home"></i> Home</a>
-<%--        <a href="#" onclick="toggleSubMenu('userManagementSubMenu')"><i class="fas fa-users"></i> User Management</a>--%>
-<%--        <div id="userManagementSubMenu" class="submenu" style="display: none;">--%>
-<%--            <a href="<%=request.getContextPath()%>/add-New-Account"><i class="fas fa-user-plus"></i> Add New Account</a>--%>
-<%--            <a href="<%=request.getContextPath()%>/list-account"><i class="fas fa-list"></i> Account List</a>--%>
-<%--        </div>--%>
-<%--        <a href="#" onclick="toggleSubMenu('courseManagementSubMenu')"><i class="fas fa-book"></i> Course Management</a>--%>
-<%--        <div id="courseManagementSubMenu" class="submenu" style="display: none;">--%>
-<%--            <a href="<%=request.getContextPath()%>/addCourse"><i class="fas fa-plus"></i> Add New Course</a>--%>
-<%--            <a href="<%=request.getContextPath()%>/listCourse"><i class="fas fa-list"></i> Course List</a>--%>
-<%--        </div>--%>
-    </div>
-    <div class="content">
-        <!-- Nội dung dashboard -->
-    </div>
+<div class="container">
+    <h2 class="text-center">Attendance</h2>
+    <form action="takeAttendance" method="post">
+        <input type="hidden" name="sesid" value="${requestScope.sesid}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Attendance</th>
+                <th>Description</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${requestScope.attendances}" var="a">
+                <tr>
+                    <td>${a.student.id}</td>
+                    <td>${a.student.account.fullname}</td>
+                    <td>
+                        <div class="form-check">
+                            <input type="radio" id="present_yes_${a.student.id}" name="present${a.student.id}" value="yes" <c:if test="${a.present}">checked</c:if>>
+                            <label for="present_yes_${a.student.id}" class="form-check-label">Present</label>
+
+                            <input type="radio" id="present_no_${a.student.id}" name="present${a.student.id}" value="no" <c:if test="${!a.present}">checked</c:if>>
+                            <label for="present_no_${a.student.id}" class="form-check-label">Absent</label>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" name="description${a.student.id}" value="${a.description}" class="form-control">
+                    </td>
+                    <td>
+                            ${a.date}
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Submit</button>${requestScope.ms}
+    </form>
 </div>
 </body>
 </html>
