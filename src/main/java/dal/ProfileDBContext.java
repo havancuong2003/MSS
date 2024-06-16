@@ -47,7 +47,7 @@ public class ProfileDBContext extends DBContext<Account> {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
-                a.setAid(rs.getInt(1));
+                a.setId(rs.getInt(1));
                 a.setUsername(rs.getString(2));
                 a.setPassword(rs.getString(3));
                 a.setFullname(rs.getString(4));
@@ -74,7 +74,7 @@ public class ProfileDBContext extends DBContext<Account> {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
-                a.setAid(rs.getInt(1));
+                a.setId(rs.getInt(1));
                 a.setUsername(rs.getString(2));
                 a.setPassword(rs.getString(3));
                 a.setFullname(rs.getString(4));
@@ -100,7 +100,7 @@ public class ProfileDBContext extends DBContext<Account> {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
-                a.setAid(rs.getInt(1));
+                a.setId(rs.getInt(1));
                 a.setUsername(rs.getString(2));
                 a.setPassword(rs.getString(3));
                 a.setFullname(rs.getString(4));
