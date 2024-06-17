@@ -38,7 +38,6 @@ public class Test extends HttpServlet {
             int questionIndex = Integer.parseInt(request.getParameter("questionIndex"));
             int choosenAnswer = Integer.parseInt(request.getParameter("choosenAnswer"));
             listanswer.set(questionIndex, choosenAnswer);
-//            response.getWriter().write("Received questionIndex: " + questionIndex + ", choosenAnswer: " + choosenAnswer);
         }
 
         String option = request.getParameter("option");
