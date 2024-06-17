@@ -10,7 +10,7 @@ public class Session implements IEntity {
     private Teacher teacher;
 
     private Slot slot ;
-    private boolean isTaken ;
+    private boolean taken;
     private boolean isChange;
 
     public int getId() {
@@ -62,11 +62,11 @@ public class Session implements IEntity {
     }
 
     public boolean isTaken() {
-        return isTaken;
+        return taken;
     }
 
     public void setTaken(boolean taken) {
-        isTaken = taken;
+        this.taken = taken;
     }
 
     public boolean isChange() {

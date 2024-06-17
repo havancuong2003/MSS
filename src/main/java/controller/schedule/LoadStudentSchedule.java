@@ -1,6 +1,7 @@
 package controller.schedule;
 
 import com.google.gson.Gson;
+import dal.AccountDBContext;
 import dal.AttendanceDBContext;
 import dal.SlotDBContext;
 import jakarta.servlet.ServletException;
@@ -8,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Attendance;
 import model.Slot;
 
@@ -33,7 +35,9 @@ public class LoadStudentSchedule extends HttpServlet {
         }
         AttendanceDBContext attDB = new AttendanceDBContext();
         SlotDBContext sldb =  new SlotDBContext();
-        ArrayList<Attendance> attendances = attDB.getAttendanceForStudent("s1", java.sql.Date.valueOf(fday), java.sql.Date.valueOf(lday));
+        AccountDBContext accdb = new AccountDBContext();
+        Account acc = (Account) req.getSession().getAttribute("account");
+        ArrayList<Attendance> attendances = attDB.getAttendanceForStudent(accdb.getIdUserByAccountId(acc.getId()), java.sql.Date.valueOf(fday), java.sql.Date.valueOf(lday));
         ArrayList<Slot> slots = sldb.getSlots();
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("attendances", attendances);

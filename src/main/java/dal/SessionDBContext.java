@@ -48,6 +48,32 @@ public class SessionDBContext extends DBContext<Session> {
         }
         return sessions;
     }
+
+    public boolean getIsTakenSession(int sesid){
+        try {
+            String sql = "select s.isTaken from swp391.session s where s.id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, sesid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getBoolean("isTaken");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+    }
+
+    public void updateIsTakenSession(int sesid){
+        try {
+            String sql = "update swp391.session set isTaken = 1 where id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, sesid);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
     @Override
     public ArrayList<Session> list() {
         return null;

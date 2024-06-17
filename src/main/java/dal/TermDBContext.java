@@ -19,7 +19,7 @@ public class TermDBContext extends DBContext<Term> {
         Major m = new Major();
         m.setId(major_id);
         try {
-            String sql = "select c.course_id from curriculum c inner join course co on co.id = c.course_id where c.term = ? and c.major_id = ? and co.status = 1";
+            String sql = "select c.course_id from curriculum c inner join course co on co.id = c.course_id where c.term_id = ? and c.major_id = ? and co.status = 1";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, term);
             stm.setInt(2, major_id);

@@ -1,11 +1,4 @@
 package controller.schedule;
-import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
-
-import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.google.gson.Gson;
 import dal.AccountDBContext;
@@ -20,13 +13,20 @@ import model.Account;
 import model.Session;
 import model.Slot;
 
-@WebServlet("/loadTeacherSchedule")
-public class LoadTeacherSchedule extends HttpServlet {
+import java.io.IOException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+@WebServlet("/loadManagerSchedule")
+public class LoadManagerSchedule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String days = req.getParameter("days");
         String fday = req.getParameter("fday");
         String lday = req.getParameter("lday");
+        String teacherId = req.getParameter("teacherId");
         resp.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("UTF-8");
         String[] dayArr = days.split(",");
@@ -37,9 +37,8 @@ public class LoadTeacherSchedule extends HttpServlet {
 
         SessionDBContext sdb = new SessionDBContext();
         SlotDBContext sldb = new SlotDBContext();
-        AccountDBContext accdb = new AccountDBContext();
-        Account acc = (Account) req.getSession().getAttribute("account");
-        ArrayList<Session> sessions = sdb.getSessionForTeacher(accdb.getIdUserByAccountId(acc.getId()), java.sql.Date.valueOf(fday), java.sql.Date.valueOf(lday));
+
+        ArrayList<Session> sessions = sdb.getSessionForTeacher(teacherId, java.sql.Date.valueOf(fday), java.sql.Date.valueOf(lday));
         ArrayList<Slot> slots = sldb.getSlots();
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("sessions", sessions);
