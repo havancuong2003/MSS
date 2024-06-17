@@ -22,12 +22,12 @@ public class CurriculumDBContext extends DBContext<Curriculum>{
         TermDBContext tdb = new TermDBContext();
         ArrayList<Term> terms = new ArrayList<>();
         try {
-            String sql = "select distinct c.major_id, c.term from curriculum c where c.major_id = ?";
+            String sql = "select distinct c.major_id, c.term_id from curriculum c where c.major_id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, majorid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                int t = rs.getInt("term");
+                int t = rs.getInt("term_id");
                 Term term = tdb.getTerm(t, majorid);
                 terms.add(term);
             }
@@ -42,7 +42,7 @@ public class CurriculumDBContext extends DBContext<Curriculum>{
 
     public void AddCourseToCurriculum(int majorid, int courseid, int term, String description) {
         try {
-            String sql = "insert into curriculum (`major_id`,`course_id`,`term`,`description`) values(?,?,?,?)";
+            String sql = "insert into curriculum (`major_id`,`course_id`,`term_id`,`description`) values(?,?,?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, majorid);
             stm.setInt(2, courseid);

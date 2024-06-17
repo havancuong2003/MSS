@@ -37,6 +37,8 @@ public class AddCourseToCurriculumController extends HttpServlet {
         String courseIDs = req.getParameter("addedCourseIds");
         String mid = req.getParameter("mid");
         if (courseIDs == null || courseIDs.isEmpty()) {
+            MajorDBContext mdb = new MajorDBContext();
+            req.setAttribute("majors", mdb.listAllMajor());
             req.setAttribute("msSave", "You have to add a course before submit!");
             req.setAttribute("mid", req.getParameter("mid"));
             req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
@@ -54,6 +56,8 @@ public class AddCourseToCurriculumController extends HttpServlet {
             ArrayList<Integer> successID = new ArrayList<>();
             for (Integer id : idList) {
                 if (checkCourseAlreadyInCurriculum(id, cur)) {
+                    MajorDBContext mdb = new MajorDBContext();
+                    req.setAttribute("majors", mdb.listAllMajor());
                     req.setAttribute("msSave", "A course in your list was already in curriculum! Add course to curriculum failed!");
                     req.setAttribute("mid", req.getParameter("mid"));
                     req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);
@@ -63,6 +67,8 @@ public class AddCourseToCurriculumController extends HttpServlet {
                     String description = req.getParameter("description" + id);
                     int termNo = Integer.parseInt(req.getParameter("termNo" + id));
                     if (courseInATerm(cur, termNo) >= 6) {
+                        MajorDBContext mdb = new MajorDBContext();
+                        req.setAttribute("majors", mdb.listAllMajor());
                         req.setAttribute("msSave", "You can't add more than 6 courses in a term! Term: " + termNo
                                 + "already have 6 courses! Add course to curriculum failed!");
                         req.setAttribute("mid", req.getParameter("mid"));
@@ -76,6 +82,8 @@ public class AddCourseToCurriculumController extends HttpServlet {
                     String description = req.getParameter("description" + id);
                     int termNo = Integer.parseInt(req.getParameter("termNo" + id));
                     if (courseInATerm(cur, termNo) >= 6) {
+                        MajorDBContext mdb = new MajorDBContext();
+                        req.setAttribute("majors", mdb.listAllMajor());
                         req.setAttribute("msSave", "You can't add more than 6 courses in a term! Term: " + termNo
                                 + "already have 6 courses! Add course to curriculum failed!");
                         req.setAttribute("mid", req.getParameter("mid"));
@@ -85,6 +93,8 @@ public class AddCourseToCurriculumController extends HttpServlet {
                         if (checkContainAllPreCourse(preCoursesList, cur, termNo)) {
                             successID.add(id);
                         }else {
+                            MajorDBContext mdb = new MajorDBContext();
+                            req.setAttribute("majors", mdb.listAllMajor());
                             req.setAttribute("msSave", "Prequisite of course is not in curriculum or that's course was study in the term later of the course you add!\n" +
                                     " Add course to curriculum failed!");
                             req.setAttribute("mid", req.getParameter("mid"));
@@ -100,6 +110,8 @@ public class AddCourseToCurriculumController extends HttpServlet {
                 int termNo = Integer.parseInt(req.getParameter("termNo" + id));
                 cudb.AddCourseToCurriculum(Integer.parseInt(mid), id, termNo, description);
             }
+            MajorDBContext mdb = new MajorDBContext();
+            req.setAttribute("majors", mdb.listAllMajor());
             req.setAttribute("msSave", "Add course to curriculum success!");
             req.setAttribute("mid", req.getParameter("mid"));
             req.getRequestDispatcher("/views/curriculum/addCourseToCurriculum.jsp").forward(req, resp);

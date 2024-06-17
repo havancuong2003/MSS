@@ -1,17 +1,49 @@
 <%--
   Created by IntelliJ IDEA.
   User: admin
-  Date: 6/15/2024
-  Time: 3:16 PM
+  Date: 6/17/2024
+  Time: 8:54 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Teacher Schedule</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-view {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-view:hover {
+            background-color: #0056b3;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -56,7 +88,6 @@
         }
 
         select {
-            margin-top: 10px;
             width: 50%; /* reduce the width of the select box */
             padding: 10px;
             border: 1px solid #ccc;
@@ -198,13 +229,35 @@
         </div>
     </div>
 </header>
+<div class="container mb-4" style="margin-top: 20px">
+    <div class="form-group row">
+        <label for="search" class="col-sm-2 col-form-label">Search:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="search" id="search" oninput="searchTeacher()">
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Teacher ID</th>
+            <th>Teacher Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="searchTableBody">
+        <!-- Results will be appended here -->
+        </tbody>
+    </table>
+    <input type="hidden" id="teacherId" name="teacherId">
+</div>
+
 <div class="container">
-    <h1>Student Schedule</h1>
+    <h1>Teacher Schedule</h1>
     <form id="weekForm" action="processDates" method="post">
         <div class="form-group">
             <label for="weekSelect">Select Week:</label>
             <select id="weekSelect" name="weekSelect" class="form-control" onchange="updateDates()">
-                <option value="" disabled>Select Week</option>
+                <option value="" disabled selected>Select Week</option>
                 <!-- Weeks will be added here by JavaScript -->
             </select>
         </div>
@@ -226,8 +279,38 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
+    function searchTeacher() {
+        var search = document.getElementById("search").value;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/manager/schedule",
+            type: "POST",
+            data: {
+                "search": search
+            },
+            success: function (data) {
+                var teachers = data;
+                var bodyTable = $("#searchTableBody");
+                bodyTable.html("");
+                var htmlValue = '';
+                teachers.forEach(function (teacher) {
+                    htmlValue += '<tr>';
+                    htmlValue += '<td>' + teacher.tid + '</td>';
+                    htmlValue += '<td>' + teacher.account.fullname + '</td>';
+                    htmlValue += '<td><button type="button" class="btn btn-view" onclick="viewTeacherSchedule(\'' + teacher.tid + '\')">View</button></td>';
+                    htmlValue += '</tr>';
+                });
+                bodyTable.html(htmlValue);
+            }
+        });
+    }
+
+    function viewTeacherSchedule(teacherId) {
+        document.getElementById("teacherId").value = teacherId;
+        updateDates();
+    }
+
     function getWeeksInYear(year) {
         const weeks = [];
         let date = new Date(year, 0, 1);
@@ -268,7 +351,7 @@
             weekSelect.add(option);
         });
 
-        // Chọn tuần hiện tại làm mặc định
+        // Set current week as default
         const today = new Date();
         const currentWeek = weeks.find(week => {
             const start = new Date(week.start);
@@ -297,41 +380,35 @@
         const days = document.getElementById('daysInWeek').value;
         const fday = document.getElementById('startDate').value;
         const lday = document.getElementById('endDate').value;
+        const teacherId = document.getElementById('teacherId').value;
         $.ajax({
-            url: "${pageContext.request.contextPath}/loadStudentSchedule",
+            url: "${pageContext.request.contextPath}/loadManagerSchedule",
             type: "GET",
             dataType: "JSON",
             data: {
                 days: days,
                 fday: fday,
-                lday: lday
+                lday: lday,
+                teacherId: teacherId
             },
             success: function (data) {
-                var attendances = data.attendances;
+                var sessions = data.sessions;
                 var slots = data.slots;
                 var date = data.date;
                 var bodyTable = $("#weekTableBody");
                 bodyTable.html("");
                 var htmlValue = '';
-                slots.forEach(function (slot){
-                    htmlValue += "<tr><td>Slot " + slot.id +"<br>"+slot.startTime + " - " + slot.endTime + "</td>";
+                slots.forEach(function (slot) {
+                    htmlValue += "<tr><td>Slot " + slot.id + "<br>" + slot.startTime + " - " + slot.endTime + "</td>";
                     date.forEach(function (d) {
-                        console.log(d);
                         htmlValue += "<td>";
-                        attendances.forEach(function (att) {
-                            // console.log(session.slot.id);
-                            // console.log(session.date);
-                            if (att.session.slot.id === slot.id && att.session.date === d) {
-                                htmlValue += "<a href=\"${pageContext.request.contextPath}/student/attendanceDetail?id="+att.session.id+"\">"+att.session.group.name+"</a> - "+att.session.group.course.code+" - "+att.session.room.detail+"<br>";
-                                if (att.session.taken){
-                                    if (att.present){
-                                        htmlValue += "Present<br>";
-                                    }else {
-                                        htmlValue += "Absent<br>";
-                                    }
-                                }else {
-                                    htmlValue += "Not Yet<br>";
-                                }
+                        sessions.forEach(function (session) {
+                            if (session.slot.id === slot.id && session.date === d) {
+                                htmlValue += "" + session.group.name + " - " + session.group.course.code + " - " + session.room.detail + "<br>";
+                                htmlValue += "<form action='viewManagerAttendance' method='GET'>";
+                                htmlValue += "<input type='hidden' name='sesid' value='" + session.id + "'>";
+                                    htmlValue += "<input type='submit' value='View' class='btn btn-warning'>";
+                                htmlValue += "</form>";
                             }
                         });
                         htmlValue += "</td>";
