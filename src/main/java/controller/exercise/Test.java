@@ -1,26 +1,31 @@
 package controller.exercise;
 
 import dal.PracticeDBContext;
+import dal.TestDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import model.QuestionDetail;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
 
 @WebServlet(name="test",value = "/test")
 public class Test extends HttpServlet {
     private static ArrayList<QuestionDetail> questionDetail = new ArrayList<>();
     private static ArrayList<Integer> listanswer = new ArrayList<>();
+    private static int exerciseId;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         PracticeDBContext context = new PracticeDBContext();
-        int exerciseId = Integer.parseInt(req.getParameter("exerciseId"));
+        exerciseId = Integer.parseInt(req.getParameter("exerciseId"));
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         questionDetail = context.getAllQuestionDetailByExerciseIdAndCourseId(exerciseId, courseId);
         for (int i = 0; i < questionDetail.size(); i++ ){
@@ -44,6 +49,23 @@ public class Test extends HttpServlet {
 
         if (option != null && option.equals("finish")) {
             int result = Result();
+            LocalDate localDate = LocalDate.now();
+            Date sqlDate = Date.valueOf(localDate);// thời ddieemr hieejn  taij
+            TestDBContext db = new TestDBContext();
+            // lay id
+            Account acc = (Account)request.getSession().getAttribute("account");
+            String studentId = db.getStudentIdByAccountId(acc.getId());
+            int historyId = db.insertHistory(result, sqlDate, "", studentId, exerciseId);// lay ra "" thoiwf gian lamf chuaw lafm, grape chua b cacsh layas
+            for(int i = 0; i < questionDetail.size(); i++){
+                int actual = listanswer.get(i);
+                if(actual == 0){
+                    db.insertQuestionSubmission(questionDetail.get(i).getQuestionId(), historyId);
+                }else{
+                    int answerId = questionDetail.get(i).getAnswers().get(actual - 1).getAnswerid();
+                    db.insertQuestionSubmission(questionDetail.get(i).getQuestionId(), answerId, historyId);
+                }
+
+            }
             request.setAttribute("size", questionDetail.size());
             request.setAttribute("result", result);
             listanswer.clear();

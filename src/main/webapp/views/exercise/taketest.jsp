@@ -101,7 +101,7 @@
                     </h1>
                 </div>
                 <form action="test" method="post" id="finishForm">
-
+                    <input id="timeInterval" type="hidden" name="timeInterval" value="">
 
                     <div
                             class="modal-body"
