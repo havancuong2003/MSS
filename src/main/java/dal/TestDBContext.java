@@ -1,9 +1,6 @@
 package dal;
 
-import model.Account;
-import model.Answer;
-import model.Question;
-import model.QuestionDetail;
+import model.*;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -42,7 +39,7 @@ public class TestDBContext extends DBContext<Account> {
     public ArrayList<Answer> getAllAnswerByQuestionId(int questionId)  {
         ArrayList<Answer> answers = new ArrayList<>();
         try {
-            String sql = "Select * from answer where question_id = ?";
+            String sql = "Select * from answer where question_id = ? order by answer_id asc";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, questionId);
             ResultSet rs = stm.executeQuery();
@@ -63,7 +60,7 @@ public class TestDBContext extends DBContext<Account> {
     public ArrayList<Question> getAllQuestionByExerciseIdAndCourseId(int exerciseId, int courseId)  {
         ArrayList<Question> questions = new ArrayList<>();
         try {
-            String sql = "select * from question where exercise_id = ? and course_id = ?";
+            String sql = "select * from question where exercise_id = ? and course_id = ? order by question_id asc";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, exerciseId);
             stm.setInt(2, courseId);
@@ -104,7 +101,7 @@ public class TestDBContext extends DBContext<Account> {
         return questionDetailList;
     }
 
-    // phaan xuwr lis lichj suwr
+    // phaan xuwr insert lis lichj suwr
     public int insertHistory(int score, Date dateSubmit, String timeInterval, String studentId, int exerciseId) {
         int historyId = -1;
         try {
@@ -178,11 +175,59 @@ public class TestDBContext extends DBContext<Account> {
         return "";
     }
 
-    public static void main(String[] args) {
-        TestDBContext context = new TestDBContext();
-        String stid = context.getStudentIdByAccountId(16);
-        System.out.println(stid);
+//    public static void main(String[] args) {
+//        TestDBContext context = new TestDBContext();
+//        String stid = context.getStudentIdByAccountId(16);
+//        System.out.println(stid);
+//    }
+
+
+    // xuwr lis in ra lichj suwr
+    public ArrayList<QuestionSubmission> getAllQuestionSubmissionByHistory(int historyId)  {
+        ArrayList<QuestionSubmission> questionSubmissions = new ArrayList<>();
+        try {
+            String sql = "select qs.*, q.question from question_submission qs \n" +
+                    "join question q on q.question_id = qs.question_id\n" +
+                    "where history_id = ? \n" +
+                    "order by question_id asc";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, historyId);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                QuestionSubmission questionSubmission = new QuestionSubmission();
+                Question question = new Question();
+                Answer answer = new Answer();
+                question.setQuestion(rs.getString(5));
+                question.setQuestionid(rs.getInt(2));
+                questionSubmission.setQuestion(question);
+                answer.setAnswerid(rs.getInt(3));
+                questionSubmission.setAnswer(answer);
+                questionSubmissions.add(questionSubmission);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(TestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return questionSubmissions;
     }
+
+    public int getScoreByHistory(int historyId)  {
+        int score = 0;
+        try {
+            String sql = "Select score from history where history_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, historyId);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(TestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return score;
+    }
+
 
 
 }
