@@ -1,15 +1,19 @@
 package controller.exercise;
 
 import dal.PracticeDBContext;
+import dal.TestDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Answer;
 import model.QuestionDetail;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @WebServlet(name="practice",value = "/practice")
@@ -17,7 +21,7 @@ public class Practice extends HttpServlet {
     private static ArrayList<QuestionDetail> questionDetail = new ArrayList<>();
     private static int indexquestion = 0;
     private static ArrayList<Integer> listanswer = new ArrayList<>();
-
+    private int exerciseId;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        questionDetail.add(new QuestionDetail(1, "What is the capital of France?", "Berlin", "Madrid", "Paris", "Rome", "C", "Paris is the capital of France."));
@@ -33,9 +37,10 @@ public class Practice extends HttpServlet {
 //        questionDetail.add(new QuestionDetail(11, "What is the hardest natural substance on Earth?", "Diamond", "Gold", "Platinum", "Silver", "A", "Diamond is the hardest natural substance on Earth."));
 //        questionDetail.add(new QuestionDetail(12, "Which country is known as the Land of the Rising Sun?", "China", "South Korea", "Japan", "Vietnam", "C", "Japan is known as the Land of the Rising Sun."));
 //        questionDetail.add(new QuestionDetail(13, "What is the chemical symbol for gold?", "Au", "Ag", "G", "H2O", "A", "The chemical symbol for gold is Au."));
-
+        exerciseId = Integer.parseInt(req.getParameter("exerciseId"));
+        int courseId = Integer.parseInt(req.getParameter("courseId"));
         PracticeDBContext context = new PracticeDBContext();
-        questionDetail = context.getAllQuestionDetailByExerciseIdAndCourseId(1, 1);
+        questionDetail = context.getAllQuestionDetailByExerciseIdAndCourseId(exerciseId, courseId);
         for (int i = 0; i < questionDetail.size(); i++ ){
             listanswer.add(0);
         }
@@ -57,6 +62,22 @@ public class Practice extends HttpServlet {
         if(option.equals("finish")){
             listanswer.set(indexquestion, choosenAnswer);
             int result = Result();
+            TestDBContext db = new TestDBContext();
+            LocalDate localDate = LocalDate.now();
+            Date sqlDate = Date.valueOf(localDate);// thời ddieemr hieejn  taij
+            // lay id
+            Account acc = (Account)request.getSession().getAttribute("account");
+            String studentId = db.getStudentIdByAccountId(acc.getId());
+            int historyId = db.insertHistory(result, sqlDate, "", studentId, exerciseId);// lay ra "" thoiwf gian lamf chuaw lafm, grape chua b cacsh layas
+            for(int i = 0; i < questionDetail.size(); i++){
+                int actual = listanswer.get(i);
+                if(actual == 0){
+                    db.insertQuestionSubmission(questionDetail.get(i).getQuestionId(), historyId);
+                }else{
+                    int answerId = questionDetail.get(i).getAnswers().get(actual - 1).getAnswerid();
+                    db.insertQuestionSubmission(questionDetail.get(i).getQuestionId(), answerId, historyId);
+                }
+            }
             request.setAttribute("size", questionDetail.size());
             request.setAttribute("result", result);
             listanswer.clear();
