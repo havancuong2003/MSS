@@ -31,22 +31,22 @@
                 <p id="questionText">
                     ${question.questionDetail}
                 </p>
-                <img src="./img/image.png" alt="" />
+
 
                 <!-- tùy chọn thời gian, điểm , index của câu -->
 <%--                <div class="question-time">00:01:10</div>--%>
                 <!-- <div class="question-time">1/10</div> -->
-                <!-- <div class="question-time">1 đ</div> -->
-                <div style="color: red">${msg}</div>
+
+
             </div>
             <div class="options">
                 <div>
-                    <button class="option-btn ${choosenAnswer == 1 ? 'gray' : ''}" data-answer="1">A. ${question.answerA}</button>
-                    <button class="option-btn ${choosenAnswer == 3 ? 'gray' : ''}" data-answer="3">C. ${question.answerC}</button>
+                    <button class="option-btn ${choosenAnswer == 1 ? 'gray' : ''}" data-answer="1">A. ${question.getAnswers().get(0).getAnswer()}</button>
+                    <button class="option-btn ${choosenAnswer == 3 ? 'gray' : ''}" data-answer="3">C. ${question.getAnswers().get(2).getAnswer()}</button>
                 </div>
                 <div>
-                    <button class="option-btn ${choosenAnswer == 2 ? 'gray' : ''}" data-answer="2">B. ${question.answerB}</button>
-                    <button class="option-btn ${choosenAnswer == 4 ? 'gray' : ''}" data-answer="4">D. ${question.answerD}</button>
+                    <button class="option-btn ${choosenAnswer == 2 ? 'gray' : ''}" data-answer="2">B. ${question.getAnswers().get(1).getAnswer()}</button>
+                    <button class="option-btn ${choosenAnswer == 4 ? 'gray' : ''}" data-answer="4">D. ${question.getAnswers().get(3).getAnswer()}</button>
                 </div>
             </div>
         </div>
@@ -55,10 +55,18 @@
                 <c:forEach var="i" begin="1" end="${size}">
                     <c:choose>
                         <c:when test="${i == (current + 1)}">
-                            <div class="list-item active">${i}</div>
+                            <div class="list-item active" style="background-color: red !important,
+                                    <c:if test="${listanswer.get(i - 1) != 0  && listanswer.get(i - 1) != null}">
+                                        background-color:#92bfbf
+                                    </c:if>"
+                            >${i}</div>
                         </c:when>
                         <c:otherwise>
-                            <div class="list-item">${i}</div>
+                            <div class="list-item"
+                                    <c:if test="${listanswer.get(i - 1) != 0 && listanswer.get(i - 1) != null}">
+                                        style="background-color:#92bfbf"
+                                    </c:if>
+                            >${i}</div>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
@@ -110,7 +118,7 @@
 </div>
 
 <!--pop-up logout-->
-<!-- co the cop mau cho pop-up khac -->
+
 <div
         class="modal fade"
         id="log-out"
@@ -205,6 +213,8 @@
             }
         });
     });
+
+    //xử lí chọn câu hỏi tương ứng
 
     //thời gian đồng hồ
     document.addEventListener("DOMContentLoaded", function () {

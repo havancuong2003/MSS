@@ -24,6 +24,12 @@ public class ListAccount extends HttpServlet {
         request.getRequestDispatcher("views/profile/listaccount.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String searchName = request.getParameter("searchName");
+        AccountDBContext con = new AccountDBContext();
+        ArrayList<Account> listaccount = con.getAllAccountByName(searchName);
+        request.setAttribute("listaccount", listaccount);
+        request.setAttribute("searchName", searchName);
+        request.getRequestDispatcher("views/profile/listaccount.jsp").forward(request, response);
 
     }
 }

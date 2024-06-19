@@ -331,10 +331,16 @@
                                 htmlValue += ""+session.group.name+" - "+session.group.course.code+" - "+session.room.detail+"<br>";
                                 htmlValue += "<form action='takeAttendance' method='GET'>";
                                 htmlValue += "<input type='hidden' name='sesid' value='"+session.id+"'>";
-                                if (session.isTaken) {
-                                    htmlValue += "<input type='submit' value='View'>";
+                                if (session.taken) {
+                                    htmlValue += "<input type='submit' value='View'";
+
+                                    htmlValue += ">";
                                 }else {
-                                    htmlValue += "<input type='submit' value='Take'>";
+                                    htmlValue += "<input type='submit' value='Take'";
+                                    if (session.lock){
+                                        htmlValue += "disabled";
+                                    }
+                                    htmlValue += ">";
                                 }
                                 htmlValue += "</form>";
                             }

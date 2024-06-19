@@ -7,7 +7,7 @@ public class Teacher extends Account implements IEntity{
 
     private int id;
     private Account account;
-
+    private String tid;
     public Teacher(int id, Account account) {
         this.id = id;
         this.account = account;
@@ -31,5 +31,13 @@ public class Teacher extends Account implements IEntity{
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
     }
 }

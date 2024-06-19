@@ -15,6 +15,11 @@ body {
     text-decoration: none;
 }
 
+.row{
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+
 .side-bar {
     background-color: rgba(0,0,0,0.1);
     height: 100vh;

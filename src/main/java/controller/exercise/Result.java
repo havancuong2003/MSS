@@ -1,17 +1,12 @@
 package controller.exercise;
 
-import dal.AccountDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
-import model.Question;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @WebServlet(name="result",value = "/result")
 public class Result extends HttpServlet {

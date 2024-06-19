@@ -1,5 +1,7 @@
 package dal;
+
 import java.sql.*;
+
 import model.Account;
 
 import java.sql.SQLException;
@@ -42,7 +44,7 @@ public class AccountDBContext extends DBContext<Account> {
             stm.setString(1, username);
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 a = new Account();
                 a.setId(rs.getInt("account_id"));
                 a.setUsername(rs.getString("username"));
@@ -57,8 +59,7 @@ public class AccountDBContext extends DBContext<Account> {
                 a.setRole_id(rs.getInt("role_id"));
             }
             return a;
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return a;
@@ -78,7 +79,7 @@ public class AccountDBContext extends DBContext<Account> {
     }
 
     public ArrayList<String> getEmail() {
-            String sql = "Select email from account";
+        String sql = "Select email from account";
         ArrayList<String> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -114,6 +115,30 @@ public class AccountDBContext extends DBContext<Account> {
         try {
             String sql = "SELECT username, password, fullname, phone, email, gender, role_id FROM Account";
             PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setUsername(rs.getString("username"));
+                a.setPassword(rs.getString("password"));
+                a.setFullname(rs.getString("fullname"));
+                a.setPhone(rs.getString("phone"));
+                a.setEmail(rs.getString("email"));
+                a.setGender(rs.getBoolean("gender"));
+                a.setRole_id(rs.getInt("role_id"));
+                accounts.add(a);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return accounts;
+    }
+
+    public ArrayList<Account> getAllAccountByName(String searchName) {
+        ArrayList<Account> accounts = new ArrayList<>();
+        try {
+            String sql = "SELECT username, password, fullname, phone, email, gender, role_id FROM Account Where username like ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,    "%" + searchName + "%");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
@@ -188,6 +213,27 @@ public class AccountDBContext extends DBContext<Account> {
         return null;
     }
 
-
+    public String getIdUserByAccountId(int id) {
+        try {
+            String sql = "SELECT COALESCE(s.id, t.id) AS role_id\n" +
+                    "FROM account a\n" +
+                    "LEFT JOIN student s ON a.account_id = s.acc_id\n" +
+                    "LEFT JOIN teacher t ON a.account_id = t.acc_id\n" +
+                    "WHERE a.account_id = ?;";
+            PreparedStatement stm = null;
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getString("role_id");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
 
 }
+
+
+

@@ -1,7 +1,9 @@
 package dal;
 
+import model.Account;
 import model.Course;
 import model.MarkData;
+import model.Teacher;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,6 +39,30 @@ public class TeacherDBContext extends DBContext<MarkData>{
             Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
         }
         return markList;
+    }
+
+    public ArrayList<Teacher> searchTeacherByAccountFullNameOrId(String search) {
+        ArrayList<Teacher> teacherList = new ArrayList<>();
+        try {
+            String sql = "SELECT t.id, a.fullname\n" +
+                    "FROM teacher t inner join account a on t.acc_id = a.account_id\n" +
+                    "WHERE a.fullname LIKE ? OR t.id LIKE ? LIMIT 3";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%" + search + "%");
+            stm.setString(2, "%" + search + "%");
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Teacher teacher = new Teacher();
+                teacher.setTid(rs.getString("id"));
+                Account acc = new Account();
+                acc.setFullname(rs.getString("fullname"));
+                teacher.setAccount(acc);
+                teacherList.add(teacher);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return teacherList;
     }
 
     @Override

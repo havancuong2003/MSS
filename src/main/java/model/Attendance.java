@@ -7,7 +7,7 @@ public class Attendance implements IEntity {
     private Student student;
     private boolean present;
     private String description;
-    private Date date;
+    private Timestamp date;
 
     public int getId() {
         return id;
@@ -49,11 +49,11 @@ public class Attendance implements IEntity {
         this.description = description;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 }

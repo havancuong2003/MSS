@@ -1,31 +1,69 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: admin
+  Date: 6/17/2024
+  Time: 1:30 AM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Activity Detail</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
         }
         table {
-            border-collapse: collapse;
             width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
         }
         th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px;
             text-align: left;
         }
         th {
-            background-color: #f0f0f0;
+            background-color: #f2f2f2;
         }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        .attendance-status {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .attendance-status.absent {
+            color: #f44336;
+        }
+        .attendance-status.not-yet {
+            color: #ff9800;
+        }
+        .description {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f3fe;
+            border-left: 5px solid #2196F3;
+            color: #333;
         }
         .sp{
             font-family: 'Poppins', sans-serif;
@@ -140,7 +178,7 @@
         <img src="logo.png" alt="">
         <span class="sp">MyStudySpace</span>
     </div>
-    <div class="profile-container">
+    <div class="profile-container" >
         <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()">
         <div id="profileDropdown" class="profile-dropdown">
             <div class="profile-info">
@@ -158,46 +196,53 @@
         </div>
     </div>
 </header>
-<div class="container">
-    <h2 class="text-center">Attendance</h2>
-    <form action="takeAttendance" method="post">
-        <input type="hidden" name="sesid" value="${requestScope.sesid}">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Student Name</th>
-                <th>Attendance</th>
-                <th>Description</th>
-                <th>Time</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${requestScope.attendances}" var="a">
-                <tr>
-                    <td>${a.student.id}</td>
-                    <td>${a.student.account.fullname}</td>
-                    <td>
-                        <div class="form-check">
-                            <input type="radio" id="present_yes_${a.student.id}" name="present${a.student.id}" value="yes" <c:if test="${a.present}">checked</c:if>>
-                            <label for="present_yes_${a.student.id}" class="form-check-label">Present</label>
-
-                            <input type="radio" id="present_no_${a.student.id}" name="present${a.student.id}" value="no" <c:if test="${!a.present}">checked</c:if>>
-                            <label for="present_no_${a.student.id}" class="form-check-label">Absent</label>
-                        </div>
-                    </td>
-                    <td>
-                        <input type="text" name="description${a.student.id}" value="${a.description}" class="form-control">
-                    </td>
-                    <td>
-                            ${a.date}
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        <button type="submit" class="btn btn-primary" <c:if test="${requestScope.lock}">disabled</c:if>>Submit</button>${requestScope.ms}
-    </form>
+<div class="container" style="margin-top: 20px">
+    <h2>Activity Detail</h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <td>${requestScope.attendance.session.date}</td>
+        </tr>
+        <tr>
+            <th>Slot</th>
+            <td>${requestScope.attendance.session.slot.id}</td>
+        </tr>
+        <tr>
+            <th>Student Group</th>
+            <td>${requestScope.attendance.session.group.name}</td>
+        </tr>
+        <tr>
+            <th>Instructor</th>
+            <td>${requestScope.attendance.session.teacher.account.fullname}</td>
+        </tr>
+        <tr>
+            <th>Course</th>
+            <td>${requestScope.attendance.session.group.course.detail} (${requestScope.attendance.session.group.course.code})</td>
+        </tr>
+        <tr>
+            <th>Attendance</th>
+            <td>
+                <c:if test="${requestScope.attendance.session.taken}">
+                    <c:if test="${requestScope.attendance.present}">
+                        <span class="attendance-status">Present</span>
+                    </c:if>
+                    <c:if test="${!requestScope.attendance.present}">
+                        <span class="attendance-status absent">Absent</span>
+                    </c:if>
+                </c:if>
+                <c:if test="${!requestScope.attendance.session.taken}">
+                    <span class="attendance-status not-yet">Not Yet</span>
+                </c:if>
+            </td>
+        </tr>
+        <tr>
+            <th>Record Time</th>
+            <td>${requestScope.attendance.date}</td>
+        </tr>
+    </table>
+<%--    <div class="description">--%>
+<%--        ${requestScope.attendance.description}--%>
+<%--    </div>--%>
 </div>
 </body>
 </html>
