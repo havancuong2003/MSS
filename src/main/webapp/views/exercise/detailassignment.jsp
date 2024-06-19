@@ -47,8 +47,14 @@
                 cao!!!
             </p>
             <br />
+
             <div class="document-link">
-                <a href="#">Test 4 - Chapter 3</a>
+                <c:forEach items="${listExercise}" var="exe">
+                    <a href="practice?exerciseId=${exe.getExerciseId()}&courseId=${exe.getCourseId()}">${exe.getExerciseName()}</a>
+<%--                    <c:forEach items="${listExercise.getHistories()}" var="his">--%>
+<%--                        <a href="viewhistorytest?historyId=${his.getId()}">${his.getDate_submit()} : ${his.getScore()}</a>--%>
+<%--                    </c:forEach>--%>
+                </c:forEach>
             </div>
         </div>
         <div class="class-comments">

@@ -227,7 +227,4 @@ public class TestDBContext extends DBContext<Account> {
         }
         return score;
     }
-
-
-
 }
