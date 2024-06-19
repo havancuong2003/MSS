@@ -49,7 +49,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 ses.setSlot(sl);
                 att.setSession(ses);
                 att.setPresent(rs.getBoolean("isPresent"));
-                att.setDate(rs.getDate("time"));
+                att.setDate(rs.getTimestamp("time"));
                 att.setDescription(rs.getString("description"));
 
                 attendances.add(att);
@@ -63,9 +63,9 @@ public class AttendanceDBContext extends DBContext<Attendance> {
     public ArrayList<Attendance> getAttendancesForTeacher(int sesid) {
         ArrayList<Attendance> attendances = new ArrayList<>();
         try {
-            String sql = "select s.id, acc.fullname, g.id as groupid, g.name as groupname, att.id as attid, att.description, att.isPresent, att.time  from student s inner join enrollment en on en.student_id = s.id inner join swp391.group g on g.id = en.group_id\n" +
+            String sql = "select s.id, acc.fullname, g.id as groupid, g.name as groupname, att.id as attid, att.description, att.isPresent, att.time, ses.date,ses.isTaken as isTaken, sl.id as slot, sl.start, sl.end from student s inner join enrollment en on en.student_id = s.id inner join swp391.group g on g.id = en.group_id\n" +
                     "inner join swp391.session ses on ses.group_id = g.id left join attendance att on att.ses_id = ses.id and att.student_id = s.id inner join swp391.account acc on acc.account_id = s.acc_id\n" +
-                    "where ses.id = ?";
+                    "inner join slot sl on sl.id = ses.slot_id where ses.id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, sesid);
             ResultSet rs = stm.executeQuery();
@@ -75,19 +75,26 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 Group g = new Group();
                 Session ses = new Session();
                 Account acc = new Account();
-
+                Slot sl = new Slot();
+                sl.setId(rs.getInt("slot"));
+                sl.setStartTime(rs.getTime("start"));
+                sl.setEndTime(rs.getTime("end"));
+                ses.setSlot(sl);
                 s.setId(rs.getString("id"));
                 acc.setFullname(rs.getString("fullname"));
                 s.setAccount(acc);
                 g.setId(rs.getInt("groupid"));
                 g.setName(rs.getString("groupname"));
+                ses.setDate(rs.getDate("date"));
                 ses.setId(sesid);
                 ses.setGroup(g);
+                ses.setTaken(rs.getBoolean("isTaken"));
+                ses.updateLockStatus();
                 att.setId(rs.getInt("attid"));
                 att.setStudent(s);
                 att.setSession(ses);
                 att.setPresent(rs.getBoolean("isPresent"));
-                att.setDate(rs.getDate("time"));
+                att.setDate(rs.getTimestamp("time"));
                 att.setDescription(rs.getString("description"));
                 attendances.add(att);
             }
@@ -168,7 +175,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 ses.setSlot(sl);
                 att.setSession(ses);
                 att.setPresent(rs.getBoolean("isPresent"));
-                att.setDate(rs.getDate("time"));
+                att.setDate(rs.getTimestamp("time"));
                 att.setDescription(rs.getString("description"));
 
             }

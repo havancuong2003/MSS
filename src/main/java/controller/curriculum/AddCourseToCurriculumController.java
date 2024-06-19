@@ -16,7 +16,7 @@ import model.Term;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "AddCourseToCurriculum", value = "/addCourseToCurriculum")
+@WebServlet(name = "AddCourseToCurriculum", value = "/admin/addCourseToCurriculum")
 public class AddCourseToCurriculumController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

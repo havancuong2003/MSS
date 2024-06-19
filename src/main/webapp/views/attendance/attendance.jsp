@@ -196,7 +196,7 @@
             </c:forEach>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-primary">Submit</button>${requestScope.ms}
+        <button type="submit" class="btn btn-primary" <c:if test="${requestScope.lock}">disabled</c:if>>Submit</button>${requestScope.ms}
     </form>
 </div>
 </body>

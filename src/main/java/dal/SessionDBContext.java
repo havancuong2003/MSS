@@ -41,6 +41,7 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setSlot(sl);
                 s.setTaken(rs.getBoolean("isTaken"));
                 s.setId(rs.getInt("id"));
+                s.updateLockStatus();
                 sessions.add(s);
             }
         } catch (SQLException e) {

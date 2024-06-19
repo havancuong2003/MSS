@@ -19,6 +19,7 @@ public class TakeAttendance extends HttpServlet {
         int sesid = Integer.parseInt(req.getParameter("sesid"));
         AttendanceDBContext attdb = new AttendanceDBContext();
         ArrayList<Attendance> attendances = attdb.getAttendancesForTeacher(sesid);
+        req.setAttribute("lock", attendances.get(0).getSession().isLock());
         req.setAttribute("sesid", sesid);
         req.setAttribute("attendances", attendances);
         req.getRequestDispatcher("../views/attendance/attendance.jsp").forward(req, resp);

@@ -9,26 +9,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f0f0f0;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+
         .sp {
             font-family: 'Poppins', sans-serif;
             font-size: 28px;
@@ -132,6 +120,63 @@
         .profile-actions a:hover {
             color: #0056b3;
         }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        thead {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            /*background-color: #f1f1f1;*/
+        }
+        .form-check-inline {
+            display: flex;
+            align-items: center;
+        }
+        .form-check-label {
+            margin-right: 15px;
+            margin-left: 5px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin: 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+        input[type="radio"] {
+            margin-left: 10px;
+        }
     </style>
     <script>
         function toggleProfileDropdown() {
@@ -175,10 +220,10 @@
     </div>
 </header>
 <div class="container">
-    <h2 class="text-center">Attendance</h2>
+    <h2>Attendance</h2>
     <form action="takeAttendance" method="post">
         <input type="hidden" name="sesid" value="${requestScope.sesid}">
-        <table class="table table-striped">
+        <table>
             <thead>
             <tr>
                 <th>Student ID</th>
@@ -194,7 +239,7 @@
                     <td>${a.student.id}</td>
                     <td>${a.student.account.fullname}</td>
                     <td>
-                        <div class="form-check">
+                        <div class="form-check-inline">
                             <input type="radio" id="present_yes_${a.student.id}" name="present${a.student.id}" disabled
                                    value="yes"
                                    <c:if test="${a.present}">checked</c:if> >
@@ -209,14 +254,14 @@
                         <input type="text" name="description${a.student.id}" value="${a.description}"
                                class="form-control" disabled>
                     </td>
-                    <td>
-                            ${a.date}
-                    </td>
+                    <td>${a.date}</td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
     </form>
 </div>
+
+
 </body>
 </html>
