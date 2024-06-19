@@ -233,7 +233,8 @@
     <div class="form-group row">
         <label for="search" class="col-sm-2 col-form-label">Search:</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" name="search" id="search" oninput="searchTeacher()">
+            <input type="text" class="form-control" name="search" id="search" oninput="searchTeacher()"
+            placeholder="Enter teacher name or teacher code">
         </div>
     </div>
     <table class="table table-bordered">
