@@ -1,103 +1,70 @@
 package model;
 
 public class Question {
-    private int questionId;
-    private String questionDetail;
-    private String answerA;
-    private String answerB;
-    private String answerC;
-    private String answerD;
-    private String answerTrue;
-    private String explain;
+    private int questionid;
+    private String question;
+    private int typequestion;
+    private int exerciseid;
+    private int courseid;
+    private int status;
 
-    public Question() { }
-
-    public Question(int questionId, String questionDetail, String answerA, String answerB, String answerC, String answerD, String answerTrue, String explain) {
-        this.questionId = questionId;
-        this.questionDetail = questionDetail;
-        this.answerA = answerA;
-        this.answerB = answerB;
-        this.answerC = answerC;
-        this.answerD = answerD;
-        this.answerTrue = answerTrue;
-        this.explain = explain;
+    public Question() {
     }
 
-    @Override
-    public String toString() {
-        return "Question{" +
-                "questionId=" + questionId +
-                ", questionDetail='" + questionDetail + '\'' +
-                ", answerA='" + answerA + '\'' +
-                ", answerB='" + answerB + '\'' +
-                ", answerC='" + answerC + '\'' +
-                ", answerD='" + answerD + '\'' +
-                ", answerTrue='" + answerTrue + '\'' +
-                ", explain='" + explain + '\'' +
-                '}';
+    public Question(int questionid, int exerciseid, String question, int typequestion, int courseid, int status) {
+        this.questionid = questionid;
+        this.exerciseid = exerciseid;
+        this.question = question;
+        this.typequestion = typequestion;
+        this.courseid = courseid;
+        this.status = status;
     }
 
-    public int getQuestionId() {
-        return questionId;
+    public int getQuestionid() {
+        return questionid;
     }
 
-    public void setQuestionId(int questionId) {
-        this.questionId = questionId;
+    public void setQuestionid(int questionid) {
+        this.questionid = questionid;
     }
 
-    public String getQuestionDetail() {
-        return questionDetail;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setQuestionDetail(String questionDetail) {
-        this.questionDetail = questionDetail;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public String getAnswerA() {
-        return answerA;
+    public int getTypequestion() {
+        return typequestion;
     }
 
-    public void setAnswerA(String answerA) {
-        this.answerA = answerA;
+    public void setTypequestion(int typequestion) {
+        this.typequestion = typequestion;
     }
 
-    public String getAnswerB() {
-        return answerB;
+    public int getExerciseid() {
+        return exerciseid;
     }
 
-    public void setAnswerB(String answerB) {
-        this.answerB = answerB;
+    public void setExerciseid(int exerciseid) {
+        this.exerciseid = exerciseid;
     }
 
-    public String getAnswerC() {
-        return answerC;
+    public int getCourseid() {
+        return courseid;
     }
 
-    public void setAnswerC(String answerC) {
-        this.answerC = answerC;
+    public void setCourseid(int courseid) {
+        this.courseid = courseid;
     }
 
-    public String getAnswerD() {
-        return answerD;
+    public int getStatus() {
+        return status;
     }
 
-    public void setAnswerD(String answerD) {
-        this.answerD = answerD;
-    }
-
-    public String getAnswerTrue() {
-        return answerTrue;
-    }
-
-    public void setAnswerTrue(String answerTrue) {
-        this.answerTrue = answerTrue;
-    }
-
-    public String getExplain() {
-        return explain;
-    }
-
-    public void setExplain(String explain) {
-        this.explain = explain;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

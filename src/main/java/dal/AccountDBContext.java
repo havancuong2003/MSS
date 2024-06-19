@@ -133,6 +133,30 @@ public class AccountDBContext extends DBContext<Account> {
         return accounts;
     }
 
+    public ArrayList<Account> getAllAccountByName(String searchName) {
+        ArrayList<Account> accounts = new ArrayList<>();
+        try {
+            String sql = "SELECT username, password, fullname, phone, email, gender, role_id FROM Account Where username like ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,    "%" + searchName + "%");
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setUsername(rs.getString("username"));
+                a.setPassword(rs.getString("password"));
+                a.setFullname(rs.getString("fullname"));
+                a.setPhone(rs.getString("phone"));
+                a.setEmail(rs.getString("email"));
+                a.setGender(rs.getBoolean("gender"));
+                a.setRole_id(rs.getInt("role_id"));
+                accounts.add(a);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return accounts;
+    }
+
     public boolean isUsernameExists(String username) {
         String query = "SELECT COUNT(*) FROM account WHERE username = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -209,6 +233,7 @@ public class AccountDBContext extends DBContext<Account> {
         return null;
     }
 
-};
+}
+
 
 
