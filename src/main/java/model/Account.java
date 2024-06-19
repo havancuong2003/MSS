@@ -4,7 +4,7 @@ import java.sql.Blob;
 import java.util.Date;
 
 public class Account implements IEntity {
-    private int id;
+    private int aid;
     private String username;
     private String password;
     private String email;
@@ -18,12 +18,13 @@ public class Account implements IEntity {
 
 
 
+
     public Account() {
 
     }
 
     public Account(int id, String username, String password, String email, String fullname, String phone, boolean gender, String address, Date dob, int role_id, Blob avatar) {
-        this.id = id;
+        this.aid = id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -37,11 +38,11 @@ public class Account implements IEntity {
     }
 
     public int getId() {
-        return id;
+        return aid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int aid) {
+        this.aid = aid;
     }
 
     public String getUsername() {

@@ -8,8 +8,9 @@ public class Major implements IEntity{
     private int id;
     private String code;
     private String detail;
+
     private ArrayList<Term> terms;
-    
+
     public Major() {
     }
 
@@ -28,6 +29,10 @@ public class Major implements IEntity{
         this.terms = terms;
     }
 
+    public Major(String code, String detail) {
+        this.code = code;
+        this.detail = detail;
+    }
     public int getId() {
         return id;
     }

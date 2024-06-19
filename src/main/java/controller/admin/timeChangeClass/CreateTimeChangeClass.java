@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @WebServlet("/admin/timeChangeClass")
-public class CreateTimeChangeClass extends HttpServlet {
+public class    CreateTimeChangeClass extends HttpServlet {
     private final int CURRENT_TERM = GetCurrentTerm.currentTerm;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -194,6 +194,16 @@
             <a href="<%=request.getContextPath()%>/addCourse"><i class="fas fa-plus"></i> Add New Course</a>
             <a href="<%=request.getContextPath()%>/listCourse"><i class="fas fa-list"></i> Course List</a>
         </div>
+        <a href="#" onclick="toggleSubMenu('timePeriodsSubMenu')"><i class="fas fa-clock"></i> Time Periods</a>
+        <div id="timePeriodsSubMenu" class="submenu" style="display: none;">
+            <a href="timeChangeClass"><i class="fas fa-exchange-alt"></i> Time Change Class</a>
+            <a href="registerTime"><i class="fas fa-calendar-check"></i> Time Register Course</a>
+        </div>
+        <a href="#" onclick="toggleSubMenu('scheduleSubMenu')"><i class="fas fa-calendar-alt"></i> Schedule</a>
+        <div id="scheduleSubMenu" class="submenu" style="display: none;">
+            <a href="createGroup"><i class="fas fa-users-cog"></i> Create Group</a>
+            <a href="createSchedule"><i class="fas fa-calendar-plus"></i> Create Schedule</a>
+        </div>
     </div>
     <div class="content">
         <!-- Nội dung dashboard -->

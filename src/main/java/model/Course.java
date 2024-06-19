@@ -8,18 +8,25 @@ public class Course implements IEntity{
     private String detail;
     private boolean status;
     private String description;
-    private ArrayList<Course> prerequisiteCourses;
+    private int credit;
+    private ArrayList<Integer> preCourseID;
+    private String preCoursesString;
+    private boolean isChecked;
 
-    public Course(int id, String code, String detail, boolean status, String description, ArrayList<Course> prerequisiteCourses) {
-        this.id = id;
-        this.code = code;
-        this.detail = detail;
-        this.status = status;
-        this.description = description;
-        this.prerequisiteCourses = prerequisiteCourses;
+    public boolean isChecked() {
+        return isChecked;
     }
 
-    public Course() {
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getPreCoursesString() {
+        return preCoursesString;
+    }
+
+    public void setPreCoursesString(String preCoursesString) {
+        this.preCoursesString = preCoursesString;
     }
 
     public String getDescription() {
@@ -29,6 +36,49 @@ public class Course implements IEntity{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
+
+
+    public ArrayList<Integer> getPreCourseID() {
+        return preCourseID;
+    }
+
+    public void setPreCourseID(ArrayList<Integer> preCourseID) {
+        this.preCourseID = preCourseID;
+    }
+    private ArrayList<Course> prerequisiteCourses;
+    private String descriptionPrerequisiteCourses;
+
+    public Course(int id, String code, String detail, boolean status, String description, ArrayList<Course> prerequisiteCourses,String descriptionPrerequisiteCourses) {
+        this.id = id;
+        this.code = code;
+        this.detail = detail;
+        this.status = status;
+        this.description = description;
+        this.prerequisiteCourses = prerequisiteCourses;
+        this.descriptionPrerequisiteCourses = descriptionPrerequisiteCourses;
+    }
+
+    public Course() {
+    }
+
+    public String getDescriptionPrerequisiteCourses() {
+        return descriptionPrerequisiteCourses;
+    }
+
+    public void setDescriptionPrerequisiteCourses(String descriptionPrerequisiteCourses) {
+        this.descriptionPrerequisiteCourses = descriptionPrerequisiteCourses;
+    }
+
+
 
     public ArrayList<Course> getPrerequisiteCourses() {
         return prerequisiteCourses;
