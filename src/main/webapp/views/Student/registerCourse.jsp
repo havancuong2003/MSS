@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+         pageEncoding="UTF-8" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
+                                            prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,6 +51,7 @@
             padding: 5px 10px;
             font-size: 14px;
         }
+
         a {
             text-decoration: none;
             color: #007bff;
@@ -62,6 +63,7 @@
             color: #0056b3;
             text-shadow: 0px 0px 5px rgba(0, 91, 187, 0.5);
         }
+
         .header {
             background-color: #ccc;
             color: black;
@@ -71,6 +73,7 @@
             top: 0;
             width: 100%;
         }
+
         .header a {
             position: absolute;
             left: 20px;
@@ -86,6 +89,7 @@
             background-color: #003d80;
             color: white;
         }
+
         footer {
             background-color: #f2f2f2;
             padding: 20px;
@@ -96,6 +100,7 @@
             z-index: 10;
             text-align: center;
         }
+
         .contain {
             width: 80%;
             margin: 120px auto;
@@ -104,19 +109,31 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
         }
+
         .content {
             text-align: center;
             margin-bottom: 20px;
             font-weight: bold;
             font-size: 20px;
         }
+
         .registerCourse {
             margin-bottom: 20px;
             font-weight: bold;
             font-size: 20px;
         }
+
         .expired {
             display: none;
+        }
+        .message {
+            font-size: 18px; /* Đặt kích thước phông chữ lớn hơn */
+            padding: 15px; /* Tăng padding để làm cho `message` to hơn */
+            border: 2px solid; /* Thêm đường viền */
+            border-radius: 5px; /* Làm cho góc cong */
+            margin: 20px auto; /* Căn giữa theo chiều ngang */
+            max-width: 600px; /* Giới hạn chiều rộng tối đa */
+            text-align: center; /* Căn giữa nội dung */
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -126,19 +143,29 @@
     <a href="dashboard">Back</a>
     <h1>Header</h1>
 </div>
-<div id="expired" class="${validDate ? 'expired' : ''}">
+<h1>${validDate}</h1>
+<div
+        id="expired"
+        class="${validDate eq 'true' ? 'expired' : 'ab'}"
+        style="margin-top: 120px"
+>
     <h1>The registration period has expired or has not yet arrived</h1>
 </div>
-<div id="contain" class="${validDate ? '' : 'expired'}">
-    <p align="right">Semester: SU24</p>
-    <div id="messageContainer"></div>
+<div class="${validDate eq 'true' ? 'ab' : 'expired'} contain">
+    <h1 style="text-align: right">Semester: SU24</h1>
+
     <div class="content">
-        <p>Start date from 01/01/2020 to 02/01/2020</p>
-        <p>Students can only register for 5 courses in a semester</p>
-        <p>
+        <h2>Student register course for next semester:</h2>
+        <h3>
+            Start register from ${timePeriods.startRegister} to
+            ${timePeriods.endRegister}
+        </h3>
+        <h3>Students can only register for 5 courses in a semester</h3>
+        <div id="messageContainer"></div>
+        <h3>
             Courses list registered:
             <span id="totalRegister">${totalRegister}</span> course
-        </p>
+        </h3>
     </div>
     <table>
         <thead>
@@ -155,7 +182,9 @@
                 <td>${course.id}</td>
                 <td>${course.code}</td>
                 <td>${course.detail}</td>
-                <td><button>delete</button></td>
+                <td>
+                    <button>delete</button>
+                </td>
             </tr>
         </c:forEach>
         </tbody>
@@ -237,6 +266,9 @@
                             <td>\${course.id}</td>
                             <td>\${course.code}</td>
                             <td>\${course.detail}</td>
+<td>
+                    <button>delete</button>
+                </td>
                         </tr>`;
             });
             $("#courseRegistered").html(courseRegisteredHtml);
@@ -264,6 +296,7 @@
                 .removeClass()
                 .addClass(data.validDate ? "" : "expired");
         }
+
         function formatDate(date) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, "0");
