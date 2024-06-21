@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CreateGroupHelper {
-    private static int currentTerm = GetCurrentTerm.currentTerm;
+    private static int currentSemester = GetCurrentTerm.currentSemester;
     private static int totalStudentPerGroup = 3;
 
     public static void main(String[] args) throws SQLException {
@@ -34,7 +34,7 @@ public class CreateGroupHelper {
         GroupDBContext gdbc = new GroupDBContext();
 
         // get list student register course
-        ArrayList<Student> students = gdbc.getStudentRegister(course.getId(), currentTerm);
+        ArrayList<Student> students = gdbc.getStudentRegister(course.getId(), currentSemester);
 
         // Total of student
         int totalStudents = students.size();

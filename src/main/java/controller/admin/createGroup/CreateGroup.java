@@ -13,6 +13,7 @@ import model.Group;
 import model.Student;
 import model.TimeSlot;
 import util.CreateGroupHelper;
+import util.GetCurrentTerm;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,14 +22,14 @@ import java.util.ArrayList;
 @WebServlet("/admin/createGroup")
 public class CreateGroup extends HttpServlet {
 
-
+private final int currentSemester = GetCurrentTerm.currentSemester;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         GroupDBContext gdbc = new GroupDBContext();
-        ArrayList<Group> groups = gdbc.getGroupBySemester(1);
+        ArrayList<Group> groups = gdbc.getGroupBySemester(currentSemester);
         req.setAttribute("groups", groups);
-        req.setAttribute("registers", gdbc.getInfoRegisterCourse(1));
-        req.setAttribute("isCreate", gdbc.getStatusCreateGroup(1));
+        req.setAttribute("registers", gdbc.getInfoRegisterCourse(currentSemester));
+        req.setAttribute("isCreate", gdbc.getStatusCreateGroup(currentSemester));
         req.getRequestDispatcher("../views/admin/createGroup/createGroup.jsp").forward(req, resp);
     }
 
@@ -39,9 +40,9 @@ public class CreateGroup extends HttpServlet {
         try {
             if (isCreate.equals("true")) {
                 GroupDBContext g = new GroupDBContext();
-                g.deleteEnrollment(1);
-                g.deleteGroup(1);
-                g.setIsCreateIsFalse(1);
+                g.deleteEnrollment(currentSemester);
+                g.deleteGroup(currentSemester);
+                g.setIsCreateIsFalse(currentSemester);
                 CreateGroupHelper.allocateClasses();
             } else {
 

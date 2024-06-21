@@ -28,7 +28,7 @@ public class RegisterCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
-        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(GetCurrentTerm.currentTerm);
+        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(GetCurrentTerm.currentSemester);
         HttpSession session = req.getSession();
         StudentDBContext s = new StudentDBContext();
         Account account = (Account) session.getAttribute("account");
@@ -38,8 +38,8 @@ public class RegisterCourse extends HttpServlet {
                 req.setAttribute("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
                 req.setAttribute("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
                 req.setAttribute("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
-                req.setAttribute("courseRegistered", s.getCoursesRegistered(account.getUsername(), currentTerm));
-                req.setAttribute("totalRegister", s.getCoursesRegistered(account.getUsername(), currentTerm).size());
+                req.setAttribute("courseRegistered", s.getCoursesRegistered(account.getUsername(), GetCurrentTerm.currentSemester));
+                req.setAttribute("totalRegister", s.getCoursesRegistered(account.getUsername(),  GetCurrentTerm.currentSemester).size());
                 if (timePeriods != null) {
                     req.setAttribute("timePeriods", timePeriods);
 
@@ -74,7 +74,7 @@ public class RegisterCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
-        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(GetCurrentTerm.currentTerm);
+        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(GetCurrentTerm.currentSemester);
         HttpSession session = req.getSession();
         StudentDBContext s = new StudentDBContext();
         Account account = (Account) session.getAttribute("account");
@@ -114,8 +114,8 @@ public class RegisterCourse extends HttpServlet {
                 responseData.put("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
                 responseData.put("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
                 responseData.put("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
-                responseData.put("courseRegistered", s.getCoursesRegistered(account.getUsername(), 1));
-                responseData.put("totalRegister", s.getCoursesRegistered(account.getUsername(), 1).size());
+                responseData.put("courseRegistered", s.getCoursesRegistered(account.getUsername(),  GetCurrentTerm.currentSemester));
+                responseData.put("totalRegister", s.getCoursesRegistered(account.getUsername(),  GetCurrentTerm.currentSemester).size());
 
                 resp.setContentType("application/json");
                 PrintWriter out = resp.getWriter();

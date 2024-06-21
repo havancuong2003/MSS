@@ -4,111 +4,149 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Student Options</title>
     <style>
-
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f7f7f7; /* light gray background */
-        }
-
-        h1, h2 {
-            color: #FF8C00; /* orange tone */
-            margin-bottom: 10px;
+            margin: 0;
+            padding: 0;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
-            border: 1px solid #ddd; /* light gray border */
+            margin-top: 20px;
         }
 
-        th, td {
-            border: 1px solid #ddd; /* light gray border */
-            padding: 10px;
+        th,
+        td {
+            border: 1px solid #dddddd;
             text-align: left;
-            background-color: #FFFFFF; /* white background */
+            padding: 8px;
         }
 
         th {
-            background-color: #F7F7F7; /* light gray background */
+            background-color: #f2f2f2;
         }
 
         tr:nth-child(even) {
-            background-color: #F2F2F2; /* light gray background */
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #333333;
+        }
+
+        p {
+            color: #666666;
         }
 
         select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd; /* light gray border */
-            background-color: #FFFFFF; /* white background */
+            margin-top: 10px;
+            padding: 5px;
+            font-size: 16px;
         }
 
-        input[type="submit"] {
-            background-color: #FF8C00; /* orange tone */
-            color: #FFFFFF; /* white text */
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        button {
+            padding: 5px 10px;
+            font-size: 14px;
         }
-
-        input[type="submit"]:hover {
-            background-color: #FFA07A; /* darker orange tone */
-        }
-
         a {
             text-decoration: none;
-            color: #FF8C00; /* orange tone */
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s, text-shadow 0.3s;
         }
 
         a:hover {
-            color: #FFA07A; /* darker orange tone */
+            color: #0056b3;
+            text-shadow: 0px 0px 5px rgba(0, 91, 187, 0.5);
+        }
+        .header {
+            background-color: #ccc;
+            color: black;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .header a {
+            position: absolute;
+            left: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
-        .message {
-            font-size: 18px; /* Đặt kích thước phông chữ lớn hơn */
-            padding: 15px; /* Tăng padding để làm cho `message` to hơn */
-            border: 2px solid; /* Thêm đường viền */
-            border-radius: 5px; /* Làm cho góc cong */
-            margin: 20px auto; /* Căn giữa theo chiều ngang */
-            max-width: 600px; /* Giới hạn chiều rộng tối đa */
-            text-align: center; /* Căn giữa nội dung */
+        .header a:hover {
+            background-color: #003d80;
+            color: white;
         }
-    .expired {
-        display: none;
-    }
-
-
+        footer {
+            background-color: #f2f2f2;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            text-align: center;
+        }
+        .contain {
+            width: 80%;
+            margin: 120px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .content {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .registerCourse {
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .expired {
+            display: none;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-
 <body>
-
-<a href="dashboard">Back</a>
-<h1 id="notice">START from ${timePeriods.startRegister} to ${timePeriods.endRegister}: Semester ${timePeriods.semester.detail}</h1>
-
+<div class="header">
+    <a href="dashboard">Back</a>
+    <h1>Header</h1>
+</div>
 <div id="expired" class="${validDate ? 'expired' : ''}">
     <h1>The registration period has expired or has not yet arrived</h1>
-
 </div>
 <div id="contain" class="${validDate ? '' : 'expired'}">
-    <h1>Students can only register for 5 courses in a semester</h1>
-
+    <p align="right">Semester: SU24</p>
     <div id="messageContainer"></div>
-
-    <h2> Course List Registered --- Number registered: <span id="totalRegister">${totalRegister}</span></h2>
+    <div class="content">
+        <p>Start date from 01/01/2020 to 02/01/2020</p>
+        <p>Students can only register for 5 courses in a semester</p>
+        <p>
+            Courses list registered:
+            <span id="totalRegister">${totalRegister}</span> course
+        </p>
+    </div>
     <table>
         <thead>
         <tr>
             <th>NO</th>
             <th>CODE</th>
             <th>DETAIL</th>
+            <th>ACTION</th>
         </tr>
         </thead>
         <tbody id="courseRegistered">
@@ -117,108 +155,127 @@
                 <td>${course.id}</td>
                 <td>${course.code}</td>
                 <td>${course.detail}</td>
+                <td><button>delete</button></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-
-    <!-- Form for registering for courses -->
-    <h2>Register Next for Courses</h2>
+    <p class="registerCourse">Register for over-term study</p>
     <form id="registerForm">
-        <input type="hidden" name="action" value="register">
+        <input type="hidden" name="action" value="register" />
         <select name="coursesToRegister">
             <c:forEach var="course" items="${courseRegister}">
                 <option value="${course.id}">${course.code}</option>
             </c:forEach>
         </select>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" />
     </form>
 
-    <!-- Form for registering for course improvement -->
-    <h2>Register Improve for Courses</h2>
+    <p class="registerCourse">Register for improve grade</p>
     <form id="improveForm">
-        <input type="hidden" name="action" value="improve">
+        <input type="hidden" name="action" value="improve" />
         <select name="coursesToRegister">
             <c:forEach var="course" items="${courseImprove}">
                 <option value="${course.id}">${course.code}</option>
             </c:forEach>
         </select>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" />
     </form>
-
-    <!-- Form for registering to learn courses again -->
-    <h2>Register Learn Again for Courses</h2>
+    <p class="registerCourse">Register for study again</p>
     <form id="learnAgainForm">
-        <input type="hidden" name="action" value="learnAgain">
+        <input type="hidden" name="action" value="learnAgain" />
         <select name="coursesToRegister">
             <c:forEach var="course" items="${courseLearnAgain}">
                 <option value="${course.id}">${course.code}</option>
             </c:forEach>
         </select>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" />
     </form>
 </div>
+<footer>
+    <p>Footer</p>
+</footer>
 <script>
     $(document).ready(function () {
-        $('form').on('submit', function (e) {
+        $("form").on("submit", function (e) {
             e.preventDefault(); // Prevent the default form submission
 
             const $form = $(this);
             const action = $form.find('input[name="action"]').val();
 
             $.ajax({
-                type: 'POST',
-                url: 'RegisterCourse',
+                type: "POST",
+                url: "RegisterCourse",
                 data: $form.serialize(),
                 success: function (response) {
                     console.log(response); // Print the response to the console
                     updatePage(action, response);
                 },
                 error: function () {
-                    alert('An error occurred. Please try again.');
-                }
+                    alert("An error occurred. Please try again.");
+                },
             });
         });
 
         function updatePage(action, data) {
-            $('#totalRegister').text(data.totalRegister);
-            const startDate = formatDate(new Date(data.timePeriods.startRegister));
-            const endDate = formatDate(new Date(data.timePeriods.endRegister));
+            $("#totalRegister").text(data.totalRegister);
+            const startDate = formatDate(
+                new Date(data.timePeriods.startRegister)
+            );
+            const endDate = formatDate(
+                new Date(data.timePeriods.endRegister)
+            );
 
-            $('#notice').text(`START from \${startDate} to \${endDate}: Semester \${data.timePeriods.semester.detail}`);
+            $("#notice").text(
+                `START from \${startDate} to \${endDate}: Semester \${data.timePeriods.semester.detail}`
+            );
 
             // Update courseRegistered table
-            let courseRegisteredHtml = '';
+            let courseRegisteredHtml = "";
             data.courseRegistered.forEach(function (course) {
                 courseRegisteredHtml += `<tr>
-                    <td>\${course.id}</td>
-                    <td>\${course.code}</td>
-                    <td>\${course.detail}</td>
-                </tr>`;
+                            <td>\${course.id}</td>
+                            <td>\${course.code}</td>
+                            <td>\${course.detail}</td>
+                        </tr>`;
             });
-            $('#courseRegistered').html(courseRegisteredHtml);
+            $("#courseRegistered").html(courseRegisteredHtml);
 
             // Update select options based on action
-            updateSelectOptions('registerForm', data.courseRegister);
-            updateSelectOptions('improveForm', data.courseImprove);
-            updateSelectOptions('learnAgainForm', data.courseLearnAgain);
+            updateSelectOptions("registerForm", data.courseRegister);
+            updateSelectOptions("improveForm", data.courseImprove);
+            updateSelectOptions(
+                "learnAgainForm",
+                data.courseLearnAgain
+            );
 
             // Display success or error message
-            displayMessage(data.ms.startsWith('Register course successfully') ? 'success' : 'error', data.ms);
+            displayMessage(
+                data.ms.startsWith("Register course successfully")
+                    ? "success"
+                    : "error",
+                data.ms
+            );
             // Set visibility based on validDate
-            $('#expired').removeClass().addClass(data.validDate ? 'expired' : '');
-            $('#contain').removeClass().addClass(data.validDate ? '' : 'expired');
+            $("#expired")
+                .removeClass()
+                .addClass(data.validDate ? "expired" : "");
+            $("#contain")
+                .removeClass()
+                .addClass(data.validDate ? "" : "expired");
         }
         function formatDate(date) {
             const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
             return `\${year}-\${month}-\${day}`;
         }
 
         function updateSelectOptions(formId, courses) {
-            const select = $('#' + formId).find('select[name="coursesToRegister"]');
-            let optionsHtml = '';
+            const select = $("#" + formId).find(
+                'select[name="coursesToRegister"]'
+            );
+            let optionsHtml = "";
             courses.forEach(function (course) {
                 optionsHtml += `<option value="\${course.id}">\${course.code}</option>`;
             });
@@ -226,17 +283,19 @@
         }
 
         function displayMessage(type, message) {
-            const messageElement = $('<div>').addClass('message').text(message);
-            if (type === 'success') {
-                messageElement.addClass('success').css('color', 'green'); // Set color for success message
-            } else if (type === 'error') {
-                messageElement.addClass('error').css('color', 'red'); // Set color for error message
+            const messageElement = $("<div>")
+                .addClass("message")
+                .text(message);
+            if (type === "success") {
+                messageElement
+                    .addClass("success")
+                    .css("color", "green"); // Set color for success message
+            } else if (type === "error") {
+                messageElement.addClass("error").css("color", "red"); // Set color for error message
             }
-            $('#messageContainer').empty().append(messageElement);
+            $("#messageContainer").empty().append(messageElement);
         }
     });
 </script>
-
 </body>
 </html>
-

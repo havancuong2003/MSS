@@ -15,11 +15,11 @@ import java.time.LocalDate;
 
 @WebServlet("/admin/timeChangeClass")
 public class    CreateTimeChangeClass extends HttpServlet {
-    private final int CURRENT_TERM = GetCurrentTerm.currentTerm;
+    private final int currentSemester = GetCurrentTerm.currentSemester;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
-        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(CURRENT_TERM);
+        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(currentSemester);
         if(timePeriods == null){
             req.setAttribute("timePeriods","null");
         }
@@ -88,15 +88,14 @@ public class    CreateTimeChangeClass extends HttpServlet {
 
         String description = req.getParameter("description");
 
-        if(!description.equals("SU24")){
-            timePeriodsDBContext.createTimeChangeGroup(startDate_raw, endDate_raw,CURRENT_TERM);
+        if(!description.equals(currentSemester+"")){
+            timePeriodsDBContext.createTimeChangeGroup(startDate_raw, endDate_raw,currentSemester);
             resp.getWriter().print("{\"res\": \"add successfully\"}");
 
         }
         else {
-            timePeriodsDBContext.updateTimeChangeClass(startDate_raw, endDate_raw,CURRENT_TERM);
+            timePeriodsDBContext.updateTimeChangeClass(startDate_raw, endDate_raw,currentSemester);
             resp.getWriter().print("{\"res\": \"update successfully\"}");
-
         }
 
 
