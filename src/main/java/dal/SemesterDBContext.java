@@ -41,6 +41,7 @@ public class SemesterDBContext extends DBContext<Semester> {
             semester.setEnd(rs.getDate("end"));
             semester.setDetail(rs.getString("detail"));
             semester.setNextSemesterID(getNextSemester());
+            semester.setTotalCourseRegisterForNextSemester(rs.getInt("totalCourse"));
         }
         return semester;
     }
@@ -79,11 +80,23 @@ public class SemesterDBContext extends DBContext<Semester> {
         }
         return 0;
     }
+    public void setTotalCourseRegisterForNextSemester(int number,int semesterID){
+        String sql ="UPDATE `semester` SET `totalCourse` = ? WHERE (`id` = ?);\n";
+
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, number);
+            stm.setInt(2, semesterID);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void main(String[] args) throws SQLException {
         SemesterDBContext s = new SemesterDBContext();
         Semester ss = s.get(1);
-        System.out.println(ss.getId()+" "+ss.getStart()+" "+ss.getEnd()+" "+ss.getDetail()+" "+ss.getNextSemesterID());
+        System.out.println(ss.getId()+" "+ss.getStart()+" "+ss.getEnd()+" "+ss.getDetail()+" "+ss.getNextSemesterID()+"\n"+ss.getTotalCourseRegisterForNextSemester());
     }
 
 }

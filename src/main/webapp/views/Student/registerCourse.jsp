@@ -152,15 +152,15 @@
     <h1>The registration period has expired or has not yet arrived</h1>
 </div>
 <div class="${validDate eq 'true' ? 'ab' : 'expired'} contain">
-    <h1 style="text-align: right">Semester: SU24</h1>
+    <h1 style="text-align: right">Semester: ${currentSemester.detail}</h1>
 
     <div class="content">
-        <h2>Student register course for next semester:</h2>
+        <h2>Student register course for next semester: ${nextSemester.detail}</h2>
         <h3>
             Start register from ${timePeriods.startRegister} to
             ${timePeriods.endRegister}
         </h3>
-        <h3>Students can only register for 5 courses in a semester</h3>
+        <h3>Students can only register for ${nextSemester.totalCourseRegisterForNextSemester} courses in a semester</h3>
         <div id="messageContainer"></div>
         <h3>
             Courses list registered:

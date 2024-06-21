@@ -8,6 +8,15 @@ public class Semester implements IEntity{
     private Date start;
     private Date end;
     private int nextSemesterID;
+    private int totalCourseRegisterForNextSemester;
+
+    public int getTotalCourseRegisterForNextSemester() {
+        return totalCourseRegisterForNextSemester;
+    }
+
+    public void setTotalCourseRegisterForNextSemester(int totalCourseRegisterForNextSemester) {
+        this.totalCourseRegisterForNextSemester = totalCourseRegisterForNextSemester;
+    }
 
     public int getNextSemesterID() {
         return nextSemesterID;
@@ -54,11 +63,12 @@ public class Semester implements IEntity{
     public Semester() {
     }
 
-    public Semester(int id, String detail, Date start, Date end,  int nextSemesterID) {
+    public Semester(int id, String detail, Date start, Date end,  int nextSemesterID, int totalCourseRegisterForNextSemester) {
         this.id = id;
         this.detail = detail;
         this.start = start;
         this.end = end;
         this.nextSemesterID = nextSemesterID;
+        this.totalCourseRegisterForNextSemester = totalCourseRegisterForNextSemester;
     }
 }
