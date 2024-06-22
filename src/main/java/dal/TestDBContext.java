@@ -182,7 +182,7 @@ public class TestDBContext extends DBContext<Account> {
 //    }
 
 
-    // xuwr lis in ra lichj suwr
+    // xu li in ra lich su
     public ArrayList<QuestionSubmission> getAllQuestionSubmissionByHistory(int historyId)  {
         ArrayList<QuestionSubmission> questionSubmissions = new ArrayList<>();
         try {

@@ -37,7 +37,7 @@
             <c:forEach items="${questionDetails}" var="ques" varStatus="status">
                 <div class="question-section" id="question-${status.index}">
                     <div class="question-area">
-                        <p id="questionText">${status.index + 1}. ${ques.getQuestionDetail()}</p>
+                        <p id="questionText">${status.index + 1}. ${ques.getQuestionDetail()}</p>  //hiển thị số câu hỏi và nội dung
                     </div>
                     <div class="options">
                         <div>
@@ -143,7 +143,7 @@
     });
 
 
-    // xu li ajaax vaf check answer thro cau hoi
+    // xu li ajaax vaf check answer trong cau hoi
     document.addEventListener('DOMContentLoaded', () => {
         // tích ô nào kéo đê ô ấy
         const listItems = document.querySelectorAll('.list-item');
@@ -163,8 +163,8 @@
 
         // Hàm xử lý khi nút được nhấp
         window.handleClick = (questionId, answerId, button) => {
-            sendAnswer(questionId, answerId);//nhaapj cau tra loi vao serrvlet
-            toggleGrayClass(questionId, button);// check nut ddax basm chua, tach theo cau hoi
+            sendAnswer(questionId, answerId);//nhâpj cau tra loi vao servlet
+            toggleGrayClass(questionId, button);// check nut đã bấm chưa, tách theo cau hoi
         };
 
         function sendAnswer(questionIndex, answerIndex) {
@@ -193,7 +193,7 @@
                 if (isGray) {
                     button.classList.remove('gray');
                     document.getElementById("list-item-" + questionId).classList.remove('isChoosenAnswer');
-                    sendAnswer(questionId, 0);  /// an lai eset cau tra loi ề 0
+                    sendAnswer(questionId, 0);  /// an lai reset cau tra loi ề 0
                 } else {
                     optionButtons.forEach(btn => {
                         btn.classList.remove('gray');
