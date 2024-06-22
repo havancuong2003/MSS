@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
+import model.Course;
 import model.Semester;
 import model.TimePeriods;
 import util.GetCurrentTerm;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,8 +51,8 @@ public class RegisterCourse extends HttpServlet {
                 req.setAttribute("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
                 req.setAttribute("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
                 req.setAttribute("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
-                req.setAttribute("courseRegistered", s.getCoursesRegistered(account.getUsername(), GetCurrentTerm.currentSemester));
-                req.setAttribute("totalRegister", s.getCoursesRegistered(account.getUsername(), GetCurrentTerm.currentSemester).size());
+                req.setAttribute("courseRegistered", s.getCoursesRegistered(account.getUsername(), nextSemester.getId()));
+                req.setAttribute("totalRegister", s.getCoursesRegistered(account.getUsername(), nextSemester.getId()).size());
                 if (timePeriods != null) {
                     req.setAttribute("timePeriods", timePeriods);
 
@@ -113,13 +115,18 @@ public class RegisterCourse extends HttpServlet {
                     if (isDateInRange(currentDate, startDate, endDate)) {
                         responseData.put("validDate", true); // Nếu ngày hợp lệ
                         String coursesToRegister = req.getParameter("coursesToRegister");
+
                         if (s.getCoursesRegistered(account.getUsername(), nextSemester.getNextSemesterID()).size() < nextSemester.getTotalCourseRegisterForNextSemester()) {
-                            System.out.println(s.getCoursesRegistered(account.getUsername(), nextSemester.getNextSemesterID()).size());
+
                             String sId = s.getStudentID(account.getUsername());
-                            s.registerCourse(sId, Integer.parseInt(coursesToRegister), nextSemester.getNextSemesterID());
-                            responseData.put("ms", "Register course successfully");
+                            if (checkCourseCanRegister(account.getUsername(), Integer.parseInt(coursesToRegister))) {
+                                s.registerCourse(sId, Integer.parseInt(coursesToRegister), nextSemester.getNextSemesterID());
+                                responseData.put("ms", "Register course successfully");
+                            } else {
+                                responseData.put("ms", "You can not register this course because you have not passed all pre-requisites");
+                            }
                         } else {
-                            responseData.put("ms", "You can not register more than 5 courses");
+                            responseData.put("ms", "You can not register more than " + nextSemester.getTotalCourseRegisterForNextSemester() + " courses");
                         }
                     } else {
                         responseData.put("validDate", false); // Nếu không hợp lệ
@@ -148,5 +155,16 @@ public class RegisterCourse extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public boolean checkCourseCanRegister(String username, int courseID) throws SQLException {
+        StudentDBContext studentDBContext = new StudentDBContext();
+        ArrayList<Course> coursePre = studentDBContext.getCoursePrequisite(courseID);
+        for (Course course : coursePre) {
+            if (!studentDBContext.checkCoursePassOrNot(username, course.getId())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

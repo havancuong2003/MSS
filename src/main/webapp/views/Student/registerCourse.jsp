@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
-                                            prefix="c" %>
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"
+           prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -126,6 +127,7 @@
         .expired {
             display: none;
         }
+
         .message {
             font-size: 18px; /* Đặt kích thước phông chữ lớn hơn */
             padding: 15px; /* Tăng padding để làm cho `message` to hơn */
@@ -183,7 +185,7 @@
                 <td>${course.code}</td>
                 <td>${course.detail}</td>
                 <td>
-                    <button>delete</button>
+                    <button class="delete-btn" data-id=${course.id}>delete</button>
                 </td>
             </tr>
         </c:forEach>
@@ -191,34 +193,34 @@
     </table>
     <p class="registerCourse">Register for over-term study</p>
     <form id="registerForm">
-        <input type="hidden" name="action" value="register" />
+        <input type="hidden" name="action" value="register"/>
         <select name="coursesToRegister">
             <c:forEach var="course" items="${courseRegister}">
                 <option value="${course.id}">${course.code}</option>
             </c:forEach>
         </select>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit"/>
     </form>
 
     <p class="registerCourse">Register for improve grade</p>
     <form id="improveForm">
-        <input type="hidden" name="action" value="improve" />
+        <input type="hidden" name="action" value="improve"/>
         <select name="coursesToRegister">
             <c:forEach var="course" items="${courseImprove}">
                 <option value="${course.id}">${course.code}</option>
             </c:forEach>
         </select>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit"/>
     </form>
     <p class="registerCourse">Register for study again</p>
     <form id="learnAgainForm">
-        <input type="hidden" name="action" value="learnAgain" />
+        <input type="hidden" name="action" value="learnAgain"/>
         <select name="coursesToRegister">
             <c:forEach var="course" items="${courseLearnAgain}">
                 <option value="${course.id}">${course.code}</option>
             </c:forEach>
         </select>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit"/>
     </form>
 </div>
 <footer>
@@ -262,14 +264,16 @@
             // Update courseRegistered table
             let courseRegisteredHtml = "";
             data.courseRegistered.forEach(function (course) {
-                courseRegisteredHtml += `<tr>
+                courseRegisteredHtml += `
+<tr>
                             <td>\${course.id}</td>
                             <td>\${course.code}</td>
                             <td>\${course.detail}</td>
-<td>
-                    <button>delete</button>
-                </td>
-                        </tr>`;
+                            <td>
+                                   <button class="delete-btn" data-id=\${course.id}>delete</button>
+                            </td>
+</tr>
+`;
             });
             $("#courseRegistered").html(courseRegisteredHtml);
 
@@ -329,6 +333,35 @@
             $("#messageContainer").empty().append(messageElement);
         }
     });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Sử dụng delegate để gắn sự kiện click cho các button .delete-btn
+        $('#courseRegistered').on('click', '.delete-btn', function () {
+            const id = $(this).data('id'); // Lấy ID từ thuộc tính data-id của button được click
+            console.log('id', id);
+
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                url: 'deleteCourseRegister', // Endpoint trên server xử lý xóa
+                type: 'POST',
+                data: { id: id }, // Dữ liệu gửi đi là ID cần xóa
+                success: function(response) {
+                    // Xử lý thành công (nếu cần)
+                    console.log('Đã xóa thành công');
+                    //reload page
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi (nếu cần)
+                    console.error('Lỗi xóa: ' + error);
+                }
+            });
+        });
+    });
+
+
 </script>
 </body>
 </html>

@@ -214,9 +214,11 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            <label style="margin-top: 20px" for="numCourses">Total number of courses students can register for the next semester
-                <input style="margin-left: 10px !important; width: 150px; height: 30px; "  placeholder="enter total number"  type="number" name ="numCourses" required id ="numCourses"/>
-            </label>
+            <c:if test="${timePeriods == null}">
+                <label style="margin-top: 20px" for="numCourses">Total number of courses students can register for the next semester
+                    <input style="margin-left: 10px !important; width: 150px; height: 30px; "  placeholder="enter total number"  type="number" name ="numCourses" required id ="numCourses"/>
+                </label>
+            </c:if>
 
             <button id="btn" type="submit" style="margin-top: 20px">
                 Save

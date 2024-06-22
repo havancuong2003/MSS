@@ -21,10 +21,19 @@ public class    CreateTimeChangeClass extends HttpServlet {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
         TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(currentSemester);
         if(timePeriods == null){
-            req.setAttribute("timePeriods","null");
+            req.setAttribute("timePeriods", "null");
+            req.setAttribute("status", "You Can Not Add Change Class Now Because You Need To Add Time Register Course First");
         }
         else{
-            req.setAttribute("timePeriods", timePeriods);
+           if(timePeriods.getStartRegister()!=null && timePeriods.getEndRegister()!=null){
+               req.setAttribute("timePeriods", timePeriods);
+               req.setAttribute("add",true);
+           }
+           else{
+               req.setAttribute("timePeriods", timePeriods);
+               req.setAttribute("add", false);
+           }
+
         }
 
         req.getRequestDispatcher("../views/admin/TimeChangeClass/timeChangeClass.jsp").forward(req, resp);

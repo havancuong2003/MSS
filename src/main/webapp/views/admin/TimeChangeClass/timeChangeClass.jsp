@@ -1,11 +1,13 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ taglib
-        prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%@ page
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib
+        prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page
         contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
@@ -123,6 +125,7 @@
                 font-size: 14px;
             }
         }
+
         a.back-button {
             background-color: #4CAF50; /* Green background */
             color: #fff; /* White text */
@@ -134,11 +137,11 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
             text-decoration: none; /* Remove the default underline */
 
-                /* existing styles */
-                position: absolute;
-                top: 20px;
-                left: 50px;
-                margin: 10px;
+            /* existing styles */
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            margin: 10px;
 
         }
 
@@ -163,6 +166,7 @@
         <h2>Current term: SU24</h2>
         <p>SU24 from 20/12/2024 to 30/12/2024</p>
     </div>
+
     <div class="set-time">
         <h2>
             Set time for students to register for courses for the next
@@ -171,27 +175,48 @@
         <p>FA24 start from 01/01/2025 to 30/03/2024</p>
 
         <form id="myForm">
-        <h1 id="error" style="color: red"></h1>
-        <input type="hidden" name="description" value="${timePeriods != null ? timePeriods.semester.id : ''}">
-        <c:choose>
-            <c:when test="${timePeriods.startChangeClass == null}">
-                <label for="startDate">Change class time from: </label> <input type="date" id="startDate" name="startDate"/>  <label for="endDate" style="margin-top: 20px"
-            >To:</label
-            > <input type="date" id="endDate" name="endDate"/>
-            </c:when>
-            <c:otherwise>
-                <label for="startDate">
-                    Update Time Change Class  from:
-                </label> <input type="date" id="startDate" name="startDate" value="${timePeriods.startChangeClass}"/>   <label for="endDate" style="margin-top: 20px"
-            >To:</label
-            > <input type="date" id="endDate" name="endDate" value="${timePeriods.endChangeClass}"/>
-            </c:otherwise>
-        </c:choose>
+            <h1 id="error" style="color: red"></h1>
+            <input type="hidden" name="description"
+                   value="${requestScope.timePeriods == "null" ? "" : requestScope.timePeriods.semester.id}">
+            <c:choose>
+                <c:when test="${requestScope.timePeriods == 'null'}">
+                    <h1 style="color: red">${requestScope.status}</h1>
+                </c:when>
+                <c:when test="${requestScope.timePeriods != 'null'}">
+                    <c:choose>
+                        <c:when test="${requestScope.add == true}">
+                            <c:choose>
+                                <c:when test="${timePeriods.startChangeClass == null}">
+                                    <label for="startDate">Change class time from: </label> <input type="date"
+                                                                                                   id="startDate"
+                                                                                                   name="startDate"/>
+                                    <label for="endDate" style="margin-top: 20px"
+                                    >To:</label
+                                    > <input type="date" id="endDate" name="endDate"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <label for="startDate">
+                                        Update Time Change Class from:
+                                    </label> <input type="date" id="startDate" name="startDate"
+                                                    value="${timePeriods.startChangeClass}"/> <label for="endDate"
+                                                                                                     style="margin-top: 20px"
+                                >To:</label
+                                > <input type="date" id="endDate" name="endDate" value="${timePeriods.endChangeClass}"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            <h1 style="color: red">${requestScope.status}</h1>
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
+            </c:choose>
+
             <br/>
             <button id="btn" type="submit" style="margin-top: 20px">
                 Save
             </button>
-    </form>
+        </form>
     </div>
 </div>
 <footer>
