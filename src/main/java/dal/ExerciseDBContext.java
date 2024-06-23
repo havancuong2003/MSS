@@ -1,5 +1,7 @@
 package dal;
 
+import com.mysql.cj.jdbc.Blob;
+import model.Account;
 import model.Course;
 import model.Exercise;
 import model.Teacher;
@@ -86,6 +88,59 @@ public class ExerciseDBContext extends DBContext<Exercise>{
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public Teacher getTeacher(String teacher_id) {
+        String sql = "SELECT * FROM teacher t JOIN account a ON t.account_id = a.account_id WHERE t.teacher_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, teacher_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Teacher teacher = new Teacher();
+                teacher.setId(rs.getInt("teacher_id"));
+                Account acc = new Account();
+                acc.setId(rs.getInt("account_id"));
+                acc.setUsername(rs.getString("username"));
+                acc.setPassword(rs.getString("password"));
+                acc.setFullname(rs.getString("fullname"));
+                acc.setPhone(rs.getString("phone"));
+                acc.setEmail(rs.getString("email"));
+                acc.setDob(rs.getDate("date_of_birth"));
+                acc.setAddress(rs.getString("address"));
+                acc.setAvatar((Blob) rs.getBlob("photo"));
+                acc.setGender(rs.getBoolean("gender"));
+                teacher.setAccount(acc);
+                return teacher;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+//    public List<Grade_category> getListGradeCategory() {
+//        List<Grade_category> list = new ArrayList<>();
+//        String sql = "SELECT * FROM grade_category gc JOIN course c on gc.course_id = c.id";
+//        try {
+//            PreparedStatement statement = connection.prepareStatement(sql);
+//            ResultSet rs = statement.executeQuery();
+//            while (rs.next()){
+//                Grade_category gc = new Grade_category();
+//                gc.setId(rs.getInt("id"));
+//                gc.setName(rs.getString("name"));
+//                Course c = new Course();
+//                c.setId(rs.getInt("course_id"));
+//                c.setCode(rs.getString("code"));
+//                c.setDetail(rs.getString("detail"));
+//                c.setStatus(rs.getBoolean("status"));
+//                gc.setCourse(c);
+//                list.add(gc);
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return list;
+//    }
 
     @Override
     public ArrayList<Exercise> list() {
