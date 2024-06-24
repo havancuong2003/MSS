@@ -1,10 +1,7 @@
 package dal;
 
 import com.mysql.cj.jdbc.Blob;
-import model.Account;
-import model.Course;
-import model.Exercise;
-import model.Teacher;
+import model.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -118,29 +115,63 @@ public class ExerciseDBContext extends DBContext<Exercise>{
         return null;
     }
 
-//    public List<Grade_category> getListGradeCategory() {
-//        List<Grade_category> list = new ArrayList<>();
-//        String sql = "SELECT * FROM grade_category gc JOIN course c on gc.course_id = c.id";
-//        try {
-//            PreparedStatement statement = connection.prepareStatement(sql);
-//            ResultSet rs = statement.executeQuery();
-//            while (rs.next()){
-//                Grade_category gc = new Grade_category();
-//                gc.setId(rs.getInt("id"));
-//                gc.setName(rs.getString("name"));
-//                Course c = new Course();
-//                c.setId(rs.getInt("course_id"));
-//                c.setCode(rs.getString("code"));
-//                c.setDetail(rs.getString("detail"));
-//                c.setStatus(rs.getBoolean("status"));
-//                gc.setCourse(c);
-//                list.add(gc);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return list;
-//    }
+    public List<Grade_category> getListGradeCategory() {
+        List<Grade_category> list = new ArrayList<>();
+        String sql = "SELECT * FROM grade_category gc JOIN course c on gc.course_id = c.id";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Grade_category gc = new Grade_category();
+                gc.setId(rs.getInt("id"));
+                gc.setName(rs.getString("name"));
+                Course c = new Course();
+                c.setId(rs.getInt("course_id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean("status"));
+                gc.setCourse(c);
+                list.add(gc);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public Exercise getExerciseById(String exericse_id) {
+        String sql = "SELECT * FROM exercise e JOIN course c on e.course_id = c.id WHERE exercise_id = ? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, exericse_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Exercise exercise = new Exercise();
+                exercise.setExerciseId(rs.getInt("exercise_id"));
+                exercise.setExerciseName(rs.getString("exercise_name"));
+                exercise.setTimeStart(rs.getDate("time_start"));
+                exercise.setTimeEnd(rs.getDate("time_end"));
+                exercise.setQuestion_number(rs.getInt("question_number"));
+                exercise.setExercise_time(rs.getFloat("exercise_time"));
+                exercise.setGet_score(rs.getInt("get_score"));
+                exercise.setGroup_id((rs.getInt("group_id")));
+                exercise.setGrade_category(rs.getInt("grade_category"));
+                Teacher t = new Teacher();
+                t.setId(rs.getInt("teacher_id"));
+                exercise.setTeacher(t);
+                Course c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean("status"));
+                exercise.setCourse(c);
+                return  exercise;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     @Override
     public ArrayList<Exercise> list() {

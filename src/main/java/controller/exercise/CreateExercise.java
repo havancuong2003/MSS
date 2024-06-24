@@ -1,7 +1,9 @@
 package controller.exercise;
 
 import com.google.gson.Gson;
+import dal.BankQuestionDBContext;
 import dal.ExerciseDBContext;
+import dal.QuestionDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,8 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Exercise;
-import model.Teacher;
+import model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class CreateExercise extends HttpServlet {
         String exercise_id = String.valueOf(ramdonNumber);
         if(randomExercise != null && randomExercise.equals("1")){
             System.out.println("Join success");
-            QuestionBankDAO bankDAO = new QuestionBankDAO();
+            BankQuestionDBContext bankDAO = new BankQuestionDBContext();
             String random_exerciseName = request.getParameter("random_exerciseName");
             String random_basicQuestion = request.getParameter("random_basicQuestion");
             int numBasicQuestion = Integer.parseInt(random_basicQuestion);
@@ -88,9 +89,10 @@ public class CreateExercise extends HttpServlet {
                     indexPage = "1";
                 }
                 int index = Integer.parseInt(indexPage);
-                count = dao.getTotalQuestion(exercise_id);
+                QuestionDBContext qdao = new QuestionDBContext();
+                count = qdao.getTotalQuestion(exercise_id);
                 endPage = count/5;
-                listQuestion = dao.pagingQuestionByExercise_id(index, exercise_id);
+                listQuestion = qdao.pagingQuestionByExercise_id(index, exercise_id);
                 if(count % 5 != 0){
                     endPage++;
                 }
@@ -137,7 +139,7 @@ public class CreateExercise extends HttpServlet {
     }
 
     public void addRandomQuestions(List<BankQuestion> bankQuestions,int numQuestions,String exercise_id,String course_id){
-        ExerciseDAO dao = new ExerciseDAO();
+        QuestionDBContext dao = new QuestionDBContext();
         Collections.shuffle(bankQuestions);
         for(int i = 0; i < numQuestions && i < bankQuestions.size(); i++){
             BankQuestion bankQuestion = bankQuestions.get(i);
