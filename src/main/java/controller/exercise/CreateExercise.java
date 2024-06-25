@@ -40,6 +40,7 @@ public class CreateExercise extends HttpServlet {
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // git commit
         Random random = new Random();
         ExerciseDBContext dao = new ExerciseDBContext();
         String randomExercise = request.getParameter("random");
