@@ -28,6 +28,7 @@ public class Test extends HttpServlet {
         exerciseId = Integer.parseInt(req.getParameter("exerciseId"));
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         questionDetail = context.getAllQuestionDetailByExerciseIdAndCourseId(exerciseId, courseId);
+        // tao danh sach cac cau hoi
         for (int i = 0; i < questionDetail.size(); i++ ){
             listanswer.add(0);
         }
@@ -44,7 +45,7 @@ public class Test extends HttpServlet {
             int choosenAnswer = Integer.parseInt(request.getParameter("choosenAnswer"));
             listanswer.set(questionIndex, choosenAnswer);
         }
-
+//cap nhat danh sach cac tra loi da chon xu ly qua ajaxsa
         String option = request.getParameter("option");
 
         if (option != null && option.equals("finish")) {
