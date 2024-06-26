@@ -34,6 +34,7 @@
     </div>
     <div class="contents">
         <div class="question-section">
+            // hiển thị từng câu hỏi và câu trả lời
             <c:forEach items="${questionSubmissions}" var="ques" varStatus="status">
                 <div class="question-section" id="question-${status.index}">
                     <div class="question-area">

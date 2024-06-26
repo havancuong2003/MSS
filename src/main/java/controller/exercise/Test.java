@@ -40,6 +40,7 @@ public class Test extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+      // cập nhật câu trả lời được chọn
         if(request.getParameter("questionIndex") != null && request.getParameter("choosenAnswer") != null){
             int questionIndex = Integer.parseInt(request.getParameter("questionIndex"));
             int choosenAnswer = Integer.parseInt(request.getParameter("choosenAnswer"));
