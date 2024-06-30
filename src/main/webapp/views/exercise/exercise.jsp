@@ -1,16 +1,13 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: FPT
-  Date: 6/13/2024
-  Time: 10:24 PM
-  To change this template use File | Settings | File Templates.
---%>
+
+
+<%--<jsp:include page="header.jsp" />--%>
+<%--<jsp:include page="auth.jsp" />--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>DashBoard</title>
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="anime.css">
+    <title>Exercise</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .table tr th:first-child, .table tr td:first-child {
@@ -234,6 +231,31 @@
             }
         }
 
+        .card-body select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card-body select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .card-body select {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -257,9 +279,12 @@
         <div class="col animated slideInLeft">
             <a class="btn btn-primary tbtn" href="#createQuizModal"
                data-toggle="modal">
-                <h1 class="q">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Create Quiz
-                </h1></a>
+                <h1 class="q"><i class="fa fa-plus" aria-hidden="true"></i> Create Quiz</h1></a>
+        </div>
+        <div class="col animated slideInLeft">
+            <a class="btn btn-primary tbtn" href="#randomQuizModal"
+               data-toggle="modal">
+                <h1 class="q"><i class="fa fa-plus" aria-hidden="true"></i> Random Quiz</h1></a>
         </div>
         <div class="col animated slideInRight">
             <a class="btn btn-danger tbtn" href="#participateModal"
@@ -279,31 +304,31 @@
                 <tr>
                     <th scope="col">No.</th>
                     <th scope="col">Quiz Name</th>
-                    <th scope="col">Rating</th>
+                    <th scope="col">Course</th>
                     <th scope="col">View</th>
                     <th scope="col">Delete</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <th scope="row"></th>
-                    <td></td>
-                    <td>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                    </td>
-                    <td><a class="btn btn-info"
-                           href="#"><i
-                            class="fa fa-eye" aria-hidden="true"></i> View</a></td>
-                    <td><a class="btn btn-danger"
-                           href="#"><i class="fa fa-trash"
-                                       aria-hidden="true"></i> Delete</a></td>
-                </tr>
-
-                </tbody>
+                <c:forEach var="o" items="${listExercise}">
+                    <tbody>
+                    <tr>
+                        <td scope="row">${o.exerciseId}</td>
+                        <td>${o.exerciseName}</td>
+                        <td>${o.course.code}</td>
+                        <td>
+                            <c:if test="${o.isRandom == 0}">
+                                <a href="create-question?exercise_id=${o.exerciseId}">View</a>
+                            </c:if>
+                            <c:if test="${o.isRandom == 1}">
+                                <a href="create-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}"></a>
+                            </c:if>
+                        </td>
+                        <td><a class="btn btn-danger"
+                               href="#"><i class="fa fa-trash"
+                                           aria-hidden="true"></i> Delete</a></td>
+                    </tr>
+                    </tbody>
+                </c:forEach>
             </table>
         </div>
     </div>
@@ -322,27 +347,220 @@
         src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script>
+    var exerciseNames = <%= request.getAttribute("exerciseNames") %>;
+    function toggleGradeCategory() {
+        gradeCategoryError.innerText = "";
+    }
+    function toggleTypeExercise() {
+        var exerciseType = document.getElementById('exerciseType');
+        var gradeCategory = document.getElementById('gradeCategory');
+
+        if (exerciseType.value === '1') {
+            gradeCategory.style.display = 'block';
+        } else {
+            gradeCategory.style.display = 'none';
+            isDisplay = false
+        }
+        exerciseTypeError.innerText = "";
+    }
+    function validateForm() {
+        var isValid = true;
+
+        // Clear previous error messages
+        document.getElementById('exerciseNameError').innerText = "";
+        document.getElementById('numQuestionsError').innerText = "";
+        document.getElementById('exerciseTimeError').innerText = "";
+        // Get form values
+        var exerciseName = document.getElementById('exerciseName').value;
+        var numQuestions = document.getElementById('numQuestions').value;
+        var exerciseTime = document.getElementById('exerciseTime').value;
+        var exerciseType = document.getElementById('exerciseType').value;
+        var gradeCategory = document.getElementById('gradeCategory').value;
+        // Validate form values
+        if (!exerciseName) {
+            document.getElementById('exerciseNameError').innerText = "Please enter the Quiz Name.";
+            isValid = false;
+        } else if(exerciseNames.includes(exerciseName)){
+            document.getElementById('exerciseNameError').innerText = "Quiz name already exists. Please choose another name.";
+            isValid = false;
+        }
+        if (!numQuestions) {
+            document.getElementById('numQuestionsError').innerText = "Please enter the Number of Questions.";
+            isValid = false;
+        }
+        if (!exerciseTime) {
+            document.getElementById('exerciseTimeError').innerText = "Please enter the Exercise time.";
+            isValid = false;
+        }
+        if (exerciseType == "0") {
+            document.getElementById('exerciseTypeError').innerText = "Please choose the type of exercise.";
+            isValid = false;
+        }
+        if(exerciseType == "1" && gradeCategory == "0"){
+            document.getElementById('gradeCategoryError').innerText = "Please choose the type of grade";
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    <%--var exerciseNames = <%= request.getAttribute("exerciseNames") %>;--%>
+    function toggleRandomGradeCategory() {
+        document.getElementById('random_gradeCategoryError').innerText = "";
+    }
+
+    function toggleRandomTypeExercise() {
+        var exerciseType = document.getElementById('random_exerciseType');
+        var gradeCategory = document.getElementById('random_gradeCategory');
+
+        if (exerciseType.value === '1') {
+            gradeCategory.style.display = 'block';
+        } else {
+            gradeCategory.style.display = 'none';
+        }
+        document.getElementById('random_exerciseTypeError').innerText = "";
+    }
+
+    function validateRandomForm() {
+        var isValid = true;
+
+        // Clear previous error messages
+        document.getElementById('random_exerciseNameError').innerText = "";
+        document.getElementById('random_basicQuestionError').innerText = "";
+        document.getElementById('random_lowQuestionError').innerText = "";
+        document.getElementById('random_highQuestionError').innerText = "";
+        document.getElementById('random_exerciseTimeError').innerText = "";
+        document.getElementById('random_exerciseTypeError').innerText = "";
+        document.getElementById('random_gradeCategoryError').innerText = "";
+
+        // Get form values
+        var exerciseName = document.getElementById('random_exerciseName').value;
+        var basicQuestion = document.getElementById('random_basicQuestion').value;
+        var lowQuestion = document.getElementById('random_lowQuestion').value;
+        var highQuestion = document.getElementById('random_highQuestion').value;
+        var exerciseTime = document.getElementById('random_exerciseTime').value;
+        var exerciseType = document.getElementById('random_exerciseType').value;
+        var gradeCategory = document.getElementById('random_gradeCategory').value;
+
+        // Validate form values
+        if (!exerciseName) {
+            document.getElementById('random_exerciseNameError').innerText = "Please enter the Quiz Name.";
+            isValid = false;
+        } else if (exerciseNames.includes(exerciseName)) {
+            document.getElementById('random_exerciseNameError').innerText = "Quiz name already exists. Please choose another name.";
+            isValid = false;
+        }
+        if (!basicQuestion) {
+            document.getElementById('random_basicQuestionError').innerText = "Please enter the Number of basic questions.";
+            isValid = false;
+        }
+        if (!lowQuestion) {
+            document.getElementById('random_lowQuestionError').innerText = "Please enter the Number of low application questions.";
+            isValid = false;
+        }
+        if (!highQuestion) {
+            document.getElementById('random_highQuestionError').innerText = "Please enter the Number of high application questions.";
+            isValid = false;
+        }
+        if (!exerciseTime) {
+            document.getElementById('random_exerciseTimeError').innerText = "Please enter the Exercise time.";
+            isValid = false;
+        }
+        if (exerciseType == "0") {
+            document.getElementById('random_exerciseTypeError').innerText = "Please choose the type of exercise.";
+            isValid = false;
+        }
+        if (exerciseType == "1" && gradeCategory == "0") {
+            document.getElementById('random_gradeCategoryError').innerText = "Please choose the type of grade.";
+            isValid = false;
+        }
+        return isValid;
+    }
+</script>
 </body>
-<!-- Create Modal HTML -->
+
 <!-- Create Modal HTML -->
 <div id="createQuizModal" class="modal fade" style="z-index: 9999;"
      role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="card">
-                <form method="post" action="create-exercise">
+                <form method="post" action="" onsubmit="return validateForm()">
                     <div class="card-header">
                         <h2 class="custom-heading">Quiz</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <input type="hidden" name="teacher_id" value="${teacher.teacher_id}">
-                            <input type="text" name="excercise_name" class="form-control"
-                                   placeholder="Quiz Name" required />
+                            <input style="margin-top: 30px" type="hidden" name="teacher_id" value="${teacher.tid}">
+                            <input id="exerciseName" style="margin-top: 30px" type="text" name="excercise_name" class="form-control" placeholder="Quiz Name"/>
+                            <div  id="exerciseNameError" class="text-danger"></div>
+                            <input id="numQuestions" style="margin-top: 30px" type="text" name="question_number" class="form-control" placeholder="Number of Questions">
+                            <div  id="numQuestionsError" class="text-danger"></div>
+                            <input id="exerciseTime" style="margin-top: 30px" type="text" name="exercise_time" class="form-control" placeholder="Exercise time">
+                            <div id="exerciseTimeError" class="text-danger"></div>
+                            <select id="exerciseType" name="exercise_type" style="margin-top: 30px" onchange="toggleTypeExercise()">
+                                <option value="0">Choose type of exercise</option>
+                                <option value="1">Test</option>
+                                <option value="2">Pratice</option>
+                            </select>
+                            <div id="exerciseTypeError" class="text-danger"></div>
+                            <select id="gradeCategory" name="grade_category" style="display: none" onchange="toggleGradeCategory()">
+                                <option value="0">Choose grade category</option>
+                                <c:forEach var="o" items="${listGradeCategory}">
+                                    <option value="${o.id}">${o.name}</option>
+                                </c:forEach>
+                            </select>
+                            <div id="gradeCategoryError" class="text-danger"></div>
+
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" value="Create"
                                    class="btn btn-success bb">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Random Modal HTML -->
+<div id="randomQuizModal" class="modal fade" style="z-index: 9999;" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="card">
+                <form method="post" action="create-exercise" onsubmit="return validateRandomForm()">
+                    <input type="hidden" name="random" value="1">
+                    <div class="card-header">
+                        <h2 class="custom-heading">Participate</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input id="random_exerciseName" type="text" name="random_exerciseName" class="form-control" placeholder="Quiz Name" />
+                            <div id="random_exerciseNameError" class="text-danger"></div>
+                            <input id="random_basicQuestion" style="margin-top: 30px" type="text" name="random_basicQuestion" class="form-control" placeholder="Number of basic question">
+                            <div id="random_basicQuestionError" class="text-danger"></div>
+                            <input id="random_lowQuestion" style="margin-top: 30px" type="text" name="random_lowQuestion" class="form-control" placeholder="Number of low application question">
+                            <div id="random_lowQuestionError" class="text-danger"></div>
+                            <input id="random_highQuestion" style="margin-top: 30px" type="text" name="random_highQuestion" class="form-control" placeholder="Number of high application question">
+                            <div id="random_highQuestionError" class="text-danger"></div>
+                            <input id="random_exerciseTime" style="margin-top: 30px" type="text" name="random_exerciseTime" class="form-control" placeholder="Exercise time">
+                            <div id="random_exerciseTimeError" class="text-danger"></div>
+                            <select id="random_exerciseType" name="random_exerciseType" style="margin-top: 30px" onchange="toggleRandomTypeExercise()">
+                                <option value="0">Choose type of exercise</option>
+                                <option value="1">Test</option>
+                                <option value="2">Practice</option>
+                            </select>
+                            <div id="random_exerciseTypeError" class="text-danger"></div>
+                            <select id="random_gradeCategory" name="grade_category" style="display: none; margin-top: 30px;" onchange="toggleRandomGradeCategory()">
+                                <option value="0">Choose grade category</option>
+                                <c:forEach var="o" items="${listGradeCategory}">
+                                    <option value="${o.id}">${o.name}</option>
+                                </c:forEach>
+                            </select>
+                            <div id="random_gradeCategoryError" class="text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-success bb">
                         </div>
                     </div>
                 </form>
@@ -357,7 +575,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="card">
-                <form method="get" action="participate.jsp">
+                <form method="get">
                     <div class="card-header">
                         <h2 class="custom-heading">Participate</h2>
                     </div>
@@ -374,6 +592,7 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

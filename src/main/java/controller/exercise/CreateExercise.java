@@ -19,16 +19,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-@WebServlet(name = "createExercise", value = "/create-exercise")
+@WebServlet(name = "createExercise", value = "/teacher/create-exercise")
 @MultipartConfig()
 public class CreateExercise extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ExerciseDBContext dao = new ExerciseDBContext();
-        Teacher teacher = dao.getTeacher("1");
-        int teacherId = teacher.getId();
+        Teacher teacher = dao.getTeacher("t1");
+        String teacherId = teacher.getTid();
         String teacher_id = String.valueOf(teacherId);
         List<Exercise> listExercise = dao.getListExercise();
-        List<Grade_category> listGradeCategory = dao.getListGradeCategory();
+        List<Grade_category> listGradeCategory = dao.getListGradeCategory("1");
         List<String> exerciseNames = listExercise.stream()
                 .map(Exercise::getExerciseName) // assuming getName() method exists
                 .collect(Collectors.toList());
@@ -37,7 +37,7 @@ public class CreateExercise extends HttpServlet {
         request.setAttribute("exerciseNames", new Gson().toJson(exerciseNames));
         request.setAttribute("teacher_id",teacher_id);
         request.setAttribute("teacher", teacher);
-        request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/exercise/exercise.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // git commit practice code

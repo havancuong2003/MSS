@@ -7,14 +7,13 @@ import java.util.ArrayList;
 public class Exercise implements IEntity {
     private int exerciseId;
     private String exerciseName;
-    private Date timeStart;
-    private Date timeEnd;
     private int status;
     private int question_number;
     private float exercise_time;
     private int get_score;
     private int group_id;
     private int grade_category;
+    private int isRandom;
     private Teacher teacher;
     private Course course;
 
@@ -95,6 +94,21 @@ public class Exercise implements IEntity {
         this.exerciseId = exerciseId;
     }
 
+    public Exercise(int exerciseId, String exerciseName, int status, int question_number, float exercise_time, int get_score, int group_id, int grade_category, int isRandom, Teacher teacher, Course course, ArrayList<History> histories) {
+        this.exerciseId = exerciseId;
+        this.exerciseName = exerciseName;
+        this.status = status;
+        this.question_number = question_number;
+        this.exercise_time = exercise_time;
+        this.get_score = get_score;
+        this.group_id = group_id;
+        this.grade_category = grade_category;
+        this.isRandom = isRandom;
+        this.teacher = teacher;
+        this.course = course;
+        this.histories = histories;
+    }
+
     public String getExerciseName() {
         return exerciseName;
     }
@@ -103,20 +117,12 @@ public class Exercise implements IEntity {
         this.exerciseName = exerciseName;
     }
 
-    public Date getTimeStart() {
-        return timeStart;
+    public int getIsRandom() {
+        return isRandom;
     }
 
-    public void setTimeStart(Date timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public Date getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(Date timeEnd) {
-        this.timeEnd = timeEnd;
+    public void setIsRandom(int isRandom) {
+        this.isRandom = isRandom;
     }
 
     public int getStatus() {

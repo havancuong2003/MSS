@@ -52,8 +52,6 @@ public class QuestionDBContext extends DBContext<Question> {
                 Exercise ex = new Exercise();
                 ex.setExerciseId(rs.getInt("exercise_id"));
                 ex.setExerciseName(rs.getString("exercise_name"));
-                ex.setTimeStart(rs.getDate("time_start"));
-                ex.setTimeEnd(rs.getDate("time_end"));
                 ex.setStatus(rs.getInt(11));
                 q.setExercise(ex);
                 Course c = new Course();

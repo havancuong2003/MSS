@@ -23,14 +23,12 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 Exercise exercise = new Exercise();
                 exercise.setExerciseId(rs.getInt("exercise_id"));
                 exercise.setExerciseName(rs.getString("exercise_name"));
-                exercise.setTimeStart(rs.getDate("time_start"));
-                exercise.setTimeEnd(rs.getDate("time_end"));
                 exercise.setQuestion_number(rs.getInt("question_number"));
                 exercise.setExercise_time(rs.getFloat("exercise_time"));
                 exercise.setGet_score(rs.getInt("get_score"));
                 exercise.setGroup_id((rs.getInt("group_id")));
                 Teacher t = new Teacher();
-                t.setId(rs.getInt("teacher_id"));
+                t.setTid(rs.getString("teacher_id"));
                 exercise.setTeacher(t);
                 Course c = new Course();
                 c.setId(rs.getInt("id"));
@@ -87,14 +85,14 @@ public class ExerciseDBContext extends DBContext<Exercise>{
     }
 
     public Teacher getTeacher(String teacher_id) {
-        String sql = "SELECT * FROM teacher t JOIN account a ON t.account_id = a.account_id WHERE t.teacher_id = ?";
+        String sql = "SELECT * FROM teacher t JOIN account a ON t.acc_id = a.account_id WHERE t.id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, teacher_id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()){
                 Teacher teacher = new Teacher();
-                teacher.setId(rs.getInt("teacher_id"));
+                teacher.setTid(rs.getString("id"));
                 Account acc = new Account();
                 acc.setId(rs.getInt("account_id"));
                 acc.setUsername(rs.getString("username"));
@@ -115,11 +113,12 @@ public class ExerciseDBContext extends DBContext<Exercise>{
         return null;
     }
 
-    public List<Grade_category> getListGradeCategory() {
+    public List<Grade_category> getListGradeCategory(String course_id) {
         List<Grade_category> list = new ArrayList<>();
-        String sql = "SELECT * FROM grade_category gc JOIN course c on gc.course_id = c.id";
+        String sql = "SELECT * FROM grade_category gc JOIN course c on gc.course_id = c.id WHERE c.id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()){
                 Grade_category gc = new Grade_category();
@@ -140,7 +139,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
     }
 
     public Exercise getExerciseById(String exericse_id) {
-        String sql = "SELECT * FROM exercise e JOIN course c on e.course_id = c.id WHERE exercise_id = ? ";
+        String sql = "SELECT * FROM exercise e JOIN course c on e.course_id = c.id WHERE e.exercise_id = ? ";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, exericse_id);
@@ -149,15 +148,13 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 Exercise exercise = new Exercise();
                 exercise.setExerciseId(rs.getInt("exercise_id"));
                 exercise.setExerciseName(rs.getString("exercise_name"));
-                exercise.setTimeStart(rs.getDate("time_start"));
-                exercise.setTimeEnd(rs.getDate("time_end"));
                 exercise.setQuestion_number(rs.getInt("question_number"));
                 exercise.setExercise_time(rs.getFloat("exercise_time"));
                 exercise.setGet_score(rs.getInt("get_score"));
                 exercise.setGroup_id((rs.getInt("group_id")));
                 exercise.setGrade_category(rs.getInt("grade_category"));
                 Teacher t = new Teacher();
-                t.setId(rs.getInt("teacher_id"));
+                t.setTid(rs.getString("teacher_id"));
                 exercise.setTeacher(t);
                 Course c = new Course();
                 c.setId(rs.getInt("id"));
@@ -171,6 +168,12 @@ public class ExerciseDBContext extends DBContext<Exercise>{
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        ExerciseDBContext dao = new ExerciseDBContext();
+        Teacher teacher = dao.getTeacher("t1");
+        System.out.println(teacher.getTid());
     }
 
     @Override
