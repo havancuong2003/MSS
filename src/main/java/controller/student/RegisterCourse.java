@@ -68,6 +68,9 @@ public class RegisterCourse extends HttpServlet {
                         req.setAttribute("validDate", false); // Nếu không hợp lệ
                     }
                 }
+                else {
+                    req.setAttribute("timePeriods", "null");
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -132,6 +135,9 @@ public class RegisterCourse extends HttpServlet {
                         responseData.put("validDate", false); // Nếu không hợp lệ
                         responseData.put("ms", "expired or not yet");
                     }
+                }
+                else{
+                    responseData.put("timePeriods", "null");
                 }
 
 

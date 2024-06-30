@@ -163,28 +163,38 @@
 
 <div class="container">
     <div class="current-term">
-        <h2>Current term: SU24</h2>
-        <p>SU24 from 20/12/2024 to 30/12/2024</p>
+        <h2>Current term: ${semester.detail}</h2>
+        <p>SU24 from ${semester.start} to ${semester.end}</p>
     </div>
 
     <div class="set-time">
         <h2>
             Set time for students to register for courses for the next
-            semester: FA24
+            semester: ${nextSemester.detail}
         </h2>
-        <p>FA24 start from 01/01/2025 to 30/03/2024</p>
+        <p>${nextSemester.detail} start from ${nextSemester.start} to ${nextSemester.end}</p>
 
         <form id="myForm">
-            <h1 id="error" style="color: red"></h1>
+
             <input type="hidden" name="description"
                    value="${requestScope.timePeriods == "null" ? "" : requestScope.timePeriods.semester.id}">
             <c:choose>
                 <c:when test="${requestScope.timePeriods == 'null'}">
                     <h1 style="color: red">${requestScope.status}</h1>
+                    <a href="registerTime" ><button type="button">Go set time register</button></a>
                 </c:when>
                 <c:when test="${requestScope.timePeriods != 'null'}">
                     <c:choose>
                         <c:when test="${requestScope.add == true}">
+                         <div style="display: flex; justify-content: center; align-items: center">
+                           <div style="width: fit-content;border: 3px solid black;border-radius: 10px">
+                               <h2 style="color: red">Notice</h2>
+                               <h3><i style="color:red">Start date</i> must be after <i style="color:red">end of register time</i>  and
+                                   <i style="color:red">end date  </i>  must before <i style="color:red">end date of semester</i></h3>
+                               <h3>Time register course end at: ${timePeriods.endRegister}</h3> <h3>Time Semester end at: ${semester.end}</h3>
+                           </div>
+                         </div>
+                            <h4 id="error" style="color: red"></h4>
                             <c:choose>
                                 <c:when test="${timePeriods.startChangeClass == null}">
                                     <label for="startDate">Change class time from: </label> <input type="date"
@@ -204,18 +214,22 @@
                                 > <input type="date" id="endDate" name="endDate" value="${timePeriods.endChangeClass}"/>
                                 </c:otherwise>
                             </c:choose>
+                            <br/>
+                            <button id="btn" type="submit" style="margin-top: 20px">
+                                Save
+                            </button>
                         </c:when>
                         <c:otherwise>
                             <h1 style="color: red">${requestScope.status}</h1>
+                            <a href="registerTime" ><button type="button">Go set time register</button></a>
                         </c:otherwise>
                     </c:choose>
+
+
                 </c:when>
             </c:choose>
 
-            <br/>
-            <button id="btn" type="submit" style="margin-top: 20px">
-                Save
-            </button>
+
         </form>
     </div>
 </div>
@@ -239,7 +253,7 @@
             }
             $("#btn").attr("disabled", true).text("Submitting...");
             $.ajax({
-                url: "registerTime",
+                url: "timeChangeClass",
                 type: "POST",
                 data: {
                     startDate: startDate,
@@ -248,6 +262,7 @@
                 },
                 dataType: "json",
                 success: function (response) {
+                    console.log("response",response)
                     // Handle success response from backend here
                     $("#error")
                         .css("color", "green")

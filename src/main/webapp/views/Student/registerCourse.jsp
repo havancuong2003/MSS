@@ -152,23 +152,31 @@
         style="margin-top: 120px"
 >
     <h1>The registration period has expired or has not yet arrived</h1>
+
+    <c:if test="${requestScope.timePeriods != 'null'}">
+        <h1>Start at  ${requestScope.timePeriods.startRegister} and end at ${requestScope.timePeriods.endRegister}</h1>
+
+    </c:if>
 </div>
 <div class="${validDate eq 'true' ? 'ab' : 'expired'} contain">
     <h1 style="text-align: right">Semester: ${currentSemester.detail}</h1>
 
-    <div class="content">
-        <h2>Student register course for next semester: ${nextSemester.detail}</h2>
-        <h3>
-            Start register from ${timePeriods.startRegister} to
-            ${timePeriods.endRegister}
-        </h3>
-        <h3>Students can only register for ${nextSemester.totalCourseRegisterForNextSemester} courses in a semester</h3>
-        <div id="messageContainer"></div>
-        <h3>
-            Courses list registered:
-            <span id="totalRegister">${totalRegister}</span> course
-        </h3>
-    </div>
+    <c:if test="${requestScope.timePeriods != 'null'}">
+            <div class="content">
+                <h2>Student register course for next semester: ${nextSemester.detail}</h2>
+                <h3>
+                    Start register from ${timePeriods.startRegister} to
+                    ${timePeriods.endRegister}
+                </h3>
+                <h3>Students can only register for ${nextSemester.totalCourseRegisterForNextSemester} courses in a semester</h3>
+                <div id="messageContainer"></div>
+                <h3>
+                    Courses list registered:
+                    <span id="totalRegister">${totalRegister}</span> course
+                </h3>
+            </div>
+    </c:if>
+
     <table>
         <thead>
         <tr>
