@@ -107,7 +107,7 @@ public class CreateExercise extends HttpServlet {
                 request.setAttribute("numQuestion",numQuestion);
                 request.setAttribute("firstLoad",true);
                 request.setAttribute("exercise_id", exercise_id);
-                request.getRequestDispatcher("viewQuestion.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/exercise/managequestion.jsp").forward(request, response);
             } else {
                 System.out.println("Fail to create exercise");
             }
@@ -132,7 +132,7 @@ public class CreateExercise extends HttpServlet {
                     request.setAttribute("type_question","0");
                     request.setAttribute("firstLoad",true);
                     request.setAttribute("exercise_id", exercise_id);
-                    request.getRequestDispatcher("viewQuestion.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/exercise/managequestion.jsp").forward(request, response);
                 }
             }
         }

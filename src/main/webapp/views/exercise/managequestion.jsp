@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -442,7 +444,50 @@
             background-color: #f8d7da;
             border: 1px solid #f5c6cb;
         }
+        .note {
+            background-color: #fef3c7; /* Màu nền vàng nhạt */
+            border-left: 4px solid #f59e0b; /* Đường viền trái màu vàng đậm */
+            color: #92400e; /* Màu chữ vàng đậm */
+            padding: 16px; /* Khoảng đệm bên trong */
+            margin: 16px 0; /* Khoảng cách trên và dưới */
+            border-radius: 4px; /* Bo góc */
+        }
 
+        .note p {
+            margin: 0;
+        }
+
+        .note .font-bold {
+            font-weight: bold; /* Chữ in đậm */
+        }
+        #messageContainer {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        #mess_constructor {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            background-color: red;
+        }
+
+        #mess_constructor_success {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            background-color: #28a745;
+        }
 
     </style>
 </head>
@@ -467,21 +512,14 @@
             <button type="submit" class="custom-button">Search</button>
         </form>
     </div>
-    <%--    <c:if test="${mess_share != null}">--%>
-    <%--        <script>--%>
-    <%--            // Sử dụng window.onload để chắc chắn rằng toàn bộ document đã được load--%>
-    <%--            window.onload = function() {--%>
-    <%--                alert('Thông báo: ${mess_share}');--%>
-    <%--            };--%>
-    <%--        </script>--%>
-    <%--    </c:if>--%>
-    <c:if test="${mess_share != null}">
-        <div class="message success-message">${mess_share}</div>
+    <div id="messageContainer"></div>
+    <c:if test="${mess_constructor != null}">
+        <div id="mess_constructor">${mess_constructor}</div>
     </c:if>
-    <c:if test="${mess_share_fail != null}">
-        <div class="message error-message">${mess_share_fail}</div>
+    <c:if test="${mess_constructor_success != null}">
+        <div id="mess_constructor_success">${mess_constructor_success}</div>
     </c:if>
-    <form action="share-question" id="questionForm" method="post">
+    <form action="create-question" id="questionForm" method="post">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -489,12 +527,35 @@
                         <h2>Manage <b>Question</b></h2>
                     </div>
                     <div class="col-sm-6">
-                        <a href="select-question-bank?exercise_id=${exercise_id}"  class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                        <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                        <c:if test="${isRandom != 1}">
+                            <c:if test="${listQuestionSize < numQuestion}">
+                                <a href="select-question-bank?exercise_id=${exercise_id}&numQuestion=${numQuestion}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
+                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                            </c:if>
+                            <c:if test="${listQuestionSize >= numQuestion}">
+                                <a href="select-question-bank?exercise_id=${exercise_id}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
+                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                            </c:if>
+                        </c:if>
+
+                        <c:if test="${isRandom == 1}">
+                            <c:if test="${listQuestionSize < numQuestion}">
+                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
+                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                            </c:if>
+                            <c:if test="${listQuestionSize >= numQuestion}">
+                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
+                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                            </c:if>
+                        </c:if>
                     </div>
                 </div>
             </div>
             <table class="table table-striped table-hover">
+                <div class="note">
+                    <p class="font-bold">Note</p>
+                    <p>The select button is disabled because it already exists in the question bank or coincides with a question waiting to be approved.</p>
+                </div>
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -519,8 +580,8 @@
                             <td>High Application Question</td>
                         </c:if>
                         <td>
-                            <a href="#"  class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                            <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="create-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
                         </td>
                         <c:if test="${o.status == 0}">
                             <td style="text-align: center">
@@ -537,7 +598,9 @@
                 </c:forEach>
             </table>
             <div class="button-wrapper">
-                <button type="submit" id="publicQuestionButton" >Public question for bank</button>
+                <c:if test="${listQuestion.size() != 0}" >
+                    <button id="publicQuestionButton" >Public question for bank</button>
+                </c:if>
                 <input type="hidden" name="exercise_id" value="${exercise_id}">
                 <input type="hidden" name="status" value="public">
                 <input type="hidden" name="page" value="${tag}">
@@ -546,18 +609,18 @@
                 <ul class="pagination">
                     <c:if test="${search != null}" >
                     <c:if test="${tag > 1}">
-                    <li class="page-item"><a href="create-question?page=${tag-1}&search=${search}">Previous</a></li>
+                    <li class="page-item"><a href="create-question?page=${tag-1}&exercise_id=${exercise_id}&search=${search}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                     <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                     <li class="page-item ${i == tag ? 'active' : ''}">
-                        <a href="create-question?page=${i}&search=${search}">${i}</a>
+                        <a href="create-question?page=${i}&exercise_id=${exercise_id}&search=${search}">${i}</a>
                     </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                    <li class="page-item" ><a href="create-question?page=${tag+1}&search=${search}" class="page-link">Next</a></li>
+                    <li class="page-item" ><a href="create-question?page=${tag+1}&exercise_id=${exercise_id}&search=${search}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                     <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -594,33 +657,33 @@
 <div id="addQuestionModal" class="modal fade">
     <div class="modal-dialog custom-dialog">
         <div class="modal-content custom-content" style="text-align: center;">
-            <form action="create-question" method="post">
+            <form id="create-question-form" action="create-question" method="post" onsubmit="return validateForm()">
                 <input type="hidden" value="${exercise_id}" name="exercise_id">
                 <input type="hidden" value="${tag}" name="page">
                 <input type="hidden" value="${type_question}" name="type_question">
-                <input type="hidden" value="${search}" name="search">
+                <input type="hidden" name="status" value="add">
+                <c:if test="${searchExist == 1}">
+                    <input type="hidden" value="${search}" name="search">
+                </c:if>
                 <input type="hidden" id="optionCount" value="2" name="optionCount">
                 <input type="hidden" id="correctAnswerCount" value="1" name="correctAnswerCount">
                 <input type="hidden" id="share_question_input" name="share_question" value="0">
                 <div class="modal-body">
                     <div  class="form-container">
                         <div class="form-group">
-                            <select name="type_question_modal" class="form-control">
+                            <select name="type_question_modal"  id="type_question_modal" class="form-control">
                                 <option value="0" class="form-control">Choose type question</option>
                                 <option value="1" ${type_question_modal == "1" ? "selected" : ""} class="form-control">Basic Question</option>
                                 <option value="2" ${type_question_modal == "2" ? "selected" : ""} class="form-control">Low Application Question</option>
                                 <option value="3" ${type_question_modal == "3" ? "selected" : ""} class="form-control">High Application Question</option>
                             </select>
                         </div>
-                        <div style="text-align: center">
-                            <p style="color: red">${mess_type_question}</p>
-                        </div>
+                        <div id="type-question-error" class="error-message"></div>
+
                         <div class="form-group">
-                            <input name="question" type="text" class="form-control" value="${question}" placeholder="Câu hỏi..." >
+                            <input name="question" type="text" id="question" class="form-control" value="${question}" placeholder="Câu hỏi..." >
                         </div>
-                        <div style="text-align: center">
-                            <p style="color: red">${mess_question}</p>
-                        </div>
+                        <div id="question-error" class="error-message"></div>
                         <div class="form-group">
                             <input name="option1" type="text" class="form-control" value="${option[0]}" placeholder="Tùy chọn A..." >
                         </div>
@@ -628,15 +691,8 @@
                             <input name="option2" type="text" class="form-control" value="${option[1]}" placeholder="Tùy chọn B..." >
                         </div>
                         <div id="additional-options" style="width: 100%; display: flex;justify-content: center; flex-wrap: wrap">
-                            <c:forEach var="i" begin="3" end="${option.size()}">
-                                <div class="form-group">
-                                    <input name="option${i}" type="text" class="form-control" value="${option[i-1]}" placeholder="Tùy chọn ${['A', 'B', 'C', 'D', 'E', 'F'][i-1]}..." >
-                                </div>
-                            </c:forEach>
                         </div>
-                        <div style="text-align: center">
-                            <p style="color: red">${mess_option}</p>
-                        </div>
+                        <div id="option-error" class="error-message"></div>
                         <div class="form-group row">
                             <button type="button" id="add-option" class="btn btn-secondary col-md-6">Thêm tùy chọn</button>
                             <button type="button" id="remove-option" class="btn btn-danger col-md-6">Xóa tùy chọn</button>
@@ -645,15 +701,9 @@
                             <input name="correct_answer1" type="text" value="${correct_answer[0]}" class="form-control" placeholder="Đáp án đúng">
                         </div>
                         <div id="multiple-choice-options" style="width: 100%; display: flex;justify-content: center; flex-wrap: wrap">
-                            <c:forEach var="i" begin="2" end="${correct_answer.size()}">
-                                <div class="form-group">
-                                    <input name="correct_answer${i}" type="text" class="form-control" value="${correct_answer[i-1]}" placeholder="Dap an dung">
-                                </div>
-                            </c:forEach>
                         </div>
-                        <div style="text-align: center">
-                            <p style="color: red">${mess_correct_answer}</p>
-                        </div>
+                        <div id="correct-answer-error" class="error-message"></div>
+                        <div id="correct-answer-error-multiple" class="error-message"></div>
                         <div class="form-group row">
                             <button type="button" id="add-multiple-choice" class="btn btn-secondary col-md-6">Thêm đáp án đúng</button>
                             <button type="button" id="remove-multiple-choice" class="btn btn-danger col-md-6">Xóa đáp án</button>
@@ -663,12 +713,438 @@
                 <div class="modal-footer" id="button-group">
                     <button type="button" class="custom-button btn btn-success" onclick="location.href = '#'">Cancel</button>
                     <input type="submit" class="btn btn-success" value="Add">
-                    <input type="submit" class="btn btn-success" value="Share to question bank" onclick="shareQuestion()">
+                    <%--                    <input type="submit" class="btn btn-success" value="Share to question bank" onclick="shareQuestion()">--%>
                 </div>
             </form>
         </div>
     </div>
 </div>
+// update Modal
+<div id="updateModal" class="modal fade">
+    <div class="modal-dialog custom-dialog">
+        <div class="modal-content custom-content" style="text-align: center;">
+            <form id="update-question-form" action="create-question" method="post" onsubmit="return validateFormUpdate()">
+                <input type="hidden" value="${exercise_id}" name="exercise_id">
+                <input type="hidden" value="${tag}" name="page">
+                <input type="hidden" value="${type_question}" name="type_question">
+                <input type="hidden" id="update_question_id" name="question_id">
+                <input type="hidden" name="status" value="update">
+                <input type="hidden" id="optionCountUpdate" value="2" name="optionCountUpdate">
+                <input type="hidden" id="correctAnswerCountUpdate" value="1" name="correctAnswerCountUpdate">
+                <c:if test="${searchExist == 1}">
+                    <input type="hidden" value="${search}" name="search">
+                </c:if>
+                <input type="hidden" id="share_question_input" name="share_question" value="0">
+                <div class="modal-body">
+                    <div  class="form-container">
+                        <div class="form-group">
+                            <select name="update_type_question_modal"  id="update_type_question_modal" class="form-control">
+                                <option value="0" class="form-control">Choose type question</option>
+                                <option value="1" ${type_question_modal == "1" ? "selected" : ""} class="form-control">Basic Question</option>
+                                <option value="2" ${type_question_modal == "2" ? "selected" : ""} class="form-control">Low Application Question</option>
+                                <option value="3" ${type_question_modal == "3" ? "selected" : ""} class="form-control">High Application Question</option>
+                            </select>
+                        </div>
+                        <div id="update_type-question-error" class="error-message"></div>
+
+                        <div class="form-group">
+                            <input name="question" type="text" id="update_question" class="form-control" value="${question}" placeholder="Câu hỏi..." >
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="originQuestion" class="form-control" >
+                        </div>
+                        <div id="update_question-error" class="error-message"></div>
+                        <div class="form-group">
+                            <input name="option1" id="option1" type="text" class="form-control" placeholder="Tùy chọn A..." >
+                        </div>
+                        <div class="form-group">
+                            <input name="option2" id="option2" type="text" class="form-control"  placeholder="Tùy chọn B..." >
+                        </div>
+                        <div id="update-additional-options" style="width: 100%; display: flex;justify-content: center; flex-wrap: wrap">
+                        </div>
+                        <div id="update-option-error" class="error-message"></div>
+                        <div class="form-group row">
+                            <button type="button" id="update-add-option" class="btn btn-secondary col-md-6">Thêm tùy chọn</button>
+                            <button type="button" id="update-remove-option" class="btn btn-danger col-md-6">Xóa tùy chọn</button>
+                        </div>
+                        <div class="form-group">
+                            <input name="correct_answer1" id="correct_answer1" type="text" class="form-control" placeholder="Đáp án đúng">
+                        </div>
+                        <div id="update-multiple-choice-options" style="width: 100%; display: flex; justify-content: center; flex-wrap: wrap">
+                        </div>
+                        <div id="update-correct-answer-error" class="error-message"></div>
+                        <div id="update-correct-answer-error-multiple" class="error-message"></div>
+                        <div class="form-group row">
+                            <button type="button" id="update-add-multiple-choice" class="btn btn-secondary col-md-6">Thêm đáp án đúng</button>
+                            <button type="button" id="update-remove-multiple-choice" class="btn btn-danger col-md-6">Xóa đáp án</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="button-group">
+                    <button type="button" class="custom-button btn btn-success" onclick="location.href = '#'">Cancel</button>
+                    <input type="submit" class="btn btn-success" value="Update">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var exercise_id = "${exercise_id}";
+    let optionCountUpdate;
+    let correctOptionCountUpdate;
+    let count = 0;
+
+    jQuery.noConflict();
+    jQuery(document).ready(function($) { // Use $ for jQuery inside this function
+        $('.edit').click(function() {
+            var questionId = $(this).data('question-id');
+            document.getElementById('update_question_id').value = questionId;
+            $.ajax({
+                url: 'create-question',
+                method: 'POST',
+                data: {
+                    question_id: questionId,
+                    exercise_id: exercise_id,
+                    status: 'view'
+                },
+                success: function(response) {
+                    optionCountUpdate = response.answers.length + 1;
+                    console.log(optionCountUpdate);
+                    // Điền thông tin câu hỏi và câu trả lời vào modal
+                    $('#updateModal').find('input[name="question"]').val(response.question);
+                    $('#update_type_question_modal').val(response.update_type_question_modal);
+                    $('#update-additional-options').empty();
+                    $('#originQuestion').val(response.question);
+                    for (var i = 0; i < response.answers.length; i++) {
+                        var answer = response.answers[i];
+                        var optionIndex = i + 1;
+                        // Xác định tên của input dựa trên optionIndex
+                        var inputName = 'option' + optionIndex;
+                        if(optionIndex >=3){
+                            var newOptionDiv = $('<div class="form-group"></div>');
+                            var newOptionInput = $('<input name="option' + optionIndex + '" type="text" class="form-control" value="' + answer.answer_text + '" placeholder="Tùy chọn ' + String.fromCharCode(64 + optionIndex) + '...">');
+                            newOptionDiv.append(newOptionInput);
+                            $('#update-additional-options').append(newOptionDiv);
+                        } else {
+                            $('#updateModal').find('input[name="' + inputName + '"]').val(answer.answer_text);
+                        }
+                    }
+                    correctOptionCountUpdate = response.correctanswers.length + 1
+                    console.log(correctOptionCountUpdate)
+                    $('#update-multiple-choice-options').empty();
+                    for (var i = 0; i < response.correctanswers.length; i++) {
+                        var answer = response.correctanswers[i];
+                        var optionIndex = i + 1;
+                        // Xác định tên của input dựa trên optionIndex
+                        var inputName = 'correct_answer' + optionIndex;
+                        if (optionIndex >= 2) {
+                            var newOptionDiv = $('<div class="form-group"></div>');
+                            var newOptionInput = $('<input name="correct_answer' + optionIndex + '" type="text" class="form-control" value="' + answer.correct_answer_text + '" placeholder="Đáp án đúng">');
+                            newOptionDiv.append(newOptionInput);
+                            $('#update-multiple-choice-options').append(newOptionDiv);
+                        } else {
+                            $('#updateModal').find('input[name="' + inputName + '"]').val(answer.correct_answer_text);
+                        }
+                    }
+                    $('#updateModal').modal('show');
+
+                    // Gắn sự kiện thêm tùy chọn nếu chưa được gắn
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi khi không thể lấy thông tin câu hỏi
+                    console.error('Failed to load question info:', error);
+                    alert('Failed to load question info. Please try again later.');
+                }
+            });
+        });
+    });
+</script>
+<script>
+    // Add option update
+    document.getElementById('update-add-option').addEventListener('click', function () {
+        const newOptionDiv = document.createElement('div');
+        newOptionDiv.className = 'form-group';
+        const newOptionInput = document.createElement('input');
+        newOptionInput.name = 'option' + optionCountUpdate;
+        newOptionInput.type = 'text';
+        newOptionInput.className = 'form-control';
+        newOptionInput.placeholder = 'Tùy chọn ' + String.fromCharCode(64 + optionCountUpdate) + '...';
+
+        newOptionDiv.appendChild(newOptionInput);
+        document.getElementById('update-additional-options').appendChild(newOptionDiv);
+        console.log('value:'  + optionCountUpdate);
+        document.getElementById('optionCountUpdate').value = optionCountUpdate;
+        document.getElementById('correctAnswerCountUpdate').value = correctOptionCountUpdate -1;
+        optionCountUpdate++;
+    });
+
+    // Remove option update
+    document.getElementById('update-remove-option').addEventListener('click', function () {
+        if (optionCountUpdate > 3) {
+            optionCountUpdate--;
+            const additionalOptionsDiv = document.getElementById('update-additional-options');
+            if (additionalOptionsDiv.lastChild) {
+                additionalOptionsDiv.removeChild(additionalOptionsDiv.lastChild);
+            }
+            document.getElementById('optionCountUpdate').value = optionCountUpdate;
+            document.getElementById('correctAnswerCountUpdate').value = correctOptionCountUpdate -1;
+        }
+    });
+    // Add multiple-choice update
+    document.getElementById('update-add-multiple-choice').addEventListener('click', function () {
+        const newMultipleChoiceDiv = document.createElement('div');
+        newMultipleChoiceDiv.className = 'form-group';
+        const newMultipleChoiceInput = document.createElement('input');
+        newMultipleChoiceInput.name = 'correct_answer' + correctOptionCountUpdate;
+        newMultipleChoiceInput.type = 'text';
+        newMultipleChoiceInput.className = 'form-control';
+        newMultipleChoiceInput.placeholder = 'Đáp án đúng';
+
+        newMultipleChoiceDiv.appendChild(newMultipleChoiceInput);
+        document.getElementById('update-multiple-choice-options').appendChild(newMultipleChoiceDiv);
+        console.log('update' + correctOptionCountUpdate);
+        document.getElementById('optionCountUpdate').value = optionCountUpdate -1;
+        document.getElementById('correctAnswerCountUpdate').value = correctOptionCountUpdate;
+        correctOptionCountUpdate++;
+    });
+
+    // Remove multiple-choice update
+    document.getElementById('update-remove-multiple-choice').addEventListener('click', function () {
+        if (correctOptionCountUpdate > 2) { // Ensure at least one correct answer remains
+            correctOptionCountUpdate--;
+            const multipleChoiceOptionsDiv = document.getElementById('update-multiple-choice-options');
+            if (multipleChoiceOptionsDiv.lastChild) {
+                multipleChoiceOptionsDiv.removeChild(multipleChoiceOptionsDiv.lastChild);
+            }
+            console.log('view:' + optionCountUpdate)
+            console.log('view2: ' + correctOptionCountUpdate)
+            document.getElementById('optionCountUpdate').value = optionCountUpdate -1;
+            document.getElementById('correctAnswerCountUpdate').value = correctOptionCountUpdate;
+        }
+    });
+    var listQuestions = <%= request.getAttribute("questions") %>;
+    console.log(listQuestions);
+
+    function validateFormUpdate() {
+        let isValid = true;
+
+        // Kiểm tra loại câu hỏi
+        const typeQuestionModal = document.getElementById('update_type_question_modal').value;
+        if (typeQuestionModal === "0") {
+            document.getElementById('update_type-question-error').innerText = 'Vui lòng chọn loại câu hỏi';
+            isValid = false;
+        } else {
+            document.getElementById('update_type-question-error').innerText = '';
+        }
+
+        // Kiểm tra câu hỏi
+        const question = document.getElementById('update_question').value.trim();
+        const  originalQuestion  = document.getElementById('originQuestion').value.trim();
+        console.log(originalQuestion);
+        console.log(question);
+        if (question === "") {
+            document.getElementById('update_question-error').innerText = 'Vui lòng nhập câu hỏi';
+            isValid = false;
+        } else if (listQuestions.includes(question) && question !== originalQuestion) {
+            document.getElementById('update_question-error').innerText = 'Câu hỏi đã tồn tại!';
+            isValid = false;
+        } else {
+            document.getElementById('update_question-error').innerText = '';
+        }
+
+        // Kiểm tra các tùy chọn
+        const option1 = document.getElementById('option1').value.trim();
+        const option2 = document.getElementById('option2').value.trim();
+        // console.log(option1);
+        // console.log(option2);
+        if (option1 === "" || option2 === "") {
+            document.getElementById('update-option-error').innerText = 'Vui lòng nhập ít nhất hai tùy chọn';
+            isValid = false;
+        } else if (option1 === option2) {
+            document.getElementById('update-option-error').innerText = 'Các tùy chọn không được trùng nhau';
+            isValid = false;
+        } else {
+            document.getElementById('update-option-error').innerText = '';
+        }
+
+        // Kiểm tra các tùy chọn bổ sung
+        const options = document.querySelectorAll('#update-additional-options input.form-control');
+        const optionValues = [];
+        for (let i = 0; i < options.length; i++) {
+            const optionValue = options[i].value.trim();
+            if (optionValue === "") {
+                document.getElementById('update-option-error').innerText = 'Vui lòng nhập tất cả các tùy chọn';
+                isValid = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            }
+            if (optionValues.includes(optionValue) || optionValue === option1 || optionValue === option2) {
+                document.getElementById('update-option-error').innerText = 'Các tùy chọn không được trùng nhau';
+                isValid = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            }
+            optionValues.push(optionValue);
+        }
+
+        // Kiểm tra đáp án đúng
+        const correct_answer1 = document.getElementById("correct_answer1").value.trim();
+        if (correct_answer1 === "") {
+            document.getElementById('update-correct-answer-error').innerText = 'Vui lòng nhập đáp án';
+            isValid = false;
+        } else if (!optionValues.includes(correct_answer1) && option1 !== correct_answer1 && option2 !== correct_answer1) {
+            document.getElementById('update-correct-answer-error').innerText = 'Đáp án đúng không nằm trong danh sách tùy chọn';
+            isValid = false;
+        }
+        let isValidAnswer = true;
+        // Kiểm tra các đáp án đúng còn lại
+        const correctAnswers = document.querySelectorAll('#update-multiple-choice-options input.form-control');
+        const correctAnswerValues = [];
+        for (let i = 0; i < correctAnswers.length; i++) {
+            isValidAnswer = true;
+            const correctAnswerValue = correctAnswers[i].value.trim();
+            console.log(correctAnswerValue);
+            if (correctAnswerValue === "") {
+                console.log("loi 1")
+                document.getElementById('update-correct-answer-error').innerText = 'Vui lòng nhập tất cả các đáp án đúng';
+                isValid = false;
+                isValidAnswer = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            } else if (!optionValues.includes(correctAnswerValue) && option1 !== correct_answer1 && option2 !== correct_answer1) {
+                console.log("loi 2")
+                document.getElementById('update-correct-answer-error').innerText = 'Các đáp án đúng không nằm trong danh sách tùy chọn';
+                isValid = false;
+                isValidAnswer = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            }else if (correctAnswerValues.includes(correctAnswerValue) || correctAnswerValue === correct_answer1) {
+                console.log("loi 3")
+                document.getElementById('update-correct-answer-error-multiple').innerText = 'Các đáp án đúng không được trùng nhau';
+                isValid = false;
+                isValidAnswer = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            }
+            correctAnswerValues.push(correctAnswerValue);
+        }
+        console.log(correctAnswerValues)
+        console.log(isValidAnswer);
+        if (isValidAnswer) {
+            document.getElementById('update-correct-answer-error').innerText = ''; // Xóa thông báo lỗi nếu không có lỗi
+            document.getElementById('update-correct-answer-error-multiple').innerText = ''; // Xóa thông báo lỗi nếu không có lỗi
+        }
+        if(isValid){
+            document.getElementById('optionCountUpdate').value = optionCountUpdate -1;
+            document.getElementById('correctAnswerCountUpdate').value = correctOptionCountUpdate-1;
+        }
+        return isValid;
+    }
+</script>
+<script>
+    jQuery.noConflict();
+    jQuery(document).ready(function($) {
+
+        function saveCheckboxState() {
+            var selectedCheckboxes = JSON.parse(localStorage.getItem('selectedCheckboxes')) || {};
+            $('input[type="checkbox"][name="choose"]').each(function() {
+                var checkboxValue = $(this).val();
+                if ($(this).is(':checked')) {
+                    selectedCheckboxes[checkboxValue] = true;
+                } else {
+                    delete selectedCheckboxes[checkboxValue];
+                }
+            });
+            localStorage.setItem('selectedCheckboxes', JSON.stringify(selectedCheckboxes));
+            console.log(selectedCheckboxes);
+        }
+
+        function loadCheckboxState() {
+            var selectedCheckboxes = JSON.parse(localStorage.getItem('selectedCheckboxes')) || {};
+            $('input[type="checkbox"][name="choose"]').each(function() {
+                var checkboxValue = $(this).val();
+                if (selectedCheckboxes[checkboxValue]) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+            });
+        }
+        var exercise_id = "${exercise_id}"
+        console.log(exercise_id)
+        function sendSelectedIdsToServer() {
+            var selectedCheckboxes = JSON.parse(localStorage.getItem('selectedCheckboxes')) || {};
+            var selectedIds = Object.keys(selectedCheckboxes).filter(function(key) {
+                return selectedCheckboxes[key];
+            });
+
+            // Đảm bảo exercise_id đã được định nghĩa
+            if (!exercise_id) {
+                console.error('exercise_id is not defined');
+                return;
+            }
+
+            console.log('Sending JSON data to server:');
+            console.log({
+                exercise_id: exercise_id,
+                selectedIds: selectedIds
+            });
+
+            // Gửi selectedIds về server bằng AJAX
+            $.ajax({
+                url: 'create-question',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({
+                    exercise_id: exercise_id,
+                    selectedIds: selectedIds,
+                    status : 'public'
+                }),
+                success: function(response) {
+                    console.log('Selected IDs sent to server successfully');
+                    console.log(response); // In ra phản hồi từ server để kiểm tra
+                    localStorage.removeItem('selectedCheckboxes');
+                    // location.reload();
+                    $('input[type="checkbox"][name="choose"]').each(function() {
+                        if ($(this).is(':checked')) {
+                            $(this).prop('checked', false); // Bỏ chọn checkbox
+                            $(this).prop('disabled', true); // Vô hiệu hóa checkbox
+                        }
+                    });
+                    document.getElementById('messageContainer').innerText = response.message;
+                    document.getElementById('messageContainer').style.backgroundColor = '#4CAF50'
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to send selected IDs to server:', status, error);
+                    console.log(xhr.responseText); // In ra phản hồi từ server để phân tích lỗi
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById('messageContainer').innerText = response.message;
+                    document.getElementById('messageContainer').style.backgroundColor = '#f44336'
+                }
+            });
+        }
+        $('#publicQuestionButton').on('click', function(event) {
+            event.preventDefault(); // Ngăn không cho form submit mặc định
+
+            // Gọi hàm để gửi selected IDs về server
+            sendSelectedIdsToServer();
+        });
+
+        loadCheckboxState();
+
+        // Listen to change event of checkboxes
+        $('input[type="checkbox"][name="choose"]').on('change', function() {
+            saveCheckboxState();
+        });
+
+        // Optionally, clear localStorage on form submission or backToCreateQuestion click
+        $('form').on('submit', function() {
+            localStorage.removeItem('selectedCheckboxes');
+        });
+
+        $('#backToCreateQuestion').on('click', function() {
+            localStorage.removeItem('selectedCheckboxes');
+        });
+    });
+</script>
 <script>
     let optionCount = 3;  // Theo dõi số lượng tùy chọn
     let multipleChoiceCount = 2;
@@ -690,7 +1166,7 @@
     });
     // remove option
     document.getElementById('remove-option').addEventListener('click', function () {
-        if (optionCount > 3) { // Ensure at least two options remain
+        if (optionCount > 3) {
             optionCount--;
             const additionalOptionsDiv = document.getElementById('additional-options');
             if (additionalOptionsDiv.lastChild) {
@@ -732,26 +1208,100 @@
         document.getElementById("share_question_input").value = "1";
         return true; // Trả về true để tiếp tục với hành động submit của nút
     }
-    $(document).ready(function() {
-        // Biến để kiểm tra lần đầu vào trang
-        var isFirstLoad = <%= Boolean.TRUE.equals(request.getAttribute("firstLoad")) %>;
 
-        // Hàm để hiển thị modal addQuestion
-        function showAddQuestionModal() {
-            $('#addQuestionModal').modal('show');
+    function showAlertAndPreventDefault(event, message) {
+        event.preventDefault();  // Ngăn chặn hành động mặc định
+        alert(message);  // Hiển thị thông báo
+    }
+    var questions = <%= request.getAttribute("questions") %>;
+    function validateForm() {
+        let isValid = true;
+
+        // Kiểm tra loại câu hỏi
+        const typeQuestionModal = document.getElementById('type_question_modal').value;
+        if (typeQuestionModal === "0") {
+            document.getElementById('type-question-error').innerText = 'Vui lòng chọn loại câu hỏi';
+            isValid = false;
+        } else {
+            document.getElementById('type-question-error').innerText = '';
+        }
+        const question = document.getElementById('question').value.trim();
+        if (question === "") {
+            document.getElementById('question-error').innerText = 'Vui lòng nhập câu hỏi';
+            isValid = false;
+        } else if(questions.includes(question)){
+            document.getElementById('question-error').innerText = 'Câu hỏi đã tồn tại!';
+            isValid = false;
+        } else {
+            document.getElementById('question-error').innerText = '';
         }
 
-        // Kiểm tra nếu không phải lần đầu vào trang và có thông báo từ Servlet thì hiển thị modal
-        var mess_type_question = '<%= request.getAttribute("mess_type_question") %>';
-        var mess_question = '<%= request.getAttribute("mess_question") %>';
-        var mess_option = '<%= request.getAttribute("mess_option") %>';
-        var mess_correct_answer = '<%= request.getAttribute("mess_correct_answer") %>';
-
-        if ((mess_type_question || mess_question || mess_option || mess_correct_answer) && !isFirstLoad) {
-            showAddQuestionModal();
+        const option1 = document.getElementsByName('option1')[0].value.trim();
+        const option2 = document.getElementsByName('option2')[0].value.trim();
+        if (option1 === "" || option2 === "") {
+            document.getElementById('option-error').innerText = 'Vui lòng nhập ít nhất hai tùy chọn';
+            isValid = false;
+        } else if(option1 === option2){
+            document.getElementById('option-error').innerText = 'Các tùy chọn không được trùng nhau';
+        } else {
+            document.getElementById('option-error').innerText = '';
         }
-    });
+        // return isValid;
+        const options = document.querySelectorAll('#additional-options input.form-control');
+        const optionValues = [];
+        for (let i = 0; i < options.length; i++) {
+            const optionValue = options[i].value.trim();
+            if (optionValue === "") {
+                document.getElementById('option-error').innerText = 'Vui lòng nhập tất cả các tùy chọn';
+                isValid = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            }
+            if (optionValues.includes(optionValue) || optionValue === option1 || optionValue === option2) {
+                document.getElementById('option-error').innerText = 'Các tùy chọn không được trùng nhau';
+                isValid = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            }
+            optionValues.push(optionValue);
+        }
+        console.log(optionValues.length);
+        for (let i = 0; i < options.length; i++) {
+            console.log(options[i].value);
+        }
+        const correct_answer1 = document.getElementsByName("correct_answer1")[0].value.trim();
+        if (correct_answer1 === "") {
+            document.getElementById('correct-answer-error').innerText =  'Vui lòng nhập đáp án';
+            isValid = false;
+        } else if (!optionValues.includes(correct_answer1) && option1 !== correct_answer1 && option2 !== correct_answer1) {
+            document.getElementById('correct-answer-error').innerText = 'Đáp án đúng không nằm trong danh sách tùy chọn'
+            isValid = false;
+        }
 
+        // Kiểm tra các đáp án đúng còn lại
+        const correctAnswers = document.querySelectorAll('#multiple-choice-options input.form-control');
+        const correctAnswerValues = [];
+        for (let i = 0; i < correctAnswers.length; i++) {
+            const correctAnswerValue = correctAnswers[i].value.trim();
+            if (correctAnswerValue === "") {
+                document.getElementById('correct-answer-error').innerText = 'Vui lòng nhập tất cả các đáp án đúng';
+                isValid = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            }
+            if (!optionValues.includes(correctAnswerValue) && option1 !== correct_answer1 && option2 !== correct_answer1) {
+                document.getElementById('correct-answer-error').innerText = 'Các đáp án đúng không nằm trong danh sách tùy chọn';
+                isValid = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            }
+            if (correctAnswerValues.includes(correctAnswerValue) || correctAnswerValue === correct_answer1) {
+                document.getElementById('correct-answer-error-multiple').innerText = 'Các đáp án đúng không được trùng nhau';
+                isValid = false;
+                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            } else {
+                document.getElementById('correct-answer-error-multiple').innerText = '';
+            }
+            correctAnswerValues.push(correctAnswerValue);
+        }
+        return isValid;
+    }
 </script>
 </body>
 </html>
