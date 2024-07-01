@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 @MultipartConfig()
 public class ManageQuestion extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        System.out.println("chạy vào doget1");
         ExerciseDBContext edao = new ExerciseDBContext();
         QuestionDBContext qdao = new QuestionDBContext();
         String indexPage = request.getParameter("page");
@@ -97,9 +98,9 @@ public class ManageQuestion extends HttpServlet {
         int basicQuestion = 0;
         int lowQuestion = 0;
         int highQuestion = 0;
+        String txt = "";
         if (exercise.getIsRandom() == 1) {
             Cookie[] arrE = request.getCookies();
-            String txt = "";
             if (arrE != null) {
                 for (Cookie c : arrE) {
                     if (c.getName().equals("exercise")) {
@@ -112,6 +113,7 @@ public class ManageQuestion extends HttpServlet {
             Cookie c = new Cookie("exercise", txt);
             c.setMaxAge(2 * 24 * 60 * 60);
             response.addCookie(c);
+        }
             List<Exercise_Constructor> listE = Constructor(txt);
             for (Exercise_Constructor e : listE) {
                 if(exercise_id !=null && !exercise_id.trim().isEmpty()){
@@ -139,8 +141,8 @@ public class ManageQuestion extends HttpServlet {
             request.setAttribute("endPage", endPage);
             request.setAttribute("exercise_id", exercise_id);
             request.setAttribute("listQuestion", listQuestion);
-            request.getRequestDispatcher("viewQuestion.jsp").forward(request, response);
-        }
+            request.getRequestDispatcher("/views/exercise/managequestion.jsp").forward(request, response);
+
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ExerciseDBContext edao = new ExerciseDBContext();

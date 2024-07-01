@@ -1,5 +1,6 @@
 package dal;
 
+import model.BankAnswer;
 import model.BankQuestion;
 import model.IEntity;
 
@@ -36,6 +37,202 @@ public class BankQuestionDBContext extends DBContext<BankQuestion> {
         }
         return  listBankQuestion;
     }
+
+    public BankQuestion getBankQuestionById (String bank_question_id) {
+        String sql = "SELECT * " +
+                "FROM bank_question " +
+                "WHERE bank_question_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, bank_question_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                BankQuestion q = new BankQuestion();
+                q.setBank_question_id(rs.getInt("bank_question_id"));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                q.setCreated_by(rs.getString("created_by"));
+                q.setCourse_id(rs.getInt("course_id"));
+                return q;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  null;
+    }
+
+    public List<BankAnswer> getListBankAnswerByQuestionId (String bank_question_id) {
+        List<BankAnswer> listAnswer = new ArrayList<>();
+        String sql = "SELECT * FROM bank_answer ba\n" +
+                "JOIN bank_question bq ON ba.bank_question_id = bq.bank_question_id " +
+                "where bq.bank_question_id = ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, bank_question_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                BankAnswer bankAnswer = new BankAnswer();
+                bankAnswer.setBank_answer_id(rs.getInt("bank_answer_id"));
+                bankAnswer.setAnswer(rs.getString("answer"));
+                bankAnswer.setStatus(rs.getInt("status"));
+                BankQuestion bankQuestion = new BankQuestion();
+                bankQuestion.setBank_question_id(rs.getInt("bank_question_id"));
+                bankQuestion.setQuestion(rs.getString("question"));
+                bankQuestion.setType_question(rs.getInt("type_question"));
+                bankQuestion.setCreated_by(rs.getString("created_by"));
+                bankQuestion.setCourse_id(rs.getInt("course_id"));
+                bankAnswer.setBankQuestion(bankQuestion);
+                listAnswer.add(bankAnswer);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listAnswer;
+    }
+    public int getTotalBankQuestion() {
+        try {
+            String sql = "SELECT COUNT(*) FROM bank_question";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+        }  catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<BankQuestion> pagingBankQuestion (int index, String course_id) {
+        List<BankQuestion> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM bank_question q\n" +
+                "WHERE course_id = ? " +
+                "LIMIT 5 OFFSET ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setInt(2, (index-1)*5);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                BankQuestion bq = new BankQuestion();
+                bq.setBank_question_id(rs.getInt("bank_question_id"));
+                bq.setQuestion(rs.getString("question"));
+                bq.setType_question(rs.getInt("type_question"));
+                bq.setCreated_by(rs.getString("created_by"));
+                bq.setCourse_id(rs.getInt("course_id"));
+                listQuestion.add(bq);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
+
+    public int getTotalBankQuestionByTypeQuestion(String course_id,String type_question) {
+        try {
+            String sql = "SELECT COUNT(*) FROM bank_question WHERE course_id = ? AND type_question = ? ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, type_question);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+        }  catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<BankQuestion> pagingBankQuestionByTypeQuestion (int index, String course_id,String type_question) {
+        List<BankQuestion> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM bank_question q\n" +
+                "WHERE course_id = ? AND type_question = ? " +
+                "LIMIT 5 OFFSET ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2,type_question);
+            statement.setInt(3, (index-1)*5);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                BankQuestion bq = new BankQuestion();
+                bq.setBank_question_id(rs.getInt("bank_question_id"));
+                bq.setQuestion(rs.getString("question"));
+                bq.setType_question(rs.getInt("type_question"));
+                bq.setCreated_by(rs.getString("created_by"));
+                bq.setCourse_id(rs.getInt("course_id"));
+                listQuestion.add(bq);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
+    public int getTotalBankQuestionBySearch(String course_id,String search) {
+        try {
+            String sql = "SELECT COUNT(*) FROM bank_question WHERE course_id = ? AND question like ? ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, "%"+search+"%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+        }  catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<BankQuestion> pagingListBankQuestionBySearch(int index,String question,String course_id) {
+        List<BankQuestion> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM bank_question q\n" +
+                "WHERE q.course_id = ?  AND q.question like ? " +
+                "ORDER BY q.bank_question_id DESC " +
+                "LIMIT 5 OFFSET ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, "%" + question + "%");
+            statement.setInt(3, (index-1)*5);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                BankQuestion bankQuestion = new BankQuestion();
+                bankQuestion.setBank_question_id(rs.getInt(1));
+                bankQuestion.setQuestion(rs.getString(2));
+                bankQuestion.setType_question(rs.getInt(3));
+                bankQuestion.setCreated_by(rs.getString(4));
+                bankQuestion.setCourse_id(rs.getInt(5));
+                bankQuestion.setStatus(rs.getInt(6));
+                listQuestion.add(bankQuestion);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
+
+//    public int getTotalBankQuestionByTypeQuestion(String type_question,String exercise_id) {
+//        try {
+//            String sql = "SELECT COUNT(*) FROM question WHERE type_question = ? AND exercise_id = ?";
+//            PreparedStatement statement = connection.prepareStatement(sql);
+//            statement.setString(1, type_question);
+//            statement.setString(2, exercise_id);
+//            ResultSet rs = statement.executeQuery();
+//            while (rs.next()){
+//                return rs.getInt(1);
+//            }
+//        }  catch (SQLException ex) {
+//            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return 0;
+//    }
+
 
 
     @Override

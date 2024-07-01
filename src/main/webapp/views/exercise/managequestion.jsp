@@ -494,7 +494,7 @@
 <body>
 <div class="container" style="margin-top: 70px">
     <div class="custom-form-wrapper">
-        <form class="custom-form" action="create-question" method="get">
+        <form class="custom-form" action="manage-question" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
             <select name="type_question">
                 <option value="0" class="form-control">Choose type question</option>
@@ -506,7 +506,7 @@
         </form>
     </div>
     <div class="custom-form-wrapper">
-        <form class="custom-form" action="create-question" method="get">
+        <form class="custom-form" action="manage-question" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
             <input type="text" placeholder="Search by question..." name="search">
             <button type="submit" class="custom-button">Search</button>
@@ -519,7 +519,7 @@
     <c:if test="${mess_constructor_success != null}">
         <div id="mess_constructor_success">${mess_constructor_success}</div>
     </c:if>
-    <form action="create-question" id="questionForm" method="post">
+    <form action="manage-question" id="questionForm" method="post">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -581,7 +581,7 @@
                         </c:if>
                         <td>
                             <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="create-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                            <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
                         </td>
                         <c:if test="${o.status == 0}">
                             <td style="text-align: center">
@@ -609,18 +609,18 @@
                 <ul class="pagination">
                     <c:if test="${search != null}" >
                     <c:if test="${tag > 1}">
-                    <li class="page-item"><a href="create-question?page=${tag-1}&exercise_id=${exercise_id}&search=${search}">Previous</a></li>
+                    <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&search=${search}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                     <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                     <li class="page-item ${i == tag ? 'active' : ''}">
-                        <a href="create-question?page=${i}&exercise_id=${exercise_id}&search=${search}">${i}</a>
+                        <a href="manage-question?page=${i}&exercise_id=${exercise_id}&search=${search}">${i}</a>
                     </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                    <li class="page-item" ><a href="create-question?page=${tag+1}&exercise_id=${exercise_id}&search=${search}" class="page-link">Next</a></li>
+                    <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&search=${search}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                     <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -629,18 +629,18 @@
 
                     <c:if test="${search == null}" >
                     <c:if test="${tag > 1}">
-                    <li class="page-item"><a href="create-question?page=${tag-1}&exercise_id=${exercise_id}&type_question=${type_question}">Previous</a></li>
+                    <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&type_question=${type_question}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                     <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                     <li class="page-item ${i == tag ? 'active' : ''}">
-                        <a href="create-question?page=${i}&exercise_id=${exercise_id}&type_question=${type_question}">${i}</a>
+                        <a href="manage-question?page=${i}&exercise_id=${exercise_id}&type_question=${type_question}">${i}</a>
                     </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                    <li class="page-item" ><a href="create-question?page=${tag+1}&exercise_id=${exercise_id}&type_question=${type_question}" class="page-link">Next</a></li>
+                    <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&type_question=${type_question}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                     <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -657,7 +657,7 @@
 <div id="addQuestionModal" class="modal fade">
     <div class="modal-dialog custom-dialog">
         <div class="modal-content custom-content" style="text-align: center;">
-            <form id="create-question-form" action="create-question" method="post" onsubmit="return validateForm()">
+            <form id="create-question-form" action="manage-question" method="post" onsubmit="return validateForm()">
                 <input type="hidden" value="${exercise_id}" name="exercise_id">
                 <input type="hidden" value="${tag}" name="page">
                 <input type="hidden" value="${type_question}" name="type_question">
@@ -723,7 +723,7 @@
 <div id="updateModal" class="modal fade">
     <div class="modal-dialog custom-dialog">
         <div class="modal-content custom-content" style="text-align: center;">
-            <form id="update-question-form" action="create-question" method="post" onsubmit="return validateFormUpdate()">
+            <form id="update-question-form" action="manage-question" method="post" onsubmit="return validateFormUpdate()">
                 <input type="hidden" value="${exercise_id}" name="exercise_id">
                 <input type="hidden" value="${tag}" name="page">
                 <input type="hidden" value="${type_question}" name="type_question">
@@ -802,7 +802,7 @@
             var questionId = $(this).data('question-id');
             document.getElementById('update_question_id').value = questionId;
             $.ajax({
-                url: 'create-question',
+                url: 'manage-question',
                 method: 'POST',
                 data: {
                     question_id: questionId,
@@ -1089,7 +1089,7 @@
 
             // Gửi selectedIds về server bằng AJAX
             $.ajax({
-                url: 'create-question',
+                url: 'manage-question',
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json',

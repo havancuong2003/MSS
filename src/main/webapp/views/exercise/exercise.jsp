@@ -317,10 +317,10 @@
                         <td>${o.course.code}</td>
                         <td>
                             <c:if test="${o.isRandom == 0}">
-                                <a href="create-question?exercise_id=${o.exerciseId}">View</a>
+                                <a href="manage-question?exercise_id=${o.exerciseId}">View</a>
                             </c:if>
                             <c:if test="${o.isRandom == 1}">
-                                <a href="create-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}"></a>
+                                <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}"></a>
                             </c:if>
                         </td>
                         <td><a class="btn btn-danger"

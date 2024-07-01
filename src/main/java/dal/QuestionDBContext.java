@@ -188,8 +188,8 @@ public class QuestionDBContext extends DBContext<Question> {
         String sql = "SELECT * FROM question q\n" +
                 "LEFT JOIN exercise e ON q.exercise_id = e.exercise_id\n" +
                 "LEFT JOIN course c ON q.course_id = c.id\n" +
-                "LEFT JOIN teacher t ON e.teacher_id = t.teacher_id\n" +
-                "LEFT JOIN account acc ON t.account_id = acc.account_id\n" +
+                "LEFT JOIN teacher t ON e.teacher_id = t.id\n" +
+                "LEFT JOIN account acc ON t.acc_id = acc.account_id\n" +
                 "where q.question_id = ? ";
 
         try {
@@ -442,6 +442,47 @@ public class QuestionDBContext extends DBContext<Question> {
         }
         return  listQuestion;
     }
+    public Question getQuestion(String question, String exercise_id) {
+        String sql = "SELECT * FROM question q JOIN course c ON q.course_id = c.id where question like ? and q.exercise_id = ? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, question);
+            statement.setString(2, exercise_id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                Question q = new Question();
+                q.setQuestion_id(rs.getInt("question_id"));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                Course c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean(10));
+                q.setCourse(c);
+                q.setStatus(rs.getInt(6));
+                return q;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public void insertAnswerFromBank(String answer,int question_id,int status) {
+        String sql = "INSERT INTO answer (answer,status,question_id) " +
+                "VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, answer);
+            statement.setInt(2,status);
+            statement.setInt(3, question_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @Override
     public ArrayList<Question> list() {
         return null;

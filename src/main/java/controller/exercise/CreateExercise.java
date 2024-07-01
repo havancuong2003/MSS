@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class CreateExercise extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ExerciseDBContext dao = new ExerciseDBContext();
+        BankQuestionDBContext bdao = new BankQuestionDBContext();
         Teacher teacher = dao.getTeacher("t1");
         String teacherId = teacher.getTid();
         String teacher_id = String.valueOf(teacherId);
@@ -32,6 +33,15 @@ public class CreateExercise extends HttpServlet {
         List<String> exerciseNames = listExercise.stream()
                 .map(Exercise::getExerciseName) // assuming getName() method exists
                 .collect(Collectors.toList());
+        int basicBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","1");
+        int lowBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","2");
+        int highBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","3");
+        System.out.println("basic : " + basicBankQuestion);
+        System.out.println("low : " + lowBankQuestion);
+        System.out.println("high : " + highBankQuestion);
+        request.setAttribute("basicBankQuestion", basicBankQuestion);
+        request.setAttribute("lowBankQuestion", lowBankQuestion);
+        request.setAttribute("highBankQuestion", highBankQuestion);
         request.setAttribute("listGradeCategory", listGradeCategory);
         request.setAttribute("listExercise", listExercise);
         request.setAttribute("exerciseNames", new Gson().toJson(exerciseNames));
