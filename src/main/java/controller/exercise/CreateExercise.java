@@ -23,13 +23,49 @@ import java.util.stream.Collectors;
 @MultipartConfig()
 public class CreateExercise extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        ExerciseDBContext dao = new ExerciseDBContext();
+        ExerciseDBContext edao = new ExerciseDBContext();
         BankQuestionDBContext bdao = new BankQuestionDBContext();
-        Teacher teacher = dao.getTeacher("t1");
+        String indexPage = request.getParameter("page");
+        String search = request.getParameter("search");
+        String type_exercise = request.getParameter("type_exercise");
+        if(type_exercise == null || type_exercise.equals("")) {
+            type_exercise = "0";
+        }
+        String group_id = request.getParameter("group_id");
+        group_id = "1";
+        Teacher teacher = edao.getTeacher("t1");
         String teacherId = teacher.getTid();
         String teacher_id = String.valueOf(teacherId);
-        List<Exercise> listExercise = dao.getListExercise();
-        List<Grade_category> listGradeCategory = dao.getListGradeCategory("1");
+//        List<Exercise> listExercise = dao.getListExercise();
+        List<Grade_category> listGradeCategory = edao.getListGradeCategory("1");
+        int count = 0;
+        int endPage = 0;
+        if (indexPage == null || indexPage.trim().isEmpty()) {
+            indexPage = "1";
+        }
+        int index = Integer.parseInt(indexPage);
+        List<Exercise> listExercise = new ArrayList<Exercise>();
+        if (search == null || search.trim().isEmpty()) {
+            if (type_exercise.equals("0")) {
+                count = edao.getTotalExerciseByGroupId(group_id);
+                endPage = count / 5;
+                listExercise = edao.pagingExerciseByGroupId(index, group_id);
+            } else {
+                count = edao.getTotalExerciseByGetScore(group_id,type_exercise);
+                endPage = count / 5;
+                listExercise = edao.pagingExerciseByGetScore(index, group_id, type_exercise);
+            }
+        } else {
+            request.setAttribute("searchExist", 1);
+            search = search.trim();
+            count = edao.getTotalExerciseBySearch(group_id, search);
+            endPage = count / 5;
+            listExercise = edao.pagingExerciseBySearch(index, group_id, search);
+        }
+
+        if (count % 5 != 0) {
+            endPage++;
+        }
         List<String> exerciseNames = listExercise.stream()
                 .map(Exercise::getExerciseName) // assuming getName() method exists
                 .collect(Collectors.toList());
@@ -39,6 +75,11 @@ public class CreateExercise extends HttpServlet {
         System.out.println("basic : " + basicBankQuestion);
         System.out.println("low : " + lowBankQuestion);
         System.out.println("high : " + highBankQuestion);
+        request.setAttribute("tag", index);
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("type_exercise",type_exercise);
+        request.setAttribute("search", search);
+        request.setAttribute("group_id", group_id);
         request.setAttribute("basicBankQuestion", basicBankQuestion);
         request.setAttribute("lowBankQuestion", lowBankQuestion);
         request.setAttribute("highBankQuestion", highBankQuestion);
@@ -57,6 +98,7 @@ public class CreateExercise extends HttpServlet {
         String course_id = request.getParameter("course_id");
         course_id = "1";
         String teacher_id = request.getParameter("teacher_id");
+        teacher_id = "t1";
         int ramdonNumber =  100000 + random.nextInt(900000);
         String exercise_id = String.valueOf(ramdonNumber);
         if(randomExercise != null && randomExercise.equals("1")){
@@ -81,10 +123,10 @@ public class CreateExercise extends HttpServlet {
                 System.out.println("join 2");
                 if(random_exerciseType.equals("2")){
                     System.out.println("create success");
-                    dao.insertExerciseNotGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, "1");
+                    dao.insertExerciseNotGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, "1","1");
                 } else {
                     System.out.println("create success");
-                    dao.insertExerciseGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, "1",random_gradeCategory);
+                    dao.insertExerciseGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, "1",random_gradeCategory,"1");
                 }
             }
 
@@ -129,9 +171,9 @@ public class CreateExercise extends HttpServlet {
             String grade_category = request.getParameter("grade_category");
             if(exercise_name != null && teacher_id != null && question_number != null && exercise_time != null && exercise_type != null && grade_category != null){
                 if(!exercise_type.equals("2")){
-                    dao.insertExerciseGetMark(exercise_id, exercise_name.trim(), teacher_id,"1",question_number.trim(),exercise_time.trim(),exercise_type,"1",grade_category);
+                    dao.insertExerciseGetMark(exercise_id, exercise_name.trim(), teacher_id,"1",question_number.trim(),exercise_time.trim(),exercise_type,"1",grade_category,"0");
                 } else {
-                    dao.insertExerciseNotGetMark(exercise_id, exercise_name.trim(), teacher_id,"1",question_number.trim(),exercise_time.trim(),exercise_type,"1");
+                    dao.insertExerciseNotGetMark(exercise_id, exercise_name.trim(), teacher_id,"1",question_number.trim(),exercise_time.trim(),exercise_type,"1","0");
                 }
                 Exercise ex = dao.getExerciseById(exercise_id);
                 if(ex != null){
@@ -150,12 +192,18 @@ public class CreateExercise extends HttpServlet {
     }
 
     public void addRandomQuestions(List<BankQuestion> bankQuestions,int numQuestions,String exercise_id,String course_id){
-        QuestionDBContext dao = new QuestionDBContext();
+        ExerciseDBContext edao = new ExerciseDBContext();
+        BankQuestionDBContext bdao = new BankQuestionDBContext();
+        QuestionDBContext qdao = new QuestionDBContext();
         Collections.shuffle(bankQuestions);
         for(int i = 0; i < numQuestions && i < bankQuestions.size(); i++){
             BankQuestion bankQuestion = bankQuestions.get(i);
-            System.out.println(bankQuestion.getType_question());
-            dao.insertQuestionFromBank(bankQuestion.getQuestion(),String.valueOf(bankQuestion.getType_question()),exercise_id,course_id);
+            qdao.insertQuestionFromBank(bankQuestion.getQuestion(),String.valueOf(bankQuestion.getType_question()),exercise_id,course_id);
+            int question_id = qdao.getQuestion_id();
+            List<BankAnswer> listBankAnswer = bdao.getListBankAnswerByQuestionId(String.valueOf(bankQuestion.getBank_question_id()));
+            for(BankAnswer bankAnswer : listBankAnswer){
+                qdao.insertAnswerFromBank(bankAnswer.getAnswer(),question_id,bankAnswer.getStatus());
+            }
         }
     }
 }

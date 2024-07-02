@@ -10,6 +10,93 @@
     <title>Exercise</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .pagination-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .pagination li {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        .pagination li a {
+            color: #007bff;
+            min-width: 30px;
+            padding: 6px 12px;
+            text-decoration: none;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination li a:hover {
+            background-color: #e9ecef;
+            color: #0056b3;
+        }
+
+        .pagination li.active a {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .pagination li.disabled a {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        .custom-form-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding-right: 300px;
+        }
+
+        .custom-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 600px; /* Increase max-width for larger forms */
+        }
+
+        .custom-form select, .custom-form input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%; /* Increase width */
+        }
+
+        .custom-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 20%; /* Adjust width accordingly */
+        }
+
+        .custom-form button:hover {
+            background-color: #0056b3;
+        }
         .table tr th:first-child, .table tr td:first-child {
             width: 10%;
         }
@@ -296,46 +383,106 @@
             </a>
         </div>
     </div>
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <table class="table table-hover table-light table-borderless"
-                   style="width: 60%; margin: 0 auto;'">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">No.</th>
-                    <th scope="col">Quiz Name</th>
-                    <th scope="col">Course</th>
-                    <th scope="col">View</th>
-                    <th scope="col">Delete</th>
-                </tr>
-                </thead>
-                <c:forEach var="o" items="${listExercise}">
-                    <tbody>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="custom-form-wrapper">
+                    <form class="custom-form" action="create-exercise" method="get">
+                        <input type="hidden" name="group_id" value="${group_id}">
+                        <select name="type_exercise">
+                            <option value="0" class="form-control">Choose all exercises</option>
+                            <option value="1"  class="form-control">Test</option>
+                            <option value="2"  class="form-control">Pratice</option>
+                        </select>
+                        <button type="submit" class="custom-button">Select</button>
+                    </form>
+                </div>
+                <div class="custom-form-wrapper">
+                    <form class="custom-form" action="create-exercise" method="get">
+                        <input type="hidden" name="group_id" value="${group_id}">
+                        <input type="text" placeholder="Search by question..." name="search">
+                        <button type="submit" class="custom-button">Search</button>
+                    </form>
+                </div>
+                <table class="table table-hover table-light table-borderless"
+                       style="width: 60%; margin: 0 auto;'">
+                    <thead class="thead-dark">
                     <tr>
-                        <td scope="row">${o.exerciseId}</td>
-                        <td>${o.exerciseName}</td>
-                        <td>${o.course.code}</td>
-                        <td>
-                            <c:if test="${o.isRandom == 0}">
-                                <a href="manage-question?exercise_id=${o.exerciseId}">View</a>
-                            </c:if>
-                            <c:if test="${o.isRandom == 1}">
-                                <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}"></a>
-                            </c:if>
-                        </td>
-                        <td><a class="btn btn-danger"
-                               href="#"><i class="fa fa-trash"
-                                           aria-hidden="true"></i> Delete</a></td>
+                        <th scope="col">No.</th>
+                        <th scope="col">Quiz Name</th>
+                        <th scope="col">Course</th>
+                        <th scope="col">View</th>
+                        <th scope="col">Delete</th>
                     </tr>
-                    </tbody>
-                </c:forEach>
-            </table>
+                    </thead>
+                    <c:forEach var="o" items="${listExercise}">
+                        <tbody>
+                        <tr>
+                            <td scope="row">${o.exerciseId}</td>
+                            <td>${o.exerciseName}</td>
+                            <td>${o.course.code}</td>
+                            <td>
+                                <c:if test="${o.isRandom == 0}">
+                                    <a href="manage-question?exercise_id=${o.exerciseId}">View</a>
+                                </c:if>
+                                <c:if test="${o.isRandom == 1}">
+                                    <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}"></a>
+                                </c:if>
+                            </td>
+                            <td><a class="btn btn-danger"
+                                   href="#"><i class="fa fa-trash"
+                                               aria-hidden="true"></i> Delete</a></td>
+                        </tr>
+                        </tbody>
+                    </c:forEach>
+                </table>
+
+                <div class="pagination-container">
+                    <ul class="pagination">
+                        <c:if test="${search != null}" >
+                        <c:if test="${tag > 1}">
+                        <li class="page-item"><a href="create-exercise?page=${tag-1}&group_id=${group_id}&search=${search}">Previous</a></li>
+                        </c:if>
+                        <c:if test="${tag ==1}">
+                        <li class="page-item"><a href="#">Previous</a></li>
+                        </c:if>
+                        <c:forEach begin="1" end="${endPage}" var="i">
+                        <li class="page-item ${i == tag ? 'active' : ''}">
+                            <a href="create-exercise?page=${i}&group_id=${group_id}&search=${search}">${i}</a>
+                        </li>
+                        </c:forEach>
+                        <c:if test="${tag < endPage}" >
+                        <li class="page-item" ><a href="create-exercise?page=${tag+1}&group_id=${group_id}&search=${search}" class="page-link">Next</a></li>
+                        </c:if>
+                        <c:if test="${tag == endPage}">
+                        <li class="page-item" ><a href="#" class="page-link">Next</a></li>
+                        </c:if>
+                        </c:if>
+
+                        <c:if test="${search == null}" >
+                        <c:if test="${tag > 1}">
+                        <li class="page-item"><a href="create-exercise?page=${tag-1}&group_id=${group_id}&type_exercise=${type_exercise}">Previous</a></li>
+                        </c:if>
+                        <c:if test="${tag ==1}">
+                        <li class="page-item"><a href="#">Previous</a></li>
+                        </c:if>
+                        <c:forEach begin="1" end="${endPage}" var="i">
+                        <li class="page-item ${i == tag ? 'active' : ''}">
+                            <a href="create-exercise?page=${i}&group_id=${group_id}&type_exercise=${type_exercise}">${i}</a>
+                        </li>
+                        </c:forEach>
+                        <c:if test="${tag < endPage}" >
+                        <li class="page-item" ><a href="create-exercise?page=${tag+1}&group_id=${group_id}&type_exercise=${type_exercise}" class="page-link">Next</a></li>
+                        </c:if>
+                        <c:if test="${tag == endPage}">
+                        <li class="page-item" ><a href="#" class="page-link">Next</a></li>
+                        </c:if>
+                        </c:if>
+                    <ul/>
+                <div/>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="jumbotron"><h2>You haven't created any quiz yet!</h2></div>
-
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
