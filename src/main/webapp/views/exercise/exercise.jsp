@@ -349,6 +349,12 @@
         crossorigin="anonymous"></script>
 <script>
     var exerciseNames = <%= request.getAttribute("exerciseNames") %>;
+    function isValidInteger(value) {
+        return /^-?\d+$/.test(value);
+    }
+    function isValidFloat(value) {
+        return /^-?\d+(\.\d+)?$/.test(value);
+    }
     function toggleGradeCategory() {
         gradeCategoryError.innerText = "";
     }
@@ -364,6 +370,11 @@
         }
         exerciseTypeError.innerText = "";
     }
+    <%
+        int basicBankQuestion = (Integer) request.getAttribute("basicBankQuestion");
+        int lowBankQuestion = (Integer) request.getAttribute("lowBankQuestion");
+        int highBankQuestion = (Integer) request.getAttribute("highBankQuestion");
+    %>
     function validateForm() {
         var isValid = true;
 
@@ -388,9 +399,15 @@
         if (!numQuestions) {
             document.getElementById('numQuestionsError').innerText = "Please enter the Number of Questions.";
             isValid = false;
+        } else if (!isValidInteger(numQuestions)) {
+            document.getElementById('numQuestionsError').innerText = "Number of questions must be an integer.";
+            isValid = false;
         }
         if (!exerciseTime) {
             document.getElementById('exerciseTimeError').innerText = "Please enter the Exercise time.";
+            isValid = false;
+        } else if (!isValidFloat(exerciseTime)) {
+            document.getElementById('exerciseTimeError').innerText = "Exercise time must be a floating-point number.";
             isValid = false;
         }
         if (exerciseType == "0") {
@@ -423,7 +440,9 @@
 
     function validateRandomForm() {
         var isValid = true;
-
+        var availableBasicQuestions = <%= basicBankQuestion %>;
+        var availableLowQuestions = <%= lowBankQuestion %>;
+        var availableHighQuestions = <%= highBankQuestion %>;
         // Clear previous error messages
         document.getElementById('random_exerciseNameError').innerText = "";
         document.getElementById('random_basicQuestionError').innerText = "";
@@ -450,20 +469,44 @@
             document.getElementById('random_exerciseNameError').innerText = "Quiz name already exists. Please choose another name.";
             isValid = false;
         }
+        //basic
         if (!basicQuestion) {
             document.getElementById('random_basicQuestionError').innerText = "Please enter the Number of basic questions.";
             isValid = false;
+        }  else if (basicQuestion > availableBasicQuestions) {
+            document.getElementById('random_basicQuestionError').innerText = "Exceeds available basic questions(have " + availableBasicQuestions + " basic questions in bank)";
+            isValid = false;
+        } else if (!isValidInteger(basicQuestion)) {
+            document.getElementById('random_basicQuestionError').innerText = "Basic questions must be an integer.";
+            isValid = false;
         }
+        // low
         if (!lowQuestion) {
             document.getElementById('random_lowQuestionError').innerText = "Please enter the Number of low application questions.";
             isValid = false;
+        }  else if (lowQuestion > availableLowQuestions) {
+            document.getElementById('random_lowQuestionError').innerText = "Exceeds available low questions(have " + availableLowQuestions + " low questions in bank)";
+            isValid = false;
+        } else if (!isValidInteger(lowQuestion)) {
+            document.getElementById('random_lowQuestionError').innerText = "Low application questions must be an integer.";
+            isValid = false;
         }
+        //high
         if (!highQuestion) {
             document.getElementById('random_highQuestionError').innerText = "Please enter the Number of high application questions.";
+            isValid = false;
+        }  else if (highQuestion > availableHighQuestions) {
+            document.getElementById('random_highQuestionError').innerText = "Exceeds available high questions(have " + availableHighQuestions + " high questions in bank)";
+            isValid = false;
+        } else if (!isValidInteger(highQuestion)) {
+            document.getElementById('random_highQuestionError').innerText = "High application questions must be an integer.";
             isValid = false;
         }
         if (!exerciseTime) {
             document.getElementById('random_exerciseTimeError').innerText = "Please enter the Exercise time.";
+            isValid = false;
+        } else if (!isValidFloat(exerciseTime)) {
+            document.getElementById('random_exerciseTimeError').innerText = "Exercise time must be a floating-point number.";
             isValid = false;
         }
         if (exerciseType == "0") {
