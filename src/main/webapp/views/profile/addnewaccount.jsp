@@ -38,30 +38,30 @@
                 <%--                start--%>
                 <div class="form-info">
                     <div class="form-group" style="width: 100%">
-                        <label for="name" class="input-label" style="margin-right: 30px">Full Name</label>
+                        <label for="name" class="input-label" style="margin-right: 30px">Full Name*</label>
                         <input type="text" id="fullname" class="form-control" name="fullname" placeholder="" required="required" value="${f_name}" style="width: 40%">
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 20px" >
-                    <label for="name" class="input-label" style="margin-right: 30px">Username</label>
+                    <label for="name" class="input-label" style="margin-right: 30px">Username*</label>
                     <input type="text" id="username" class="form-control" name="username" placeholder="" required="required" value="${username}">
                     <span style="color: red; font-size: 15px; padding-left: 5px">${errorUsername}</span>
                 </div>
                 <div class="name-input-style"  style="margin-bottom: 0px">
                     <div class="form-group" style="margin-right: 18px; margin-bottom: 0px">
-                        <label for="name" class="input-label">Phone Number</label>
+                        <label for="name" class="input-label">Phone Number*</label>
                         <input type="text" id="number" class="form-control" name="phone" placeholder="" minlength="10" maxlength="10" pattern="[0-9]{10}" title="Please enter a 10-digit phone number" value="${phone}">
                         <span style="color: red; font-size: 15px; padding-left: 5px">${errorPhone}</span>
                     </div>
                     <div class="form-group" style="margin-left: 20px; margin-bottom: 0px">
-                        <label for="email" class="input-label">Email Address</label>
+                        <label for="email" class="input-label">Email Address*</label>
                         <input type="email" id="email" class="form-control" name="email" placeholder="demo@gmail.com" value="${email}">
                         <span style="color: red; font-size: 15px; padding-left: 5px">${errorEmail}</span>
                     </div>
                 </div>
 
                 <div class="form-group" style="margin-right: 50px;">
-                    <p for="gender" class="input-label">Gender</p>
+                    <p for="gender" class="input-label">Gender*</p>
                     <label>
                         <input type="radio" name="gender" value="1" required ${gender == 1 ? "checked" : ""}>
                         <span style="color: #979696; margin-bottom: 10px;font-weight: 500; margin-right: 40px; cursor: pointer">Male</span>
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="form-group">
-                    <p for="role" class="input-label">Role</p>
+                    <p for="role" class="input-label">Role*</p>
                     <label>
                         <input type="radio" name="role" value="3" required ${role == 3 ? "checked" : ""}>
                         <span style="color: #979696;
@@ -100,13 +100,13 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <label for="password" class="input-label" style="margin-right: 60px">Password</label>
+                    <label for="password" class="input-label" style="margin-right: 60px">Password*</label>
                     <input id="password" type="password" class="form-control" name="password" placeholder="Enter password" required="required" oninput="validatePassword()">
 <%--                    <span style="color: red; font-size: 15px; padding-left: 5px">${errorPassword}</span>--%>
                 </div>
 
                 <div class="form-group">
-                    <label for="password" class="input-label">Confirm Password</label>
+                    <label for="password" class="input-label">Confirm Password*</label>
                     <input id="re-password" type="password" class="form-control" name="confirmPassword" placeholder="Confirm password" required="required" oninput="validatePassword()">
                 </div>
 
