@@ -28,16 +28,44 @@ public class CreateExercise extends HttpServlet {
         String indexPage = request.getParameter("page");
         String search = request.getParameter("search");
         String type_exercise = request.getParameter("type_exercise");
-        if(type_exercise == null || type_exercise.equals("")) {
-            type_exercise = "0";
+        String exercise_id = request.getParameter("exercise_id");
+        String delete = request.getParameter("delete");
+        if(delete != null && delete.equals("1") && exercise_id != null && !exercise_id.trim().isEmpty()) {
+            edao.editExerciseStatusForDelete(exercise_id);
         }
         String group_id = request.getParameter("group_id");
         group_id = "1";
         Teacher teacher = edao.getTeacher("t1");
         String teacherId = teacher.getTid();
         String teacher_id = String.valueOf(teacherId);
-//        List<Exercise> listExercise = dao.getListExercise();
-        List<Grade_category> listGradeCategory = edao.getListGradeCategory("1");
+        if(type_exercise == null || type_exercise.equals("")) {
+            type_exercise = "0";
+        }
+        List<Exercise> listExerciseOfGroup = edao.getListExercise(group_id);
+        List<Grade_category> listGradeCategoryOfCourse = edao.getListGradeCategory("1");
+        List<Grade_category> listGradeCategory = new ArrayList<>();
+        for (Grade_category grade_category : listGradeCategoryOfCourse) {
+            System.out.println("ID:" + grade_category.getId());
+        }
+        for (Exercise exercise : listExerciseOfGroup) {
+            if(exercise.getGrade_category() !=0){
+                System.out.println("Eid : " + exercise.getGrade_category());
+            }
+        }
+        for(Grade_category grade_category : listGradeCategoryOfCourse) {
+            boolean found = false;
+            for (Exercise exercise : listExerciseOfGroup) {
+                if(exercise.getGrade_category() != 0){
+                    if(grade_category.getId() == exercise.getGrade_category()){
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if(!found){
+                listGradeCategory.add(grade_category);
+            }
+        }
         int count = 0;
         int endPage = 0;
         if (indexPage == null || indexPage.trim().isEmpty()) {
@@ -47,6 +75,7 @@ public class CreateExercise extends HttpServlet {
         List<Exercise> listExercise = new ArrayList<Exercise>();
         if (search == null || search.trim().isEmpty()) {
             if (type_exercise.equals("0")) {
+                System.out.println("chay toi phan trang");
                 count = edao.getTotalExerciseByGroupId(group_id);
                 endPage = count / 5;
                 listExercise = edao.pagingExerciseByGroupId(index, group_id);
@@ -114,6 +143,7 @@ public class CreateExercise extends HttpServlet {
             String random_exerciseTime = request.getParameter("random_exerciseTime");
             String random_exerciseType = request.getParameter("random_exerciseType");
             String random_gradeCategory = request.getParameter("random_gradeCategory");
+            System.out.println("Random grade: " + random_gradeCategory);
             List<Question> listQuestion = new ArrayList<>();
             int numQuestion = numBasicQuestion + numHighQuestion + numLowQuestion;
             List<BankQuestion> listBasicBankQuestion = bankDAO.getListBankQuestionByTypeQuesion("1");

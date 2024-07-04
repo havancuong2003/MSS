@@ -13,11 +13,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ExerciseDBContext extends DBContext<Exercise>{
-    public List<Exercise> getListExercise() {
+    public List<Exercise> getListExercise(String group_id) {
         List<Exercise> listExercise = new ArrayList<>();
-        String sql = "SELECT * FROM exercise e JOIN course c on e.course_id = c.id";
+        String sql = "SELECT * FROM exercise e JOIN course c on e.course_id = c.id WHERE group_id = ? AND e.status IN(0,1) ";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, group_id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()){
                 Exercise exercise = new Exercise();
@@ -27,6 +28,8 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 exercise.setExercise_time(rs.getFloat("exercise_time"));
                 exercise.setGet_score(rs.getInt("get_score"));
                 exercise.setGroup_id((rs.getInt("group_id")));
+                exercise.setGrade_category(rs.getInt("grade_category"));
+                exercise.setIsRandom(rs.getInt("isRandom"));
                 Teacher t = new Teacher();
                 t.setTid(rs.getString("teacher_id"));
                 exercise.setTeacher(t);
@@ -46,7 +49,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
 
     public int getTotalExerciseByGroupId(String group_id) {
         try {
-            String sql = "SELECT COUNT(*) FROM exercise WHERE group_id = ?";
+            String sql = "SELECT COUNT(*) FROM exercise WHERE group_id = ? AND  status IN (0,1) ";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, group_id);
             ResultSet rs = statement.executeQuery();
@@ -65,6 +68,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 "FROM exercise e " +
                 "JOIN course c ON e.course_id = c.id " +
                 "WHERE e.group_id = ? " +
+                "AND e.status IN (0,1)\n" +
 //                "ORDER BY e.exercise_id DESC " +
                 "LIMIT 5 OFFSET ?";
 
@@ -100,7 +104,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
 
     public int getTotalExerciseByGetScore(String group_id,String get_score) {
         try {
-            String sql = "SELECT COUNT(*) FROM exercise WHERE group_id = ? AND get_score = ?";
+            String sql = "SELECT COUNT(*) FROM exercise WHERE group_id = ? AND get_score = ? AND status IN (0,1) ";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, group_id);
             statement.setString(2, get_score);
@@ -120,6 +124,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 "FROM exercise e " +
                 "JOIN course c ON e.course_id = c.id " +
                 "WHERE e.group_id = ? AND e.get_score = ?" +
+                "AND e.status IN (0,1)\n" +
 //                "ORDER BY e.exercise_id DESC " +
                 "LIMIT 5 OFFSET ?";
 
@@ -156,7 +161,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
 
     public int getTotalExerciseBySearch(String group_id,String searchtxt) {
         try {
-            String sql = "SELECT COUNT(*) FROM exercise WHERE group_id = ? AND exercise_name like ?";
+            String sql = "SELECT COUNT(*) FROM exercise WHERE group_id = ? AND exercise_name like ? AND status IN(0,1) ";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, group_id);
             statement.setString(2, "%" + searchtxt + "%");
@@ -176,6 +181,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 "FROM exercise e " +
                 "JOIN course c ON e.course_id = c.id " +
                 "WHERE e.group_id = ? AND e.exercise_name like ?" +
+                "AND e.status IN (0,1)\n" +
 //                "ORDER BY e.exercise_id DESC " +
                 "LIMIT 5 OFFSET ?";
 
@@ -233,7 +239,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
 
     public void insertExerciseNotGetMark(String exercise_id, String exercise_name, String teacher_id, String course_id,String question_number,String exercise_time,String get_score,String group_id,String isRandom) {
 
-        String sql = "INSERT INTO exercise (exercise_id,exercise_name,status,teacher_id,course_id,question_number,exercise_time,get_score,group_id) VALUES (?,?,0,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO exercise (exercise_id,exercise_name,status,teacher_id,course_id,question_number,exercise_time,get_score,group_id,isRandom) VALUES (?,?,0,?,?,?,?,?,?,?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, exercise_id);
@@ -335,6 +341,18 @@ public class ExerciseDBContext extends DBContext<Exercise>{
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    public void editExerciseStatusForDelete(String exercise_id) {
+        String sql = "UPDATE exercise " +
+                "SET status = 2 " +
+                "WHERE exercise_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, exercise_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void main(String[] args) {

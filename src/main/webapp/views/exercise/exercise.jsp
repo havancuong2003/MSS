@@ -10,6 +10,43 @@
     <title>Exercise</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .btn-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            margin: 2px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .btn-danger {
+            color: #fff;
+            background-color: #d9534f;
+            border-color: #d43f3a;
+        }
+
+        .btn-warning {
+            color: #fff;
+            background-color: #f0ad4e;
+            border-color: #eea236;
+        }
+
+        .btn i {
+            margin-right: 5px;
+        }
         .pagination-container {
             text-align: center;
             margin-top: 20px;
@@ -364,8 +401,7 @@
     <div class="row" style="margin-top: 15vh">
 
         <div class="col animated slideInLeft">
-            <a class="btn btn-primary tbtn" href="#createQuizModal"
-               data-toggle="modal">
+            <a class="btn btn-primary tbtn" href="#createQuizModal" data-toggle="modal">
                 <h1 class="q"><i class="fa fa-plus" aria-hidden="true"></i> Create Quiz</h1></a>
         </div>
         <div class="col animated slideInLeft">
@@ -411,7 +447,8 @@
                         <th scope="col">Quiz Name</th>
                         <th scope="col">Course</th>
                         <th scope="col">View</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <c:forEach var="o" items="${listExercise}">
@@ -428,9 +465,20 @@
                                     <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}"></a>
                                 </c:if>
                             </td>
-                            <td><a class="btn btn-danger"
-                                   href="#"><i class="fa fa-trash"
-                                               aria-hidden="true"></i> Delete</a></td>
+                            <td>
+                                <c:if test="${o.status == 0}">
+                                    <h5>Close</h5>
+                                </c:if>
+                                <c:if test="${o.status == 1}">
+                                    <h5>Preventing</h5>
+                                </c:if>
+                            </td>
+                            <td>
+                                <div class="btn-container">
+                                    <a class="btn btn-danger" href="create-exercise?exercise_id=${o.exerciseId}&delete=1"  onclick="return confirm('Are you sure you want to delete this exercise?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                    <a class="btn btn-warning" href="#" data-toggle="modal" data-target="#updateModalCreateQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                </div>
+                            </td>
                         </tr>
                         </tbody>
                     </c:forEach>
@@ -713,6 +761,47 @@
         </div>
     </div>
 </div>
+<!-- Update create quiz Modal HTML -->
+<div id="updateModalCreateQuiz" class="modal fade" style="z-index: 9999;" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="card">
+                <form method="post" action="" onsubmit="return validateForm()">
+                    <div class="card-header">
+                        <h2 class="custom-heading">Update Exercise</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input style="margin-top: 30px" type="hidden" name="teacher_id" value="${teacher.tid}">
+                            <input id="updateExerciseName" style="margin-top: 30px" type="text" name="exercise_name" class="form-control" placeholder="Exercise Name"/>
+                            <div id="updateExerciseNameError" class="text-danger"></div>
+                            <input id="updateNumQuestions" style="margin-top: 30px" type="text" name="question_number" class="form-control" placeholder="Number of Questions">
+                            <div id="updateNumQuestionsError" class="text-danger"></div>
+                            <input id="updateExerciseTime" style="margin-top: 30px" type="text" name="exercise_time" class="form-control" placeholder="Exercise time">
+                            <div id="updateExerciseTimeError" class="text-danger"></div>
+                            <select id="updateExerciseType" name="exercise_type" style="margin-top: 30px" onchange="toggleTypeExercise()">
+                                <option value="0">Choose type of exercise</option>
+                                <option value="1">Test</option>
+                                <option value="2">Practice</option>
+                            </select>
+                            <div id="updateExerciseTypeError" class="text-danger"></div>
+                            <select id="updateGradeCategory" name="grade_category" style="display: none" onchange="toggleGradeCategory()">
+                                <option value="0">Choose grade category</option>
+                                <c:forEach var="o" items="${listGradeCategory}">
+                                    <option value="${o.id}">${o.name}</option>
+                                </c:forEach>
+                            </select>
+                            <div id="updateGradeCategoryError" class="text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" value="Update" class="btn btn-success bb">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Random Modal HTML -->
 <div id="randomQuizModal" class="modal fade" style="z-index: 9999;" role="dialog">
     <div class="modal-dialog">
@@ -741,7 +830,7 @@
                                 <option value="2">Practice</option>
                             </select>
                             <div id="random_exerciseTypeError" class="text-danger"></div>
-                            <select id="random_gradeCategory" name="grade_category" style="display: none; margin-top: 30px;" onchange="toggleRandomGradeCategory()">
+                            <select id="random_gradeCategory" name="random_gradeCategory" style="display: none; margin-top: 30px;" onchange="toggleRandomGradeCategory()">
                                 <option value="0">Choose grade category</option>
                                 <c:forEach var="o" items="${listGradeCategory}">
                                     <option value="${o.id}">${o.name}</option>
