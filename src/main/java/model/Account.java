@@ -15,7 +15,7 @@ public class Account implements IEntity {
     private Date dob;
     private int role_id;
     private Blob avatar;
-
+    private Role role;
 
 
 
@@ -123,5 +123,13 @@ public class Account implements IEntity {
 
     public void setAvatar(Blob avatar) {
         this.avatar = avatar;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
