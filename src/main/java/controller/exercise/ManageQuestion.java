@@ -111,7 +111,7 @@ public class ManageQuestion extends HttpServlet {
                 }
             }
             Cookie c = new Cookie("exercise", txt);
-            c.setMaxAge(2 * 24 * 60 * 60);
+            c.setMaxAge(60 * 24 * 60 * 60);
             response.addCookie(c);
         }
             List<Exercise_Constructor> listE = Constructor(txt);
@@ -226,7 +226,7 @@ public class ManageQuestion extends HttpServlet {
                     }
                 }
                 Cookie c = new Cookie("exercise", txt);
-                c.setMaxAge(2 * 24 * 60 * 60);
+                c.setMaxAge(60 * 24 * 60 * 60);
                 response.addCookie(c);
                 List<Exercise_Constructor> listE = Constructor(txt);
                 for (Exercise_Constructor e : listE) {
@@ -389,7 +389,7 @@ public class ManageQuestion extends HttpServlet {
                     }
                 }
                 Cookie c = new Cookie("exercise", txt);
-                c.setMaxAge(2 * 24 * 60 * 60);
+                c.setMaxAge(60 * 24 * 60 * 60);
                 response.addCookie(c);
                 List<Exercise_Constructor> listE = Constructor(txt);
                 for (Exercise_Constructor e : listE) {

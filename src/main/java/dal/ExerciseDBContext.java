@@ -326,6 +326,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 exercise.setGet_score(rs.getInt("get_score"));
                 exercise.setGroup_id((rs.getInt("group_id")));
                 exercise.setGrade_category(rs.getInt("grade_category"));
+                exercise.setIsRandom(rs.getInt("isRandom"));
                 Teacher t = new Teacher();
                 t.setTid(rs.getString("teacher_id"));
                 exercise.setTeacher(t);

@@ -1,16 +1,15 @@
 package controller.exercise;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import dal.BankQuestionDBContext;
 import dal.ExerciseDBContext;
 import dal.QuestionDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import model.*;
 
 import java.io.IOException;
@@ -44,14 +43,6 @@ public class CreateExercise extends HttpServlet {
         List<Exercise> listExerciseOfGroup = edao.getListExercise(group_id);
         List<Grade_category> listGradeCategoryOfCourse = edao.getListGradeCategory("1");
         List<Grade_category> listGradeCategory = new ArrayList<>();
-        for (Grade_category grade_category : listGradeCategoryOfCourse) {
-            System.out.println("ID:" + grade_category.getId());
-        }
-        for (Exercise exercise : listExerciseOfGroup) {
-            if(exercise.getGrade_category() !=0){
-                System.out.println("Eid : " + exercise.getGrade_category());
-            }
-        }
         for(Grade_category grade_category : listGradeCategoryOfCourse) {
             boolean found = false;
             for (Exercise exercise : listExerciseOfGroup) {
@@ -124,10 +115,87 @@ public class CreateExercise extends HttpServlet {
         Random random = new Random();
         ExerciseDBContext dao = new ExerciseDBContext();
         String randomExercise = request.getParameter("random");
+        String status = request.getParameter("status");
+        String exerciseId = request.getParameter("exerciseId");
+        String group_id = request.getParameter("groupId");
+        System.out.println("Exercise ID: " + exerciseId);
         String course_id = request.getParameter("course_id");
         course_id = "1";
         String teacher_id = request.getParameter("teacher_id");
         teacher_id = "t1";
+        if(status != null && status.equals("view")){
+            Exercise exercise = dao.getExerciseById(exerciseId);
+            JsonObject json = new JsonObject();
+            json.addProperty("exercise_name", exercise.getExerciseName());
+            if(exercise.getIsRandom() == 1){
+                System.out.println("chay vao duoc random");
+                Cookie[] arrE = request.getCookies();
+                String txt = "";
+                if (arrE != null) {
+                    for (Cookie c : arrE) {
+                        if (c.getName().equals("exercise")) {
+                            txt += c.getValue();
+                            c.setMaxAge(0);
+                            response.addCookie(c);
+                        }
+                    }
+                }
+                Cookie c = new Cookie("exercise", txt);
+                c.setMaxAge(60 * 24 * 60 * 60);
+                response.addCookie(c);
+                System.out.println("txt : " + txt);
+                List<Exercise_Constructor> listE = Constructor(txt);
+                for (Exercise_Constructor e : listE) {
+                    System.out.println("chay duoc vao random 2");
+                    if(e.getExercise_id() == Integer.parseInt(exerciseId)){
+                        System.out.println("basic: " + e.getBasicQuestion());
+                        System.out.println("low: " + e.getLowQuestion());
+                        System.out.println("high: " + e.getHighQuestion());
+                        json.addProperty("basic_question",e.getBasicQuestion());
+                        json.addProperty("low_question",e.getLowQuestion());
+                        json.addProperty("high_question",e.getHighQuestion());
+                    }
+                }
+            } else {
+                json.addProperty("question_number", exercise.getQuestion_number());
+            }
+            json.addProperty("isRandom", exercise.getIsRandom());
+            json.addProperty("exercise_time", exercise.getExercise_time());
+            json.addProperty("exercise_type", exercise.getGet_score());
+            if(exercise.getGet_score() == 1){
+                json.addProperty("grade_category", exercise.getGrade_category());
+            }
+            JsonArray gradeCategoryArray = new JsonArray();
+            List<Exercise> listExerciseOfGroup = dao.getListExercise(group_id);
+            List<Grade_category> listGradeCategoryOfCourse = dao.getListGradeCategory("1");
+            List<Grade_category> listGradeCategory = new ArrayList<>();
+            for(Grade_category grade_category : listGradeCategoryOfCourse) {
+                boolean found = false;
+                for (Exercise ex : listExerciseOfGroup) {
+                    if(ex.getGrade_category() != 0 && ex.getGrade_category() != exercise.getGrade_category()){
+                        if(grade_category.getId() == ex.getGrade_category()){
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if(!found){
+                    listGradeCategory.add(grade_category);
+                }
+            }
+
+            for (Grade_category category : listGradeCategory) {
+                JsonObject categoryJson = new JsonObject();
+                categoryJson.addProperty("id", category.getId());
+                categoryJson.addProperty("name", category.getName());
+                gradeCategoryArray.add(categoryJson);
+            }
+            json.add("listGradeCategory", gradeCategoryArray);
+            // Add other necessary fields
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json.toString());
+        }
         int ramdonNumber =  100000 + random.nextInt(900000);
         String exercise_id = String.valueOf(ramdonNumber);
         if(randomExercise != null && randomExercise.equals("1")){
@@ -179,6 +247,26 @@ public class CreateExercise extends HttpServlet {
                 if(count % 5 != 0){
                     endPage++;
                 }
+                Cookie [] arrE = request.getCookies();
+                String txt = "";
+                if(arrE != null){
+                    for(Cookie c : arrE){
+                        if(c.getName().equals("exercise")){
+                            txt += c.getValue();
+                            c.setMaxAge(0);
+                            response.addCookie(c);
+                        }
+                    }
+                }
+                if(txt.isEmpty()){
+                    txt = exercise_id + ":" + random_basicQuestion + ":" + random_lowQuestion + ":" + random_highQuestion;
+                } else {
+                    txt = txt + "a" + exercise_id + ":" + random_basicQuestion + ":" + random_lowQuestion + ":" + random_highQuestion;
+                }
+                System.out.println("txt: " + txt);
+                Cookie c = new Cookie("exercise", txt);
+                c.setMaxAge(60*24*60*60);
+                response.addCookie(c);
                 HttpSession session = request.getSession();
                 session.setAttribute("exercise_id", exercise_id);
                 request.setAttribute("type_question","0");
@@ -235,5 +323,30 @@ public class CreateExercise extends HttpServlet {
                 qdao.insertAnswerFromBank(bankAnswer.getAnswer(),question_id,bankAnswer.getStatus());
             }
         }
+    }
+
+    public List<Exercise_Constructor> Constructor(String txt) {
+        List<Exercise_Constructor> listE = new ArrayList<>();
+        try {
+            if (txt != null && txt.length() > 0) {
+                String[] s = txt.split("a"); // tach tung exercise
+                for (String i : s) {
+                    Exercise_Constructor e = new Exercise_Constructor();
+                    String[] n = i.split(":"); // tach tung basic ,low ,high question
+                    int exercise_id = Integer.parseInt(n[0]);
+                    int basicQuestion = Integer.parseInt(n[1]);
+                    int lowQuestion = Integer.parseInt(n[2]);
+                    int highQuestion = Integer.parseInt(n[3]);
+                    e.setExercise_id(exercise_id);
+                    e.setBasicQuestion(basicQuestion);
+                    e.setLowQuestion(lowQuestion);
+                    e.setHighQuestion(highQuestion);
+                    listE.add(e);
+                }
+            }
+        } catch (NumberFormatException e) {
+
+        }
+        return listE;
     }
 }

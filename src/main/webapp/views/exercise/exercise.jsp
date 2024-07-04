@@ -462,7 +462,7 @@
                                     <a href="manage-question?exercise_id=${o.exerciseId}">View</a>
                                 </c:if>
                                 <c:if test="${o.isRandom == 1}">
-                                    <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}"></a>
+                                    <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}">View</a>
                                 </c:if>
                             </td>
                             <td>
@@ -476,7 +476,12 @@
                             <td>
                                 <div class="btn-container">
                                     <a class="btn btn-danger" href="create-exercise?exercise_id=${o.exerciseId}&delete=1"  onclick="return confirm('Are you sure you want to delete this exercise?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
-                                    <a class="btn btn-warning" href="#" data-toggle="modal" data-target="#updateModalCreateQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                    <c:if test="${o.isRandom ==0}">
+                                        <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalCreateQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                    </c:if>
+                                    <c:if test="${o.isRandom ==1}">
+                                        <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalRandomQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                    </c:if>
                                 </div>
                             </td>
                         </tr>
@@ -531,9 +536,7 @@
             </div>
         </div>
     </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -553,6 +556,9 @@
     function toggleGradeCategory() {
         gradeCategoryError.innerText = "";
     }
+    function toggleUpdateGradeCategory() {
+        updateGradeCategoryError.innerText = "";
+    }
     function toggleTypeExercise() {
         var exerciseType = document.getElementById('exerciseType');
         var gradeCategory = document.getElementById('gradeCategory');
@@ -564,6 +570,18 @@
             isDisplay = false
         }
         exerciseTypeError.innerText = "";
+    }
+    function toggleUpdateTypeExercise() {
+        var exerciseType = document.getElementById('updateExerciseType');
+        var gradeCategory = document.getElementById('updateGradeCategory');
+
+        if (exerciseType.value === '1') {
+            gradeCategory.style.display = 'block';
+        } else {
+            gradeCategory.style.display = 'none';
+            isDisplay = false
+        }
+        updateExerciseTypeError.innerText = "";
     }
     <%
         int basicBankQuestion = (Integer) request.getAttribute("basicBankQuestion");
@@ -715,6 +733,71 @@
         return isValid;
     }
 </script>
+<script>
+    $(document).ready(function() {
+        $('.update-btn').on('click', function() {
+            var exerciseId = $(this).data('exercise-id');
+            var groupId = $(this).data('group-id');
+            $.ajax({
+                url: 'create-exercise',
+                method: 'POST',
+                data: { exerciseId: exerciseId,
+                        groupId : groupId,
+                        status: 'view'},
+                success: function(response) {
+                    // Assuming the response is a JSON object with the exercise details
+                    console.log(response.isRandom);
+                    if(response.isRandom == 0){
+                        $('#updateExerciseName').val(response.exercise_name);
+                        $('#updateNumQuestions').val(response.question_number);
+                        $('#updateExerciseTime').val(response.exercise_time);
+                        $('#updateExerciseType').val(response.exercise_type);
+                        if(response.exercise_type == 1) {
+                            // Hiển thị và điền dữ liệu cho thẻ select
+                            $('#updateGradeCategory').empty(); // Xóa các tùy chọn cũ
+                            $.each(response.listGradeCategory, function (index, item) {
+                                $('#updateGradeCategory').append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+
+                            // Chọn giá trị trong thẻ select (nếu cần thiết)
+                            $('#updateGradeCategory').val(response.grade_category);
+
+                            // Hiển thị thẻ select sau khi đã điền dữ liệu
+                            $('#updateGradeCategory').show();
+                            // Handle grade category visibility and value if necessary
+                            // Additional code to populate and handle errors if necessary
+                        }
+                    } else {
+                        $('#updateRandom_exerciseName').val(response.exercise_name);
+                        $('#updateRandom_exerciseTime').val(response.exercise_time);
+                        $('#updateRandom_basicQuestion').val(response.basic_question);
+                        $('#updateRandom_lowQuestion').val(response.low_question);
+                        $('#updateRandom_highQuestion').val(response.high_question);
+                        $('#updateRandom_exerciseType').val(response.exercise_type);
+                        if(response.exercise_type == 1) {
+                            // Hiển thị và điền dữ liệu cho thẻ select
+                            $('#updateGradeCategory').empty(); // Xóa các tùy chọn cũ
+                            $.each(response.listGradeCategory, function (index, item) {
+                                $('#updateRandom_gradeCategory').append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+
+                            // Chọn giá trị trong thẻ select (nếu cần thiết)
+                            $('#updateRandom_gradeCategory').val(response.grade_category);
+
+                            // Hiển thị thẻ select sau khi đã điền dữ liệu
+                            $('#updateRandom_gradeCategory').show();
+                            // Handle grade category visibility and value if necessary
+                            // Additional code to populate and handle errors if necessary
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('An error occurred:', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 
 <!-- Create Modal HTML -->
@@ -779,7 +862,7 @@
                             <div id="updateNumQuestionsError" class="text-danger"></div>
                             <input id="updateExerciseTime" style="margin-top: 30px" type="text" name="exercise_time" class="form-control" placeholder="Exercise time">
                             <div id="updateExerciseTimeError" class="text-danger"></div>
-                            <select id="updateExerciseType" name="exercise_type" style="margin-top: 30px" onchange="toggleTypeExercise()">
+                            <select id="updateExerciseType" name="exercise_type" style="margin-top: 30px" onchange="toggleUpdateTypeExercise()">
                                 <option value="0">Choose type of exercise</option>
                                 <option value="1">Test</option>
                                 <option value="2">Practice</option>
@@ -788,7 +871,7 @@
                             <select id="updateGradeCategory" name="grade_category" style="display: none" onchange="toggleGradeCategory()">
                                 <option value="0">Choose grade category</option>
                                 <c:forEach var="o" items="${listGradeCategory}">
-                                    <option value="${o.id}">${o.name}</option>
+                                    <option value="${o.id}" >${o.name}</option>
                                 </c:forEach>
                             </select>
                             <div id="updateGradeCategoryError" class="text-danger"></div>
@@ -810,7 +893,7 @@
                 <form method="post" action="create-exercise" onsubmit="return validateRandomForm()">
                     <input type="hidden" name="random" value="1">
                     <div class="card-header">
-                        <h2 class="custom-heading">Participate</h2>
+                        <h2 class="custom-heading">Random Quiz</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -840,6 +923,52 @@
                         </div>
                         <div class="form-group">
                             <input type="submit" value="Create" class="btn btn-success bb">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- update Random Modal HTML -->
+<div id="updateModalRandomQuiz" class="modal fade" style="z-index: 9999;" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="card">
+                <form method="post" action="create-exercise" onsubmit="return validateRandomForm()">
+                    <input type="hidden" name="random" value="1">
+                    <div class="card-header">
+                        <h2 class="custom-heading">Update Random Quiz</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input id="updateRandom_exerciseName" type="text" name="random_exerciseName" class="form-control" placeholder="Quiz Name" />
+                            <div id="updateRandom_exerciseNameError" class="text-danger"></div>
+                            <input id="updateRandom_basicQuestion" style="margin-top: 30px" type="text" name="random_basicQuestion" class="form-control" placeholder="Number of basic question">
+                            <div id="updateRandom_basicQuestionError" class="text-danger"></div>
+                            <input id="updateRandom_lowQuestion" style="margin-top: 30px" type="text" name="random_lowQuestion" class="form-control" placeholder="Number of low application question">
+                            <div id="updateRandom_lowQuestionError" class="text-danger"></div>
+                            <input id="updateRandom_highQuestion" style="margin-top: 30px" type="text" name="random_highQuestion" class="form-control" placeholder="Number of high application question">
+                            <div id="updateRandom_highQuestionError" class="text-danger"></div>
+                            <input id="updateRandom_exerciseTime" style="margin-top: 30px" type="text" name="random_exerciseTime" class="form-control" placeholder="Exercise time">
+                            <div id="updateRandom_exerciseTimeError" class="text-danger"></div>
+                            <select id="updateRandom_exerciseType" name="random_exerciseType" style="margin-top: 30px" onchange="toggleRandomTypeExercise()">
+                                <option value="0">Choose type of exercise</option>
+                                <option value="1">Test</option>
+                                <option value="2">Practice</option>
+                            </select>
+                            <div id="updateRandom_exerciseTypeError" class="text-danger"></div>
+                            <select id="updateRandom_gradeCategory" name="random_gradeCategory" style="display: none; margin-top: 30px;" onchange="toggleRandomGradeCategory()">
+                                <option value="0">Choose grade category</option>
+                                <c:forEach var="o" items="${listGradeCategory}">
+                                    <option value="${o.id}">${o.name}</option>
+                                </c:forEach>
+                            </select>
+                            <div id="updateRandom_gradeCategoryError" class="text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Update" class="btn btn-success bb">
                         </div>
                     </div>
                 </form>
