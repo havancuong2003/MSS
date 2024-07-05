@@ -214,124 +214,29 @@ public class CreateExercise extends HttpServlet {
                     request.setAttribute("mess","Update successfully!");
                     BankQuestionDBContext bankDAO = new BankQuestionDBContext();
                     QuestionDBContext qdao = new QuestionDBContext();
-                    int numQuestions = Integer.parseInt(update_random_basicQuestion) + Integer.parseInt(update_random_lowQuestion) + Integer.parseInt(update_random_highQuestion);
-                    Cookie[] arrE = request.getCookies();
-                    String txt = "";
-                    if (arrE != null) {
-                        for (Cookie c : arrE) {
-                            if (c.getName().equals("exercise")) {
-                                txt += c.getValue();
-                                c.setMaxAge(0);
-                                response.addCookie(c);
-                            }
-                        }
-                    }
-                    System.out.println("txt : " + txt);
-                    List<Exercise_Constructor> listE = Constructor(txt);
-                    String txt2 = "";
-                    int firstBasicQuestion = 0;
-                    int firstLowQuestion = 0;
-                    int firstHighQuestion = 0;
-                    for (Exercise_Constructor exerciseConstructor : listE){
-                        if(exerciseConstructor.getExercise_id() == Integer.parseInt(exercise_id)){
-                            firstBasicQuestion = exerciseConstructor.getBasicQuestion();
-                            firstLowQuestion = exerciseConstructor.getLowQuestion();
-                            firstHighQuestion = exerciseConstructor.getHighQuestion();
-                            exerciseConstructor.setBasicQuestion(Integer.parseInt(update_random_basicQuestion));
-                            exerciseConstructor.setLowQuestion(Integer.parseInt(update_random_lowQuestion));
-                            exerciseConstructor.setHighQuestion(Integer.parseInt(update_random_highQuestion));
-                        }
-                        if(txt2.trim().isEmpty()){
-                            txt2 = exercise_id + ":" + exerciseConstructor.getBasicQuestion() + ":" + exerciseConstructor.getLowQuestion() + ":" + exerciseConstructor.getHighQuestion();
-                        } else {
-                            txt2 = txt2 + "a" + exercise_id + ":" + exerciseConstructor.getBasicQuestion() + ":" + exerciseConstructor.getLowQuestion() + ":" + exerciseConstructor.getHighQuestion();
-                        }
-                    }
-                    System.out.println("txt2 : " + txt2);
-                    Cookie c = new Cookie("exercise", txt2);
-                    c.setMaxAge(60 * 24 * 60 * 60);
-                    response.addCookie(c);
-                    List<Question> listBasicQuestionOfExercise = qdao.getListQuestionByExerciseIdAndTypeQuestion(exercise_id,"1");
-                    List<Question> listLowQuestionOfExercise = qdao.getListQuestionByExerciseIdAndTypeQuestion(exercise_id,"2");
-                    List<Question> listHighQuestionOfExercise = qdao.getListQuestionByExerciseIdAndTypeQuestion(exercise_id,"3");
-                    List<BankQuestion> listBasicBankQuestion = bankDAO.getListBankQuestionByTypeQuesion("1");
-                    List<BankQuestion> listLowBankQuestion = bankDAO.getListBankQuestionByTypeQuesion("2");
-                    List<BankQuestion> listHighBankQuestion = bankDAO.getListBankQuestionByTypeQuesion("3");
-                    List<BankQuestion> listBasicForRandom = new ArrayList<>();
-                    List<BankQuestion> listLowForRandom = new ArrayList<>();
-                    List<BankQuestion> listHighForRandom = new ArrayList<>();
-                    for(BankQuestion bankQuestion : listBasicBankQuestion){
-                        boolean isFound = false;
-                        for (Question question : listBasicQuestionOfExercise){
-                            if(bankQuestion.getQuestion().equals(question.getQuestion())){
-                                isFound = true;
-                            }
-                        }
-                        if(!isFound){
-                            listBasicForRandom.add(bankQuestion);
-                        }
-                    }
-                    for(BankQuestion bankQuestion : listLowBankQuestion){
-                        boolean isFound = false;
-                        for (Question question : listLowQuestionOfExercise){
-                            if(bankQuestion.getQuestion().equals(question.getQuestion())){
-                                isFound = true;
-                            }
-                        }
-                        if(!isFound){
-                            listLowForRandom.add(bankQuestion);
-                        }
-                    }
-                    for (BankQuestion bankQuestion : listHighBankQuestion){
-                        boolean isFound = false;
-                        for (Question question : listHighQuestionOfExercise){
-                            if(!bankQuestion.getQuestion().equals(question.getQuestion())){
-                                isFound = true;
-                            }
-                        }
-                        if(!isFound){
-                            listHighForRandom.add(bankQuestion);
-                        }
-                    }
-                    for (BankQuestion q : listBasicForRandom){
-                        System.out.println(q.getQuestion());
-                    }
-                    if(Integer.parseInt(update_random_basicQuestion) > firstBasicQuestion){
-                        int missQuestion = Integer.parseInt(update_random_basicQuestion) - firstBasicQuestion;
-                        addRandomQuestions(listBasicForRandom,missQuestion,exercise_id,course_id);
-                    }
-                    if(Integer.parseInt(update_random_lowQuestion) > firstLowQuestion){
-                        int missQuestion = Integer.parseInt(update_random_lowQuestion) - firstLowQuestion;
-                        addRandomQuestions(listLowForRandom,missQuestion,exercise_id,course_id);
-                    }
-                    if(Integer.parseInt(update_random_highQuestion) > firstHighQuestion){
-                        int missQuestion = Integer.parseInt(update_random_highQuestion) - firstHighQuestion;
-                        addRandomQuestions(listHighForRandom,missQuestion,exercise_id,course_id);
-                    }
                     if(update_random_exerciseType.equals("1")){
-                        dao.updateExerciseNormalGetScore(exercise_id,update_random_exerciseName,String.valueOf(numQuestions),update_random_exerciseTime,update_random_exerciseType,update_random_gradeCategory);
+                        dao.updateExerciseNormalGetScore(exercise_id,update_random_exerciseName,update_random_exerciseTime,update_random_exerciseType,update_random_gradeCategory);
                         doGet(request,response);
                     } else {
-                        dao.updateExerciseNormalNotGetScore(exercise_id,update_random_exerciseName,String.valueOf(numQuestions),update_random_exerciseTime,update_random_exerciseType);
+                        dao.updateExerciseNormalNotGetScore(exercise_id,update_random_exerciseName,update_random_exerciseTime,update_random_exerciseType);
                         doGet(request,response);
                     }
                 }
             } else {
                 String update_exercise_name = request.getParameter("update_exercise_name");
-                String update_question_number = request.getParameter("update_question_number");
                 String update_exercise_time = request.getParameter("update_exercise_time");
                 String update_exercise_type = request.getParameter("update_exercise_type");
                 String update_grade_category = "";
                 if(update_exercise_type.equals("1")){
                     update_grade_category = request.getParameter("update_grade_category");
                 }
-                if(update_exercise_name != null && update_question_number != null && update_exercise_time != null && update_exercise_type != null && update_grade_category != null){
+                if(update_exercise_name != null && update_exercise_time != null && update_exercise_type != null && update_grade_category != null){
                     request.setAttribute("mess","Update successfully!");
                     if(update_exercise_type.equals("1")){
-                        dao.updateExerciseNormalGetScore(exercise_id,update_exercise_name,update_question_number,update_exercise_time,update_exercise_type,update_grade_category);
+                        dao.updateExerciseNormalGetScore(exercise_id,update_exercise_name,update_exercise_time,update_exercise_type,update_grade_category);
                         doGet(request,response);
                     } else if(update_exercise_type.equals("2")){
-                        dao.updateExerciseNormalNotGetScore(exercise_id,update_exercise_name,update_question_number,update_exercise_time,update_exercise_type);
+                        dao.updateExerciseNormalNotGetScore(exercise_id,update_exercise_name,update_exercise_time,update_exercise_type);
                         doGet(request,response);
                     }
                 }

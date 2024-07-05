@@ -559,6 +559,9 @@
     function toggleUpdateGradeCategory() {
         updateGradeCategoryError.innerText = "";
     }
+    function toggleUpdateRandomGradeCategory() {
+        updateRandom_gradeCategoryError.innerText = "";
+    }
     function toggleTypeExercise() {
         var exerciseType = document.getElementById('exerciseType');
         var gradeCategory = document.getElementById('gradeCategory');
@@ -574,6 +577,18 @@
     function toggleUpdateTypeExercise() {
         var exerciseType = document.getElementById('updateExerciseType');
         var gradeCategory = document.getElementById('updateGradeCategory');
+
+        if (exerciseType.value === '1') {
+            gradeCategory.style.display = 'block';
+        } else {
+            gradeCategory.style.display = 'none';
+            isDisplay = false
+        }
+        updateExerciseTypeError.innerText = "";
+    }
+    function toggleUpdateRandomTypeExercise() {
+        var exerciseType = document.getElementById('updateRandom_exerciseType');
+        var gradeCategory = document.getElementById('updateRandom_gradeCategory');
 
         if (exerciseType.value === '1') {
             gradeCategory.style.display = 'block';
@@ -995,7 +1010,7 @@
                             <input type="hidden" id="currentExerciseName" name="currentExerciseName">
                             <input id="updateExerciseName" style="margin-top: 30px" type="text" name="update_exercise_name" class="form-control" placeholder="Exercise Name"/>
                             <div id="updateExerciseNameError" class="text-danger"></div>
-                            <input id="updateNumQuestions" style="margin-top: 30px" type="text" name="update_question_number" class="form-control" placeholder="Number of Questions">
+                            <input id="updateNumQuestions" style="margin-top: 30px" type="text" name="update_question_number" class="form-control" placeholder="Number of Questions" readonly>
                             <div id="updateNumQuestionsError" class="text-danger"></div>
                             <input id="updateExerciseTime" style="margin-top: 30px" type="text" name="update_exercise_time" class="form-control" placeholder="Exercise time">
                             <div id="updateExerciseTimeError" class="text-danger"></div>
@@ -1086,21 +1101,21 @@
                             <input type="hidden" id="currentRandomExerciseName" name="currentRandomExerciseName">
                             <input id="updateRandom_exerciseName" type="text" name="update_random_exerciseName" class="form-control" placeholder="Quiz Name" />
                             <div id="updateRandom_exerciseNameError" class="text-danger"></div>
-                            <input id="updateRandom_basicQuestion" style="margin-top: 30px" type="text" name="update_random_basicQuestion" class="form-control" placeholder="Number of basic question">
+                            <input id="updateRandom_basicQuestion" style="margin-top: 30px" type="text" name="update_random_basicQuestion" class="form-control" placeholder="Number of basic question" readonly>
                             <div id="updateRandom_basicQuestionError" class="text-danger"></div>
-                            <input id="updateRandom_lowQuestion" style="margin-top: 30px" type="text" name="update_random_lowQuestion" class="form-control" placeholder="Number of low application question">
+                            <input id="updateRandom_lowQuestion" style="margin-top: 30px" type="text" name="update_random_lowQuestion" class="form-control" placeholder="Number of low application question" readonly>
                             <div id="updateRandom_lowQuestionError" class="text-danger"></div>
-                            <input id="updateRandom_highQuestion" style="margin-top: 30px" type="text" name="update_random_highQuestion" class="form-control" placeholder="Number of high application question">
+                            <input id="updateRandom_highQuestion" style="margin-top: 30px" type="text" name="update_random_highQuestion" class="form-control" placeholder="Number of high application question" readonly>
                             <div id="updateRandom_highQuestionError" class="text-danger"></div>
                             <input id="updateRandom_exerciseTime" style="margin-top: 30px" type="text" name="update_random_exerciseTime" class="form-control" placeholder="Exercise time">
                             <div id="updateRandom_exerciseTimeError" class="text-danger"></div>
-                            <select id="updateRandom_exerciseType" name="update_random_exerciseType" style="margin-top: 30px" onchange="toggleRandomTypeExercise()">
+                            <select id="updateRandom_exerciseType" name="update_random_exerciseType" style="margin-top: 30px" onchange="toggleUpdateRandomTypeExercise()">
                                 <option value="0">Choose type of exercise</option>
                                 <option value="1">Test</option>
                                 <option value="2">Practice</option>
                             </select>
                             <div id="updateRandom_exerciseTypeError" class="text-danger"></div>
-                            <select id="updateRandom_gradeCategory" name="update_random_gradeCategory" style="display: none; margin-top: 30px;" onchange="toggleRandomGradeCategory()">
+                            <select id="updateRandom_gradeCategory" name="update_random_gradeCategory" style="display: none; margin-top: 30px;" onchange="toggleUpdateRandomGradeCategory()">
                                 <option value="0">Choose grade category</option>
                                 <c:forEach var="o" items="${listGradeCategory}">
                                     <option value="${o.id}">${o.name}</option>
