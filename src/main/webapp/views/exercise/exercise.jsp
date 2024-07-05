@@ -395,7 +395,7 @@
                         class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
             </p>
             <h1 class="heading">Welcome,!</h1>
-
+            <h1>${mess}</h1>
         </div>
     </div>
     <div class="row" style="margin-top: 15vh">
@@ -634,6 +634,52 @@
         return isValid;
     }
 
+    function validateUpdateForm() {
+        var isValid = true;
+
+        // Clear previous error messages
+        document.getElementById('updateExerciseNameError').innerText = "";
+        document.getElementById('updateNumQuestionsError').innerText = "";
+        document.getElementById('updateExerciseTimeError').innerText = "";
+        // Get form values
+        var exerciseName = document.getElementById('updateExerciseName').value;
+        var numQuestions = document.getElementById('updateNumQuestions').value;
+        var exerciseTime = document.getElementById('updateExerciseTime').value;
+        var exerciseType = document.getElementById('updateExerciseType').value;
+        var gradeCategory = document.getElementById('updateGradeCategory').value;
+        var currentName = document.getElementById('currentExerciseName').value;
+        // Validate form values
+        if (!exerciseName) {
+            document.getElementById('updateExerciseNameError').innerText = "Please enter the Quiz Name.";
+            isValid = false;
+        } else if(exerciseNames.includes(exerciseName) && !exerciseNames.equals(currentName)){
+            document.getElementById('updateExerciseNameError').innerText = "Quiz name already exists. Please choose another name.";
+            isValid = false;
+        }
+        if (!numQuestions) {
+            document.getElementById('updateNumQuestionsError').innerText = "Please enter the Number of Questions.";
+            isValid = false;
+        } else if (!isValidInteger(numQuestions)) {
+            document.getElementById('updateNumQuestionsError').innerText = "Number of questions must be an integer.";
+            isValid = false;
+        }
+        if (!exerciseTime) {
+            document.getElementById('updateExerciseTimeError').innerText = "Please enter the Exercise time.";
+            isValid = false;
+        } else if (!isValidFloat(exerciseTime)) {
+            document.getElementById('updateExerciseTimeError').innerText = "Exercise time must be a floating-point number.";
+            isValid = false;
+        }
+        if (exerciseType == "0") {
+            document.getElementById('updateExerciseTypeError').innerText = "Please choose the type of exercise.";
+            isValid = false;
+        }
+        if(exerciseType == "1" && gradeCategory == "0"){
+            document.getElementById('updateGradeCategoryError').innerText = "Please choose the type of grade";
+            isValid = false;
+        }
+        return isValid;
+    }
     <%--var exerciseNames = <%= request.getAttribute("exerciseNames") %>;--%>
     function toggleRandomGradeCategory() {
         document.getElementById('random_gradeCategoryError').innerText = "";
@@ -732,6 +778,88 @@
         }
         return isValid;
     }
+
+    function validateUpdateRandomForm() {
+        var isValid = true;
+        var availableBasicQuestions = <%= basicBankQuestion %>;
+        var availableLowQuestions = <%= lowBankQuestion %>;
+        var availableHighQuestions = <%= highBankQuestion %>;
+        // Clear previous error messages
+        document.getElementById('updateRandom_exerciseNameError').innerText = "";
+        document.getElementById('updateRandom_basicQuestionError').innerText = "";
+        document.getElementById('updateRandom_lowQuestionError').innerText = "";
+        document.getElementById('updateRandom_highQuestionError').innerText = "";
+        document.getElementById('updateRandom_exerciseTimeError').innerText = "";
+        document.getElementById('updateRandom_exerciseTypeError').innerText = "";
+        document.getElementById('updateRandom_gradeCategoryError').innerText = "";
+
+        // Get form values
+        var exerciseName = document.getElementById('updateRandom_exerciseName').value;
+        var basicQuestion = document.getElementById('updateRandom_basicQuestion').value;
+        var lowQuestion = document.getElementById('updateRandom_lowQuestion').value;
+        var highQuestion = document.getElementById('updateRandom_highQuestion').value;
+        var exerciseTime = document.getElementById('updateRandom_exerciseTime').value;
+        var exerciseType = document.getElementById('updateRandom_exerciseType').value;
+        var gradeCategory = document.getElementById('updateRandom_gradeCategory').value;
+        var currentRandomName = document.getElementById('currentRandomExerciseName').value;
+        // Validate form values
+        if (!exerciseName) {
+            document.getElementById('updateRandom_exerciseNameError').innerText = "Please enter the Quiz Name.";
+            isValid = false;
+        } else if (exerciseNames.includes(exerciseName) && !exerciseNames.equals(currentRandomName)) {
+            document.getElementById('updateRandom_exerciseNameError').innerText = "Quiz name already exists. Please choose another name.";
+            isValid = false;
+        }
+        //basic
+        if (!basicQuestion) {
+            document.getElementById('updateRandom_basicQuestionError').innerText = "Please enter the Number of basic questions.";
+            isValid = false;
+        }  else if (basicQuestion > availableBasicQuestions) {
+            document.getElementById('updateRandom_basicQuestionError').innerText = "Exceeds available basic questions(have " + availableBasicQuestions + " basic questions in bank)";
+            isValid = false;
+        } else if (!isValidInteger(basicQuestion)) {
+            document.getElementById('updateRandom_basicQuestionError').innerText = "Basic questions must be an integer.";
+            isValid = false;
+        }
+        // low
+        if (!lowQuestion) {
+            document.getElementById('updateRandom_lowQuestionError').innerText = "Please enter the Number of low application questions.";
+            isValid = false;
+        }  else if (lowQuestion > availableLowQuestions) {
+            document.getElementById('updateRandom_lowQuestionError').innerText = "Exceeds available low questions(have " + availableLowQuestions + " low questions in bank)";
+            isValid = false;
+        } else if (!isValidInteger(lowQuestion)) {
+            document.getElementById('updateRandom_lowQuestionError').innerText = "Low application questions must be an integer.";
+            isValid = false;
+        }
+        //high
+        if (!highQuestion) {
+            document.getElementById('updateRandom_highQuestionError').innerText = "Please enter the Number of high application questions.";
+            isValid = false;
+        }  else if (highQuestion > availableHighQuestions) {
+            document.getElementById('updateRandom_highQuestionError').innerText = "Exceeds available high questions(have " + availableHighQuestions + " high questions in bank)";
+            isValid = false;
+        } else if (!isValidInteger(highQuestion)) {
+            document.getElementById('updateRandom_highQuestionError').innerText = "High application questions must be an integer.";
+            isValid = false;
+        }
+        if (!exerciseTime) {
+            document.getElementById('updateRandom_exerciseTimeError').innerText = "Please enter the Exercise time.";
+            isValid = false;
+        } else if (!isValidFloat(exerciseTime)) {
+            document.getElementById('updateRandom_exerciseTimeError').innerText = "Exercise time must be a floating-point number.";
+            isValid = false;
+        }
+        if (exerciseType == "0") {
+            document.getElementById('updateRandom_exerciseTypeError').innerText = "Please choose the type of exercise.";
+            isValid = false;
+        }
+        if (exerciseType == "1" && gradeCategory == "0") {
+            document.getElementById('updateRandom_gradeCategoryError').innerText = "Please choose the type of grade.";
+            isValid = false;
+        }
+        return isValid;
+    }
 </script>
 <script>
     $(document).ready(function() {
@@ -752,6 +880,8 @@
                         $('#updateNumQuestions').val(response.question_number);
                         $('#updateExerciseTime').val(response.exercise_time);
                         $('#updateExerciseType').val(response.exercise_type);
+                        $('#currentExerciseName').val(response.exercise_name);
+                        $('#exercise_id').val(response.exercise_id);
                         if(response.exercise_type == 1) {
                             // Hiển thị và điền dữ liệu cho thẻ select
                             $('#updateGradeCategory').empty(); // Xóa các tùy chọn cũ
@@ -774,9 +904,12 @@
                         $('#updateRandom_lowQuestion').val(response.low_question);
                         $('#updateRandom_highQuestion').val(response.high_question);
                         $('#updateRandom_exerciseType').val(response.exercise_type);
+                        $('#currentRandomExerciseName').val(response.exercise_name);
+                        $('#random_exercise_id').val(response.exercise_id);
+                        console.log(response.listGradeCategory);
                         if(response.exercise_type == 1) {
                             // Hiển thị và điền dữ liệu cho thẻ select
-                            $('#updateGradeCategory').empty(); // Xóa các tùy chọn cũ
+                            $('#updateRandom_gradeCategory').empty(); // Xóa các tùy chọn cũ
                             $.each(response.listGradeCategory, function (index, item) {
                                 $('#updateRandom_gradeCategory').append('<option value="' + item.id + '">' + item.name + '</option>');
                             });
@@ -806,7 +939,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="card">
-                <form method="post" action="" onsubmit="return validateForm()">
+                <form method="post" action="create-exercise" onsubmit="return validateForm()">
                     <div class="card-header">
                         <h2 class="custom-heading">Quiz</h2>
                     </div>
@@ -849,26 +982,30 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="card">
-                <form method="post" action="" onsubmit="return validateForm()">
+                <form method="post" action="create-exercise" onsubmit="return validateUpdateForm()">
                     <div class="card-header">
                         <h2 class="custom-heading">Update Exercise</h2>
                     </div>
+                    <input type="hidden" name="status" value="update">
+                    <input type="hidden" name="group_id" value="${group_id}">
+                    <input type="hidden" id="exercise_id" name="exercise_id">
                     <div class="card-body">
                         <div class="form-group">
                             <input style="margin-top: 30px" type="hidden" name="teacher_id" value="${teacher.tid}">
-                            <input id="updateExerciseName" style="margin-top: 30px" type="text" name="exercise_name" class="form-control" placeholder="Exercise Name"/>
+                            <input type="hidden" id="currentExerciseName" name="currentExerciseName">
+                            <input id="updateExerciseName" style="margin-top: 30px" type="text" name="update_exercise_name" class="form-control" placeholder="Exercise Name"/>
                             <div id="updateExerciseNameError" class="text-danger"></div>
-                            <input id="updateNumQuestions" style="margin-top: 30px" type="text" name="question_number" class="form-control" placeholder="Number of Questions">
+                            <input id="updateNumQuestions" style="margin-top: 30px" type="text" name="update_question_number" class="form-control" placeholder="Number of Questions">
                             <div id="updateNumQuestionsError" class="text-danger"></div>
-                            <input id="updateExerciseTime" style="margin-top: 30px" type="text" name="exercise_time" class="form-control" placeholder="Exercise time">
+                            <input id="updateExerciseTime" style="margin-top: 30px" type="text" name="update_exercise_time" class="form-control" placeholder="Exercise time">
                             <div id="updateExerciseTimeError" class="text-danger"></div>
-                            <select id="updateExerciseType" name="exercise_type" style="margin-top: 30px" onchange="toggleUpdateTypeExercise()">
+                            <select id="updateExerciseType" name="update_exercise_type" style="margin-top: 30px" onchange="toggleUpdateTypeExercise()">
                                 <option value="0">Choose type of exercise</option>
                                 <option value="1">Test</option>
                                 <option value="2">Practice</option>
                             </select>
                             <div id="updateExerciseTypeError" class="text-danger"></div>
-                            <select id="updateGradeCategory" name="grade_category" style="display: none" onchange="toggleGradeCategory()">
+                            <select id="updateGradeCategory" name="update_grade_category" style="display: none" onchange="toggleUpdateGradeCategory()">
                                 <option value="0">Choose grade category</option>
                                 <c:forEach var="o" items="${listGradeCategory}">
                                     <option value="${o.id}" >${o.name}</option>
@@ -936,30 +1073,34 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="card">
-                <form method="post" action="create-exercise" onsubmit="return validateRandomForm()">
+                <form method="post" action="create-exercise" onsubmit="return validateUpdateRandomForm()">
                     <input type="hidden" name="random" value="1">
                     <div class="card-header">
                         <h2 class="custom-heading">Update Random Quiz</h2>
                     </div>
+                    <input type="hidden" name="status" value="update">
+                    <input type="hidden" name="group_id" value="${group_id}">
+                    <input type="hidden" id="random_exercise_id" name="exercise_id">
                     <div class="card-body">
                         <div class="form-group">
-                            <input id="updateRandom_exerciseName" type="text" name="random_exerciseName" class="form-control" placeholder="Quiz Name" />
+                            <input type="hidden" id="currentRandomExerciseName" name="currentRandomExerciseName">
+                            <input id="updateRandom_exerciseName" type="text" name="update_random_exerciseName" class="form-control" placeholder="Quiz Name" />
                             <div id="updateRandom_exerciseNameError" class="text-danger"></div>
-                            <input id="updateRandom_basicQuestion" style="margin-top: 30px" type="text" name="random_basicQuestion" class="form-control" placeholder="Number of basic question">
+                            <input id="updateRandom_basicQuestion" style="margin-top: 30px" type="text" name="update_random_basicQuestion" class="form-control" placeholder="Number of basic question">
                             <div id="updateRandom_basicQuestionError" class="text-danger"></div>
-                            <input id="updateRandom_lowQuestion" style="margin-top: 30px" type="text" name="random_lowQuestion" class="form-control" placeholder="Number of low application question">
+                            <input id="updateRandom_lowQuestion" style="margin-top: 30px" type="text" name="update_random_lowQuestion" class="form-control" placeholder="Number of low application question">
                             <div id="updateRandom_lowQuestionError" class="text-danger"></div>
-                            <input id="updateRandom_highQuestion" style="margin-top: 30px" type="text" name="random_highQuestion" class="form-control" placeholder="Number of high application question">
+                            <input id="updateRandom_highQuestion" style="margin-top: 30px" type="text" name="update_random_highQuestion" class="form-control" placeholder="Number of high application question">
                             <div id="updateRandom_highQuestionError" class="text-danger"></div>
-                            <input id="updateRandom_exerciseTime" style="margin-top: 30px" type="text" name="random_exerciseTime" class="form-control" placeholder="Exercise time">
+                            <input id="updateRandom_exerciseTime" style="margin-top: 30px" type="text" name="update_random_exerciseTime" class="form-control" placeholder="Exercise time">
                             <div id="updateRandom_exerciseTimeError" class="text-danger"></div>
-                            <select id="updateRandom_exerciseType" name="random_exerciseType" style="margin-top: 30px" onchange="toggleRandomTypeExercise()">
+                            <select id="updateRandom_exerciseType" name="update_random_exerciseType" style="margin-top: 30px" onchange="toggleRandomTypeExercise()">
                                 <option value="0">Choose type of exercise</option>
                                 <option value="1">Test</option>
                                 <option value="2">Practice</option>
                             </select>
                             <div id="updateRandom_exerciseTypeError" class="text-danger"></div>
-                            <select id="updateRandom_gradeCategory" name="random_gradeCategory" style="display: none; margin-top: 30px;" onchange="toggleRandomGradeCategory()">
+                            <select id="updateRandom_gradeCategory" name="update_random_gradeCategory" style="display: none; margin-top: 30px;" onchange="toggleRandomGradeCategory()">
                                 <option value="0">Choose grade category</option>
                                 <c:forEach var="o" items="${listGradeCategory}">
                                     <option value="${o.id}">${o.name}</option>

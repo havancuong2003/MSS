@@ -341,6 +341,7 @@ public class QuestionDBContext extends DBContext<Question> {
         }
         return  listQuestion;
     }
+
     public int getTotalQuestionBySearch(String question,String exercise_id) {
         try {
             String sql = "SELECT COUNT(*) FROM question WHERE question like ? AND exercise_id = ?";
@@ -442,6 +443,43 @@ public class QuestionDBContext extends DBContext<Question> {
         }
         return  listQuestion;
     }
+    public List<Question> getListQuestionByExerciseIdAndTypeQuestion (String exercise_id,String type_question) {
+        List<Question> listQuestion = new ArrayList<>();
+        String sql = "SELECT * " +
+                "FROM question q " +
+                "JOIN exercise e ON q.exercise_id = e.exercise_id " +
+                "JOIN course c ON q.course_id = c.id " +
+                "WHERE q.exercise_id = ? AND q.type_question = ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, exercise_id);
+            statement.setString(2, type_question);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Question q = new Question();
+                q.setQuestion_id(rs.getInt("question_id"));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                q.setStatus(rs.getInt(6));
+                Exercise ex = new Exercise();
+                ex.setExerciseId(rs.getInt("exercise_id"));
+                ex.setExerciseName(rs.getString("exercise_name"));
+                ex.setStatus(rs.getInt(11));
+                q.setExercise(ex);
+                Course c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean(17));
+                listQuestion.add(q);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
     public Question getQuestion(String question, String exercise_id) {
         String sql = "SELECT * FROM question q JOIN course c ON q.course_id = c.id where question like ? and q.exercise_id = ? ";
         try {
@@ -483,6 +521,14 @@ public class QuestionDBContext extends DBContext<Question> {
         }
     }
 
+
+    public static void main(String[] args) {
+        QuestionDBContext dao = new QuestionDBContext();
+        List<Question> list = dao.getListQuestionByExerciseIdAndTypeQuestion("138066","1");
+        for (Question q : list) {
+            System.out.println(q.getQuestion());
+        }
+    }
     @Override
     public ArrayList<Question> list() {
         return null;

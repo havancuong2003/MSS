@@ -356,6 +356,48 @@ public class ExerciseDBContext extends DBContext<Exercise>{
         }
     }
 
+    public void updateExerciseNormalGetScore(String exercise_id,String exercise_name,String question_number,String exercise_time,String get_score,String grade_category) {
+        String sql = "UPDATE exercise " +
+                "SET exercise_name = ?, " +
+                "question_number = ?, " +
+                "exercise_time = ?, " +
+                "get_score = ?, " +
+                "grade_category = ? " +
+                "WHERE exercise_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, exercise_name);
+            statement.setString(2, question_number);
+            statement.setString(3, exercise_time);
+            statement.setString(4, get_score);
+            statement.setString(5, grade_category);
+            statement.setString(6, exercise_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updateExerciseNormalNotGetScore(String exercise_id,String exercise_name,String question_number,String exercise_time,String get_score) {
+        String sql = "UPDATE exercise " +
+                "SET exercise_name = ?, " +
+                "question_number = ?, " +
+                "exercise_time = ?, " +
+                "get_score = ? " +
+                "WHERE exercise_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, exercise_name);
+            statement.setString(2, question_number);
+            statement.setString(3, exercise_time);
+            statement.setString(4, get_score);
+            statement.setString(5, exercise_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static void main(String[] args) {
         ExerciseDBContext dao = new ExerciseDBContext();
         Teacher teacher = dao.getTeacher("t1");
