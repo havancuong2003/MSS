@@ -166,5 +166,81 @@ public class StudentDBContext extends DBContext<Student> {
         return null;
     }
 
+    public void deleteCourseRegister(String userName,int semesterID, int courseID){
+       String sql ="WITH ids_to_delete AS (\n" +
+               "    SELECT r.id\n" +
+               "    FROM registercourse r\n" +
+               "    JOIN student s ON r.student_id = s.id\n" +
+               "    JOIN account a ON a.account_id = s.acc_id\n" +
+               "    WHERE a.username = ?\n" +
+               "    AND r.course_id = ?\n" +
+               "    AND semester = ?\n" +
+               ")\n" +
+               "DELETE FROM registercourse\n" +
+               "WHERE id IN (SELECT id FROM ids_to_delete);\n";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,userName);
+            stm.setInt(2,courseID);
+            stm.setInt(3,semesterID);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Course> getCoursePrequisite(int courseID){
+        ArrayList<Course> courses = new ArrayList<>();
+        String sql = "SELECT pre_course_id FROM prequisite_course where course_id =?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1,courseID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Course course = courseDBContext.getCourseByID(rs.getInt("pre_course_id"));
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    public static void main(String[] args) throws SQLException {
+        StudentDBContext s = new StudentDBContext();
+        System.out.println(s.checkCourseCanRegister("student1",6));
+    }
+
+    public boolean checkCoursePassOrNot( String username, int courseID){
+        String sql = "select isPass from total t join student s on t.student_id = s.id join account a on a.account_id = s.acc_id where isPass =1 and a.username =? and t.course_id =?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,username);
+            stm.setInt(2,courseID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
+
+    public boolean checkCourseCanRegister(String username, int courseID) throws SQLException {
+        StudentDBContext studentDBContext = new StudentDBContext();
+        ArrayList<Course> coursePre = studentDBContext.getCoursePrequisite(courseID);
+        for (Course course : coursePre) {
+            if (!studentDBContext.checkCoursePassOrNot(username, course.getId())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
 
 }
