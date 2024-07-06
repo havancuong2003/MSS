@@ -1,30 +1,44 @@
 package controller.admin.createTimeRegisterCourse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dal.SemesterDBContext;
 import dal.TimePeriodsDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Semester;
 import model.TimePeriods;
 import util.GetCurrentTerm;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 @WebServlet("/admin/registerTime")
 public class TimeRegisterCourse extends HttpServlet {
-    private final int CURRENT_TERM = GetCurrentTerm.currentTerm;
+    private final int currentSemester = GetCurrentTerm.currentSemester;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
-        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(CURRENT_TERM);
+        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(currentSemester);
+
+        SemesterDBContext semesterDBContext = new SemesterDBContext();
+        Semester semester = null;
+        try {
+            semester = semesterDBContext.get(currentSemester);
+            Semester nextSemester = semesterDBContext.get(semester.getNextSemesterID());
+            req.setAttribute("nextSemester", nextSemester);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        req.setAttribute("semester", semester);
+
         req.setAttribute("timePeriods", timePeriods);
         req.getRequestDispatcher("../views/admin/createTimeRegisterCourse/timeRegisterCourse.jsp").forward(req, resp);
     }
-
 
 
     @Override
@@ -85,16 +99,29 @@ public class TimeRegisterCourse extends HttpServlet {
 
         String description = req.getParameter("description");
 
-        if (!description.equals("SU24")) {
-            timePeriodsDBContext.createTimeRegister(startDate_raw, endDate_raw, CURRENT_TERM);
+        if (!description.equals(currentSemester + "")) {
+            timePeriodsDBContext.createTimeRegister(startDate_raw, endDate_raw, currentSemester);
             resp.getWriter().print("{\"res\": \"add successfully\"}");
 
         } else {
-            timePeriodsDBContext.updateTimeRegister(startDate_raw, endDate_raw, CURRENT_TERM);
+            timePeriodsDBContext.updateTimeRegister(startDate_raw, endDate_raw, currentSemester);
             resp.getWriter().print("{\"res\": \"update successfully\"}");
 
         }
+        String numCoursesRegister = req.getParameter("numCourses");
+        if (numCoursesRegister != null) {
+            SemesterDBContext semesterDBContext = new SemesterDBContext();
+            int number = Integer.parseInt(numCoursesRegister);
+            try {
+                Semester semester = semesterDBContext.get(currentSemester);
+                semesterDBContext.setTotalCourseRegisterForNextSemester(number, semester.getNextSemesterID());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
+        }
 
     }
+
+
 }

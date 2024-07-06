@@ -1,6 +1,7 @@
 package controller.student;
 
 import com.google.gson.Gson;
+import dal.SemesterDBContext;
 import dal.StudentDBContext;
 import dal.TimePeriodsDBContext;
 import jakarta.servlet.ServletException;
@@ -10,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
+import model.Course;
+import model.Semester;
 import model.TimePeriods;
 import util.GetCurrentTerm;
 
@@ -17,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,18 +32,27 @@ public class RegisterCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
-        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(GetCurrentTerm.currentTerm);
+        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(GetCurrentTerm.currentSemester);
+
+
         HttpSession session = req.getSession();
         StudentDBContext s = new StudentDBContext();
         Account account = (Account) session.getAttribute("account");
         if (account != null) {
             try {
+                SemesterDBContext semesterDBContext = new SemesterDBContext();
+                Semester currentSemester = semesterDBContext.get(GetCurrentTerm.currentSemester);
+                Semester nextSemester = semesterDBContext.get(currentSemester.getNextSemesterID());
+
+                req.setAttribute("currentSemester", currentSemester);
+                req.setAttribute("nextSemester", nextSemester);
+
                 int currentTerm = s.getCurrentTermOfStudent(account.getUsername());
                 req.setAttribute("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
                 req.setAttribute("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
                 req.setAttribute("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
-                req.setAttribute("courseRegistered", s.getCoursesRegistered(account.getUsername(), currentTerm));
-                req.setAttribute("totalRegister", s.getCoursesRegistered(account.getUsername(), currentTerm).size());
+                req.setAttribute("courseRegistered", s.getCoursesRegistered(account.getUsername(), nextSemester.getId()));
+                req.setAttribute("totalRegister", s.getCoursesRegistered(account.getUsername(), nextSemester.getId()).size());
                 if (timePeriods != null) {
                     req.setAttribute("timePeriods", timePeriods);
 
@@ -54,6 +67,9 @@ public class RegisterCourse extends HttpServlet {
                     } else {
                         req.setAttribute("validDate", false); // Nếu không hợp lệ
                     }
+                }
+                else {
+                    req.setAttribute("timePeriods", "null");
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -74,56 +90,87 @@ public class RegisterCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TimePeriodsDBContext timePeriodsDBContext = new TimePeriodsDBContext();
-        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(GetCurrentTerm.currentTerm);
+        TimePeriods timePeriods = timePeriodsDBContext.getTimePeriods(GetCurrentTerm.currentSemester);
         HttpSession session = req.getSession();
         StudentDBContext s = new StudentDBContext();
         Account account = (Account) session.getAttribute("account");
         Map<String, Object> responseData = new HashMap<>();
+
+
         if (account != null) {
-
-            if (timePeriods != null) {
-                responseData.put("timePeriods", timePeriods);
-
-
-                Date currentDate = new Date();
-                Date startDate = timePeriods.getStartRegister();
-                Date endDate = timePeriods.getEndRegister();
-
-
-                if (isDateInRange(currentDate, startDate, endDate)) {
-                    responseData.put("validDate", true); // Nếu ngày hợp lệ
-                    String coursesToRegister = req.getParameter("coursesToRegister");
-                    if (s.getCoursesRegistered(account.getUsername(), 1).size() < 5) {
-                        System.out.println(s.getCoursesRegistered(account.getUsername(), 1).size());
-                        String sId = s.getStudentID(account.getUsername());
-                        s.registerCourse(sId, Integer.parseInt(coursesToRegister), 1);
-                        responseData.put("ms", "Register course successfully");
-                    } else {
-                        responseData.put("ms", "You can not register more than 5 courses");
-                    }
-                } else {
-                    responseData.put("validDate", false); // Nếu không hợp lệ
-                    responseData.put("ms", "expired or not yet");
-                }
-            }
-
-
             try {
-                int currentTerm = s.getCurrentTermOfStudent(account.getUsername());
+                SemesterDBContext semesterDBContext = new SemesterDBContext();
 
-                responseData.put("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
-                responseData.put("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
-                responseData.put("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
-                responseData.put("courseRegistered", s.getCoursesRegistered(account.getUsername(), 1));
-                responseData.put("totalRegister", s.getCoursesRegistered(account.getUsername(), 1).size());
 
-                resp.setContentType("application/json");
-                PrintWriter out = resp.getWriter();
-                out.print(new Gson().toJson(responseData));
-                out.flush();
+                Semester currentSemester = semesterDBContext.get(GetCurrentTerm.currentSemester);
+
+                Semester nextSemester = semesterDBContext.get(currentSemester.getNextSemesterID());
+
+                if (timePeriods != null) {
+                    responseData.put("timePeriods", timePeriods);
+
+
+                    Date currentDate = new Date();
+                    Date startDate = timePeriods.getStartRegister();
+                    Date endDate = timePeriods.getEndRegister();
+
+
+                    if (isDateInRange(currentDate, startDate, endDate)) {
+                        responseData.put("validDate", true); // Nếu ngày hợp lệ
+                        String coursesToRegister = req.getParameter("coursesToRegister");
+
+                        if (s.getCoursesRegistered(account.getUsername(), nextSemester.getNextSemesterID()).size() < nextSemester.getTotalCourseRegisterForNextSemester()) {
+
+                            String sId = s.getStudentID(account.getUsername());
+                            if (checkCourseCanRegister(account.getUsername(), Integer.parseInt(coursesToRegister))) {
+                                s.registerCourse(sId, Integer.parseInt(coursesToRegister), nextSemester.getNextSemesterID());
+                                responseData.put("ms", "Register course successfully");
+                            } else {
+                                responseData.put("ms", "You can not register this course because you have not passed all pre-requisites");
+                            }
+                        } else {
+                            responseData.put("ms", "You can not register more than " + nextSemester.getTotalCourseRegisterForNextSemester() + " courses");
+                        }
+                    } else {
+                        responseData.put("validDate", false); // Nếu không hợp lệ
+                        responseData.put("ms", "expired or not yet");
+                    }
+                }
+                else{
+                    responseData.put("timePeriods", "null");
+                }
+
+
+                try {
+                    int currentTerm = s.getCurrentTermOfStudent(account.getUsername());
+
+                    responseData.put("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
+                    responseData.put("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
+                    responseData.put("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
+                    responseData.put("courseRegistered", s.getCoursesRegistered(account.getUsername(), nextSemester.getNextSemesterID()));
+                    responseData.put("totalRegister", s.getCoursesRegistered(account.getUsername(), nextSemester.getNextSemesterID()).size());
+
+                    resp.setContentType("application/json");
+                    PrintWriter out = resp.getWriter();
+                    out.print(new Gson().toJson(responseData));
+                    out.flush();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public boolean checkCourseCanRegister(String username, int courseID) throws SQLException {
+        StudentDBContext studentDBContext = new StudentDBContext();
+        ArrayList<Course> coursePre = studentDBContext.getCoursePrequisite(courseID);
+        for (Course course : coursePre) {
+            if (!studentDBContext.checkCoursePassOrNot(username, course.getId())) {
+                return false;
+            }
+        }
+        return true;
     }
 }
