@@ -202,7 +202,7 @@
     </div>
 </header>
 
-<form method="get" action="/MyStudySpace_war_exploded/addCourseToCurriculum" style="margin-top: 10px">
+<form method="get" action="/MyStudySpace_war_exploded/admin/addCourseToCurriculum" style="margin-top: 10px">
     <p>Major:
         <select name="major" id="major">
             <c:forEach items="${requestScope.majors}" var="major">
