@@ -10,6 +10,24 @@
     <title>Exercise</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
         .btn-container {
             display: flex;
             align-items: center;
@@ -394,7 +412,6 @@
                 <a class="btn btn-danger" href="Logout"><i
                         class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
             </p>
-            <h1 class="heading">Welcome,!</h1>
             <h1>${mess}</h1>
         </div>
     </div>
@@ -459,10 +476,10 @@
                             <td>${o.course.code}</td>
                             <td>
                                 <c:if test="${o.isRandom == 0}">
-                                    <a href="manage-question?exercise_id=${o.exerciseId}">View</a>
+                                    <a href="manage-question?exercise_id=${o.exerciseId}" class="btn">View</a>
                                 </c:if>
                                 <c:if test="${o.isRandom == 1}">
-                                    <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}">View</a>
+                                    <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" class="btn">View</a>
                                 </c:if>
                             </td>
                             <td>
@@ -481,6 +498,36 @@
                                     </c:if>
                                     <c:if test="${o.isRandom ==1}">
                                         <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalRandomQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                    </c:if>
+                                    <c:if test="${o.status == 0}">
+                                        <c:if test="${listQuestionSize == numQuestion}">
+                                            <form action="create-exercise" method="post">
+                                                <input type="hidden" name="exercise_id" value="${o.exerciseId}">
+                                                <input type="hidden" name="status" value="prevent">
+                                                <button type="submit" class="btn btn-success"  onclick="confirmSubmission(event)">
+                                                    <i class="material-icons">assignment</i> <span>Prevent</span>
+                                                </button>
+                                            </form>
+                                        </c:if>
+                                        <c:if test="${listQuestionSize < numQuestion}">
+                                            <form action="create-exercise" method="post">
+                                                <input type="hidden" name="exercise_id" value="${o.exerciseId}">
+                                                <input type="hidden" name="status" value="prevent">
+                                                <button type="submit" class="btn btn-success" onclick="checkQuestions(event)">
+                                                    <i class="material-icons">assignment</i> <span>Prevent</span>
+                                                </button>
+                                            </form>
+                                        </c:if>
+                                    </c:if>
+
+                                    <c:if test="${o.status == 1}">
+                                        <form action="create-exercise" method="post">
+                                            <input type="hidden" name="exercise_id" value="${o.exerciseId}">
+                                            <input type="hidden" name="status" value="close">
+                                            <button type="submit" class="btn btn-success"  onclick="confirmClose(event)">
+                                                <i class="material-icons">check_circle</i> <span>Close</span>
+                                            </button>
+                                        </form>
                                     </c:if>
                                 </div>
                             </td>

@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class CreateExercise extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ExerciseDBContext edao = new ExerciseDBContext();
+        QuestionDBContext qdao = new QuestionDBContext();
         BankQuestionDBContext bdao = new BankQuestionDBContext();
         String indexPage = request.getParameter("page");
         String search = request.getParameter("search");
@@ -33,6 +34,7 @@ public class CreateExercise extends HttpServlet {
         if(delete != null && delete.equals("1") && exercise_id != null && !exercise_id.trim().isEmpty()) {
             edao.editExerciseStatusForDelete(exercise_id);
         }
+        Exercise ex = edao.getExerciseById(exercise_id);
         String group_id = request.getParameter("group_id");
         group_id = "1";
         Teacher teacher = edao.getTeacher("t1");
@@ -90,6 +92,7 @@ public class CreateExercise extends HttpServlet {
         List<String> exerciseNames = listExercise.stream()
                 .map(Exercise::getExerciseName) // assuming getName() method exists
                 .collect(Collectors.toList());
+        List<Question> listAllQuestionOfExercise = qdao.getListQuestionByExerciseId(exercise_id);
         int basicBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","1");
         int lowBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","2");
         int highBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","3");

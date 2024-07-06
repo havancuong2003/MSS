@@ -140,6 +140,7 @@ public class ManageQuestion extends HttpServlet {
             request.setAttribute("tag", index);
             request.setAttribute("endPage", endPage);
             request.setAttribute("exercise_id", exercise_id);
+            request.setAttribute("exercise_status",exercise.getStatus());
             request.setAttribute("listQuestion", listQuestion);
             request.getRequestDispatcher("/views/exercise/managequestion.jsp").forward(request, response);
 
@@ -458,7 +459,13 @@ public class ManageQuestion extends HttpServlet {
             request.setAttribute("course_id", course_id);
             request.setAttribute("update_type_question_modal", type_question_modal);
             doGet(request, response);
-        }else {
+        } else if (status != null && status.equals("prevent")) {
+            edao.editExerciseStatusForPrevent(exercise_id);
+            response.sendRedirect("create-exercise");
+        } else if (status != null && status.equals("close")) {
+            edao.editExerciseStatusForClose(exercise_id);
+            response.sendRedirect("create-exercise");
+        } else {
             if (jsonObject == null || !jsonObject.has("exercise_id") || !jsonObject.has("selectedIds") || !jsonObject.has("status")) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;

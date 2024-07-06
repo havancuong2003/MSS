@@ -321,6 +321,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 Exercise exercise = new Exercise();
                 exercise.setExerciseId(rs.getInt("exercise_id"));
                 exercise.setExerciseName(rs.getString("exercise_name"));
+                exercise.setStatus(rs.getInt(3));
                 exercise.setQuestion_number(rs.getInt("question_number"));
                 exercise.setExercise_time(rs.getFloat("exercise_time"));
                 exercise.setGet_score(rs.getInt("get_score"));
@@ -346,6 +347,32 @@ public class ExerciseDBContext extends DBContext<Exercise>{
     public void editExerciseStatusForDelete(String exercise_id) {
         String sql = "UPDATE exercise " +
                 "SET status = 2 " +
+                "WHERE exercise_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, exercise_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void editExerciseStatusForPrevent(String exercise_id) {
+        String sql = "UPDATE exercise " +
+                "SET status = 1 " +
+                "WHERE exercise_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, exercise_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void editExerciseStatusForClose(String exercise_id) {
+        String sql = "UPDATE exercise " +
+                "SET status = 0 " +
                 "WHERE exercise_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);

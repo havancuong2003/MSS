@@ -527,6 +527,37 @@
                         <h2>Manage <b>Question</b></h2>
                     </div>
                     <div class="col-sm-6">
+                        <c:if test="${exercise_status == 0}">
+                            <c:if test="${listQuestionSize == numQuestion}">
+                                <form action="manage-question" method="post">
+                                    <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                    <input type="hidden" name="status" value="prevent">
+                                    <button type="submit" class="btn btn-success"  onclick="confirmSubmission(event)">
+                                        <i class="material-icons">assignment</i> <span>Prevent</span>
+                                    </button>
+                                </form>
+                            </c:if>
+                            <c:if test="${listQuestionSize < numQuestion}">
+                                <form action="manage-question" method="post">
+                                    <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                    <input type="hidden" name="status" value="prevent">
+                                    <button type="submit" class="btn btn-success" onclick="checkQuestions(event)">
+                                        <i class="material-icons">assignment</i> <span>Prevent</span>
+                                    </button>
+                                </form>
+                            </c:if>
+                        </c:if>
+
+                        <c:if test="${exercise_status == 1}">
+                            <form action="manage-question" method="post">
+                                <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                <input type="hidden" name="status" value="close">
+                                <button type="submit" class="btn btn-success"  onclick="confirmClose(event)">
+                                    <i class="material-icons">check_circle</i> <span>Close</span>
+                                </button>
+                            </form>
+                        </c:if>
+
                         <c:if test="${isRandom != 1}">
                             <c:if test="${listQuestionSize < numQuestion}">
                                 <a href="select-question-bank?exercise_id=${exercise_id}&numQuestion=${numQuestion}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
@@ -791,6 +822,24 @@
 
 
 <script>
+    var listQuestionSize = ${listQuestionSize}; // Lấy giá trị từ JSP
+    var numQuestion = ${numQuestion};
+    function checkQuestions(event) {
+        if (listQuestionSize < numQuestion) {
+            alert("There are not enough questions. Please add more questions.");
+            event.preventDefault(); // Ngăn chặn form gửi
+        }
+    }
+    function confirmSubmission(event) {
+        if (!confirm("Are you sure you want to submit this exercise?")) {
+            event.preventDefault(); // Ngăn chặn form gửi nếu người dùng nhấn "Cancel"
+        }
+    }
+    function confirmClose(event) {
+        if (!confirm("Are you sure you want to close this exercise?")) {
+            event.preventDefault(); // Ngăn chặn form gửi nếu người dùng nhấn "Cancel"
+        }
+    }
     var exercise_id = "${exercise_id}";
     let optionCountUpdate;
     let correctOptionCountUpdate;
