@@ -185,6 +185,46 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         return att;
     }
 
+    public ArrayList<Attendance> getAttendanceReportForStudent(String student_id, int group_id) {
+        ArrayList<Attendance> attendances = new ArrayList<>();
+        try {
+            String sql = "select ses.id, ses.date, ses.slot_id, ses.isTaken, att.id as attid, att.isPresent, stu.id as sid, acc.fullname from session ses inner join swp391.group g on g.id = ses.group_id\n" +
+                    "inner join enrollment en on en.group_id = g.id\n" +
+                    "left join attendance att on att.ses_id = ses.id and att.student_id = en.student_id\n" +
+                    "inner join student stu  on stu.id = en.student_id\n" +
+                    "inner join account acc on acc.account_id = stu.acc_id\n" +
+                    "where en.student_id = ? and ses.group_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, student_id);
+            stm.setInt(2, group_id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance att = new Attendance();
+                Student stu = new Student();
+                Account acc = new Account();
+                Session ses = new Session();
+                Slot sl = new Slot();
+                ses.setId(rs.getInt("id"));
+                ses.setDate(rs.getDate("date"));
+                sl.setId(rs.getInt("slot_id"));
+                ses.setSlot(sl);
+                ses.setTaken(rs.getBoolean("isTaken"));
+                att.setId(rs.getInt("attid"));
+                att.setPresent(rs.getBoolean("isPresent"));
+                stu.setId(rs.getString("sid"));
+                acc.setFullname(rs.getString("fullname"));
+                stu.setAccount(acc);
+                att.setStudent(stu);
+                att.setSession(ses);
+                attendances.add(att);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return attendances;
+
+    }
+
     @Override
     public ArrayList<Attendance> list() {
         return null;
