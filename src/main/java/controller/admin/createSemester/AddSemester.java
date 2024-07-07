@@ -1,15 +1,10 @@
 package controller.admin.createSemester;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dal.SemesterDBContext;
-import dal.TimePeriodsDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.TimePeriods;
-
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;

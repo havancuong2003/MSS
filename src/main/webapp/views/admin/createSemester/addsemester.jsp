@@ -307,8 +307,12 @@
                                 <label
                                         for="firstName"
                                         class="control-label"
-                                >Detail</label
-                                >
+                                >Detail</label>
+<%--                                <select id="detail" name="detail">--%>
+<%--                                    <option value="SP">SP</option>--%>
+<%--                                    <option value="SU">SU</option>--%>
+<%--                                    <option value="FA">FA</option>--%>
+<%--                                </select>--%>
                                 <input
                                         type="text"
                                         class="form-control"
@@ -427,7 +431,7 @@
                                 >
                                     Submit
                                 </button>
-                                <h3 style="color: red">${msg}</h3>
+<%--                                <h3 style="color: red">${msg}</h3>--%>
                             </div>
                         </form>
                     </div>
@@ -436,11 +440,46 @@
         </div>
     </div>
 </div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function() {
+        // Get the msg attribute from the JSP
+        var msg = "<%= request.getAttribute("msg") %>";
+
+        // Check if msg is not null or empty
+        <% if (request.getAttribute("msg") != null && !((String) request.getAttribute("msg")).isEmpty()) { %>
+        document.getElementById('modalMessage').textContent = msg;
+        // Show modal
+        $('#myModal').modal('show');
+        <% } %>
+
+        $('.modal-footer button[data-dismiss="modal"]').click(function() {
+            $('#myModal').modal('hide'); // Tắt modal
+        });
+    };
+</script>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"
 ></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-Vo0ewNxsZn2Zr2sfotIsOzKQC4fTJPfdHCw2t1jPj2QgW9FpHkAPc6k7cWz1V6k4" crossorigin="anonymous"></script>
 </body>
 </html>
 

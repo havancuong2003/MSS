@@ -94,8 +94,8 @@ public class AccountDBContext extends DBContext<Account> {
     }
 
     //    LinhNTD 5/22/2024
-    public void insertAccount(String username, String password, String fullname, String phone, String email, int role_id, int gender) {
-        String query = "INSERT INTO `account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public void insertAccount(String username, String password, String fullname, String phone, String email, int role_id, int gender, String status) {
+        String query = "INSERT INTO `account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setString(2, password);
@@ -104,6 +104,9 @@ public class AccountDBContext extends DBContext<Account> {
             statement.setString(5, email);
             statement.setInt(6, role_id);
             statement.setInt(7, gender);
+            statement.setString(8, status);
+
+
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
