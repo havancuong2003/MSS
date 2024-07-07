@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: FPT
@@ -7,6 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -482,23 +483,16 @@
             }
         }
 
-        .message {
-            padding: 15px;
-            margin-bottom: 20px;
+        #messageContainer {
+            padding: 10px;
+            margin-bottom: 10px;
             border-radius: 5px;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
         }
-        .success-message {
-            color: #155724;
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-        }
-        .error-message {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-        }
+
+
 
 
     </style>
@@ -508,6 +502,7 @@
     <div class="custom-form-wrapper">
         <form class="custom-form" action="select-question-bank" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
+            <input type="hidden" name="numQuestion" value="${numQuestion}">
             <select name="type_question">
                 <option value="0" class="form-control">Choose type question</option>
                 <option value="1" ${type_question == "1" ? "selected" : ""} class="form-control">Basic Question</option>
@@ -520,24 +515,13 @@
     <div class="custom-form-wrapper">
         <form class="custom-form" action="select-question-bank" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
+            <input type="hidden" name="numQuestion" value="${numQuestion}">
             <input type="text" placeholder="Search by question..." name="search">
             <button type="submit" class="custom-button">Search</button>
         </form>
     </div>
-    <%--    <c:if test="${mess != null}">--%>
-    <%--        <script>--%>
-    <%--            // Sử dụng window.onload để chắc chắn rằng toàn bộ document đã được load--%>
-    <%--            window.onload = function() {--%>
-    <%--                alert('Thông báo: ${mess}');--%>
-    <%--            };--%>
-    <%--        </script>--%>
-    <%--    </c:if>--%>
-    <c:if test="${mess_success != null}">
-        <div class="message success-message">${mess_success}</div>
-    </c:if>
-    <c:if test="${mess_fail != null}">
-        <div class="message error-message">${mess_fail}</div>
-    </c:if>
+
+    <div id="messageContainer"></div>
     <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
@@ -546,7 +530,6 @@
                 </div>
             </div>
         </div>
-        <%--        <form action="select-question-bank" method="post">--%>
         <input type="hidden" name="exercise_id" value="${exercise_id}">
         <table class="table table-striped table-hover">
             <thead>
@@ -579,7 +562,7 @@
                     </td>
                     <c:if test="${o.status == 0}">
                         <td style="text-align: center; vertical-align: middle;">
-                            <input type="checkbox" name="choose" value="${o.bank_question_id}" style="width: 18px; height: 18px; cursor: pointer;">
+                            <input type="checkbox" name="choose" value="${o.bank_question_id}" data-type-question="${o.type_question}" style="width: 18px; height: 18px; cursor: pointer;">
                         </td>
                     </c:if>
                     <c:if test="${o.status == 1}">
@@ -592,31 +575,54 @@
             </c:forEach>
         </table>
         <div class="pagination-container">
-            <ul class="pagination">
-                <c:if test="${tag > 1}">
-                    <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}">Previous</a></li>
-                </c:if>
-                <c:if test="${tag ==1}">
-                    <li class="page-item"><a href="#">Previous</a></li>
-                </c:if>
-                <c:forEach begin="1" end="${endPage}" var="i">
-                    <li class="page-item ${i == tag ? 'active' : ''}">
-                        <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}">${i}</a>
-                    </li>
-                </c:forEach>
-                <c:if test="${tag < endPage}" >
-                    <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}" class="page-link">Next</a></li>
-                </c:if>
-                <c:if test="${tag == endPage}">
-                    <li class="page-item" ><a href="#" class="page-link">Next</a></li>
-                </c:if>
-            </ul>
+            <c:if test="${isRandom != 1}">
+                <ul class="pagination">
+                    <c:if test="${tag > 1}">
+                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}">Previous</a></li>
+                    </c:if>
+                    <c:if test="${tag ==1}">
+                        <li class="page-item"><a href="#">Previous</a></li>
+                    </c:if>
+                    <c:forEach begin="1" end="${endPage}" var="i">
+                        <li class="page-item ${i == tag ? 'active' : ''}">
+                            <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}">${i}</a>
+                        </li>
+                    </c:forEach>
+                    <c:if test="${tag < endPage}" >
+                        <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}" class="page-link">Next</a></li>
+                    </c:if>
+                    <c:if test="${tag == endPage}">
+                        <li class="page-item" ><a href="#" class="page-link">Next</a></li>
+                    </c:if>
+                </ul>
+            </c:if>
+
+            <c:if test="${isRandom == 1}">
+                <ul class="pagination">
+                    <c:if test="${tag > 1}">
+                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}">Previous</a></li>
+                    </c:if>
+                    <c:if test="${tag ==1}">
+                        <li class="page-item"><a href="#">Previous</a></li>
+                    </c:if>
+                    <c:forEach begin="1" end="${endPage}" var="i">
+                        <li class="page-item ${i == tag ? 'active' : ''}">
+                            <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}">${i}</a>
+                        </li>
+                    </c:forEach>
+                    <c:if test="${tag < endPage}" >
+                        <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" class="page-link">Next</a></li>
+                    </c:if>
+                    <c:if test="${tag == endPage}">
+                        <li class="page-item" ><a href="#" class="page-link">Next</a></li>
+                    </c:if>
+                </ul>
+            </c:if>
         </div>
         <div class="button-wrapper">
-            <a href="create-question?exercise_id=${exercise_id}" id="backToCreateQuestion" class="button-link">Back to create question</a>
+            <a href="manage-question?exercise_id=${exercise_id}" id="backToCreateQuestion" class="button-link">Back to create question</a>
             <button type="submit" id="selectQuestionsBtn" >Select question for exercise</button>
         </div>
-        <%--        </form>--%>
     </div>
 </div>
 
@@ -672,7 +678,22 @@
                 }
             });
         }
+        function getAllTypeQuestionsSelected() {
+            var selectedCheckboxes = JSON.parse(localStorage.getItem('selectedCheckboxes')) || {};
+            var typeQuestionsSelected = [];
+
+            Object.keys(selectedCheckboxes).forEach(function(id) {
+                var type = $('input[name="choose"][value="' + id + '"]').data('type-question');
+                if (type !== undefined) {
+                    typeQuestionsSelected.push(type);
+                }
+            });
+
+            return typeQuestionsSelected;
+        }
         var exercise_id = "${exercise_id}"
+        var numQuestion = "${numQuestion}"
+        console.log(exercise_id)
         function sendSelectedIdsToServer() {
             var selectedCheckboxes = JSON.parse(localStorage.getItem('selectedCheckboxes')) || {};
             var selectedIds = Object.keys(selectedCheckboxes).filter(function(key) {
@@ -684,6 +705,61 @@
                 console.error('exercise_id is not defined');
                 return;
             }
+
+            var numMissQuestion = parseInt("${numMissQuesion}");
+            var basicQuestion = parseInt("${basicQuestion}");
+            var lowQuestion = parseInt("${lowQuestion}");
+            var highQuestion = parseInt("${highQuestion}");
+            var basicQuestionOfExercise = parseInt("${basicQuestionOfExercise}");
+            var lowQuestionOfExercise = parseInt("${lowQuestionOfExercise}");
+            var highQuestionOfExercise = parseInt("${highQuestionOfExercise}");
+            console.log(numMissQuestion);
+            console.log('basic: ' + basicQuestion);
+            console.log('low:' + lowQuestion);
+            console.log('high:' + highQuestion);
+            console.log('basicE:' + basicQuestionOfExercise);
+            console.log('lowE:' + lowQuestionOfExercise);
+            console.log('highE:' + highQuestionOfExercise);
+            // Sử dụng hàm mới để lấy các type_questions đã chọn
+            var typeQuestionsSelected = getAllTypeQuestionsSelected(selectedIds);
+
+            console.log('Selected type_questions: ' + typeQuestionsSelected);
+            var countBasic = typeQuestionsSelected.filter(function(type) { return type == 1; }).length;
+            var countLow = typeQuestionsSelected.filter(function(type) { return type == 2; }).length;
+            var countHigh = typeQuestionsSelected.filter(function(type) { return type == 3; }).length;
+
+            console.log('Basic questions selected: ' + countBasic);
+            console.log('Low questions selected: ' + countLow);
+            console.log('High questions selected: ' + countHigh);
+
+            console.log('Basic questions selected: ' + countBasic);
+            console.log('Low questions selected: ' + countLow);
+            console.log('High questions selected: ' + countHigh);
+            if(selectedIds.length > numMissQuestion){
+                if(numMissQuestion == 1 || numMissQuestion == 0){
+                    document.getElementById('messageContainer').innerText = 'You are missing ' + numMissQuestion +  ' question for your excercise';
+                } else {
+                    document.getElementById('messageContainer').innerText = 'You are missing ' + numMissQuestion +  ' questions for your excercise';
+                }
+                document.getElementById('messageContainer').style.backgroundColor = '#f44336';
+                return;
+            }
+            if (countBasic > (basicQuestion-basicQuestionOfExercise)){
+                document.getElementById('messageContainer').style.backgroundColor = '#f44336';
+                document.getElementById('messageContainer').innerText = 'Basic questions cannot be selected because your exercise has enough number of basic questions(You are missing basic question:' + (basicQuestion- basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion-lowQuestionOfExercise) + ' ,high question: ' + (highQuestion-highQuestionOfExercise) + ')';
+                return;
+            }
+            if (countLow > (lowQuestion - lowQuestionOfExercise) ) {
+                document.getElementById('messageContainer').style.backgroundColor = '#f44336';
+                document.getElementById('messageContainer').innerText = 'Low questions cannot be selected because your exercise has enough number of low questions (You are missing basic question:' + (basicQuestion- basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion-lowQuestionOfExercise) + ' ,high question: ' + (highQuestion-highQuestionOfExercise) + ')';
+                return;
+            }
+            if (countHigh > (highQuestion - highQuestionOfExercise)) {
+                document.getElementById('messageContainer').style.backgroundColor = '#f44336';
+                document.getElementById('messageContainer').innerText = 'High questions cannot be selected because your exercise has enough number of high questions (You are missing basic question:' + (basicQuestion- basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion-lowQuestionOfExercise) + ' ,high question: ' + (highQuestion-highQuestionOfExercise) + ')';
+                return;
+            }
+
 
             console.log('Sending JSON data to server:');
             console.log({
@@ -705,12 +781,37 @@
                     console.log('Selected IDs sent to server successfully');
                     console.log(response); // In ra phản hồi từ server để kiểm tra
                     localStorage.removeItem('selectedCheckboxes');
-                    $('input[type="checkbox"][name="choose"]').prop('disabled', true);
-                    location.reload();
+                    numMissQuestion -= selectedIds.length;
+                    console.log(numMissQuestion);
+                    // Cập nhật lại số lượng câu hỏi
+                    basicQuestionOfExercise += countBasic;
+                    lowQuestionOfExercise += countLow;
+                    highQuestionOfExercise += countHigh;
+
+                    console.log('Updated basicQuestionOfExercise: ' + basicQuestionOfExercise);
+                    console.log('Updated lowQuestionOfExercise: ' + lowQuestionOfExercise);
+                    console.log('Updated highQuestionOfExercise: ' + highQuestionOfExercise);
+                    // location.reload();
+                    $('input[type="checkbox"][name="choose"]').each(function() {
+                        if ($(this).is(':checked')) {
+                            $(this).prop('checked', false); // Bỏ chọn checkbox
+                            $(this).prop('disabled', true); // Vô hiệu hóa checkbox
+                        }
+                    });
+                    document.getElementById('messageContainer').innerText = response.message;
+                    document.getElementById('messageContainer').style.backgroundColor = '#4CAF50'
+
+                    if (numMissQuestion <= 0) {
+                        document.getElementById('messageContainer').innerText = 'All questions have been selected for your exercise!';
+                        $('#selectQuestionsBtn').prop('disabled', true); // Vô hiệu hóa nút chọn câu hỏi
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to send selected IDs to server:', status, error);
                     console.log(xhr.responseText); // In ra phản hồi từ server để phân tích lỗi
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById('messageContainer').innerText = response.message;
+                    document.getElementById('messageContainer').style.backgroundColor = '#f44336'
                 }
             });
         }
@@ -737,6 +838,7 @@
             localStorage.removeItem('selectedCheckboxes');
         });
 
+
         $('.view').on('click', function(event) {
             event.preventDefault(); // Prevent the default button click behavior
 
@@ -749,7 +851,8 @@
                 type: "GET",
                 data: {
                     question_id: questionId,
-                    status : 'view'
+                    status : 'view',
+                    numQuestion : numQuestion
                 },
                 dataType: "json",
                 success: function(data) {

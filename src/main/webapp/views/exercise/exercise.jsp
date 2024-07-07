@@ -499,36 +499,6 @@
                                     <c:if test="${o.isRandom ==1}">
                                         <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalRandomQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
                                     </c:if>
-                                    <c:if test="${o.status == 0}">
-                                        <c:if test="${listQuestionSize == numQuestion}">
-                                            <form action="create-exercise" method="post">
-                                                <input type="hidden" name="exercise_id" value="${o.exerciseId}">
-                                                <input type="hidden" name="status" value="prevent">
-                                                <button type="submit" class="btn btn-success"  onclick="confirmSubmission(event)">
-                                                    <i class="material-icons">assignment</i> <span>Prevent</span>
-                                                </button>
-                                            </form>
-                                        </c:if>
-                                        <c:if test="${listQuestionSize < numQuestion}">
-                                            <form action="create-exercise" method="post">
-                                                <input type="hidden" name="exercise_id" value="${o.exerciseId}">
-                                                <input type="hidden" name="status" value="prevent">
-                                                <button type="submit" class="btn btn-success" onclick="checkQuestions(event)">
-                                                    <i class="material-icons">assignment</i> <span>Prevent</span>
-                                                </button>
-                                            </form>
-                                        </c:if>
-                                    </c:if>
-
-                                    <c:if test="${o.status == 1}">
-                                        <form action="create-exercise" method="post">
-                                            <input type="hidden" name="exercise_id" value="${o.exerciseId}">
-                                            <input type="hidden" name="status" value="close">
-                                            <button type="submit" class="btn btn-success"  onclick="confirmClose(event)">
-                                                <i class="material-icons">check_circle</i> <span>Close</span>
-                                            </button>
-                                        </form>
-                                    </c:if>
                                 </div>
                             </td>
                         </tr>
