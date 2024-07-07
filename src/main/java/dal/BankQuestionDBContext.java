@@ -90,10 +90,11 @@ public class BankQuestionDBContext extends DBContext<BankQuestion> {
         }
         return  listAnswer;
     }
-    public int getTotalBankQuestion() {
+    public int getTotalBankQuestion(String course_id) {
         try {
-            String sql = "SELECT COUNT(*) FROM bank_question";
+            String sql = "SELECT COUNT(*) FROM bank_question WHERE course_id = ? ";
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,course_id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()){
                 return rs.getInt(1);
@@ -232,7 +233,104 @@ public class BankQuestionDBContext extends DBContext<BankQuestion> {
 //        }
 //        return 0;
 //    }
+    public BankQuestion getBankQuestionByQuestion (String question) {
+        String sql = "SELECT * " +
+                "FROM bank_question " +
+                "WHERE question like ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, question);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                BankQuestion q = new BankQuestion();
+                q.setBank_question_id(rs.getInt("bank_question_id"));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                q.setCreated_by(rs.getString("created_by"));
+                q.setCourse_id(rs.getInt("course_id"));
+                return q;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  null;
+    }
 
+    public void insertQuestionBank(String question,int type_question,String created_by,int course_id) {
+        String sql = "INSERT INTO bank_question (question,type_question,created_by,course_id,status) " +
+                "VALUES (?, ?, ?,?,0)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, question);
+            statement.setInt(2, type_question);
+            statement.setString(3, created_by);
+            statement.setInt(4, course_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int getBankQuestion_id() {
+        String sql = "SELECT bank_question_id FROM bank_question ORDER BY bank_question_id DESC LIMIT 1";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("bank_question_id");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    public void insertAnswerBank(String answer,int status,int bank_question_id) {
+        String sql = "INSERT INTO bank_answer (answer,status,bank_question_id) " +
+                "VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, answer);
+            statement.setInt(2, status);
+            statement.setInt(3, bank_question_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void deleteQuestion(String question) {
+        String sql = "DELETE FROM bank_question WHERE question like ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, question);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<BankAnswer> getListAnswerByQuestionId (String question_id) {
+        List<BankAnswer> listAnswer = new ArrayList<>();
+        String sql = "SELECT * FROM bank_answer q\n" +
+                "where bank_question_id = ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, question_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                BankAnswer answer = new BankAnswer();
+                answer.setBank_answer_id(rs.getInt("bank_answer_id"));
+                answer.setAnswer(rs.getString("answer"));
+                answer.setStatus(rs.getInt("status"));
+                listAnswer.add(answer);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listAnswer;
+    }
 
 
     @Override

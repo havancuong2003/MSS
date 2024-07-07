@@ -160,6 +160,18 @@ public class QuestionDBContext extends DBContext<Question> {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void editQuestionStatusForBank(int question_id) {
+        String sql = "UPDATE question " +
+                "SET status = 2 " +
+                "WHERE question_id like ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, question_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public void insertAnswer(String answer,String question_id) {
         String sql = "INSERT INTO answer (answer,status,question_id) " +
                 "VALUES (?, 0, ?)";
@@ -407,6 +419,7 @@ public class QuestionDBContext extends DBContext<Question> {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public List<Question> getListQuestionByExerciseId (String exercise_id) {
         List<Question> listQuestion = new ArrayList<>();
         String sql = "SELECT * " +
@@ -521,13 +534,392 @@ public class QuestionDBContext extends DBContext<Question> {
         }
     }
 
+    public void refuseQuestion(int question_id) {
+        String sql = "UPDATE question " +
+                "SET status = 0 " +
+                "WHERE question_id like ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, question_id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int getTotalPublicQuestion(String course_id) {
+        try {
+            String sql = "SELECT COUNT(*) FROM question WHERE course_id like ? AND status = 1 ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+        }  catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<Question> pagingListPublicQuestionByCourseId (int index, String course_id) {
+        List<Question> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM question q\n" +
+                "LEFT JOIN exercise e ON q.exercise_id = e.exercise_id\n" +
+                "LEFT JOIN course c ON q.course_id = c.id\n" +
+                "LEFT JOIN teacher t ON e.teacher_id = t.id\n" +
+                "LEFT JOIN account acc ON t.acc_id = acc.account_id\n" +
+                "WHERE q.course_id = ? AND q.status = 1 " +
+                "ORDER BY CASE WHEN q.status = 1 THEN 0 ELSE 1 END, q.question_id DESC " +
+                "LIMIT 5 OFFSET ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setInt(2, (index-1)*5);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Question q = new Question();
+                q.setQuestion_id(rs.getInt(1));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                Exercise ex = new Exercise();
+                ex.setExerciseId(rs.getInt(4));
+                ex.setExerciseName(rs.getString("exercise_name"));
+                ex.setStatus(rs.getInt(11));
+                Teacher teacher = new Teacher();
+                teacher.setTid(rs.getString("teacher_id"));
+                Account acc = new Account();
+                acc.setId(rs.getInt("account_id"));
+                acc.setUsername(rs.getString("username"));
+                acc.setPassword(rs.getString("password"));
+                acc.setFullname(rs.getString("fullname"));
+                acc.setPhone(rs.getString("phone"));
+                acc.setEmail(rs.getString("email"));
+                acc.setDob(rs.getDate("date_of_birth"));
+                acc.setAddress(rs.getString("address"));
+                acc.setAvatar((Blob) rs.getBlob("photo"));
+                acc.setGender(rs.getBoolean("gender"));
+                teacher.setAccount(acc);
+                ex.setTeacher(teacher);
+                q.setExercise(ex);
+                Course c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean(17));
+                q.setCourse(c);
+                q.setStatus(rs.getInt(6));
+                listQuestion.add(q);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
+
+    public int getTotalPublicQuestionByTypeQuestion(String course_id,String type_question) {
+        try {
+            String sql = "SELECT COUNT(*) FROM question WHERE course_id like ? AND type_question = ? AND status = 1";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, type_question);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+        }  catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<Question> pagingListPublicQuestionByTypeQuestion (int index,String type_question,String course_id) {
+        List<Question> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM question q\n" +
+                "LEFT JOIN exercise e ON q.exercise_id = e.exercise_id\n" +
+                "LEFT JOIN course c ON q.course_id = c.id\n" +
+                "LEFT JOIN teacher t ON e.teacher_id = t.id\n" +
+                "LEFT JOIN account acc ON t.acc_id = acc.account_id\n" +
+                "WHERE q.course_id = ? AND q.type_question = ? AND q.status = 1\n " +
+                "ORDER BY CASE WHEN q.status = 1 THEN 0 ELSE 1 END, q.question_id " +
+                "LIMIT 5 OFFSET ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, type_question);
+            statement.setInt(3, (index-1)*5);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Question q = new Question();
+                q.setQuestion_id(rs.getInt(1));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                Exercise ex = new Exercise();
+                ex.setExerciseId(rs.getInt(4));
+                ex.setExerciseName(rs.getString("exercise_name"));
+                ex.setStatus(rs.getInt(11));
+                Teacher teacher = new Teacher();
+                teacher.setTid(rs.getString("teacher_id"));
+                Account acc = new Account();
+                acc.setId(rs.getInt("account_id"));
+                acc.setUsername(rs.getString("username"));
+                acc.setPassword(rs.getString("password"));
+                acc.setFullname(rs.getString("fullname"));
+                acc.setPhone(rs.getString("phone"));
+                acc.setEmail(rs.getString("email"));
+                acc.setDob(rs.getDate("date_of_birth"));
+                acc.setAddress(rs.getString("address"));
+                acc.setAvatar((Blob) rs.getBlob("photo"));
+                acc.setGender(rs.getBoolean("gender"));
+                teacher.setAccount(acc);
+                ex.setTeacher(teacher);
+                q.setExercise(ex);
+                Course c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean(17));
+                q.setCourse(c);
+                q.setStatus(rs.getInt(6));
+                listQuestion.add(q);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
+
+    public int getTotalQuestionByStatusQuestion(String course_id,String status_question) {
+        try {
+            String sql = "SELECT COUNT(*) FROM question WHERE course_id like ? AND status = ? ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, status_question);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+        }  catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<Question> pagingListQuestionBankByStatusQuestion(int index,String type_question,String course_id) {
+        List<Question> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM question q\n" +
+                "LEFT JOIN exercise e ON q.exercise_id = e.exercise_id\n" +
+                "LEFT JOIN course c ON q.course_id = c.id\n" +
+                "LEFT JOIN teacher t ON e.teacher_id = t.id\n" +
+                "LEFT JOIN account acc ON t.acc_id = acc.account_id\n" +
+                "WHERE q.course_id = ?  AND q.status = ? " +
+                "ORDER BY CASE WHEN q.status = 1 THEN 0 ELSE 1 END, q.question_id " +
+                "LIMIT 5 OFFSET ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, type_question);
+            statement.setInt(3, (index-1)*5);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Question q = new Question();
+                q.setQuestion_id(rs.getInt(1));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                Exercise ex = new Exercise();
+                ex.setExerciseId(rs.getInt(4));
+                ex.setExerciseName(rs.getString("exercise_name"));
+                ex.setStatus(rs.getInt(11));
+                Teacher teacher = new Teacher();
+                teacher.setTid(rs.getString("teacher_id"));
+                Account acc = new Account();
+                acc.setId(rs.getInt("account_id"));
+                acc.setUsername(rs.getString("username"));
+                acc.setPassword(rs.getString("password"));
+                acc.setFullname(rs.getString("fullname"));
+                acc.setPhone(rs.getString("phone"));
+                acc.setEmail(rs.getString("email"));
+                acc.setDob(rs.getDate("date_of_birth"));
+                acc.setAddress(rs.getString("address"));
+                acc.setAvatar((Blob) rs.getBlob("photo"));
+                acc.setGender(rs.getBoolean("gender"));
+                teacher.setAccount(acc);
+                ex.setTeacher(teacher);
+                q.setExercise(ex);
+                Course c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean(17));
+                q.setCourse(c);
+                q.setStatus(rs.getInt(6));
+                listQuestion.add(q);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
+
+    public int getTotalQuestionByStatusAndTypeQuestion(String course_id,String status_question,String type_question) {
+        try {
+            String sql = "SELECT COUNT(*) FROM question WHERE course_id like ? AND status = ? AND type_question = ? ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, status_question);
+            statement.setString(3, type_question);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+        }  catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<Question> pagingListQuestionBankByStatusAndTypeQuestion(int index,String type_question,String course_id,String status_question) {
+        List<Question> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM question q\n" +
+                "LEFT JOIN exercise e ON q.exercise_id = e.exercise_id\n" +
+                "LEFT JOIN course c ON q.course_id = c.id\n" +
+                "LEFT JOIN teacher t ON e.teacher_id = t.id\n" +
+                "LEFT JOIN account acc ON t.acc_id = acc.account_id\n" +
+                "WHERE q.course_id = ?  AND q.status = ? AND type_question = ? " +
+                "ORDER BY CASE WHEN q.status = 1 THEN 0 ELSE 1 END, q.question_id " +
+                "LIMIT 5 OFFSET ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, status_question);
+            statement.setString(3, type_question);
+            statement.setInt(4, (index-1)*5);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Question q = new Question();
+                q.setQuestion_id(rs.getInt(1));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                Exercise ex = new Exercise();
+                ex.setExerciseId(rs.getInt(4));
+                ex.setExerciseName(rs.getString("exercise_name"));
+                ex.setStatus(rs.getInt(11));
+                Teacher teacher = new Teacher();
+                teacher.setTid(rs.getString("teacher_id"));
+                Account acc = new Account();
+                acc.setId(rs.getInt("account_id"));
+                acc.setUsername(rs.getString("username"));
+                acc.setPassword(rs.getString("password"));
+                acc.setFullname(rs.getString("fullname"));
+                acc.setPhone(rs.getString("phone"));
+                acc.setEmail(rs.getString("email"));
+                acc.setDob(rs.getDate("date_of_birth"));
+                acc.setAddress(rs.getString("address"));
+                acc.setAvatar((Blob) rs.getBlob("photo"));
+                acc.setGender(rs.getBoolean("gender"));
+                teacher.setAccount(acc);
+                ex.setTeacher(teacher);
+                q.setExercise(ex);
+                Course c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean(17));
+                q.setCourse(c);
+                q.setStatus(rs.getInt(6));
+                listQuestion.add(q);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
+
+    public int getTotalPublicQuestionBySearch(String course_id,String question) {
+        try {
+            String sql = "SELECT COUNT(*) FROM question WHERE course_id like ? AND question like ? AND status = 1 ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, "%"+question+"%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+        }  catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<Question> pagingListPublicQuestionBySearch(int index,String question,String course_id) {
+        List<Question> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM question q\n" +
+                "LEFT JOIN exercise e ON q.exercise_id = e.exercise_id\n" +
+                "LEFT JOIN course c ON q.course_id = c.id\n" +
+                "LEFT JOIN teacher t ON e.teacher_id = t.id\n" +
+                "LEFT JOIN account acc ON t.acc_id = acc.account_id\n" +
+                "WHERE q.course_id = ?  AND q.question like ? AND q.status =1 " +
+                "ORDER BY CASE WHEN q.status = 1 THEN 0 ELSE 1 END, q.question_id DESC " +
+                "LIMIT 5 OFFSET ? ";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, "%" + question + "%");
+            statement.setInt(3, (index-1)*5);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Question q = new Question();
+                q.setQuestion_id(rs.getInt(1));
+                q.setQuestion(rs.getString("question"));
+                q.setType_question(rs.getInt("type_question"));
+                Exercise ex = new Exercise();
+                ex.setExerciseId(rs.getInt(4));
+                ex.setExerciseName(rs.getString("exercise_name"));
+                ex.setStatus(rs.getInt(11));
+                Teacher teacher = new Teacher();
+                teacher.setTid(rs.getString("teacher_id"));
+                Account acc = new Account();
+                acc.setId(rs.getInt("account_id"));
+                acc.setUsername(rs.getString("username"));
+                acc.setPassword(rs.getString("password"));
+                acc.setFullname(rs.getString("fullname"));
+                acc.setPhone(rs.getString("phone"));
+                acc.setEmail(rs.getString("email"));
+                acc.setDob(rs.getDate("date_of_birth"));
+                acc.setAddress(rs.getString("address"));
+                acc.setAvatar((Blob) rs.getBlob("photo"));
+                acc.setGender(rs.getBoolean("gender"));
+                teacher.setAccount(acc);
+                ex.setTeacher(teacher);
+                q.setExercise(ex);
+                Course c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                c.setStatus(rs.getBoolean(17));
+                q.setCourse(c);
+                q.setStatus(rs.getInt(6));
+                listQuestion.add(q);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  listQuestion;
+    }
 
     public static void main(String[] args) {
         QuestionDBContext dao = new QuestionDBContext();
-        List<Question> list = dao.getListQuestionByExerciseIdAndTypeQuestion("138066","1");
-        for (Question q : list) {
-            System.out.println(q.getQuestion());
-        }
+        System.out.println(dao.getTotalPublicQuestion(""));
     }
     @Override
     public ArrayList<Question> list() {

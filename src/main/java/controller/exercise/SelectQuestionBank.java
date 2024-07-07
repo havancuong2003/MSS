@@ -38,7 +38,7 @@ public class SelectQuestionBank extends HttpServlet {
         String question_id = request.getParameter("question_id");
         String exercise_id = request.getParameter("exercise_id");
         String course_id = request.getParameter("course_id");
-        course_id = "101";
+        course_id = "1";
         Exercise ex = edao.getExerciseById(exercise_id);
         int basicQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("1", exercise_id);
         int lowQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("2", exercise_id);
@@ -78,7 +78,7 @@ public class SelectQuestionBank extends HttpServlet {
         String search = request.getParameter("search");
         if(search == null || search.trim().isEmpty()){
             if(type_question.equals("0")){
-                count = bdao.getTotalBankQuestion();
+                count = bdao.getTotalBankQuestion(course_id);
                 endPage = count/5;
                 listBankQuestion = bdao.pagingBankQuestion(index,course_id);
             } else {

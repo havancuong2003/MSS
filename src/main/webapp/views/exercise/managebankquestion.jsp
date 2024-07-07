@@ -1,12 +1,12 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: FPT
   Date: 7/7/2024
-  Time: 9:22 PM
+  Time: 10:51 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -440,9 +440,9 @@
 <body>
 <div class="container" style="margin-top: 70px">
     <div class="custom-form-wrapper">
-        <form class="custom-form" action="manage-public-question" method="get">
+        <form class="custom-form" action="manage-bank-question" method="get">
             <select name="type_question">
-                <option value="0" class="form-control">Choose all questions</option>
+                <option value="0" class="form-control">Choose type question</option>
                 <option value="1" ${type_question == "1" ? "selected" : ""} class="form-control">Basic Question</option>
                 <option value="2" ${type_question == "2" ? "selected" : ""} class="form-control">Low Application Question</option>
                 <option value="3" ${type_question == "3" ? "selected" : ""} class="form-control">High Application Question</option>
@@ -451,7 +451,7 @@
         </form>
     </div>
     <div class="custom-form-wrapper">
-        <form class="custom-form" action="manage-public-question" method="get">
+        <form class="custom-form" action="manage-bank-question" method="get">
             <input type="text" placeholder="Search by question..." name="search">
             <button type="submit" class="custom-button">Search</button>
         </form>
@@ -460,7 +460,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Manage <b>Public Questions</b></h2>
+                    <h2>Manage <b>Question Bank</b></h2>
                 </div>
             </div>
         </div>
@@ -477,7 +477,7 @@
             <c:forEach var="o" items="${listQuestion}">
                 <tbody>
                 <tr>
-                    <td>${o.question_id}</td>
+                    <td>${o.bank_question_id}</td>
                     <td>${o.question}</td>
                     <c:if test="${o.type_question == 1}">
                         <td>Basic Question</td>
@@ -488,14 +488,11 @@
                     <c:if test="${o.type_question == 3}">
                         <td>High Application Question</td>
                     </c:if>
-                    <td>${o.exercise.teacher.account.fullname}</td>
-                    <c:if test="${o.status == 1}">
+                    <td>${o.created_by}</td>
                         <td>
-                            <a href="#" class="view" data-question-id="${o.question_id}" data-toggle="modal"><i class="material-icons text-primary" data-toggle="tooltip" title="View">visibility</i></a>
-                            <a href="manage-public-question?question_id=${o.question_id}&page=${tag}&status=accept" class="accept" onclick="return confirm('Are you sure you want to accept this question?');" ><i class="material-icons text-success" title="Accept">done</i></a>
-                            <a href="manage-public-question?question_id=${o.question_id}&page=${tag}&status=refuse" class="reject" onclick="return confirm('Are you sure you want to reject this question?');" ><i class="material-icons text-danger" title="Reject">cancel</i></a>
+                            <a href="#" class="view" data-question-id="${o.bank_question_id}" data-toggle="modal"><i class="material-icons text-primary" data-toggle="tooltip" title="View">visibility</i></a>
+                            <a href="manage-bank-question?question_id=${o.bank_question_id}&page=${tag-1}&status=delete" class="delete" onclick="return confirm('Are you sure you want to delete this question?');"><i class="material-icons text-danger" title="Delete">delete</i></a>
                         </td>
-                    </c:if>
                 </tr>
                 </tbody>
             </c:forEach>
@@ -505,18 +502,18 @@
             <ul class="pagination">
                 <c:if test="${searchtxt != null}" >
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="manage-public-question?page=${tag-1}&search=${searchtxt}">Previous</a></li>
+                        <li class="page-item"><a href="manage-bank-question?page=${tag-1}&search=${searchtxt}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="manage-public-question?page=${i}&search=${searchtxt}">${i}</a>
+                            <a href="manage-bank-question?page=${i}&search=${searchtxt}">${i}</a>
                         </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="manage-public-question?page=${tag+1}&search=${searchtxt}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="manage-bank-question?page=${tag+1}&search=${searchtxt}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -524,18 +521,18 @@
                 </c:if>
                 <c:if test="${searchtxt == null}">
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="manage-public-question?page=${tag-1}&type_question=${type_question}&status_question=${status_question}">Previous</a></li>
+                        <li class="page-item"><a href="manage-bank-question?page=${tag-1}&type_question=${type_question}&status_question=${status_question}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="manage-public-question?page=${i}&type_question=${type_question}&status_question=${status_question}">${i}</a>
+                            <a href="manage-bank-question?page=${i}&type_question=${type_question}&status_question=${status_question}">${i}</a>
                         </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="manage-public-question?page=${tag+1}&type_question=${type_question}&status_question=${status_question}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="manage-bank-question?page=${tag+1}&type_question=${type_question}&status_question=${status_question}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -574,7 +571,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script type="text/javascript">
+<script type="text/javascript" >
     jQuery.noConflict();
     jQuery(document).ready(function($) {
         $('.view').on('click', function(event) {
@@ -585,7 +582,7 @@
 
             // Send AJAX request to the servlet to get the response data
             $.ajax({
-                url: "manage-public-question",
+                url: "manage-bank-question",
                 type: "GET",
                 data: {
                     question_id: questionId,
@@ -593,28 +590,29 @@
                 },
                 dataType: "json",
                 success: function(data) {
+                    console.log(data);
                     // Update the modal content with the received response data
                     var questionHtml = '';
                     questionHtml += '<div style="display: flex; margin-bottom: 10px;">';
                     questionHtml += '<div style="font-weight: bold; margin-right: 5px;">' + 'Question: ' + '</div>';
-                    questionHtml += '<div>' + data.question.question + '</div>';
+                    questionHtml += '<div>' + data.bankQuestion.question + '</div>';
                     questionHtml += '</div>';
                     $('#question').html(questionHtml);
                     var answersHtml = '';
-                    for (var i = 0; i < data.listAnswer.length; i++) {
+                    for (var i = 0; i < data.listBankAnswers.length; i++) {
                         answersHtml += '<div style="display: flex; margin-bottom: 5px;">';
                         answersHtml += '<div style="font-weight: bold; margin-right: 5px;">' + 'Option ' + (i+1) + ':' + '</div>';
-                        answersHtml += '<div class="option-value">' + data.listAnswer[i].answer + '</div>';
+                        answersHtml += '<div class="option-value">' + data.listBankAnswers[i].answer + '</div>';
                         answersHtml += '</div>';
                     }
                     $('#answers').html(answersHtml);
                     var correctAnswerHtml = '';
                     correctAnswerHtml += `<div style="font-weight: bold">  Correct Answer  </div>`
-                    for(var i=0;i<data.listAnswer.length;i++){
-                        if(data.listAnswer[i].status == 1){
+                    for(var i=0;i<data.listBankAnswers.length;i++){
+                        if(data.listBankAnswers[i].status == 1){
                             correctAnswerHtml += '<div style="display: flex; margin-bottom: 5px">'
                             correctAnswerHtml += '<div style="font-weight: bold">' + 'Option ' + (i+1) + ':' + '</div>'
-                            correctAnswerHtml += '<div class="option-value">' + data.listAnswer[i].answer + '</div>';
+                            correctAnswerHtml += '<div class="option-value">' + data.listBankAnswers[i].answer + '</div>';
                             correctAnswerHtml += '</div>'
                         }
                     }
@@ -629,6 +627,11 @@
             });
         });
     });
+    // $(document).ready(function () {
+    //     $('.view').on('click', function () {
+    //         $('#questionModal').modal('show');
+    //     });
+    // });
 </script>
 </body>
 </html>

@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 @MultipartConfig()
 public class ManageQuestion extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        System.out.println("chạy vào doget1");
         ExerciseDBContext edao = new ExerciseDBContext();
         QuestionDBContext qdao = new QuestionDBContext();
         String indexPage = request.getParameter("page");
@@ -151,6 +150,8 @@ public class ManageQuestion extends HttpServlet {
         BankQuestionDBContext bdao = new BankQuestionDBContext();
         String exercise_id = request.getParameter("exercise_id");
         String status = request.getParameter("status");
+        String course_id = request.getParameter("course_id");
+        course_id = "1";
         System.out.println(status);
         BufferedReader reader = request.getReader();
         StringBuilder sb = new StringBuilder();
@@ -205,7 +206,6 @@ public class ManageQuestion extends HttpServlet {
             int question_id;String question = request.getParameter("question");
             String type_question_modal = request.getParameter("type_question_modal");
             String share_question = request.getParameter("share_question");
-            String course_id = "1";
             Exercise exercise = edao.getExerciseById(exercise_id);
             int basicQuestion = 0;
             int lowQuestion = 0;
@@ -271,7 +271,7 @@ public class ManageQuestion extends HttpServlet {
             }
             if (exercise_id != null && question != null && type_question_modal != null) {
                 request.setAttribute("mess_constructor_success","Add question successfully!!");
-                qdao.insertQuestion(question, type_question_modal, exercise_id, "1");
+                qdao.insertQuestion(question, type_question_modal, exercise_id, course_id);
                 question_id = qdao.getQuestion_id();
                 if (question_id != 0) {
                     type_question_modal = "0";
@@ -368,7 +368,6 @@ public class ManageQuestion extends HttpServlet {
             String question = request.getParameter("question");
             String question_id = request.getParameter("question_id");
             String type_question_modal = request.getParameter("update_type_question_modal");
-            String course_id = "1";
             Exercise exercise = edao.getExerciseById(exercise_id);
             int basicQuestion = 0;
             int lowQuestion = 0;
@@ -437,7 +436,7 @@ public class ManageQuestion extends HttpServlet {
                 System.out.println("da vao trong ham update thu 2");
                 System.out.println();
                 qdao.deleteQuestion(question_id);
-                qdao.insertQuestionAfterUpdate(question_id,question, type_question_modal, exercise_id, "1");
+                qdao.insertQuestionAfterUpdate(question_id,question, type_question_modal, exercise_id, course_id);
                 System.out.println("Options: " + option);
                 System.out.println("Correct Answers: " + correctAnswer);
                 for (int i = 0; i < option.size(); i++) {

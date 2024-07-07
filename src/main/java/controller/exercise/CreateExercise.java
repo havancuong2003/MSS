@@ -37,6 +37,8 @@ public class CreateExercise extends HttpServlet {
         Exercise ex = edao.getExerciseById(exercise_id);
         String group_id = request.getParameter("group_id");
         group_id = "1";
+        String course_id = request.getParameter("course_id");
+        course_id = "1";
         Teacher teacher = edao.getTeacher("t1");
         String teacherId = teacher.getTid();
         String teacher_id = String.valueOf(teacherId);
@@ -44,7 +46,7 @@ public class CreateExercise extends HttpServlet {
             type_exercise = "0";
         }
         List<Exercise> listExerciseOfGroup = edao.getListExercise(group_id);
-        List<Grade_category> listGradeCategoryOfCourse = edao.getListGradeCategory("1");
+        List<Grade_category> listGradeCategoryOfCourse = edao.getListGradeCategory(course_id);
         List<Grade_category> listGradeCategory = new ArrayList<>();
         for(Grade_category grade_category : listGradeCategoryOfCourse) {
             boolean found = false;
@@ -172,7 +174,7 @@ public class CreateExercise extends HttpServlet {
             }
             JsonArray gradeCategoryArray = new JsonArray();
             List<Exercise> listExerciseOfGroup = dao.getListExercise(group_id);
-            List<Grade_category> listGradeCategoryOfCourse = dao.getListGradeCategory("1");
+            List<Grade_category> listGradeCategoryOfCourse = dao.getListGradeCategory(course_id);
             List<Grade_category> listGradeCategory = new ArrayList<>();
             for(Grade_category grade_category : listGradeCategoryOfCourse) {
                 boolean found = false;
@@ -270,10 +272,10 @@ public class CreateExercise extends HttpServlet {
                     System.out.println("join 2");
                     if(random_exerciseType.equals("2")){
                         System.out.println("create success");
-                        dao.insertExerciseNotGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, "1","1");
+                        dao.insertExerciseNotGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, group_id,"1");
                     } else {
                         System.out.println("create success");
-                        dao.insertExerciseGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, "1",random_gradeCategory,"1");
+                        dao.insertExerciseGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, group_id,random_gradeCategory,"1");
                     }
                 }
 
@@ -339,9 +341,9 @@ public class CreateExercise extends HttpServlet {
                 String grade_category = request.getParameter("grade_category");
                 if(exercise_name != null && teacher_id != null && question_number != null && exercise_time != null && exercise_type != null && grade_category != null){
                     if(!exercise_type.equals("2")){
-                        dao.insertExerciseGetMark(exercise_id, exercise_name.trim(), teacher_id,"1",question_number.trim(),exercise_time.trim(),exercise_type,"1",grade_category,"0");
+                        dao.insertExerciseGetMark(exercise_id, exercise_name.trim(), teacher_id,course_id,question_number.trim(),exercise_time.trim(),exercise_type,group_id,grade_category,"0");
                     } else {
-                        dao.insertExerciseNotGetMark(exercise_id, exercise_name.trim(), teacher_id,"1",question_number.trim(),exercise_time.trim(),exercise_type,"1","0");
+                        dao.insertExerciseNotGetMark(exercise_id, exercise_name.trim(), teacher_id,course_id,question_number.trim(),exercise_time.trim(),exercise_type,group_id,"0");
                     }
                     Exercise ex = dao.getExerciseById(exercise_id);
                     if(ex != null){
