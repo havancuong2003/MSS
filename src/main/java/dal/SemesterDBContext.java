@@ -1,9 +1,12 @@
 package dal;
 
+import model.Answer;
 import model.Response;
+import model.Semester;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -25,10 +28,36 @@ public class SemesterDBContext extends DBContext<Response>{
         }
     }
 
-//    public static void main(String[] args) {
-//        SemesterDBContext context = new SemesterDBContext();
-//        context.insertSemester("hello", "2024-07-31", "2024-07-31", "2024-07-31", 1);
-//    }
+    public ArrayList<Semester> getAlSemesterBySearchName(String searchname)  {
+        ArrayList<Semester> semesters = new ArrayList<>();
+        try {
+            String sql = "select * from semester where detail like '%" + searchname + "%' order by detail asc";
+            PreparedStatement stm = connection.prepareStatement(sql);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Semester semester = new Semester();
+                semester.setDetail(rs.getString(2));
+                semester.setId(rs.getInt(1));
+                semester.setStart(rs.getDate(3));
+                semester.setStartBL5(rs.getDate(4));
+                semester.setEnd(rs.getDate(5));
+                semester.setIsCreate(rs.getInt(6));
+                semesters.add(semester);
+            }
+            return semesters;
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(TestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        SemesterDBContext context = new SemesterDBContext();
+
+        System.out.println(context.getAlSemesterBySearchName("").get(1).getDetail());
+    }
 
     @Override
     public ArrayList<Response> list() {
