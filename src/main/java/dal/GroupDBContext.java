@@ -277,7 +277,7 @@ public class GroupDBContext extends DBContext<Group> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 t = new Teacher();
-                t.setId(rs.getInt("id"));
+                t.setTid(rs.getString("id"));
                 t.setAccount(getAccountByID(rs.getInt("acc_id")));
                 return t;
             }
