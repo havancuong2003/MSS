@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ChangeGroupDBContext extends  DBContext<ChangeGroup> {
+public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
     GroupDBContext gdbc = new GroupDBContext();
     CourseDBContext cdbc = new CourseDBContext();
+
     @Override
     public ArrayList<ChangeGroup> list() {
         return null;
@@ -40,10 +41,8 @@ public class ChangeGroupDBContext extends  DBContext<ChangeGroup> {
         return null;
     }
 
-    public static void main(String[] args) {
-        ChangeGroupDBContext c = new ChangeGroupDBContext();
-        System.out.println(c.getAllRequired("student1",2).size());
-    }
+
+
     public ArrayList<ChangeGroup> getAllRequired(String username, int semesterID) {
         ArrayList<ChangeGroup> changeGroups = new ArrayList<>();
         try {
@@ -69,6 +68,33 @@ public class ChangeGroupDBContext extends  DBContext<ChangeGroup> {
         }
         return changeGroups;
     }
+
+    public ArrayList<ChangeGroup> getAllRequiredToSwap(String username, int semesterID) {
+        ArrayList<ChangeGroup> changeGroups = new ArrayList<>();
+        try {
+            String sql = "select cc.id,fromStudent,fromGroup,toStudent,toGroup,status,semester from changeClass cc join Student s on s.id=cc.toStudent join `account` a on a.account_id=s.acc_id\n" +
+                    "                    where a.userName = ? and status = 'processing' and semester = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, username);
+            stm.setInt(2, semesterID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                ChangeGroup c = new ChangeGroup();
+                c.setId(rs.getInt("id"));
+                c.setFromStudent(getStudentByID(rs.getString("fromStudent")));
+                c.setToStudent(getStudentByID(rs.getString("toStudent")));
+                c.setFromGroup(getGroupByID(rs.getInt("fromGroup")));
+                c.setToGroup(getGroupByID(rs.getInt("toGroup")));
+                c.setStatus(rs.getString("status"));
+                c.setSemester(getSemesterByID(rs.getInt("semester")));
+                changeGroups.add(c);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return changeGroups;
+    }
+
     public Student getStudentByID(String id) {
         Student s = null;
         try {
@@ -87,6 +113,7 @@ public class ChangeGroupDBContext extends  DBContext<ChangeGroup> {
         }
         return s;
     }
+
     public Group getGroupByID(int id) {
         Group g = null;
         try {
@@ -110,6 +137,7 @@ public class ChangeGroupDBContext extends  DBContext<ChangeGroup> {
         }
         return g;
     }
+
     public Semester getSemesterByID(int id) {
         Semester s = null;
         try {
@@ -131,5 +159,67 @@ public class ChangeGroupDBContext extends  DBContext<ChangeGroup> {
         }
         return s;
     }
+
+
+
+    public void changeGroup(String fromStudent, int fromGroup, String toStudent, int toGroup, int changeID) {
+        try {
+            // Update the first student's group
+            String sql1 = "UPDATE enrollment " +
+                    "SET `group_id` = ? " +
+                    "WHERE id = ( " +
+                    "    SELECT id FROM ( " +
+                    "        SELECT id FROM enrollment WHERE student_id = ? AND group_id = ? " +
+                    "    ) AS subquery " +
+                    ");";
+            PreparedStatement stm1 = connection.prepareStatement(sql1);
+            stm1.setInt(1, toGroup);
+            stm1.setString(2, fromStudent);
+            stm1.setInt(3, fromGroup);
+            stm1.executeUpdate();
+            stm1.close();
+
+            // Update the second student's group
+            String sql2 = "UPDATE enrollment " +
+                    "SET `group_id` = ? " +
+                    "WHERE id = ( " +
+                    "    SELECT id FROM ( " +
+                    "        SELECT id FROM enrollment WHERE student_id = ? AND group_id = ? " +
+                    "    ) AS subquery " +
+                    ");";
+            PreparedStatement stm2 = connection.prepareStatement(sql2);
+            stm2.setInt(1, fromGroup);
+            stm2.setString(2, toStudent);
+            stm2.setInt(3, toGroup);
+            stm2.executeUpdate();
+            stm2.close();
+
+            // Update the changeclass status
+            String sql3 = "UPDATE changeclass SET `status` = 'Accepted' WHERE id = ?";
+            PreparedStatement stm3 = connection.prepareStatement(sql3);
+            stm3.setInt(1, changeID);
+            stm3.executeUpdate();
+            stm3.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void deleteRequired(String id) {
+        try {
+            String sql = "	delete from changeClass\n"
+                    + "					where id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+
+
 
 }
