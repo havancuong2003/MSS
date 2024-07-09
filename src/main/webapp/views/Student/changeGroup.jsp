@@ -134,10 +134,10 @@
 
     <div class="header">
         <h2>list Requests
-            <c:if test="${requestScope.sizeRequiredFromSomeOne == 0}">
-            <span id="noRequestForU">( No request for you )
-            </span>
-            </c:if>
+
+            <span id="noRequestForU"> <c:if test="${requestScope.sizeRequiredFromSomeOne == 0}">( No request for you )
+            </c:if>  </span>
+
         </h2>
     </div>
 
@@ -237,8 +237,14 @@
                 url: "/MyStudySpace_war_exploded/student/createRequest",
                 data: data,
                 success: function (data) {
-                    updatePage(data);
-                    console.log('data', data);
+                    // updatePage(data);
+                    console.log('data add', data);
+                    if(data.status == "success"){
+                        updatePage(data);
+                    }
+                    else{
+                        alert(data.error);
+                    }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
@@ -310,7 +316,7 @@
             console.log("allRequired", allRequired);
             // Update changeRequestTable
             if (allRequired.length == 0) {
-                $('#noRequest').text("(No request created)");
+                $('#noRequest').text(" ( No request created ) ");
                 $('#changeRequestTable tbody').empty(); // Clear existing rows
                 console.log("no request");
             } else {
@@ -335,11 +341,11 @@
             // Update listRequestsTable
             if (allRequiredFromSomeOne.length == 0) {
                 console.log('size', allRequiredFromSomeOne.length);
-                $('#noRequestForU').text("(No request created a)");
+                $('#noRequestForU').html(`<span>  ( No request for you )</span>`);
                 $('#listRequestsTable tbody').empty(); // Clear existing rows
-                console.log("no request for someone to you");
+                console.log("no request for  you");
             } else {
-                console.log('have request for someone to you');
+                console.log('have request for  you');
                 $('#noRequestForU').text("");
 
                 $('#listRequestsTable tbody').empty(); // Clear existing rows

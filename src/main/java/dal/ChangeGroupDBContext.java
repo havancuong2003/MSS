@@ -42,7 +42,6 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
     }
 
 
-
     public ArrayList<ChangeGroup> getAllRequired(String username, int semesterID) {
         ArrayList<ChangeGroup> changeGroups = new ArrayList<>();
         try {
@@ -168,7 +167,6 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
     }
 
 
-
     public void changeGroup(String fromStudent, int fromGroup, String toStudent, int toGroup, int changeID) {
         try {
             // Update the first student's group
@@ -227,11 +225,9 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
         }
 
 
-
-
     }
 
-    public int getGroupIDToAddChangeGroup(String studentID,int semesterID, int courseID) {
+    public int getGroupIDToAddChangeGroup(String studentID, int semesterID, int courseID) {
         String sql = "select g.id from `group` g join enrollment e on g.id = e.group_id where e.student_id = ? and course_id = ? and semester_id = ?\n";
 
         try {
@@ -248,6 +244,7 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
         }
         return 0;
     }
+
     public void insertChangeGroup(String fromStudent, int fromGroup, String toStudent, int toGroup, int semesterID) {
         try {
             String sql = "INSERT INTO `changeclass` (`fromStudent`, `fromGroup`,`toStudent`,  `toGroup`, `semester`) VALUES (?, ?, ?, ?, ?);\n";
@@ -264,12 +261,87 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
         }
     }
 
-    public static void main(String[] args) {
-        ChangeGroupDBContext c = new ChangeGroupDBContext();
-        System.out.println(c.getGroupIDToAddChangeGroup("s2",1,1));
+
+    // check validate to add new change group data
+//    --------------------------------------------------
+//    ------------------------------------------------
+
+    public boolean checkStudentExist(String studentID) {
+        try {
+            String sql = "select id from student where id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, studentID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
+    public static void main(String[] args) {
+        ChangeGroupDBContext c = new ChangeGroupDBContext();
+        System.out.println(c.checkSomeOneSendRequestToStudentWeWantToChange("s2",3,1));
+    }
 
+    public boolean checkStudentRegisterdCourse(String studentID, int semesterID, int courseID) {
+        try {
+            String sql = "select * from student s " +
+                    "join enrollment e on s.id = e.student_id " +
+                    "join `group` g on g.id= e.group_id where s.id= ? and g.course_id = ? and g.semester_id=?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, studentID);
+            stm.setInt(2, courseID);
+            stm.setInt(3, semesterID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+// khi chúng ta gửi 1 đề nghị chuyển lớp cho ai đó.
+// Chúng ta cần check xem đã có người khác gửi môn đó cho người đó chưa.
+// Hoặc người đó đã gửi đơn đổi lớp cho ai hay chưa.
+// Nếu người đó chưa thì trả về true,
+// nếu người đó gửi rồi hoặc đã có người khác gửi cho người đó thì trả về false.
+    public boolean checkSomeOneSendRequestToStudentWeWantToChange(String studentID, int courseID,int semesterID) {
+        String sql ="select * from changeclass c join `group` fg on c.fromGroup = fg.id where c.toStudent = ? and fg.course_id =? and fg.semester_id = ?";
+
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, studentID);
+            stm.setInt(2, courseID);
+            stm.setInt(3, semesterID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    public boolean checkStudentWantToChangeSendRequested(String studentID, int courseID,int semesterID) {
+        String sql ="select * from changeclass c join `group` fg on c.toGroup = fg.id where c.fromStudent = ? and fg.course_id =? and fg.semester_id = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, studentID);
+            stm.setInt(2, courseID);
+            stm.setInt(3, semesterID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 
 
 }
