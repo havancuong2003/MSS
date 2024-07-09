@@ -108,6 +108,8 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
                 s.setAccount(gdbc.getAccountByID(rs.getInt("acc_id")));
                 s.setCurrentTerm(rs.getString("current_term"));
             }
+            stm.close();
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -132,6 +134,8 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
                 g.setSemester(getSemesterByID(rs.getInt("semester_id")));
 
             }
+            stm.close();
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -154,9 +158,12 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
                 s.setTotalCourseRegisterForNextSemester(rs.getInt("totalCourse"));
 
             }
+            stm.close();
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return s;
     }
 
@@ -204,6 +211,7 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
         } catch (SQLException ex) {
             Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     public void deleteRequired(String id) {
@@ -213,10 +221,52 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, id);
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+
+
+
+    }
+
+    public int getGroupIDToAddChangeGroup(String studentID,int semesterID, int courseID) {
+        String sql = "select g.id from `group` g join enrollment e on g.id = e.group_id where e.student_id = ? and course_id = ? and semester_id = ?\n";
+
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, studentID);
+            stm.setInt(2, courseID);
+            stm.setInt(3, semesterID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    public void insertChangeGroup(String fromStudent, int fromGroup, String toStudent, int toGroup, int semesterID) {
+        try {
+            String sql = "INSERT INTO `changeclass` (`fromStudent`, `fromGroup`,`toStudent`,  `toGroup`, `semester`) VALUES (?, ?, ?, ?, ?);\n";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, fromStudent);
+            stm.setInt(2, fromGroup);
+            stm.setString(3, toStudent);
+            stm.setInt(4, toGroup);
+            stm.setInt(5, semesterID);
+            stm.executeUpdate();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void main(String[] args) {
+        ChangeGroupDBContext c = new ChangeGroupDBContext();
+        System.out.println(c.getGroupIDToAddChangeGroup("s2",1,1));
     }
 
 

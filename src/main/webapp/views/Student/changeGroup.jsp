@@ -70,44 +70,52 @@
     </style>
 </head>
 <body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <div class="container">
 
     <div class="header"></div>
     <h2>Change Request</h2>
 
     <div id="requestForm" style="">
-        <form id="changeRequestForm" method="post" action="change">
+        <form id="changeRequestForm">
             <label for="course">Course:</label>
-            <select id="course">
+            <select id="course" name="course">
                 <c:forEach items="${requestScope.groups}" var="g" varStatus="loop">
                     <option value="${g.course.id}">${g.course.code}</option>
                 </c:forEach>
             </select>
             <br>
             <label for="fromStudent">From Student:</label>
-            <input type="text" id="fromStudent" readonly="true" value="${requestScope.studentid}"><br>
+            <input type="text" id="fromStudent" name="fromStudent" readonly="true"
+                   value="${requestScope.studentid}"><br>
+
             <label for="toStudent">To Student:</label>
-            <input type="text" id="toStudent" required="true"><br>
+            <input type="text" id="toStudent" name="toStudent" required="true"><br>
             <button id="addRequestButton">Thêm Yêu Cầu</button>
         </form>
     </div>
     <br>
-    <c:if test="${requestScope.sizeRequired == 0}">
-        <p>No request created</p>
-    </c:if>
-    <p id="noRequest"></p>
-    <c:if test="${requestScope.sizeRequired > 0}">
-        <h2>Change Requests</h2>
-        <table id="changeRequestTable" border="1">
-            <thead>
-            <tr>
-                <th>Course</th>
-                <th>From Student</th>
-                <th>To Student</th>
-                <th></th> <!-- Cột cho nút Hủy -->
-            </tr>
-            </thead>
-            <tbody>
+
+
+    <h2>Change Requests
+        <c:if test="${requestScope.sizeRequired == 0}">
+            <span id="noRequest">( No request created )
+            </span>
+        </c:if>
+    </h2>
+    <table id="changeRequestTable" border="1">
+        <thead>
+        <tr>
+            <th>Course</th>
+            <th>From Student</th>
+            <th>To Student</th>
+            <th></th> <!-- Cột cho nút Hủy -->
+        </tr>
+        </thead>
+
+        <tbody>
+        <c:if test="${requestScope.sizeRequired > 0}">
             <c:forEach items="${requestScope.allRequired}" var="request">
                 <tr>
                     <td>${request.fromGroup.course.code}</td>
@@ -118,33 +126,36 @@
                     </td>
                 </tr>
             </c:forEach>
-            </tbody>
+        </c:if>
+        </tbody>
 
-        </table>
-    </c:if>
+    </table>
 
 
     <div class="header">
-        <h2>List requests</h2>
+        <h2>list Requests
+            <c:if test="${requestScope.sizeRequiredFromSomeOne == 0}">
+            <span id="noRequestForU">( No request for you )
+            </span>
+            </c:if>
+        </h2>
     </div>
-    <c:if test="${requestScope.sizeRequiredFromSomeOne == 0}">
-        <p>No requests for some one to you</p>
-    </c:if>
-    <p id="noRequestSomeOne"></p>
-    <c:if test="${requestScope.sizeRequiredFromSomeOne > 0}">
-        <table id="listRequestsTable" border="1">
-            <thead>
-            <tr>
-                <th>Course</th>
-                <th>From Student</th>
-                <th>From Group</th>
-                <th>To Student</th>
-                <th>To Group</th>
 
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
+
+    <table id="listRequestsTable" border="1">
+        <thead>
+        <tr>
+            <th>Course</th>
+            <th>From Student</th>
+            <th>From Group</th>
+            <th>To Student</th>
+            <th>To Group</th>
+
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:if test="${requestScope.sizeRequiredFromSomeOne > 0}">
             <c:forEach items="${requestScope.allRequiredFromSomeOne}" var="request">
                 <tr>
                     <td>${request.fromGroup.course.code}</td>
@@ -175,21 +186,71 @@
                     </td>
                 </tr>
             </c:forEach>
-
-            </tbody>
-        </table>
-    </c:if>
+        </c:if>
+        </tbody>
+    </table>
 
 
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        const listChangeRequests = [];
+
+        let listChangeRequests = [];
+        const firstMountPage = () => {
+            <c:forEach items="${requestScope.allRequired}" var="request">
+            listChangeRequests.push({
+                cid: '${request.id}',
+                course: '${request.fromGroup.course.id}',
+                fromStudent: '${request.fromStudent.id}',
+                toStudent: '${request.toStudent.id}'
+            });
+            </c:forEach>
+        }
+
+        firstMountPage();
+
+        const checkCourseExist = (courseID) => {
+            let exists = false;
+            $.each(listChangeRequests, function (index, request) {
+                if (request.course == courseID) {
+                    exists = true;
+                    return false; // Break the loop
+                }
+            });
+            return exists;
+        };
+
+        $('#changeRequestForm').on('submit', function (e) {
+            e.preventDefault(); // Chặn hành vi mặc định của form
+            const data = $(this).serialize();
+            const course = $('#course').val();
+            console.log('checkCourseExist', checkCourseExist(course));
+            console.log('course', course);
+            console.log('listChangeRequests', listChangeRequests);
+            if (checkCourseExist(course)) {
+                alert("You have already created request for this course");
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: "/MyStudySpace_war_exploded/student/createRequest",
+                data: data,
+                success: function (data) {
+                    updatePage(data);
+                    console.log('data', data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        })
+
         $(document).on('click', '.deleteButton', function () {
             const requestId = $(this).data('request-id');
-
-
+            listChangeRequests = listChangeRequests.filter(request => request.cid != requestId);
+            console.log('listChangeRequests after delete', listChangeRequests);
+            console.log(" requestId", requestId);
             $.ajax({
                 type: 'POST',
                 url: '/MyStudySpace_war_exploded/student/deleteRequest',
@@ -204,68 +265,83 @@
             });
         });
 
-        $('form[id^="acceptForm"]').on('submit', function (e) {
-            e.preventDefault(); // Chặn hành vi mặc định của form
-            const data = $(this).serialize();
-            const url = '/MyStudySpace_war_exploded/student/acceptChange';
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                success: function (data) {
-                    updatePage(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
-                }
+        const bindAcceptRejectForms = () => {
+            $('form[id^="acceptForm"]').off('submit').on('submit', function (e) {
+                e.preventDefault(); // Chặn hành vi mặc định của form
+                const data = $(this).serialize();
+                const url = '/MyStudySpace_war_exploded/student/acceptChange';
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    success: function (data) {
+                        updatePage(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
             });
-        });
 
-        $('form[id^="rejectForm"]').on('submit', function (e) {
-            e.preventDefault(); // Chặn hành vi mặc định của form
-            const data = $(this).serialize();
-            const url = '/MyStudySpace_war_exploded/student/rejectChange';
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                success: function (data) {
-                    updatePage(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
-                }
+            $('form[id^="rejectForm"]').off('submit').on('submit', function (e) {
+                e.preventDefault(); // Chặn hành vi mặc định của form
+                const data = $(this).serialize();
+                const url = '/MyStudySpace_war_exploded/student/rejectChange';
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    success: function (data) {
+                        console.log('data reject', data);
+                        updatePage(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
             });
-        });
+        };
 
-        // Hàm cập nhật giao diện sau khi thực hiện ajax
+
         const updatePage = (data) => {
             const allRequiredFromSomeOne = data.allRequiredFromSomeOne;
             const allRequired = data.allRequired;
-            const groups = data.groups; // Lấy danh sách các nhóm từ dữ liệu
-
+            const groups = data.groups;
+            console.log("allRequired", allRequired);
             // Update changeRequestTable
-            if (allRequired.length === 0) {
-                $('#noRequest').text("No request created");
-                $('#changeRequestTable').css('display', 'none');
+            if (allRequired.length == 0) {
+                $('#noRequest').text("(No request created)");
+                $('#changeRequestTable tbody').empty(); // Clear existing rows
                 console.log("no request");
             } else {
                 $('#noRequest').text("");
                 $('#changeRequestTable tbody').empty(); // Clear existing rows
+
+                listChangeRequests = [];
+
                 $.each(allRequired, function (index, request) {
                     const newRow = '<tr><td>' + request.fromGroup.course.code + '</td><td>' + request.fromStudent.id + '</td><td>' + request.toStudent.id + '</td><td><button class="deleteButton" data-request-id="' + request.id + '">Delete</button></td></tr>';
                     $('#changeRequestTable tbody').append(newRow);
+                    listChangeRequests.push({
+                        cid: request.id,
+                        course: request.fromGroup.course.id,
+                        fromStudent: request.fromStudent.id,
+                        toStudent: request.toStudent.id
+                    });
                 });
-                console.log("have request");
+
             }
 
             // Update listRequestsTable
-            if (allRequiredFromSomeOne.length === 0) {
-                $('#noRequestSomeOne').text("No request for someone to you");
-                $('#listRequestsTable').css('display', 'none');
+            if (allRequiredFromSomeOne.length == 0) {
+                console.log('size', allRequiredFromSomeOne.length);
+                $('#noRequestForU').text("(No request created a)");
+                $('#listRequestsTable tbody').empty(); // Clear existing rows
+                console.log("no request for someone to you");
             } else {
                 console.log('have request for someone to you');
-                $('#noRequestSomeOne').text("");
+                $('#noRequestForU').text("");
+
                 $('#listRequestsTable tbody').empty(); // Clear existing rows
                 $.each(allRequiredFromSomeOne, function (index, request) {
                     const newRow = '<tr>' +
@@ -301,10 +377,12 @@
                 const newRow = '<option value="' + group.course.id + '">' + group.course.code + '</option>';
                 $('#course').append(newRow);
             });
+            bindAcceptRejectForms();
+
         };
+        bindAcceptRejectForms();
     });
 </script>
-
 </body>
 </html>
 

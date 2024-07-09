@@ -3,6 +3,7 @@ package controller.student;
 import com.google.gson.Gson;
 import dal.ChangeGroupDBContext;
 import dal.GroupDBContext;
+import dal.StudentDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,36 +19,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/student/deleteRequest")
-public class RemoveRequest extends HttpServlet {
+@WebServlet(urlPatterns = "/student/createRequest")
+public class CreateRequest extends HttpServlet {
     private final int currentSemester = GetCurrentTerm.currentSemester;
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
+
         ChangeGroupDBContext cgdb = new ChangeGroupDBContext();
         GroupDBContext gdb = new GroupDBContext();
+        StudentDBContext sdb = new StudentDBContext();
 
-        String id = req.getParameter("requestId");
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
 
-        cgdb.deleteRequired(id);
+        String fromStudent = req.getParameter("fromStudent");
+        String toStudent = req.getParameter("toStudent");
+        String course = req.getParameter("course");
+
+        int fromGroup = cgdb.getGroupIDToAddChangeGroup(fromStudent, currentSemester,Integer.parseInt(course));
+        int toGroup = cgdb.getGroupIDToAddChangeGroup(toStudent, currentSemester,Integer.parseInt(course));
+        cgdb.insertChangeGroup(fromStudent, fromGroup, toStudent, toGroup, currentSemester);
 
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("account");
 
 
         ArrayList<ChangeGroup> allRequired = cgdb.getAllRequired(account.getUsername(), currentSemester);
-        ArrayList<ChangeGroup> allRequiredFromSomeOne = cgdb.getAllRequiredToSwap(account.getUsername(), currentSemester);
-
-
         Map<String, Object> responseData = new HashMap<>();
 
-
+        ArrayList<ChangeGroup> allRequiredFromSomeOne = cgdb.getAllRequiredToSwap(account.getUsername(), currentSemester);
 
         responseData.put("allRequiredFromSomeOne", allRequiredFromSomeOne);
         responseData.put("allRequired", allRequired);
