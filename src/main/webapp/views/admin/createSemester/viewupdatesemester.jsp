@@ -111,7 +111,7 @@
             <div class="header">
                 <div>
                     <button class="btn btn-primary" style="margin-bottom: 5px">
-                        <a href="addnewsemester" style="text-decoration: none; color: white">New Semester
+                        <a href="addSemester" style="text-decoration: none; color: white">New Semester
                             <i class="fas fa-calendar-plus"></i></a>
                     </button>
                 </div>
@@ -153,7 +153,7 @@
                                         <c:otherwise>No</c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>Edit</td>
+                                <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#popup-updateStatus-${semester.getId()}">Edit</button></td>
                             </tr>
                         </c:forEach>
                     </c:otherwise>
@@ -163,7 +163,90 @@
         </div>
     </div>
 </div>
+
+
+<c:forEach var="semester" items="${semesters}">
+    <!-- Modal for updating semester -->
+    <div class="modal fade" id="popup-updateStatus-${semester.getId()}" tabindex="-1" aria-labelledby="modalLabel-${semester.id}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel-${semester.id}">Update Semester</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="viewupdatesemester" method="post">
+                        <input type="hidden" name="id" value="${semester.id}" />
+                        <div class="mb-3">
+                            <label for="detail-${semester.id}" class="form-label">Detail</label>
+                            <input type="text" class="form-control" id="detail-${semester.id}" name="detail" value="${semester.detail}" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="startDate-${semester.id}" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="startDate-${semester.id}" name="startDate" value="${semester.start}" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="startBL5-${semester.id}" class="form-label">Start BL5</label>
+                            <input type="date" class="form-control" id="startBL5-${semester.id}" name="startBL5" value="${semester.startBL5}" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="endDate-${semester.id}" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="endDate-${semester.id}" name="endDate" value="${semester.end}" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="isCreate-${semester.id}" class="form-label">Is Create</label>
+                            <select class="form-select" id="isCreate-${semester.id}" name="isCreate">
+                                <option value="1" ${semester.isCreate == 1 ? 'selected' : ''}>Yes</option>
+                                <option value="0" ${semester.isCreate == 0 ? 'selected' : ''}>No</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:forEach>
+
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Bootstrap js -->
+<script>
+    window.onload = function() {
+        // Get the msg attribute from the JSP
+        var msg = "<%= request.getAttribute("msg") %>";
+
+        // Check if msg is not null or empty
+        <% if (request.getAttribute("msg") != null && !((String) request.getAttribute("msg")).isEmpty()) { %>
+        document.getElementById('modalMessage').textContent = msg;
+        // Show modal
+        $('#myModal').modal('show');
+        <% } %>
+
+        $('.modal-footer button[data-dismiss="modal"]').click(function() {
+            $('#myModal').modal('hide'); // Tắt modal
+        });
+    };
+</script>
 <script src="templates/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-Vo0ewNxsZn2Zr2sfotIsOzKQC4fTJPfdHCw2t1jPj2QgW9FpHkAPc6k7cWz1V6k4" crossorigin="anonymous"></script>
 </body>
 </html>

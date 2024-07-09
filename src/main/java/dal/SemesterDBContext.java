@@ -59,6 +59,24 @@ public class SemesterDBContext extends DBContext<Response>{
         System.out.println(context.getAlSemesterBySearchName("").get(1).getDetail());
     }
 
+    public void updateSemester(Semester semester) {
+
+        try {
+            String sql = "UPDATE semester SET detail = ?, start = ?, startBL5 = ?, end = ?, isCreate = ? WHERE id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, semester.getDetail());
+            stm.setDate(2, semester.getStart());
+            stm.setDate(3, semester.getStartBL5());
+            stm.setDate(4, semester.getEnd());
+            stm.setInt(5, semester.getIsCreate());
+            stm.setInt(6, semester.getId());
+            stm.executeUpdate();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SemesterDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @Override
     public ArrayList<Response> list() {
         return null;
