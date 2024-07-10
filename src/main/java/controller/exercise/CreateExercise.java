@@ -95,9 +95,9 @@ public class CreateExercise extends HttpServlet {
                 .map(Exercise::getExerciseName) // assuming getName() method exists
                 .collect(Collectors.toList());
         List<Question> listAllQuestionOfExercise = qdao.getListQuestionByExerciseId(exercise_id);
-        int basicBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","1");
-        int lowBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","2");
-        int highBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("101","3");
+        int basicBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("1","1");
+        int lowBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("1","2");
+        int highBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("1","3");
         System.out.println("basic : " + basicBankQuestion);
         System.out.println("low : " + lowBankQuestion);
         System.out.println("high : " + highBankQuestion);
