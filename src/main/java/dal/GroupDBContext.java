@@ -399,5 +399,10 @@ public class GroupDBContext extends DBContext<Group> {
         return list;
     }
 
+    public static void main(String[] args) {
+        GroupDBContext dao = new GroupDBContext();
+        Teacher teacher =   dao.getTeacherByID("t1");
+        System.out.println(teacher.getUsername());
+    }
 
 }
