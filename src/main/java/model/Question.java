@@ -1,31 +1,38 @@
 package model;
 
-public class Question {
-    private int questionid;
+public class Question implements IEntity {
+    private int question_id;
     private String question;
-    private int typequestion;
-    private int exerciseid;
-    private int courseid;
+    private int type_question;
+    private Exercise exercise;
+    private Course course;
     private int status;
-
     public Question() {
     }
 
-    public Question(int questionid, int exerciseid, String question, int typequestion, int courseid, int status) {
-        this.questionid = questionid;
-        this.exerciseid = exerciseid;
-        this.question = question;
-        this.typequestion = typequestion;
-        this.courseid = courseid;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public int getQuestionid() {
-        return questionid;
+    public Question(int question_id, String question, int type_question, Exercise exercise, Course course, int status) {
+        this.question_id = question_id;
+        this.question = question;
+        this.type_question = type_question;
+        this.exercise = exercise;
+        this.course = course;
+        this.status = status;
     }
 
-    public void setQuestionid(int questionid) {
-        this.questionid = questionid;
+    public int getQuestion_id() {
+        return question_id;
+    }
+
+    public void setQuestion_id(int question_id) {
+        this.question_id = question_id;
     }
 
     public String getQuestion() {
@@ -36,35 +43,27 @@ public class Question {
         this.question = question;
     }
 
-    public int getTypequestion() {
-        return typequestion;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setTypequestion(int typequestion) {
-        this.typequestion = typequestion;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
-    public int getExerciseid() {
-        return exerciseid;
+    public int getType_question() {
+        return type_question;
     }
 
-    public void setExerciseid(int exerciseid) {
-        this.exerciseid = exerciseid;
+    public void setType_question(int type_question) {
+        this.type_question = type_question;
     }
 
-    public int getCourseid() {
-        return courseid;
+    public Exercise getExercise() {
+        return exercise;
     }
 
-    public void setCourseid(int courseid) {
-        this.courseid = courseid;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
     }
 }

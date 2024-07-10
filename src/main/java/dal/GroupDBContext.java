@@ -277,7 +277,7 @@ public class GroupDBContext extends DBContext<Group> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 t = new Teacher();
-                t.setId(rs.getInt("id"));
+                t.setTid(rs.getString("id"));
                 t.setAccount(getAccountByID(rs.getInt("acc_id")));
                 return t;
             }
@@ -399,5 +399,10 @@ public class GroupDBContext extends DBContext<Group> {
         return list;
     }
 
+    public static void main(String[] args) {
+        GroupDBContext dao = new GroupDBContext();
+        Teacher teacher =   dao.getTeacherByID("t1");
+        System.out.println(teacher.getUsername());
+    }
 
 }
