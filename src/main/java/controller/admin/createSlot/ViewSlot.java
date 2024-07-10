@@ -11,7 +11,6 @@ import model.Semester;
 import model.Slot;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -48,36 +47,42 @@ public class ViewSlot extends HttpServlet {
                 doGet(req, resp);
             }
             int id = Integer.parseInt(req.getParameter("id"));
-            PrintWriter out  = new PrintWriter(resp.getOutputStream());
-            out.println(startTimeStr);
-            out.println(endTimeStr);
-            out.println(detail);
-            out.println("hello");
 
-//            // Kiểm tra xem các giá trị không bị null hoặc rỗng
-//            if (detail == null || startTimeStr == null || endTimeStr == null || detail.isEmpty() || startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
-//                req.setAttribute("msg", "All fields are required.");
-//                doGet(req, resp);
-//                return;
-//            }
-//
-//            // Chuyển đổi thời gian từ string thành đối tượng LocalTime
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-//            LocalTime startTime = LocalTime.parse(startTimeStr, formatter);
-//            LocalTime endTime = LocalTime.parse(endTimeStr, formatter);
-//
-//            if (startTime.isBefore(endTime)) {
-//                Slot slot = new Slot(id, detail, Time.valueOf(startTime), Time.valueOf(endTime));
-//                SlotDBContext con = new SlotDBContext();
-//                con.updateSlot(slot);
-//                req.setAttribute("msg", "Update successfully");
-//                doGet(req, resp);
-//                return;
-//            } else {
-//                req.setAttribute("msg", "Start time must be before end time.");
-//                doGet(req, resp);
-//                return;
-//            }
+            // Kiểm tra xem các giá trị không bị null hoặc rỗng
+            if (detail == null || startTimeStr == null || endTimeStr == null || detail.isEmpty() || startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
+                req.setAttribute("msg", "All fields are required.");
+                doGet(req, resp);
+                return;
+            }
+
+            // Chuyển đổi thời gian từ string thành đối tượng LocalTime
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalTime startTime;
+            LocalTime endTime;
+            if(startTimeStr.length() == 5){
+                 startTime = LocalTime.parse(startTimeStr + ":00", formatter);
+            }else{
+                 startTime = LocalTime.parse(startTimeStr , formatter);
+            }
+
+            if(endTimeStr.length() == 5){
+                 endTime = LocalTime.parse(endTimeStr + ":00", formatter);
+            }else{
+                 endTime = LocalTime.parse(endTimeStr , formatter);
+            }
+
+            if (startTime.isBefore(endTime)) {
+                Slot slot = new Slot(id, detail, Time.valueOf(startTime), Time.valueOf(endTime));
+                SlotDBContext con = new SlotDBContext();
+                con.updateSlot(slot);
+                req.setAttribute("msg", "Update successfully");
+                doGet(req, resp);
+                return;
+            } else {
+                req.setAttribute("msg", "Start time must be before end time.");
+                doGet(req, resp);
+                return;
+            }
         } catch (NumberFormatException e) {
             req.setAttribute("msg", "Invalid ID format.");
             doGet(req, resp);
