@@ -293,6 +293,12 @@
                 class="row justify-content-center mt-5"
                 style="margin-bottom: 30px"
         >
+            <div>
+                <button class="btn btn-primary" style="margin-bottom: 5px">
+                    <a href="viewupdatesemester" style="text-decoration: none; color: white">All Semester
+                        <i class="fas fa-calendar-plus"></i></a>
+                </button>
+            </div>
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">

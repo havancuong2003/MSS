@@ -201,6 +201,7 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Update</button>
+                        <a href="deletesemester?semesterId=${semester.id}" class="btn btn-primary">Delete</a>
                     </form>
                 </div>
             </div>

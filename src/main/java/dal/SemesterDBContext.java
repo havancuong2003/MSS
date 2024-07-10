@@ -28,10 +28,23 @@ public class SemesterDBContext extends DBContext<Response>{
         }
     }
 
+    public boolean deleteSemester(int semesterId) {
+        String sql = "DELETE FROM semester WHERE id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, semesterId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0; // returns true if one or more rows were affected
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+            return false; // returns false if an exception occurs
+        }
+    }
+
     public ArrayList<Semester> getAlSemesterBySearchName(String searchname)  {
         ArrayList<Semester> semesters = new ArrayList<>();
         try {
-            String sql = "select * from semester where detail like '%" + searchname + "%' order by detail asc";
+            String sql = "select * from semester where detail like '%" + searchname + "%' order by start asc";
             PreparedStatement stm = connection.prepareStatement(sql);
 
             ResultSet rs = stm.executeQuery();
