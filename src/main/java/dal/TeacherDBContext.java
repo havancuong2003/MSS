@@ -65,6 +65,96 @@ public class TeacherDBContext extends DBContext<MarkData>{
         return teacherList;
     }
 
+    //- -------------------------------------------------------------------------------------------------------------
+    //- -------------------------------------------------------------------------------------------------------------
+    //- -------------------------------------------------------------------------------------------------------------
+    //- -------------------------------------------------------------------------------------------------------------
+    public static void main(String[] args) {
+        TeacherDBContext t = new TeacherDBContext();
+        System.out.println(t.checkTeacherCanLearnCourse("t1","t2",1,"2024-06-10"));
+    }
+    public boolean checkTeacherLearnThisSession(String teacherid,String date,int slotID) {
+        String sql = "select * from `session` where teacher_id =? and date =? and slot_id = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, teacherid);
+            stm.setString(2, date);
+            stm.setInt(3, slotID);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+    }
+
+    public boolean checkTeacherCanLearnCourse(String currentTeacher,String targetTeacher, int slotID,String date) {
+        String sql ="\n" +
+                "select * from teacher_course where teacher_id = ? and course_id = \n" +
+                "(select g.course_id from `session` s join `group` g on s.group_id = g.id where s.id = \n" +
+                "( select s.id from `session` s        \n" +
+                "join teacher t on t.id = s.teacher_id  \n" +
+                "join `group` g on s.group_id = g.id\n" +
+                "where s.date =? and s.teacher_id=? and s.slot_id=?)\n" +
+                ")";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+
+            stm.setString(1, targetTeacher);
+            stm.setString(2, date);
+            stm.setString(3, currentTeacher);
+            stm.setInt(4, slotID);
+
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+    }
+
+    public boolean checkTeacherExist(String teacherid) {
+        String sql = "select * from teacher where id = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, teacherid);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+    }
+
+    public void ChangeSessionTeacher(String teacherid,String currentTeacher, int slotID,String date) {
+        String sql ="UPDATE `session` s1\n" +
+                "JOIN (\n" +
+                "    SELECT id\n" +
+                "    FROM `session`\n" +
+                "    WHERE date = ? AND teacher_id = ? AND slot_id = ?\n" +
+                ") s2 ON s1.id = s2.id\n" +
+                "SET s1.teacher_id = ?\n";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+
+            stm.setString(1, date);
+            stm.setString(2, currentTeacher);
+            stm.setInt(3, slotID);
+            stm.setString(4, teacherid);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+
+
     @Override
     public ArrayList<MarkData> list() {
         return null;

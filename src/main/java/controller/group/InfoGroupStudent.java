@@ -11,8 +11,8 @@ import model.Account;
 
 import java.io.IOException;
 
-@WebServlet("/group")
-public class InfoGroupController extends HttpServlet {
+@WebServlet("/student/groupDetail")
+public class InfoGroupStudent extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         GroupDBContext groupDBContext = new GroupDBContext();
@@ -20,13 +20,13 @@ public class InfoGroupController extends HttpServlet {
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("account");
         if(id ==null){
-                req.setAttribute("role",groupDBContext.getRole(account.getRole_id()));
+            req.setAttribute("role",groupDBContext.getRole(account.getRole_id()));
             req.getRequestDispatcher("views/notFound/notFound.jsp").forward( req, resp);
             return;
         }
         req.setAttribute("role",groupDBContext.getRole(account.getRole_id()));
         req.setAttribute("group",groupDBContext.getGroupInfo(Integer.parseInt(id)));
-        req.getRequestDispatcher("views/group/infoGroup.jsp").forward(req, resp);
+        req.getRequestDispatcher("../views/group/infoGroupForStudent.jsp").forward(req, resp);
     }
 
     @Override
