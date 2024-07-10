@@ -1,15 +1,18 @@
 package model;
 
+import java.sql.Blob;
+import java.util.Date;
+
 public class Teacher extends Account implements IEntity{
 
     private int id;
     private Account account;
     private String tid;
     public Teacher(int id, Account account) {
-        super();
         this.id = id;
         this.account = account;
     }
+
 
     public Teacher() {
     }
