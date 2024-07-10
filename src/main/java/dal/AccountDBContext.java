@@ -3,6 +3,9 @@ package dal;
 import java.sql.*;
 
 import model.Account;
+import model.Role;
+import model.Student;
+import model.Teacher;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,6 +36,77 @@ public class AccountDBContext extends DBContext<Account> {
     @Override
     public Account get(int id) throws SQLException {
         return null;
+    }
+
+    public Account getIdBySearchGradeInput(String search){
+        Account a = new Account();
+        try {
+        String sql = "select acc.account_id, acc.role_id from account acc left join student stu on stu.acc_id = acc.account_id \n" +
+                "left join teacher t on t.acc_id = acc.account_id inner join role r on r.id = acc.role_id\n" +
+                "where acc.fullname like ? or t.id like ? or stu.id like ? limit 1";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%"+search+"%");
+            stm.setString(2, "%"+search+"%");
+            stm.setString(3, "%"+search+"%");
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                a.setId(rs.getInt("account_id"));
+                a.setRole_id(rs.getInt("role_id"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return a;
+    }
+
+    public Student getStudentByAccId(int id, int role_id) {
+        Student s = new Student();
+        Account acc = new Account();
+        Role r = new Role();
+        try {
+        String sql ="select r.description, r.id as roleid, acc.fullname, stu.id from account acc inner join student stu on stu.acc_id = acc.account_id \n" +
+                "inner join role r on r.id = acc.role_id\n" +
+                "where acc.account_id = ?;";
+            PreparedStatement stm  = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                r.setDescription(rs.getString("description"));
+                r.setId(rs.getInt("roleid"));
+                acc.setFullname(rs.getString("fullname"));
+                s.setId(rs.getString("id"));
+                acc.setRole(r);
+                s.setAccount(acc);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return s;
+    }
+
+    public Teacher getTeacherByAccId(int id, int role_id) {
+        Teacher t = new Teacher();
+        Account acc = new Account();
+        Role r = new Role();
+        try {
+        String sql ="select r.description, r.id as roleid, acc.fullname, t.id from account acc \n" +
+                "inner join teacher t on t.acc_id = acc.account_id inner join role r on r.id = acc.role_id\n" +
+                "where acc.account_id = ?;";
+            PreparedStatement stm  = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                r.setDescription(rs.getString("description"));
+                r.setId(rs.getInt("roleid"));
+                acc.setFullname(rs.getString("fullname"));
+                t.setTid(rs.getString("id"));
+                acc.setRole(r);
+                t.setAccount(acc);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return t;
     }
 
 
