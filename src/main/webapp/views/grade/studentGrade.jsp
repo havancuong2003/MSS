@@ -9,22 +9,82 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Semester and Grade List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        ul li button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+            text-align: left;
+        }
+        ul li button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+        table thead {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .hidden-inputs {
+            display: none;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
-<div>
+<div class="container">
     <h1>Semester List</h1>
     <ul>
         <c:forEach items="${requestScope.semester}" var="s">
             <li>
-                <a href="javascript:setSemesterId(${s.id})">${s.detail}</a>
+                <button onclick="setSemesterId(${s.id})">${s.detail}</button>
             </li>
         </c:forEach>
-        <input type="hidden" id="semesterId" name="semesterId" value="">
     </ul>
+    <input type="hidden" id="semesterId" name="semesterId" value="">
     <h2>Group List</h2>
-    <div id="groupsList">
-    </div>
+    <ul id="groupsList">
+    </ul>
     <input type="hidden" id="gid" name="gid" value="">
     <table>
         <thead>
@@ -52,7 +112,6 @@
     }
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function getGroup() {
         const ses = document.getElementById("semesterId").value;
@@ -68,7 +127,7 @@
                 var list = document.getElementById("groupsList");
                 list.innerHTML = "";
                 groups.forEach(function (group) {
-                    list.innerHTML += '<li><a href="javascript:setGroupId(' + group.id + ')" >' + group.course.code + ' - ' + group.course.detail + ' - ' + group.name + '</a></li>';
+                    list.innerHTML += '<li><button onclick="setGroupId(' + group.id + ')">' + group.course.code + ' - ' + group.course.detail + ' - ' + group.name + '</button></li>';
                 });
             }
         });

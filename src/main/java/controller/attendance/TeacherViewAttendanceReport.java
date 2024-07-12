@@ -21,6 +21,7 @@ public class TeacherViewAttendanceReport extends HttpServlet {
         Account acc = (Account) req.getSession().getAttribute("account");
         AccountDBContext accDB = new AccountDBContext();
         String tid = accDB.getIdUserByAccountId(acc.getId());
+        req.setAttribute("test", tid);
         SemesterDBContext seDB = new SemesterDBContext();
         req.setAttribute("semester", seDB.getSemesterForTeacher(tid));
         req.getRequestDispatcher("/views/attendance/teacherViewAttendanceReport.jsp").forward(req, resp);
