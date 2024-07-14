@@ -38,9 +38,10 @@ public class ViewUpdateSemester extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String detail = req.getParameter("detail");
         String startParam = req.getParameter("startDate");
-        String startBL5Param = req.getParameter("startBL5");
         String endParam = req.getParameter("endDate");
         String isCreateParam = req.getParameter("isCreate");
+
+
 
         // Validate parameters
         boolean hasErrors = false;
@@ -48,7 +49,6 @@ public class ViewUpdateSemester extends HttpServlet {
 
         // Initialize variables for dates
         Date start = null;
-        Date startBL5 = null;
         Date end = null;
         int isCreate = 0;
 
@@ -60,7 +60,6 @@ public class ViewUpdateSemester extends HttpServlet {
 
         try {
             start = Date.valueOf(startParam);
-            startBL5 = Date.valueOf(startBL5Param);
             end = Date.valueOf(endParam);
         } catch (IllegalArgumentException e) {
             errorMsg.append("Invalid date format. ");
@@ -75,8 +74,8 @@ public class ViewUpdateSemester extends HttpServlet {
         }
 
         // Validate date sequence
-        if (start != null && startBL5 != null && end != null) {
-            if (start.after(startBL5) || startBL5.after(end)) {
+        if (start != null  && end != null) {
+            if (start.after(end)) {
                 errorMsg.append("Dates are not in the correct sequence. ");
                 hasErrors = true;
             }
@@ -86,7 +85,6 @@ public class ViewUpdateSemester extends HttpServlet {
             req.setAttribute("msg", errorMsg.toString());
             req.setAttribute("detail", detail);
             req.setAttribute("start", startParam);
-            req.setAttribute("startBL5", startBL5Param);
             req.setAttribute("end", endParam);
             req.setAttribute("isCreate", isCreateParam);
 
@@ -95,7 +93,7 @@ public class ViewUpdateSemester extends HttpServlet {
         }
 
         // Tạo đối tượng Semester
-        Semester semester = new Semester(id, detail, start, startBL5, end, isCreate);
+        Semester semester = new Semester(id, detail, start, end, isCreate);
 
         SemesterDBContext con = new SemesterDBContext();
         con.updateSemester(semester);

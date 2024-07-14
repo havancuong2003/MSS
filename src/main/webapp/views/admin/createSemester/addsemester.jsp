@@ -314,11 +314,7 @@
                                         for="firstName"
                                         class="control-label"
                                 >Detail</label>
-<%--                                <select id="detail" name="detail">--%>
-<%--                                    <option value="SP">SP</option>--%>
-<%--                                    <option value="SU">SU</option>--%>
-<%--                                    <option value="FA">FA</option>--%>
-<%--                                </select>--%>
+
                                 <input
                                         type="text"
                                         class="form-control"
@@ -341,23 +337,6 @@
                                         id="dob"
                                         name="start"
                                         value="${start}"
-                                        placeholder="dd-mm-yyyy"
-                                        required
-                                />
-                            </div>
-                            <div
-                                    class="form-group required"
-                                    style="margin-bottom: 15px"
-                            >
-                                <label for="dob" class="control-label"
-                                >Start BL5</label
-                                >
-                                <input
-                                        type="date"
-                                        class="form-control"
-                                        id="dob"
-                                        name="startBL5"
-                                        value="${startBL5}"
                                         placeholder="dd-mm-yyyy"
                                         required
                                 />
@@ -419,12 +398,6 @@
                                 </div>
                             </div>
                             <div class="form-group mt-3">
-<%--                                <button--%>
-<%--                                        type="button"--%>
-<%--                                        class="btn btn-secondary"--%>
-<%--                                >--%>
-<%--                                    Cancel--%>
-<%--                                </button>--%>
                                 <button
                                         type="reset"
                                         class="btn btn-primary"
@@ -437,7 +410,6 @@
                                 >
                                     Submit
                                 </button>
-<%--                                <h3 style="color: red">${msg}</h3>--%>
                             </div>
                         </form>
                     </div>

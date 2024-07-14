@@ -24,17 +24,25 @@ public class AddSemester extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String detail = req.getParameter("detail");
         String startParam = req.getParameter("start");
-        String startBL5Param = req.getParameter("startBL5");
         String endParam = req.getParameter("end");
         String isCreateParam = req.getParameter("isCreate");
-
+        SemesterDBContext con = new SemesterDBContext();
+        //check xem detail toonf taij chua
+        if(!con.checkDetailExists(detail)){
+            req.setAttribute("msg", "Semester existed!");
+            req.setAttribute("detail", detail);
+            req.setAttribute("start", startParam);
+            req.setAttribute("end", endParam);
+            req.setAttribute("isCreate", isCreateParam);
+            req.getRequestDispatcher("../views/admin/createSemester/addsemester.jsp").forward(req, resp);
+            return;
+        }
         // Validate parameters
         boolean hasErrors = false;
         StringBuilder errorMsg = new StringBuilder();
 
         // Initialize variables for dates
         Date start = null;
-        Date startBL5 = null;
         Date end = null;
         int isCreate = 0;
 
@@ -46,7 +54,6 @@ public class AddSemester extends HttpServlet {
 
         try {
             start = Date.valueOf(startParam);
-            startBL5 = Date.valueOf(startBL5Param);
             end = Date.valueOf(endParam);
         } catch (IllegalArgumentException e) {
             errorMsg.append("Invalid date format. ");
@@ -61,8 +68,8 @@ public class AddSemester extends HttpServlet {
         }
 
         // Validate date sequence
-        if (start != null && startBL5 != null && end != null) {
-            if (start.after(startBL5) || startBL5.after(end)) {
+        if (start != null && end != null) {
+            if (start.after(end)) {
                 errorMsg.append("Dates are not in the correct sequence. ");
                 hasErrors = true;
             }
@@ -72,7 +79,6 @@ public class AddSemester extends HttpServlet {
             req.setAttribute("msg", errorMsg.toString());
             req.setAttribute("detail", detail);
             req.setAttribute("start", startParam);
-            req.setAttribute("startBL5", startBL5Param);
             req.setAttribute("end", endParam);
             req.setAttribute("isCreate", isCreateParam);
 
@@ -81,9 +87,9 @@ public class AddSemester extends HttpServlet {
         }
 
         // If no errors, proceed with database insertion
-        SemesterDBContext con = new SemesterDBContext();
+
         try {
-            con.insertSemester(detail, start, startBL5, end, isCreate);
+            con.insertSemester(detail, start, end, isCreate);
             req.setAttribute("msg", "Create successfully");
             req.getRequestDispatcher("../views/admin/createSemester/addsemester.jsp").forward(req, resp);
         } catch (Exception e) {

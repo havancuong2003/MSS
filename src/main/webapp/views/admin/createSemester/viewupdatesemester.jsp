@@ -127,7 +127,6 @@
                 <tr>
                     <th>Detail</th>
                     <th>Start Date</th>
-                    <th>Start BL5</th>
                     <th>End Date</th>
                     <th>Is Create</th>
                     <th>Edit</th>
@@ -145,7 +144,6 @@
                             <tr>
                                 <td>${semester.getDetail()}</td>
                                 <td>${semester.getStart()}</td>
-                                <td>${semester.getStartBL5()}</td>
                                 <td>${semester.getEnd()}</td>
                                 <td>
                                     <c:choose>
@@ -184,10 +182,6 @@
                         <div class="mb-3">
                             <label for="startDate-${semester.id}" class="form-label">Start Date</label>
                             <input type="date" class="form-control" id="startDate-${semester.id}" name="startDate" value="${semester.start}" required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="startBL5-${semester.id}" class="form-label">Start BL5</label>
-                            <input type="date" class="form-control" id="startBL5-${semester.id}" name="startBL5" value="${semester.startBL5}" required />
                         </div>
                         <div class="mb-3">
                             <label for="endDate-${semester.id}" class="form-label">End Date</label>

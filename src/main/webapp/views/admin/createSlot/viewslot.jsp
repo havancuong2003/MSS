@@ -165,7 +165,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Update Semester</h5>
+          <h5 class="modal-title">Update Slot</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -176,11 +176,11 @@
               <input type="text" class="form-control"  name="detail" value="${slot.detail}" required />
             </div>
             <div class="mb-3">
-              <label class="form-label">Start Date</label>
+              <label class="form-label">Start Time</label>
               <input type="time" class="form-control"  name="startTime" value="${slot.getStartTime()}" required />
             </div>
             <div class="mb-3">
-              <label class="form-label">End Date</label>
+              <label class="form-label">End Time</label>
               <input type="time" class="form-control" name="endTime" value="${slot.getEndTime()}" required />
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
@@ -197,7 +197,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Update Semester</h5>
+        <h5 class="modal-title">Add New Slot</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -207,11 +207,11 @@
             <input type="text" class="form-control"  name="detail"  required />
           </div>
           <div class="mb-3">
-            <label class="form-label">Start Date</label>
+            <label class="form-label">Start Time</label>
             <input type="time" class="form-control"  name="startTime"  required />
           </div>
           <div class="mb-3">
-            <label  class="form-label">End Date</label>
+            <label  class="form-label">End Time</label>
             <input type="time" class="form-control"  name="endTime"  required />
           </div>
           <button type="submit" class="btn btn-primary">Create</button>
