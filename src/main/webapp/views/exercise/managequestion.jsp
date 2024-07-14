@@ -34,7 +34,7 @@
 
         .table-title {
             padding-bottom: 15px;
-            background: #007bff;
+            background: #FF6600;
             color: #fff;
             padding: 16px 30px;
             margin: -20px -25px 10px;

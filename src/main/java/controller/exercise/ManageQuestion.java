@@ -66,22 +66,22 @@ public class ManageQuestion extends HttpServlet {
         if (search == null || search.trim().isEmpty()) {
             if (type_question.equals("0")) {
                 count = qdao.getTotalQuestion(exercise_id);
-                endPage = count / 5;
+                endPage = count / 10;
                 listQuestion = qdao.pagingQuestionByExercise_id(index, exercise_id);
             } else {
                 count = qdao.getTotalQuestionByTypeQuestion(type_question, exercise_id);
-                endPage = count / 5;
+                endPage = count / 10;
                 listQuestion = qdao.pagingQuestionByTypeQuestion(index, type_question, exercise_id);
             }
         } else {
             request.setAttribute("searchExist", 1);
             search = search.trim();
             count = qdao.getTotalQuestionBySearch(search, exercise_id);
-            endPage = count / 5;
+            endPage = count / 10;
             listQuestion = qdao.pagingQuestionBySearch(index, search, exercise_id);
         }
 
-        if (count % 5 != 0) {
+        if (count % 10 != 0) {
             endPage++;
         }
         for (Question question : listQuestion) {

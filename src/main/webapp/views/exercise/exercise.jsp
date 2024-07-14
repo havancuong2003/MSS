@@ -10,6 +10,20 @@
     <title>Exercise</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-top: 15px; /* Điều chỉnh khoảng cách giữa các form-group */
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold; /* Tùy chọn: làm đậm chữ cho label */
+        }
+
+        .form-control {
+            margin-top: 5px; /* Điều chỉnh khoảng cách giữa label và input */
+        }
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -84,7 +98,7 @@
         }
 
         .pagination li a {
-            color: #007bff;
+            color: #FF6600;
             min-width: 30px;
             padding: 6px 12px;
             text-decoration: none;
@@ -100,12 +114,12 @@
         }
 
         .pagination li a:hover {
-            background-color: #e9ecef;
+            background-color: #FF6600;
             color: #0056b3;
         }
 
         .pagination li.active a {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: white;
             border-color: #007bff;
         }
@@ -208,7 +222,7 @@
         }
 
         .thead-dark th {
-            background-color: #343a40;
+            background-color: #FF6600;
             color: #fff;
         }
 
@@ -288,7 +302,7 @@
         }
 
         .card-header {
-            background-color: #343a40;
+            background-color: #FF6600;
             color: #fff;
             border-bottom: 2px solid #dee2e6;
             padding: 20px;
@@ -446,14 +460,14 @@
                             <option value="1"  class="form-control">Test</option>
                             <option value="2"  class="form-control">Pratice</option>
                         </select>
-                        <button type="submit" class="custom-button">Select</button>
+                        <button type="submit" class="custom-button" style="background-color: #FF6600">Select</button>
                     </form>
                 </div>
                 <div class="custom-form-wrapper">
                     <form class="custom-form" action="create-exercise" method="get">
                         <input type="hidden" name="group_id" value="${group_id}">
-                        <input type="text" placeholder="Search by question..." name="search">
-                        <button type="submit" class="custom-button">Search</button>
+                        <input type="text" placeholder="Search by exercise name..." name="search">
+                        <button type="submit" class="custom-button" style="background-color: #FF6600">Search</button>
                     </form>
                 </div>
                 <table class="table table-hover table-light table-borderless"
@@ -461,7 +475,7 @@
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">No.</th>
-                        <th scope="col">Quiz Name</th>
+                        <th scope="col">Exercise Name</th>
                         <th scope="col">Course</th>
                         <th scope="col">View</th>
                         <th scope="col">Status</th>
@@ -582,6 +596,7 @@
     function toggleTypeExercise() {
         var exerciseType = document.getElementById('exerciseType');
         var gradeCategory = document.getElementById('gradeCategory');
+        var gradeCategoryForm = document.getElementById('gradeCategoryForm');
 
         if (exerciseType.value === '1') {
             gradeCategory.style.display = 'block';
@@ -589,16 +604,28 @@
             gradeCategory.style.display = 'none';
             isDisplay = false
         }
+        if (exerciseType.value === '1') {
+            gradeCategoryForm.style.display = 'block';
+        } else {
+            gradeCategoryForm.style.display = 'none';
+            isDisplay = false
+        }
         exerciseTypeError.innerText = "";
     }
     function toggleUpdateTypeExercise() {
         var exerciseType = document.getElementById('updateExerciseType');
         var gradeCategory = document.getElementById('updateGradeCategory');
-
+        var gradeCategoryForm = document.getElementById('updateGradeCategoryForm');
         if (exerciseType.value === '1') {
             gradeCategory.style.display = 'block';
         } else {
             gradeCategory.style.display = 'none';
+            isDisplay = false
+        }
+        if (exerciseType.value === '1') {
+            gradeCategoryForm.style.display = 'block';
+        } else {
+            gradeCategoryForm.style.display = 'none';
             isDisplay = false
         }
         updateExerciseTypeError.innerText = "";
@@ -720,11 +747,16 @@
     function toggleRandomTypeExercise() {
         var exerciseType = document.getElementById('random_exerciseType');
         var gradeCategory = document.getElementById('random_gradeCategory');
-
+        var gradeCategoryForm = document.getElementById('random_gradeCategoryForm');
         if (exerciseType.value === '1') {
             gradeCategory.style.display = 'block';
         } else {
             gradeCategory.style.display = 'none';
+        }
+        if (exerciseType.value === '1') {
+            gradeCategoryForm.style.display = 'block';
+        } else {
+            gradeCategoryForm.style.display = 'none';
         }
         document.getElementById('random_exerciseTypeError').innerText = "";
     }
@@ -973,35 +1005,53 @@
             <div class="card">
                 <form method="post" action="create-exercise" onsubmit="return validateForm()">
                     <div class="card-header">
-                        <h2 class="custom-heading">Quiz</h2>
+                        <h2 class="custom-heading">Exercise</h2>
                     </div>
+                    <input type="hidden" name="group_id" value="${group_id}">
                     <div class="card-body">
                         <div class="form-group">
                             <input style="margin-top: 30px" type="hidden" name="teacher_id" value="${teacher.tid}">
-                            <input id="exerciseName" style="margin-top: 30px" type="text" name="excercise_name" class="form-control" placeholder="Quiz Name"/>
-                            <div  id="exerciseNameError" class="text-danger"></div>
-                            <input id="numQuestions" style="margin-top: 30px" type="text" name="question_number" class="form-control" placeholder="Number of Questions">
-                            <div  id="numQuestionsError" class="text-danger"></div>
-                            <input id="exerciseTime" style="margin-top: 30px" type="text" name="exercise_time" class="form-control" placeholder="Exercise time">
-                            <div id="exerciseTimeError" class="text-danger"></div>
-                            <select id="exerciseType" name="exercise_type" style="margin-top: 30px" onchange="toggleTypeExercise()">
-                                <option value="0">Choose type of exercise</option>
-                                <option value="1">Test</option>
-                                <option value="2">Pratice</option>
-                            </select>
-                            <div id="exerciseTypeError" class="text-danger"></div>
-                            <select id="gradeCategory" name="grade_category" style="display: none" onchange="toggleGradeCategory()">
-                                <option value="0">Choose grade category</option>
-                                <c:forEach var="o" items="${listGradeCategory}">
-                                    <option value="${o.id}">${o.name}</option>
-                                </c:forEach>
-                            </select>
-                            <div id="gradeCategoryError" class="text-danger"></div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Name:</label>
+                                <input id="exerciseName" style="margin-top: 5px;margin-bottom: 20px" type="text" name="excercise_name" class="form-control"/>
+                                <div  id="exerciseNameError" class="text-danger">
+                            </div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of Questions:</label>
+                                <input id="numQuestions" style="margin-top: 5px;margin-bottom: 20px" type="text" name="question_number" class="form-control">
+                                <div  id="numQuestionsError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Time:</label>
+                                <input id="exerciseTime" style="margin-top: 5px;margin-bottom: 20px" type="text" name="exercise_time" class="form-control" placeholder="Time is measured in minutes">
+                                <div id="exerciseTimeError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Type:</label>
+                                <select id="exerciseType" name="exercise_type" style="margin-top: 5px;margin-bottom: 20px" onchange="toggleTypeExercise()">
+                                    <option value="0">Choose type of exercise</option>
+                                    <option value="1">Test</option>
+                                    <option value="2">Pratice</option>
+                                </select>
+                                <div id="exerciseTypeError" class="text-danger"></div>
+                            </div>
+                            <div id="gradeCategoryForm" style="display: none">
+                                <label style="display: block;text-align: left">Grade Category:</label>
+                                <select id="gradeCategory" name="grade_category" style="display: none" onchange="toggleGradeCategory()">
+                                    <option value="0">Choose grade category</option>
+                                    <c:forEach var="o" items="${listGradeCategory}">
+                                        <option value="${o.id}">${o.name}</option>
+                                    </c:forEach>
+                                </select>
+                                <div id="gradeCategoryError" class="text-danger"></div>
+                            </div>
+
 
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" value="Create"
-                                   class="btn btn-success bb">
+                                   class="btn btn-success bb" style="background-color: #FF6600">
                         </div>
                     </div>
                 </form>
@@ -1025,25 +1075,41 @@
                         <div class="form-group">
                             <input style="margin-top: 30px" type="hidden" name="teacher_id" value="${teacher.tid}">
                             <input type="hidden" id="currentExerciseName" name="currentExerciseName">
-                            <input id="updateExerciseName" style="margin-top: 30px" type="text" name="update_exercise_name" class="form-control" placeholder="Exercise Name"/>
-                            <div id="updateExerciseNameError" class="text-danger"></div>
-                            <input id="updateNumQuestions" style="margin-top: 30px" type="text" name="update_question_number" class="form-control" placeholder="Number of Questions" readonly>
-                            <div id="updateNumQuestionsError" class="text-danger"></div>
-                            <input id="updateExerciseTime" style="margin-top: 30px" type="text" name="update_exercise_time" class="form-control" placeholder="Exercise time">
-                            <div id="updateExerciseTimeError" class="text-danger"></div>
-                            <select id="updateExerciseType" name="update_exercise_type" style="margin-top: 30px" onchange="toggleUpdateTypeExercise()">
-                                <option value="0">Choose type of exercise</option>
-                                <option value="1">Test</option>
-                                <option value="2">Practice</option>
-                            </select>
-                            <div id="updateExerciseTypeError" class="text-danger"></div>
-                            <select id="updateGradeCategory" name="update_grade_category" style="display: none" onchange="toggleUpdateGradeCategory()">
-                                <option value="0">Choose grade category</option>
-                                <c:forEach var="o" items="${listGradeCategory}">
-                                    <option value="${o.id}" >${o.name}</option>
-                                </c:forEach>
-                            </select>
-                            <div id="updateGradeCategoryError" class="text-danger"></div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Name:</label>
+                                <input id="updateExerciseName" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_exercise_name" class="form-control" placeholder="Exercise Name"/>
+                                <div id="updateExerciseNameError" class="text-danger"></div>
+                            </div>
+                           <div>
+                               <label style="display: block;text-align: left">Number of Questions:</label>
+                               <input id="updateNumQuestions" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_question_number" class="form-control" placeholder="Number of Questions" readonly>
+                               <div id="updateNumQuestionsError" class="text-danger"></div>
+                           </div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Time:</label>
+                                <input id="updateExerciseTime" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_exercise_time" class="form-control" placeholder="Exercise time">
+                                <div id="updateExerciseTimeError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Type:</label>
+                                <select id="updateExerciseType" name="update_exercise_type" style="margin-top: 10px" onchange="toggleUpdateTypeExercise()">
+                                    <option value="0">Choose type of exercise</option>
+                                    <option value="1">Test</option>
+                                    <option value="2">Practice</option>
+                                </select>
+                                <div id="updateExerciseTypeError" class="text-danger"></div>
+                            </div>
+                           <div id="updateGradeCategoryForm">
+<%--                               <label style="display: block;text-align: left">Grade category:</label>--%>
+                               <select id="updateGradeCategory" name="update_grade_category" style="display: none" onchange="toggleUpdateGradeCategory()">
+                                   <option value="0">Choose grade category</option>
+                                   <c:forEach var="o" items="${listGradeCategory}">
+                                       <option value="${o.id}" >${o.name}</option>
+                                   </c:forEach>
+                               </select>
+                               <div id="updateGradeCategoryError" class="text-danger"></div>
+                           </div>
+
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" value="Update" class="btn btn-success bb">
@@ -1061,37 +1127,59 @@
             <div class="card">
                 <form method="post" action="create-exercise" onsubmit="return validateRandomForm()">
                     <input type="hidden" name="random" value="1">
+                    <input type="hidden" name="group_id" value="${group_id}">
                     <div class="card-header">
                         <h2 class="custom-heading">Random Quiz</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <input id="random_exerciseName" type="text" name="random_exerciseName" class="form-control" placeholder="Quiz Name" />
-                            <div id="random_exerciseNameError" class="text-danger"></div>
-                            <input id="random_basicQuestion" style="margin-top: 30px" type="text" name="random_basicQuestion" class="form-control" placeholder="Number of basic question">
-                            <div id="random_basicQuestionError" class="text-danger"></div>
-                            <input id="random_lowQuestion" style="margin-top: 30px" type="text" name="random_lowQuestion" class="form-control" placeholder="Number of low application question">
-                            <div id="random_lowQuestionError" class="text-danger"></div>
-                            <input id="random_highQuestion" style="margin-top: 30px" type="text" name="random_highQuestion" class="form-control" placeholder="Number of high application question">
-                            <div id="random_highQuestionError" class="text-danger"></div>
-                            <input id="random_exerciseTime" style="margin-top: 30px" type="text" name="random_exerciseTime" class="form-control" placeholder="Exercise time">
-                            <div id="random_exerciseTimeError" class="text-danger"></div>
-                            <select id="random_exerciseType" name="random_exerciseType" style="margin-top: 30px" onchange="toggleRandomTypeExercise()">
-                                <option value="0">Choose type of exercise</option>
-                                <option value="1">Test</option>
-                                <option value="2">Practice</option>
-                            </select>
-                            <div id="random_exerciseTypeError" class="text-danger"></div>
-                            <select id="random_gradeCategory" name="random_gradeCategory" style="display: none; margin-top: 30px;" onchange="toggleRandomGradeCategory()">
-                                <option value="0">Choose grade category</option>
-                                <c:forEach var="o" items="${listGradeCategory}">
-                                    <option value="${o.id}">${o.name}</option>
-                                </c:forEach>
-                            </select>
-                            <div id="random_gradeCategoryError" class="text-danger"></div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Name:</label>
+                                <input id="random_exerciseName" style="margin-bottom: 20px" type="text" name="random_exerciseName" class="form-control" />
+                                <div id="random_exerciseNameError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of Basic Questions:</label>
+                                <input id="random_basicQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_basicQuestion" class="form-control" placeholder="Number of basic question">
+                                <div id="random_basicQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of Low Questions:</label>
+                                <input id="random_lowQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_lowQuestion" class="form-control" placeholder="Number of low application question">
+                                <div id="random_lowQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of High Questions:</label>
+                                <input id="random_highQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_highQuestion" class="form-control" placeholder="Number of high application question">
+                                <div id="random_highQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Time:</label>
+                                <input id="random_exerciseTime" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_exerciseTime" class="form-control" placeholder="Exercise time">
+                                <div id="random_exerciseTimeError" class="text-danger"></div>
+                            </div>
+                           <div>
+                               <label style="display: block;text-align: left">Exercise Type:</label>
+                               <select id="random_exerciseType" name="random_exerciseType" style="margin-top: 10px;margin-bottom: 20px" onchange="toggleRandomTypeExercise()">
+                                   <option value="0">Choose type of exercise</option>
+                                   <option value="1">Test</option>
+                                   <option value="2">Practice</option>
+                               </select>
+                               <div id="random_exerciseTypeError" class="text-danger"></div>
+                           </div>
+                            <div id="random_gradeCategoryForm" style="display: none">
+                                <label style="display: block;text-align: left">Grade Category:</label>
+                                <select id="random_gradeCategory" name="random_gradeCategory" style="display: none; margin-top: 10px;" onchange="toggleRandomGradeCategory()">
+                                    <option value="0">Choose grade category</option>
+                                    <c:forEach var="o" items="${listGradeCategory}">
+                                        <option value="${o.id}">${o.name}</option>
+                                    </c:forEach>
+                                </select>
+                                <div id="random_gradeCategoryError" class="text-danger"></div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Create" class="btn btn-success bb">
+                            <input type="submit" value="Create" class="btn btn-success bb" style="background-color: #FF6600">
                         </div>
                     </div>
                 </form>

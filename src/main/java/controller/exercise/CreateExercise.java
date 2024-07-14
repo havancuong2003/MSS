@@ -73,22 +73,22 @@ public class CreateExercise extends HttpServlet {
             if (type_exercise.equals("0")) {
                 System.out.println("chay toi phan trang");
                 count = edao.getTotalExerciseByGroupId(group_id);
-                endPage = count / 5;
+                endPage = count / 10;
                 listExercise = edao.pagingExerciseByGroupId(index, group_id);
             } else {
                 count = edao.getTotalExerciseByGetScore(group_id,type_exercise);
-                endPage = count / 5;
+                endPage = count / 10;
                 listExercise = edao.pagingExerciseByGetScore(index, group_id, type_exercise);
             }
         } else {
             request.setAttribute("searchExist", 1);
             search = search.trim();
             count = edao.getTotalExerciseBySearch(group_id, search);
-            endPage = count / 5;
+            endPage = count / 10;
             listExercise = edao.pagingExerciseBySearch(index, group_id, search);
         }
 
-        if (count % 5 != 0) {
+        if (count % 10 != 0) {
             endPage++;
         }
         List<String> exerciseNames = listExercise.stream()
@@ -123,13 +123,15 @@ public class CreateExercise extends HttpServlet {
         String randomExercise = request.getParameter("random");
         String status = request.getParameter("status");
         String exerciseId = request.getParameter("exerciseId");
-        String group_id = request.getParameter("groupId");
+//        String group_id = request.getParameter("groupId");
+        String group_id = request.getParameter("group_id");
         System.out.println("Exercise ID: " + exerciseId);
         String course_id = request.getParameter("course_id");
         course_id = "1";
         String teacher_id = request.getParameter("teacher_id");
         teacher_id = "t1";
         if(status != null && status.equals("view")){
+            group_id = request.getParameter("groupId");
             Exercise exercise = dao.getExerciseById(exerciseId);
             JsonObject json = new JsonObject();
             json.addProperty("exercise_name", exercise.getExerciseName());
@@ -293,10 +295,10 @@ public class CreateExercise extends HttpServlet {
                     int index = Integer.parseInt(indexPage);
                     QuestionDBContext qdao = new QuestionDBContext();
                     count = qdao.getTotalQuestion(exercise_id);
-                    endPage = count/5;
+                    endPage = count/10;
                     listQuestion = qdao.pagingQuestionByExercise_id(index, exercise_id);
                     List<Question> listQuestionOfExerciseId = qdao.getListQuestionByExerciseId(exercise_id);
-                    if(count % 5 != 0){
+                    if(count % 10 != 0){
                         endPage++;
                     }
                     Cookie [] arrE = request.getCookies();

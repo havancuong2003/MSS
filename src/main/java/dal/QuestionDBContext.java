@@ -35,12 +35,12 @@ public class QuestionDBContext extends DBContext<Question> {
                 "JOIN course c ON q.course_id = c.id " +
                 "WHERE q.exercise_id = ? " +
                 "ORDER BY q.question_id DESC " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, exercise_id);
-            statement.setInt(2, (index-1)*5);
+            statement.setInt(2, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Question q = new Question();
@@ -89,13 +89,13 @@ public class QuestionDBContext extends DBContext<Question> {
                 "JOIN course c ON q.course_id = c.id " +
                 "WHERE q.type_question = ? AND q.exercise_id = ? " +
                 "ORDER BY q.question_id " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, type_question);
             statement.setString(2, exercise_id);
-            statement.setInt(3, (index - 1) * 5);
+            statement.setInt(3, (index - 1) * 10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Question q = new Question();
@@ -378,12 +378,12 @@ public class QuestionDBContext extends DBContext<Question> {
                 "JOIN course c ON q.course_id = c.id " +
                 "WHERE q.question like ? AND q.exercise_id = ? " +
                 "ORDER BY q.question_id " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, "%" + question + "%");
             statement.setString(2, exercise_id);
-            statement.setInt(3, (index - 1) * 5);
+            statement.setInt(3, (index - 1) * 10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Question q = new Question();
