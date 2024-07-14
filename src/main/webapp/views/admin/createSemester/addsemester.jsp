@@ -419,12 +419,12 @@
                                 </div>
                             </div>
                             <div class="form-group mt-3">
-                                <button
-                                        type="button"
-                                        class="btn btn-secondary"
-                                >
-                                    Cancel
-                                </button>
+<%--                                <button--%>
+<%--                                        type="button"--%>
+<%--                                        class="btn btn-secondary"--%>
+<%--                                >--%>
+<%--                                    Cancel--%>
+<%--                                </button>--%>
                                 <button
                                         type="reset"
                                         class="btn btn-primary"
