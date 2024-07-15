@@ -85,13 +85,17 @@ public class SemesterDBContext extends DBContext<Semester> {
     }
 
     public void updateSemester(Semester semester) {
-
         try {
             String sql = "UPDATE semester SET detail = ?, start = ?, end = ?, isCreate = ? WHERE id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, semester.getDetail());
-            stm.setString(2,   semester.getStart().toString()); ;
-            stm.setString(3,   semester.getEnd().toString());
+
+            // Convert java.util.Date to java.sql.Date
+            java.sql.Date sqlStartDate = new java.sql.Date(semester.getStart().getTime());
+            java.sql.Date sqlEndDate = new java.sql.Date(semester.getEnd().getTime());
+
+            stm.setDate(2, sqlStartDate);
+            stm.setDate(3, sqlEndDate);
             stm.setInt(4, semester.getIsCreate());
             stm.setInt(5, semester.getId());
             stm.executeUpdate();
@@ -100,6 +104,7 @@ public class SemesterDBContext extends DBContext<Semester> {
             Logger.getLogger(SemesterDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 
     public ArrayList<Semester> getSemesterForStudent(String sid) {
         ArrayList<Semester> semesters = new ArrayList<>();

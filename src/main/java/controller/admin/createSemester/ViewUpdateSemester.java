@@ -43,34 +43,28 @@ public class ViewUpdateSemester extends HttpServlet {
         String endParam = req.getParameter("endDate");
         String isCreateParam = req.getParameter("isCreate");
 
-
-
-        // Validate parameters
+// Validate parameters
         boolean hasErrors = false;
         StringBuilder errorMsg = new StringBuilder();
 
-        // Initialize variables for dates
-        Date start = null;
-        Date end = null;
+// Initialize variables for dates
+        java.sql.Date start = null;
+        java.sql.Date end = null;
         int isCreate = 0;
 
-        // Validate and parse parameters
+// Validate and parse parameters
         if (detail == null || detail.trim().isEmpty()) {
             errorMsg.append("Detail is required. ");
             hasErrors = true;
         }
 
         try {
-            SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd");
-//            start = Date.valueOf(startParam);
-//            end = Date.valueOf(endParam);
-            start = sdf.parse(startParam);
-            end = sdf.parse(endParam);
-        } catch (IllegalArgumentException e) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            start = new java.sql.Date(sdf.parse(startParam).getTime());
+            end = new java.sql.Date(sdf.parse(endParam).getTime());
+        } catch (ParseException e) {
             errorMsg.append("Invalid date format. ");
             hasErrors = true;
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
 
         try {
@@ -80,8 +74,8 @@ public class ViewUpdateSemester extends HttpServlet {
             hasErrors = true;
         }
 
-        // Validate date sequence
-        if (start != null  && end != null) {
+// Validate date sequence
+        if (start != null && end != null) {
             if (start.after(end)) {
                 errorMsg.append("Dates are not in the correct sequence. ");
                 hasErrors = true;
@@ -99,12 +93,12 @@ public class ViewUpdateSemester extends HttpServlet {
             return;
         }
 
-        // Tạo đối tượng Semester
-//        Semester semester = new Semester(id, detail, start, end, isCreate,0);
-        Semester semester = new Semester(id, detail, start, end, isCreate,0);
+// Tạo đối tượng Semester
+        Semester semester = new Semester(id, detail, new java.util.Date(start.getTime()), new java.util.Date(end.getTime()), isCreate, 0);
 
         SemesterDBContext con = new SemesterDBContext();
         con.updateSemester(semester);
+
         doGet(req, resp);
     }
 }
