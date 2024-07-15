@@ -94,14 +94,28 @@
             border: 1px solid #ddd;
             border-radius: 3px;
             background-color: #f9f9f9;
-        }
+        } .expired {
+              display: none;
+          }
     </style>
     </style>
 </head>
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<h1>${validDate}</h1>
+<div
+        id="expired"
+        class="${validDate eq 'true' ? 'expired' : 'ab'}"
+        style="margin-top: 120px"
+>
+    <h1>The registration period has expired or has not yet arrived</h1>
 
-<div class="container">
+    <c:if test="${requestScope.timePeriods != 'null'}">
+        <h1>Start at  ${requestScope.timePeriods.startChangeClass} and end at ${requestScope.timePeriods.endChangeClass}</h1>
+
+    </c:if>
+</div>
+<div  class="${validDate eq 'true' ? 'ab' : 'expired'} container">
 
     <div class="header"></div>
     <h2>Change Request</h2>

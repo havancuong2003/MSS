@@ -14,16 +14,45 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header {
+            top: 0;
+        }
+
+        footer {
+            bottom: 0;
+        }
+
+        .content {
+            margin-top: 130px; /* để header không che khuất nội dung */
+            margin-bottom: 70px; /* để footer không che khuất nội dung */
+            padding: 20px;
+            text-align: center;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
         }
 
         th, td {
             text-align: left;
-            padding: 8px;
+            padding: 12px;
             border: 1px solid #ddd;
         }
 
@@ -31,64 +60,106 @@
             background-color: #f2f2f2;
         }
 
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #f2f2f2;
-            padding: 10px;
-            text-align: center;
-        }
-
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #f2f2f2;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .content {
-            padding-top: 50px; /* để header không che khuất nội dung */
-            padding-bottom: 50px; /* để footer không che khuất nội dung */
-            margin-top: 140px;
-        }
-
-        .info {
-            position: absolute;
-            top: 150px;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-        header a {
-            position: absolute;
-            left: 20px;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 20px;
+        .info-btn {
+            padding: 8px 16px;
             background-color: #0056b3;
-            border-radius: 5px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
             transition: background-color 0.3s;
         }
 
-        header a:hover {
+        .info-btn:hover {
             background-color: #003d80;
-            color:white;
+        }
+
+        /* CSS cho Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 600px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h1, h2 {
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        .info {
+            margin: 20px 0;
+        }
+
+        .modal-content p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .modal-content p span {
+            display: inline-block;
+            min-width: 120px;
+            font-weight: bold;
+        }
+
+        .modal-content p span.value {
+            font-weight: normal;
+            display: inline-block;
+            width: calc(100% - 130px);
         }
     </style>
 </head>
 <body>
 <header>
-    <a href="${role}/groupList">Back</a>
+    <a href="${role}/dashboard" style="color: white; text-decoration: none;">Back</a>
     <h1>Thông tin lớp học</h1>
-
 </header>
 <div class="content">
     <div class="info">
-        <p>Tên nhóm: <span id="group-name"></span></p>
-        <p>Giáo viên: <span id="teacher"></span></p>
+        <p>Tên nhóm: <span id="group-name">${group.name}</span></p>
+        <p>Giáo viên: <span id="teacher">${group.teacher.account.fullname}</span></p>
     </div>
 
     <h2>Danh sách sinh viên</h2>
@@ -105,11 +176,20 @@
         <tbody id="student-list">
         <c:forEach items="${group.students}" var="s" varStatus="loop">
             <tr>
-                <td>${loop.index}</td>
-                <td>${s.account.avatar}</td>
+                <td>${loop.index + 1}</td>
+                <td><img src="${s.account.avatar}" alt="Avatar" width="50" height="50"></td>
                 <td>${s.account.username}</td>
                 <td>
-                    <button>Check info</button>
+                    <button
+                            class="info-btn"
+                            data-username="${s.account.username}"
+                            data-fullname="${s.account.fullname}"
+                            data-phone="${s.account.phone}"
+                            data-email="${s.account.email}"
+                            data-dob="${s.account.dob}"
+                            data-address="${s.account.address}"
+                            data-gender="${s.account.gender}"
+                    >Check info</button>
                 </td>
             </tr>
         </c:forEach>
@@ -117,37 +197,54 @@
     </table>
 </div>
 
+<!-- Modal -->
+<div id="studentModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Thông tin sinh viên</h2>
+        <p><span>Username:</span> <span id="modal-username" class="value"></span></p>
+        <p><span>Full name:</span> <span id="modal-fullname" class="value"></span></p>
+        <p><span>Phone:</span> <span id="modal-phone" class="value"></span></p>
+        <p><span>Email:</span> <span id="modal-email" class="value"></span></p>
+        <p><span>Date of Birth:</span> <span id="modal-dob" class="value"></span></p>
+        <p><span>Address:</span> <span id="modal-address" class="value"></span></p>
+        <p><span>Gender:</span> <span id="modal-gender" class="value"></span></p>
+    </div>
+</div>
 
 <footer>
     <h2>Footer</h2>
 </footer>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById("studentModal");
+        var span = document.getElementsByClassName("close")[0];
 
-<%--<script>--%>
-<%--    // Lấy dữ liệu từ database và hiển thị lên trang web--%>
-<%--    const groupName = 'Tên nhóm từ database';--%>
-<%--    const teacher = 'Giáo viên từ database';--%>
-<%--    const students = [--%>
-<%--        { id: 1, name: 'Sinh viên 1', image: 'image1.png' },--%>
-<%--        { id: 2, name: 'Sinh viên 2', image: 'image2.png' },--%>
-<%--        { id: 3, name: 'Sinh viên 3', image: 'image3.png' },--%>
-<%--    ];--%>
+        document.querySelectorAll('.info-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                document.getElementById('modal-username').textContent = this.getAttribute('data-username');
+                document.getElementById('modal-fullname').textContent = this.getAttribute('data-fullname');
+                document.getElementById('modal-phone').textContent = this.getAttribute('data-phone');
+                document.getElementById('modal-email').textContent = this.getAttribute('data-email');
+                document.getElementById('modal-dob').textContent = this.getAttribute('data-dob');
+                document.getElementById('modal-address').textContent = this.getAttribute('data-address');
+                document.getElementById('modal-gender').textContent = this.getAttribute('data-gender') == 1 ? 'Male' : 'Female';
+                modal.style.display = "flex";
+            });
+        });
 
-<%--    document.getElementById('group-name').innerHTML = groupName;--%>
-<%--    document.getElementById('teacher').innerHTML = teacher;--%>
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
 
-<%--    const studentList = document.getElementById('student-list');--%>
-<%--    students.forEach((student) => {--%>
-<%--        const row = document.createElement('tr');--%>
-<%--        row.innerHTML = `--%>
-<%--        <td>${student.id}</td>--%>
-<%--        <td><img src="${student.image}" alt="Hình ảnh sinh viên"></td>--%>
-<%--        <td>${student.name}</td>--%>
-<%--        <td><button>Xem thông tin</button></td>--%>
-<%--      `;--%>
-<%--        studentList.appendChild(row);--%>
-<%--    });--%>
-<%--</script>--%>
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+</script>
 
 </body>
 </html>

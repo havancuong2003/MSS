@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public class GroupDBContext extends DBContext<Group> {
     private final CourseDBContext courseDBContext = new CourseDBContext();
     private final MajorDBContext majorDBContext = new MajorDBContext();
+
+
     public ArrayList<Group> getGroupForStudentBySidAndSemester(String sid, int semesterID) {
         ArrayList<Group> groups = new ArrayList<>();
         try {
@@ -402,8 +404,10 @@ public class GroupDBContext extends DBContext<Group> {
 
     public static void main(String[] args) {
         GroupDBContext dao = new GroupDBContext();
-        Teacher teacher =   dao.getTeacherByID("t1");
-        System.out.println(teacher.getUsername());
+        Group groupInfo = dao.getGroupInfo(1);
+        for (Student s : groupInfo.getStudents()) {
+            System.out.println(s.getAccount());
+        }
     }
 
 }
