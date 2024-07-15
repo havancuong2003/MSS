@@ -379,7 +379,7 @@
                 categories[category].forEach(function (gradeItem) {
                     var grade = students[studentId].grades[gradeItem.item];
                     grade = (grade === 0 || grade) ? grade : '';
-                    tableBody += '<td><input type="text" name="marks-' + studentId + '-' + gradeItem.item + '-' + gid + '" value="' + grade + '"></td>';
+                    tableBody += '<td><input type="text" name="marks-' + studentId + '-' + gradeItem.item + '-' + gid + '" value="' + grade + '" disabled></td>';
                 });
             }
             tableBody += '</tr>';

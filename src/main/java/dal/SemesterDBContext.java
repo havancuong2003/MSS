@@ -50,6 +50,21 @@ public class SemesterDBContext extends DBContext<Semester> {
         return semesters;
     }
 
+    public int getSemesterByGid(int gid) {
+        try {
+            String sql = "select s.id from swp391.group g inner join semester s on g.semester_id = s.id where g.id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, gid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
     @Override
     public ArrayList<Semester> list() {
         return null;
@@ -88,14 +103,15 @@ public class SemesterDBContext extends DBContext<Semester> {
         }
         return semester;
     }
-    public  int getCurrentSemester(){
-        String sql ="SELECT id FROM semester WHERE ? BETWEEN `start` AND `end`";
+
+    public int getCurrentSemester() {
+        String sql = "SELECT id FROM semester WHERE ? BETWEEN `start` AND `end`";
         Date now = new Date();
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setDate(1, new java.sql.Date(now.getTime()));
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getInt("id");
             }
         } catch (SQLException e) {
@@ -103,9 +119,10 @@ public class SemesterDBContext extends DBContext<Semester> {
         }
         return 0;
     }
-    public int getNextSemester(){
+
+    public int getNextSemester() {
         int currentSemesterID = getCurrentSemester();
-        String sql ="SELECT id \n" +
+        String sql = "SELECT id \n" +
                 "FROM semester \n" +
                 "WHERE id > ?\n" +
                 "ORDER BY id \n" +
@@ -115,7 +132,7 @@ public class SemesterDBContext extends DBContext<Semester> {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, currentSemesterID);
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getInt("id");
             }
         } catch (SQLException e) {
@@ -123,8 +140,9 @@ public class SemesterDBContext extends DBContext<Semester> {
         }
         return 0;
     }
-    public void setTotalCourseRegisterForNextSemester(int number,int semesterID){
-        String sql ="UPDATE `semester` SET `totalCourse` = ? WHERE (`id` = ?);\n";
+
+    public void setTotalCourseRegisterForNextSemester(int number, int semesterID) {
+        String sql = "UPDATE `semester` SET `totalCourse` = ? WHERE (`id` = ?);\n";
 
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -139,9 +157,9 @@ public class SemesterDBContext extends DBContext<Semester> {
     public static void main(String[] args) throws SQLException {
         SemesterDBContext s = new SemesterDBContext();
         Semester ss = s.get(1);
-        System.out.println(ss.getId()+" "+ss.getStart()+" "+ss.getEnd()+" "+ss.getDetail()+" "+ss.getNextSemesterID()+"\n"+ss.getTotalCourseRegisterForNextSemester());
+        System.out.println(ss.getId() + " " + ss.getStart() + " " + ss.getEnd() + " " + ss.getDetail() + " " + ss.getNextSemesterID() + "\n" + ss.getTotalCourseRegisterForNextSemester());
     }
 
 
-    }
+}
 

@@ -120,6 +120,21 @@
             transition: background-color 0.3s ease;
         }
 
+        li a:hover {
+            background-color: #e6f0ff;
+        }
+
+        li a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f0f8ff;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
         ul li a:hover {
             background-color: #e6f0ff;
         }
@@ -205,9 +220,9 @@
     </ul>
     <input type="hidden" id="semesterId" name="semesterId" value="">
     <h2>Group List</h2>
-    <div id="groupsList">
+    <ul id="groupsList">
         <!-- Group list will be populated here -->
-    </div>
+    </ul>
     <input type="hidden" id="gid" name="gid" value="">
     <div id="studentGrade" style="display: none">
         <h2>Attendance Report</h2>

@@ -10,13 +10,15 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        SemesterDBContext sdb = new SemesterDBContext();
-        System.out.println(sdb.getSemesterForTeacher("t1").size());
+
+       GroupDBContext gdb = new GroupDBContext();
+        System.out.println(gdb.lockedGroup(1));
+        }
      }
 
 
 
-}
+
 
 
 
