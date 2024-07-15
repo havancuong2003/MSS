@@ -44,13 +44,13 @@ public class ChangeTeacherSession extends HttpServlet {
             if(!teacherDBContext.checkTeacherExist(targetTeacher)){
                 throw new Exception("Teacher " + targetTeacher + " not exist");
             }
-            else if(!teacherDBContext.checkTeacherLearnThisSession(currentTeacher, date, Integer.parseInt(slot))){
+            else if(!teacherDBContext.checkTeacherTeachThisSession(currentTeacher, date, Integer.parseInt(slot))){
                 throw new Exception("Teacher " + currentTeacher + " don't learn on " + date + " at slot " + slot);
             }
-            else if(teacherDBContext.checkTeacherLearnThisSession(targetTeacher, date, Integer.parseInt(slot))){
+            else if(teacherDBContext.checkTeacherTeachThisSession(targetTeacher, date, Integer.parseInt(slot))){
                throw new Exception("Teacher " + targetTeacher + " already learn on " + date + " at slot " + slot);
             }
-            else if(!teacherDBContext.checkTeacherCanLearnCourse(currentTeacher,targetTeacher, Integer.parseInt(slot), date)){
+            else if(!teacherDBContext.checkTeacherCanTeachCourse(currentTeacher,targetTeacher, Integer.parseInt(slot), date)){
                 throw new Exception("Teacher " + targetTeacher + " can't learn course " + req.getParameter("course"));
             }
 

@@ -1,7 +1,6 @@
 package dal;
 
 import model.Account;
-import model.Course;
 import model.MarkData;
 import model.Teacher;
 
@@ -71,9 +70,9 @@ public class TeacherDBContext extends DBContext<MarkData>{
     //- -------------------------------------------------------------------------------------------------------------
     public static void main(String[] args) {
         TeacherDBContext t = new TeacherDBContext();
-        System.out.println(t.checkTeacherCanLearnCourse("t1","t2",1,"2024-06-10"));
+        System.out.println(t.checkTeacherCanTeachCourse("t1","t2",1,"2024-06-10"));
     }
-    public boolean checkTeacherLearnThisSession(String teacherid,String date,int slotID) {
+    public boolean checkTeacherTeachThisSession(String teacherid, String date, int slotID) {
         String sql = "select * from `session` where teacher_id =? and date =? and slot_id = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -90,7 +89,7 @@ public class TeacherDBContext extends DBContext<MarkData>{
         return false;
     }
 
-    public boolean checkTeacherCanLearnCourse(String currentTeacher,String targetTeacher, int slotID,String date) {
+    public boolean checkTeacherCanTeachCourse(String currentTeacher, String targetTeacher, int slotID, String date) {
         String sql ="\n" +
                 "select * from teacher_course where teacher_id = ? and course_id = \n" +
                 "(select g.course_id from `session` s join `group` g on s.group_id = g.id where s.id = \n" +

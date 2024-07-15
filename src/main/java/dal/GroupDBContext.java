@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class GroupDBContext extends DBContext<Group> {
     private final CourseDBContext courseDBContext = new CourseDBContext();
-
+    private final MajorDBContext majorDBContext = new MajorDBContext();
     public ArrayList<Group> getGroupForStudentBySidAndSemester(String sid, int semesterID) {
         ArrayList<Group> groups = new ArrayList<>();
         try {
@@ -106,7 +106,7 @@ public class GroupDBContext extends DBContext<Group> {
     }
 
     public Student getStudentByID(String id) {
-        String sql = "select id,acc_id,current_term from student where id = ?";
+        String sql = "select id,acc_id,current_term,major_id from student where id = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, id);
@@ -116,6 +116,7 @@ public class GroupDBContext extends DBContext<Group> {
                 student.setId(rs.getString("id"));
                 student.setAccount(getAccountByID(rs.getInt("acc_id")));
                 student.setCurrentTerm(rs.getString("current_term"));
+                student.setMajor(majorDBContext.get(rs.getInt("major_id")));
                 return student;
             }
         } catch (SQLException e) {

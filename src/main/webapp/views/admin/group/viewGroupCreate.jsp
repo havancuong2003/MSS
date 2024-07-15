@@ -103,7 +103,13 @@
     <h1>Header</h1>
 </div>
 <div class="contain">
-    <h1>List groups create for ${nextSemester.detail}</h1>
+
+    <label for="semesters"><h1>Group Details</h1></label>
+    <select id="semesters">
+        <c:forEach items="${semesters}" var="s">
+            <option value="${s.id}">${s.detail}</option>
+        </c:forEach>
+    </select>
     <table>
         <thead>
         <tr>
@@ -126,5 +132,33 @@
 <footer>
     <p>Footer</p>
 </footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#semesters').change(function() {
+            var semesterId = $(this).val();
+            $.ajax({
+                type: 'POST',
+                url: 'viewGroup',
+                data: { semesterId: semesterId },
+                success: function(data) {
+                    // Xử lý dữ liệu trả về và render lại table
+                    var tableBody = '';
+                    $.each(data.groups, function(index, group) {
+                        tableBody += '<tr>' +
+                            '<td>' + group.id + '</td>' +
+                            '<td>' + group.name + '</td>' +
+                            '<td>' + group.course.code + '</td>' +
+                            '</tr>';
+
+                    });
+                    $('tbody').html(tableBody);
+                    console.log("data: ", data);
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
