@@ -277,6 +277,9 @@
         <!-- Table content will be loaded here by AJAX -->
         </tbody>
     </table>
+    <div>
+        <jsp:include page="../admin/changeSessionTeacher/changeTeacherSession.jsp" />
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

@@ -17,6 +17,7 @@ public class Account implements IEntity {
     private Blob avatar;
     private String status;
 
+    private Role role;
 
 
 
@@ -130,4 +131,12 @@ public class Account implements IEntity {
     public String getStatus() { return status; }
 
     public void setStatus(String status) { this.status = status; }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

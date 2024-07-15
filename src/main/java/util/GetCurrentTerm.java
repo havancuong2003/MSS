@@ -1,5 +1,9 @@
 package util;
 
+import dal.SemesterDBContext;
+
 public class GetCurrentTerm {
-    public static int currentTerm = 1;
+    public static final SemesterDBContext dao = new SemesterDBContext();
+
+    public static int currentSemester = dao.getCurrentSemester();
 }

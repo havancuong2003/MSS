@@ -1,9 +1,6 @@
 package dal;
 
-import model.Account;
-import model.Group;
-import model.Student;
-import model.Teacher;
+import model.*;
 
 import java.sql.*;
 import java.sql.SQLException;
@@ -11,6 +8,59 @@ import java.util.ArrayList;
 
 public class GroupDBContext extends DBContext<Group> {
     private final CourseDBContext courseDBContext = new CourseDBContext();
+
+    public ArrayList<Group> getGroupForStudentBySidAndSemester(String sid, int semesterID) {
+        ArrayList<Group> groups = new ArrayList<>();
+        try {
+        String sql = "select gr.course_id, gr.id, gr.name, c.code, c.detail  from swp391.group gr inner join enrollment en on en.group_id = gr.id \n" +
+                "inner join semester se on se.id = gr.semester_id\n" +
+                "inner join course c on c.id = gr.course_id\n" +
+                "where en.student_id = ? and se.id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, sid);
+            stm.setInt(2, semesterID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Group g =new Group();
+                Course c = new Course();
+                c.setId(rs.getInt("course_id"));
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                g.setId(rs.getInt("id"));
+                g.setName(rs.getString("name"));
+                g.setCourse(c);
+                groups.add(g);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return groups;
+    }
+
+    public ArrayList<Group> getGroupForTeacherByTidSemester(String tid, int semesterID) {
+        ArrayList<Group> groups = new ArrayList<>();
+        try {
+            String sql = "select g.id, g.name, c.code, c.detail from swp391.group g inner join course c on c.id = g.course_id\n" +
+                    "where g.PIC = ? and g.semester_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, tid);
+            stm.setInt(2, semesterID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Group g =new Group();
+                Course c = new Course();
+                c.setCode(rs.getString("code"));
+                c.setDetail(rs.getString("detail"));
+                g.setId(rs.getInt("id"));
+                g.setName(rs.getString("name"));
+                g.setCourse(c);
+                groups.add(g);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return groups;
+    }
 
     @Override
     public ArrayList<Group> list() {
@@ -227,7 +277,7 @@ public class GroupDBContext extends DBContext<Group> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 t = new Teacher();
-                t.setId(rs.getInt("id"));
+                t.setTid(rs.getString("id"));
                 t.setAccount(getAccountByID(rs.getInt("acc_id")));
                 return t;
             }
@@ -349,5 +399,10 @@ public class GroupDBContext extends DBContext<Group> {
         return list;
     }
 
+    public static void main(String[] args) {
+        GroupDBContext dao = new GroupDBContext();
+        Teacher teacher =   dao.getTeacherByID("t1");
+        System.out.println(teacher.getUsername());
+    }
 
 }

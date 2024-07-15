@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Semester;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 
 @WebServlet("/admin/viewupdatesemester")
@@ -59,11 +61,16 @@ public class ViewUpdateSemester extends HttpServlet {
         }
 
         try {
-            start = Date.valueOf(startParam);
-            end = Date.valueOf(endParam);
+            SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd");
+//            start = Date.valueOf(startParam);
+//            end = Date.valueOf(endParam);
+            start = sdf.parse(startParam);
+            end = sdf.parse(endParam);
         } catch (IllegalArgumentException e) {
             errorMsg.append("Invalid date format. ");
             hasErrors = true;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
 
         try {
@@ -93,7 +100,8 @@ public class ViewUpdateSemester extends HttpServlet {
         }
 
         // Tạo đối tượng Semester
-        Semester semester = new Semester(id, detail, start, end, isCreate);
+//        Semester semester = new Semester(id, detail, start, end, isCreate,0);
+        Semester semester = new Semester(id, detail, start, end, isCreate,0);
 
         SemesterDBContext con = new SemesterDBContext();
         con.updateSemester(semester);

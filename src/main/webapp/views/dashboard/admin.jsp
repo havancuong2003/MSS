@@ -204,6 +204,7 @@
             <a href="createGroup"><i class="fas fa-users-cog"></i> Create Group</a>
             <a href="createSchedule"><i class="fas fa-calendar-plus"></i> Create Schedule</a>
         </div>
+        <a href="manage-application"><i class="fas fa-tasks"></i> Manage Application</a>
     </div>
     <div class="content">
         <!-- Nội dung dashboard -->

@@ -67,9 +67,9 @@ public class TestDBContext extends DBContext<Account> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Question question = new Question();
-                question.setQuestionid(rs.getInt("question_id"));
+                question.setQuestion_id(rs.getInt("question_id"));
                 question.setQuestion(rs.getString("question"));
-                question.setTypequestion(rs.getInt("type_question"));
+                question.setType_question(rs.getInt("type_question"));
                 questions.add(question);
             }
         }
@@ -86,9 +86,9 @@ public class TestDBContext extends DBContext<Account> {
         ArrayList<Question> questionlist = getAllQuestionByExerciseIdAndCourseId(exerciseId, courseId);
         for (Question question : questionlist) {
             QuestionDetail questionDetail = new QuestionDetail();
-            questionDetail.setQuestionId(question.getQuestionid());
+            questionDetail.setQuestionId(question.getQuestion_id());
             questionDetail.setQuestionDetail(question.getQuestion());
-            ArrayList<Answer> answerlist = getAllAnswerByQuestionId(question.getQuestionid());
+            ArrayList<Answer> answerlist = getAllAnswerByQuestionId(question.getQuestion_id());
             if(answerlist.size()> 3){
                 questionDetail.setAnswers(answerlist);
                 questionDetailList.add(questionDetail);
@@ -198,7 +198,7 @@ public class TestDBContext extends DBContext<Account> {
                 Question question = new Question();
                 Answer answer = new Answer();
                 question.setQuestion(rs.getString(5));
-                question.setQuestionid(rs.getInt(2));
+                question.setQuestion_id(rs.getInt(2));
                 questionSubmission.setQuestion(question);
                 answer.setAnswerid(rs.getInt(3));
                 questionSubmission.setAnswer(answer);

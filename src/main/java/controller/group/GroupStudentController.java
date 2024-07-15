@@ -8,17 +8,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
+import util.GetCurrentTerm;
 
 import java.io.IOException;
 
 @WebServlet("/student/groupList")
 public class GroupStudentController extends HttpServlet {
+    private  final int currentSemester = GetCurrentTerm.currentSemester;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         GroupDBContext groupDBContext = new GroupDBContext();
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("account");
-        req.setAttribute("groups", groupDBContext.getGroupForStudent(1, account.getUsername()));
+        req.setAttribute("groups", groupDBContext.getGroupForStudent(currentSemester, account.getUsername()));
         req.getRequestDispatcher("../views/group/groupStudent.jsp").forward(req, resp);
     }
 

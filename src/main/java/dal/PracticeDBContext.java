@@ -66,9 +66,9 @@ public class PracticeDBContext  extends DBContext<Account>{
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Question question = new Question();
-                question.setQuestionid(rs.getInt("question_id"));
+                question.setQuestion_id(rs.getInt("question_id"));
                 question.setQuestion(rs.getString("question"));
-                question.setTypequestion(rs.getInt("type_question"));
+                question.setType_question(rs.getInt("type_question"));
                 questions.add(question);
             }
         }
@@ -83,9 +83,9 @@ public class PracticeDBContext  extends DBContext<Account>{
         ArrayList<Question> questionlist = getAllQuestionByExerciseIdAndCourseId(exerciseId, courseId);
         for (Question question : questionlist) {
             QuestionDetail questionDetail = new QuestionDetail();
-            questionDetail.setQuestionId(question.getQuestionid());
+            questionDetail.setQuestionId(question.getQuestion_id());
             questionDetail.setQuestionDetail(question.getQuestion());
-            ArrayList<Answer> answerlist = getAllAnswerByQuestionId(question.getQuestionid());
+            ArrayList<Answer> answerlist = getAllAnswerByQuestionId(question.getQuestion_id());
             if(answerlist.size()> 3){
                 questionDetail.setAnswers(answerlist);
                 questionDetailList.add(questionDetail);
@@ -117,11 +117,13 @@ public class PracticeDBContext  extends DBContext<Account>{
                 Exercise exercise = new Exercise();
                 exercise.setExerciseId(rs.getInt(1));
                 exercise.setExerciseName(rs.getString(2));
-                exercise.setTimeStart(rs.getDate(3));
-                exercise.setTimeEnd(rs.getDate(4));
+//                exercise.setTimeStart(rs.getDate(3));
+//                exercise.setTimeEnd(rs.getDate(4));
                 exercise.setStatus(rs.getInt(5));
-                exercise.setTeacherId(rs.getString(6));
-                exercise.setCourseId(rs.getInt(7));
+//                exercise.setTeacher(rs.getString(6));
+                Course course = new Course();
+                course.setId(rs.getInt(7));
+                exercise.setCourse(course);
                 listExercise.add(exercise);
             }
         }

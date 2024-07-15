@@ -26,7 +26,7 @@ public class ViewHistoryTest extends HttpServlet {
         TestDBContext db = new TestDBContext();
         ArrayList<QuestionSubmission> questionSubmissions = db.getAllQuestionSubmissionByHistory(historyId);
         for (QuestionSubmission question: questionSubmissions ){
-            ArrayList<Answer> ans = db.getAllAnswerByQuestionId(question.getQuestion().getQuestionid());
+            ArrayList<Answer> ans = db.getAllAnswerByQuestionId(question.getQuestion().getQuestion_id());
             question.setAnswers(ans);
         }
         int score = db.getScoreByHistory(historyId);

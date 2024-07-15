@@ -4,14 +4,18 @@ package model;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class Exercise {
+public class Exercise implements IEntity {
     private int exerciseId;
     private String exerciseName;
-    private Date timeStart;
-    private Date timeEnd;
     private int status;
-    private String teacherId;
-    private int courseId;
+    private int question_number;
+    private float exercise_time;
+    private int get_score;
+    private int group_id;
+    private int grade_category;
+    private int isRandom;
+    private Teacher teacher;
+    private Course course;
 
     public ArrayList<History> getHistories() {
         return histories;
@@ -26,14 +30,60 @@ public class Exercise {
     public Exercise() {
     }
 
-    public Exercise(int exerciseId, String exerciseName, Date timeStart, Date timeEnd, int status, String teacherId, int courseId) {
-        this.exerciseId = exerciseId;
-        this.exerciseName = exerciseName;
-        this.timeStart = timeStart;
-        this.timeEnd = timeEnd;
-        this.status = status;
-        this.teacherId = teacherId;
-        this.courseId = courseId;
+    public int getQuestion_number() {
+        return question_number;
+    }
+
+    public void setQuestion_number(int question_number) {
+        this.question_number = question_number;
+    }
+
+    public float getExercise_time() {
+        return exercise_time;
+    }
+
+    public void setExercise_time(float exercise_time) {
+        this.exercise_time = exercise_time;
+    }
+
+    public int getGet_score() {
+        return get_score;
+    }
+
+    public void setGet_score(int get_score) {
+        this.get_score = get_score;
+    }
+
+    public int getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(int group_id) {
+        this.group_id = group_id;
+    }
+
+    public int getGrade_category() {
+        return grade_category;
+    }
+
+    public void setGrade_category(int grade_category) {
+        this.grade_category = grade_category;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public int getExerciseId() {
@@ -44,6 +94,21 @@ public class Exercise {
         this.exerciseId = exerciseId;
     }
 
+    public Exercise(int exerciseId, String exerciseName, int status, int question_number, float exercise_time, int get_score, int group_id, int grade_category, int isRandom, Teacher teacher, Course course, ArrayList<History> histories) {
+        this.exerciseId = exerciseId;
+        this.exerciseName = exerciseName;
+        this.status = status;
+        this.question_number = question_number;
+        this.exercise_time = exercise_time;
+        this.get_score = get_score;
+        this.group_id = group_id;
+        this.grade_category = grade_category;
+        this.isRandom = isRandom;
+        this.teacher = teacher;
+        this.course = course;
+        this.histories = histories;
+    }
+
     public String getExerciseName() {
         return exerciseName;
     }
@@ -52,20 +117,12 @@ public class Exercise {
         this.exerciseName = exerciseName;
     }
 
-    public Date getTimeStart() {
-        return timeStart;
+    public int getIsRandom() {
+        return isRandom;
     }
 
-    public void setTimeStart(Date timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public Date getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(Date timeEnd) {
-        this.timeEnd = timeEnd;
+    public void setIsRandom(int isRandom) {
+        this.isRandom = isRandom;
     }
 
     public int getStatus() {
@@ -76,19 +133,5 @@ public class Exercise {
         this.status = status;
     }
 
-    public String getTeacherId() {
-        return teacherId;
-    }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
-    }
-
-    public int getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
 }
