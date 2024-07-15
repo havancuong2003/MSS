@@ -94,9 +94,9 @@ public class AccountDBContext extends DBContext<Account> {
     }
 
     //    LinhNTD 5/22/2024
-    public void insertAccount(String username, String password, String fullname, String phone, String email, int role_id, int gender, String status) {
+    public int insertAccount(String username, String password, String fullname, String phone, String email, int role_id, int gender, String status) {
         String query = "INSERT INTO `account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, username);
             statement.setString(2, password);
             statement.setString(3, fullname);
@@ -106,21 +106,65 @@ public class AccountDBContext extends DBContext<Account> {
             statement.setInt(7, gender);
             statement.setString(8, status);
 
+            statement.executeUpdate();
 
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1); // Assuming accountid is the first column of the generated keys
+                } else {
+                    throw new SQLException("Creating account failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Indicate an error occurred
+        }
+    }
+
+    public String insertStudent(int acc_id, int current_term, int major_id) {
+        String query = "INSERT INTO `student` (acc_id`, `current_term`, `major_id`) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, acc_id);
+            statement.setInt(2, current_term);
+            statement.setInt(3, major_id);
+
+            statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getString(1); // Assuming `id` is the first column of the generated keys
+                } else {
+                    throw new SQLException("Creating student failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null; // Indicate an error occurred
+        }
+    }
+
+
+    public void updateAccountStatus(int accountId, String status) {
+        String query = "UPDATE `account` SET `status` = ? WHERE `account_id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, status);
+            statement.setInt(2, accountId);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+
     public ArrayList<Account> getAllAccount() {
         ArrayList<Account> accounts = new ArrayList<>();
         try {
-            String sql = "SELECT username, password, fullname, phone, email, gender, role_id FROM Account";
+            String sql = "SELECT account_id, username, password, fullname, phone, email, gender, role_id, status FROM Account";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
+                a.setId(rs.getInt("account_id"));
                 a.setUsername(rs.getString("username"));
                 a.setPassword(rs.getString("password"));
                 a.setFullname(rs.getString("fullname"));
@@ -128,6 +172,7 @@ public class AccountDBContext extends DBContext<Account> {
                 a.setEmail(rs.getString("email"));
                 a.setGender(rs.getBoolean("gender"));
                 a.setRole_id(rs.getInt("role_id"));
+                a.setStatus(rs.getString("status"));
                 accounts.add(a);
             }
         } catch (SQLException ex) {
@@ -139,12 +184,12 @@ public class AccountDBContext extends DBContext<Account> {
     public ArrayList<Account> getAllAccountByName(String searchName) {
         ArrayList<Account> accounts = new ArrayList<>();
         try {
-            String sql = "SELECT username, password, fullname, phone, email, gender, role_id FROM Account Where username like ?";
+            String sql = "SELECT account_id, username, password, fullname, phone, email, gender, role_id, status FROM Account Where username like '%"+ searchName +"%'";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1,    "%" + searchName + "%");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
+                a.setId(rs.getInt("account_id"));
                 a.setUsername(rs.getString("username"));
                 a.setPassword(rs.getString("password"));
                 a.setFullname(rs.getString("fullname"));
@@ -152,6 +197,7 @@ public class AccountDBContext extends DBContext<Account> {
                 a.setEmail(rs.getString("email"));
                 a.setGender(rs.getBoolean("gender"));
                 a.setRole_id(rs.getInt("role_id"));
+                a.setStatus(rs.getString("status"));
                 accounts.add(a);
             }
         } catch (SQLException ex) {

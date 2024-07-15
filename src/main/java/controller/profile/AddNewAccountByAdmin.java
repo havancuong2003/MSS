@@ -52,7 +52,8 @@ public class AddNewAccountByAdmin extends HttpServlet {
             request.getRequestDispatcher("views/profile/addnewaccount.jsp").forward(request, response);
         } else {
             try {
-                con.insertAccount(username, password, f_name, phone, email, role, gender, status);
+                int account_id = con.insertAccount(username, password, f_name, phone, email, role, gender, status);
+//                con.insertStudent(account_id, currentterm, majorid)
                 response.sendRedirect("list-account");
             } catch (Exception e) {
                 System.out.println(e);

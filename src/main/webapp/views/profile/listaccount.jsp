@@ -126,6 +126,27 @@
 <%--</div>--%>
 <%--</body>--%>
 <%--</html>--%>
+<style>
+    .form-container {
+        display: flex;
+        align-items: center;
+    }
+    .form-container select, .form-container button {
+        margin: 0 5px;
+        padding: 5px 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .form-container button {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+    .form-container button:hover {
+        background-color: #45a049;
+    }
+</style>
 <!DOCTYPE html>
 <html>
 <head>
@@ -175,9 +196,8 @@
                 </div>
                 <div>
                     <form action="list-account" method="post">
-                        <input type="hidden" name="cp" value="1" />
                         <input
-                                class="searchName"
+                                name="searchName"
                                 type="text"
                                 placeholder="Search username or email..."
                                 value="${searchName}"
@@ -245,7 +265,22 @@
                     <td>Not found!</td>
                     </c:otherwise>
                     </c:choose>
-                    <td>${user.status}</td>
+                    <td>
+                        <form action="list-account" method="post">
+                            <input type="hidden" name="aid" value="${user.getId()}">
+                            <select name="status">
+                                <c:if test="${user.status =='active'}">
+                                    <option value="0" selected="">Active</option>
+                                    <option value="1">deActive</option>
+                                </c:if>
+                                <c:if test="${user.status == 'deactive'}">
+                                    <option value="0">Active</option>
+                                    <option value="1" selected="">deActive</option>
+                                </c:if>
+                            </select><button>Save</button>
+                        </form>
+
+                    </td>
                     <td>${user.phone}</td>
                     <td>${user.gender ? "Male" : "Female"}</td>
                     <td>${user.password}</td>
