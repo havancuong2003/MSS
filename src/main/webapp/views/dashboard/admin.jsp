@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -158,6 +159,19 @@
     </script>
 </head>
 <body>
+<div>
+    <c:if test="${timeRegister eq 'null'}">
+        <jsp:include page="./modalRegisterGroup.jsp"/>
+    </c:if>
+    <c:if test="${CreateGroup eq 'null'}">
+        <jsp:include page="./modalErrorCreateGroup.jsp"/>
+    </c:if>
+    <c:if test="${ChangeGroup eq 'null'}">
+        <jsp:include page="./modalTimeChangeGroup.jsp"/>
+    </c:if>
+</div>
+<div></div>
+<div></div>
 <header>
     <div>
         <img src="logo.png" alt="">
