@@ -168,8 +168,8 @@ public class AccountDBContext extends DBContext<Account> {
     }
 
     //    LinhNTD 5/22/2024
-    public int insertAccount(String username, String password, String fullname, String phone, String email, int role_id, int gender, String status) {
-        String query = "INSERT INTO `account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public int insertAccount(String username, String password, String fullname, String phone, String email, int role_id, int gender) {
+        String query = "INSERT INTO `account` (`username`, `password`, `fullname`, `phone`, `email`, `role_id`, `gender`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, 'active')";
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, username);
             statement.setString(2, password);
@@ -178,7 +178,7 @@ public class AccountDBContext extends DBContext<Account> {
             statement.setString(5, email);
             statement.setInt(6, role_id);
             statement.setInt(7, gender);
-            statement.setString(8, status);
+//            statement.setString(8, status);
 
             statement.executeUpdate();
 

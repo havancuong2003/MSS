@@ -240,9 +240,9 @@
                             <p class="fw-bold mb-1">
                                     ${user.username}
                             </p>
-                            <p class="text-muted mb-0">
-                                    ${user.email}
-                            </p>
+<%--                            <p class="text-muted mb-0">--%>
+<%--                                    ${user.email}--%>
+<%--                            </p>--%>
 
                         </div>
                     </td>

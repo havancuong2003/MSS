@@ -28,7 +28,7 @@ public class AddNewAccountByAdmin extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         int role = Integer.parseInt(request.getParameter("role"));
-        String status = request.getParameter("status");
+//        String status = request.getParameter("status");
 
         AccountDBContext con = new AccountDBContext();
 
@@ -47,12 +47,12 @@ public class AddNewAccountByAdmin extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("role", role);
             request.setAttribute("email", email);
-            request.setAttribute("status", status);
+//            request.setAttribute("status", status);
 
             request.getRequestDispatcher("views/profile/addnewaccount.jsp").forward(request, response);
         } else {
             try {
-                int account_id = con.insertAccount(username, password, f_name, phone, email, role, gender, status);
+                int account_id = con.insertAccount(username, password, f_name, phone, email, role, gender);
 //                con.insertStudent(account_id, currentterm, majorid)
                 response.sendRedirect("list-account");
             } catch (Exception e) {
