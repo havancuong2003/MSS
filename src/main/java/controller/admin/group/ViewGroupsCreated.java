@@ -33,7 +33,7 @@ public class ViewGroupsCreated extends HttpServlet {
             Semester nextSemester = sdbc.get(semester.getNextSemesterID());
             req.setAttribute("currentSemester", semester);
             req.setAttribute("nextSemester", nextSemester);
-            ArrayList<Group> groups = gdbc.getGroupBySemester(nextSemester.getId());
+            ArrayList<Group> groups = gdbc.getGroupBySemester(currentSemester);
             req.setAttribute("semesters", sdbc.list());
             req.setAttribute("groups", groups);
         } catch (SQLException e) {

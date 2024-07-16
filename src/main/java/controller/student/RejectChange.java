@@ -3,6 +3,7 @@ package controller.student;
 import com.google.gson.Gson;
 import dal.ChangeGroupDBContext;
 import dal.GroupDBContext;
+import dal.SemesterDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,9 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
 import model.ChangeGroup;
+import model.Semester;
 import util.GetCurrentTerm;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +24,7 @@ import java.util.Map;
 @WebServlet("/student/rejectChange")
 public class RejectChange extends HttpServlet {
     private final int currentSemester = GetCurrentTerm.currentSemester;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
@@ -28,33 +32,38 @@ public class RejectChange extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        ChangeGroupDBContext cgdb = new ChangeGroupDBContext();
-        GroupDBContext gdb = new GroupDBContext();
+        try {
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            ChangeGroupDBContext cgdb = new ChangeGroupDBContext();
+            GroupDBContext gdb = new GroupDBContext();
+            SemesterDBContext sdb = new SemesterDBContext();
 
-        String id = req.getParameter("requestId");
+            Semester semester = sdb.get(currentSemester);
 
-        cgdb.deleteRequired(id);
+            String id = req.getParameter("requestId");
 
-        HttpSession session = req.getSession();
-        Account account = (Account) session.getAttribute("account");
+            cgdb.deleteRequired(id);
 
-
-        ArrayList<ChangeGroup> allRequired = cgdb.getAllRequired(account.getUsername(), currentSemester);
-        ArrayList<ChangeGroup> allRequiredFromSomeOne = cgdb.getAllRequiredToSwap(account.getUsername(), currentSemester);
-
-
-        Map<String, Object> responseData = new HashMap<>();
+            HttpSession session = req.getSession();
+            Account account = (Account) session.getAttribute("account");
 
 
+            ArrayList<ChangeGroup> allRequired = cgdb.getAllRequired(account.getUsername(), semester.getNextSemesterID());
+            ArrayList<ChangeGroup> allRequiredFromSomeOne = cgdb.getAllRequiredToSwap(account.getUsername(), semester.getNextSemesterID());
 
-        responseData.put("allRequiredFromSomeOne", allRequiredFromSomeOne);
-        responseData.put("allRequired", allRequired);
-        responseData.put("groups",gdb.getGroupForStudent(1,account.getUsername()));
-        String json = new Gson().toJson(responseData);
 
-        resp.getWriter().write(json);
+            Map<String, Object> responseData = new HashMap<>();
 
+
+            responseData.put("allRequiredFromSomeOne", allRequiredFromSomeOne);
+            responseData.put("allRequired", allRequired);
+            responseData.put("groups", gdb.getGroupForStudent(1, account.getUsername()));
+            String json = new Gson().toJson(responseData);
+
+            resp.getWriter().write(json);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

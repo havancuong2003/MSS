@@ -215,8 +215,14 @@
         </div>
         <a href="#" onclick="toggleSubMenu('scheduleSubMenu')"><i class="fas fa-calendar-alt"></i> Schedule</a>
         <div id="scheduleSubMenu" class="submenu" style="display: none;">
+
+            <a href="../manager/schedule"><i class="fas fa-calendar-plus"></i> View Schedule</a>
+        </div>
+        <a href="viewCurriculum"><i class="fas fa-book-open"></i> View Curriculum</a>
+        <a href="#" onclick="toggleSubMenu('groupSubMenu')"><i class="fas fa-users"></i> Group</a>
+        <div id="groupSubMenu" class="submenu" style="display: none;">
             <a href="createGroup"><i class="fas fa-users-cog"></i> Create Group</a>
-            <a href="createSchedule"><i class="fas fa-calendar-plus"></i> Create Schedule</a>
+            <a href="viewGroup"><i class="fas fa-list"></i> View all Group</a>
         </div>
         <a href="manage-application"><i class="fas fa-tasks"></i> Manage Application</a>
     </div>

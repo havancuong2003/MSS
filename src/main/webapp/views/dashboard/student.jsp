@@ -197,6 +197,7 @@
         <a href="RegisterCourse"><i class="fas fa-book"></i> Register Course</a>
         <a href="viewCurriculum"><i class="fas fa-graduation-cap"></i> View Curriculum</a>
         <a href="send-application"><i class="fas fa-paper-plane"></i> Send application</a>
+        <a href="changeGroup"><i class="fas fa-exchange-alt"></i> Swap Class</a>
 
     </div>
     <div class="content">

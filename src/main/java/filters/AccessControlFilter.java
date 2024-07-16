@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import model.Account;
 
-@WebFilter(filterName = "AccessControlFilter", urlPatterns = {"/admin/*", "/staff/*", "/teacher/*", "/student/*", "/manage/*"})
+@WebFilter(filterName = "AccessControlFilter", urlPatterns = {"/admin/*", "/staff/*", "/teacher/*", "/student/*", "/manager/*"})
 public class AccessControlFilter implements Filter {
 
     @Override
@@ -60,7 +60,7 @@ public class AccessControlFilter implements Filter {
             return userRole == 3;
         } else if (requestURI.startsWith("/student")) {
             return userRole == 4;
-        } else if (requestURI.startsWith("/manage")) {
+        } else if (requestURI.startsWith("/manager")) {
 
             return userRole == 1 || userRole == 2;
         }

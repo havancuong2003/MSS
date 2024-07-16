@@ -274,6 +274,14 @@
                 alert("You have already created request for this course");
                 return;
             }
+            const fromStudent = $('#fromStudent').val();
+            const toStudent = $('#toStudent').val();
+            console.log('fromStudent', fromStudent);
+            console.log('toStudent', toStudent);
+            if (fromStudent == toStudent) {
+                alert("You can not request to yourself");
+                return;
+            }
 
             $.ajax({
                 type: 'POST',

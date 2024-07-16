@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet("/student/viewCurriculum")
+@WebServlet({"/student/viewCurriculum", "/admin/viewCurriculum", "/teacher/viewCurriculum", "/staff/viewCurriculum"})
 public class CurriculumController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,10 +27,14 @@ public class CurriculumController extends HttpServlet {
         CurriculumDBContext c = new CurriculumDBContext();
         try {
             Major major = m.getMajorByUserName(account.getUsername());
-       ArrayList<Term> curriculum = c.getTermForCurriculum(major.getId());
+           int majorID = 1;
+            if(major != null){
+                majorID=  major.getId();
+            }
+       ArrayList<Term> curriculum = c.getTermForCurriculum(majorID);
         req.setAttribute("terms", curriculum);
         req.setAttribute("majors",m.listAllMajor());
-        req.setAttribute("majorSelected",major.getId());
+        req.setAttribute("majorSelected",majorID);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
