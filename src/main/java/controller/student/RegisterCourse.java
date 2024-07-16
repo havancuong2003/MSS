@@ -48,7 +48,7 @@ public class RegisterCourse extends HttpServlet {
                 req.setAttribute("nextSemester", nextSemester);
 
                 int currentTerm = s.getCurrentTermOfStudent(account.getUsername());
-                req.setAttribute("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
+                req.setAttribute("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 1, 1, account.getUsername()));
                 req.setAttribute("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
                 req.setAttribute("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
                 req.setAttribute("courseRegistered", s.getCoursesRegistered(account.getUsername(), nextSemester.getId()));
@@ -144,7 +144,7 @@ public class RegisterCourse extends HttpServlet {
                 try {
                     int currentTerm = s.getCurrentTermOfStudent(account.getUsername());
 
-                    responseData.put("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 3, 1, account.getUsername()));
+                    responseData.put("courseRegister", s.getAllCourseRegisterForStudent(currentTerm + 1, 1, account.getUsername()));
                     responseData.put("courseImprove", s.getCourseRegisterImprove(account.getUsername()));
                     responseData.put("courseLearnAgain", s.getCourseRegisterAgain(account.getUsername()));
                     responseData.put("courseRegistered", s.getCoursesRegistered(account.getUsername(), nextSemester.getNextSemesterID()));

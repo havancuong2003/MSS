@@ -229,16 +229,16 @@
                 <c:when test="${requestScope.timePeriods != 'null'}">
                     <c:choose>
                         <c:when test="${requestScope.add == true}">
-                            <div class="notice">
-                                <div>
-                                    <h2>Notice</h2>
-                                    <h3><i>Start date</i> must be after <i>end of register time</i> and
-                                        <i>end date</i> must before <i>end date of semester</i></h3>
-                                    <h3>Time register course end at: ${timePeriods.endRegister}</h3>
-                                    <h3>Time Semester end at: ${semester.end}</h3>
-                                </div>
-                            </div>
-                            <h4 id="error" class="error-message"></h4>
+<%--                            <div class="notice">--%>
+<%--                                <div>--%>
+<%--                                    <h2>Notice</h2>--%>
+<%--                                    <h3><i>Start date</i> must be after <i>end of register time</i> and--%>
+<%--                                        <i>end date</i> must before <i>end date of semester</i></h3>--%>
+<%--                                    <h3>Time register course end at: ${timePeriods.endRegister}</h3>--%>
+<%--                                    <h3>Time Semester end at: ${semester.end}</h3>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
+                            <h2 id="error" class="error-message"></h2>
                             <c:choose>
                                 <c:when test="${timePeriods.startChangeClass == null}">
                                     <label for="startDate">Change class time from:</label>
@@ -314,7 +314,7 @@
                     console.error("Error:", error);
                     console.error("status:", status);
                     console.error("xhr:", xhr);
-                    $("#error").text(xhr.responseJSON);
+                    $("#error").text(xhr.responseJSON.message);
                 },
             });
         });

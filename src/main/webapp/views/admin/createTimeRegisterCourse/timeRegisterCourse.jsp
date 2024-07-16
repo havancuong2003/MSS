@@ -207,16 +207,16 @@
 
 <div class="container">
     <div class="current-term">
-        <h2>Current term: SU24</h2>
-        <p>SU24 from 20/12/2024 to 30/12/2024</p>
+        <h2>Current term: ${semester.detail}</h2>
+        <p>SU24 from ${semester.start} to ${semester.end}</p>
     </div>
     <div class="set-time">
         <h2>
             Set time for students to register for courses for the next
-            semester: FA24
+            semester: ${nextSemester.detail}
         </h2>
-        <p>FA24 start from 01/01/2025 to 30/03/2024</p>
-
+        <p>FA24 start from ${nextSemester.start} to ${nextSemester.end}</p>
+        <p>Time Register must be within the following time: ${startRange} - ${endRange}</p>
         <form id="myForm" class="form-settime">
             <h1 id="error" style="color: red"></h1>
             <input
@@ -299,9 +299,11 @@
                     startDate: startDate,
                     endDate: endDate,
                     description: description,
+                    numCourses: $("#numCourses").val(),
                 },
                 dataType: "json",
                 success: function (response) {
+                    console.log("Success:", response);
                     // Handle success response from backend here
                     $("#error")
                         .css("color", "green")
@@ -320,7 +322,7 @@
                     console.error("Error:", error);
                     console.error("status:", status);
                     console.error("xhr:", xhr);
-                    $("#error").text(xhr.responseJSON);
+                    $("#error").text(xhr.responseJSON.message);
                 },
             });
         });

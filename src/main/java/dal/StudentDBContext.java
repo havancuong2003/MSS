@@ -61,7 +61,7 @@ public class StudentDBContext extends DBContext<Student> {
 
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, termId+1);
+            stm.setInt(1, termId);
             stm.setInt(2, majorId);
             stm.setString(3,username);
             ResultSet rs = stm.executeQuery();

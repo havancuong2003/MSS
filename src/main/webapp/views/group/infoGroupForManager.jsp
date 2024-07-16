@@ -22,7 +22,7 @@
         header, footer {
             background-color: #333;
             color: white;
-            text-align: center;
+            /*text-align: center;*/
             padding: 10px 0;
             position: fixed;
             width: 100%;
@@ -149,12 +149,36 @@
             display: inline-block;
             width: calc(100% - 130px);
         }
+        header a button {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        header a button:hover {
+            background-color: #003d80;
+            transform: scale(1.05);
+        }
+
+        header a button:active {
+            background-color: #00294d;
+            transform: scale(0.95);
+        }
+
     </style>
 </head>
 <body>
 <header>
-    <a href="${role}/dashboard" style="color: white; text-decoration: none;">Back</a>
-    <h1>Thông tin lớp học</h1>
+    <a href="${pageContext.request.contextPath}/${role}/dashboard" style="color: white; text-decoration: none; "><button>Back</button></a>
+
+    <h1 style="text-align: center">Thông tin lớp học</h1>
 </header>
 <div class="content">
     <div class="info">
