@@ -10,6 +10,7 @@ public class Student implements IEntity
     private String currentTerm;
     private ArrayList<Attendance> attendances = new ArrayList<>();
 
+    private Major major;
     public String getId() {
         return id;
     }
@@ -34,10 +35,19 @@ public class Student implements IEntity
         this.currentTerm = currentTerm;
     }
 
-    public Student(String id, Account account, String currentTerm) {
+    public Student(String id, Account account, String currentTerm, Major major) {
         this.id = id;
         this.account = account;
         this.currentTerm = currentTerm;
+        this.major = major;
+    }
+
+    public Major getMajor() {
+        return major;
+    }
+
+    public void setMajor(Major major) {
+        this.major = major;
     }
 
     public Student() {

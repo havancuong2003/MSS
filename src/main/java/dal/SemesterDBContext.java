@@ -67,7 +67,24 @@ public class SemesterDBContext extends DBContext<Semester> {
 
     @Override
     public ArrayList<Semester> list() {
-        return null;
+        String sql ="select * from semester\n";
+
+        ArrayList<Semester> semesters = new ArrayList<>();
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Semester s = new Semester();
+                s.setId(rs.getInt("id"));
+                s.setStart(rs.getDate("start"));
+                s.setEnd(rs.getDate("end"));
+                s.setDetail(rs.getString("detail"));
+                semesters.add(s);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return semesters;
     }
 
     @Override

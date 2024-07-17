@@ -100,6 +100,28 @@ public class MajorDBContext extends DBContext<Major>{
 
     @Override
     public Major get(int id) throws SQLException {
+        String sql = "select id,code,detail from major where id = ?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, id);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            Major major = new Major();
+            major.setId(rs.getInt("id"));
+            major.setCode(rs.getString("code"));
+            major.setDetail(rs.getString("detail"));
+            return major;
+        }
+        return null;
+    }
+    public Major getMajorByUserName(String username) throws SQLException {
+       String sql ="select s.major_id from `account` a join student s on a.account_id=s.acc_id where a.username =?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setString(1, username);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            Major major = get(rs.getInt("major_id"));
+            return major;
+        }
         return null;
     }
 }
