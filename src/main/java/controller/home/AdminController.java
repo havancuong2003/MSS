@@ -1,7 +1,6 @@
 package controller.home;
 
-import dal.AccountDBContext;
-import dal.ProfileDBContext;
+import dal.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,14 +8,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
+import model.Semester;
+import model.TimePeriods;
+import util.GetCurrentTerm;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 
 @WebServlet(urlPatterns = {"/admin/dashboard"})
 public class AdminController extends HttpServlet {
+    private final int CURRENT_SEMESTER = GetCurrentTerm.currentSemester;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -25,7 +33,7 @@ public class AdminController extends HttpServlet {
 
         AccountDBContext adbc = new AccountDBContext();
         int roleID = account.getRole_id();
-        String roleName= adbc.getRoleByRoleID(roleID);
+        String roleName = adbc.getRoleByRoleID(roleID);
         req.setAttribute("roleName", roleName);
 
         ProfileDBContext dao = new ProfileDBContext();
@@ -55,6 +63,43 @@ public class AdminController extends HttpServlet {
                 e.printStackTrace();
             }
         }
+        SemesterDBContext sdb = new SemesterDBContext();
+        TimePeriodsDBContext tpdb = new TimePeriodsDBContext();
+        TimePeriods timePeriods = tpdb.getTimePeriods(CURRENT_SEMESTER);
+        GroupDBContext gdb = new GroupDBContext();
+        try {
+            Semester semester = sdb.get(CURRENT_SEMESTER);
+            if (isCurrentDateInRange(rangeDate(semester.getEnd().toString(), 5), rangeDate(semester.getEnd().toString(), 4))) {
+                if (timePeriods == null) {
+                    req.setAttribute("timeRegister", "null");
+                } else {
+                    req.setAttribute("timeRegister", "true");
+                }
+            }
+            if (isCurrentDateInRange(rangeDate(semester.getEnd().toString(), 4), rangeDate(semester.getEnd().toString(), 3))) {
+             boolean statusCreateGroup =   gdb.getStatusCreateGroup(semester.getNextSemesterID());
+                if (!statusCreateGroup) {
+                    req.setAttribute("CreateGroup", "null");
+                } else {
+                    req.setAttribute("CreateGroup", "true");
+                }
+            }
+            if (isCurrentDateInRange(rangeDate(semester.getEnd().toString(), 2), rangeDate(semester.getEnd().toString(), 1))) {
+                if (timePeriods == null) {
+                    req.setAttribute("ChangeGroup", "null");
+                } else if (timePeriods != null) {
+                    if (timePeriods.getStartChangeClass() == null) {
+                        req.setAttribute("ChangeGroup", "null");
+                    } else {
+                        req.setAttribute("ChangeGroup", "true");
+                    }
+
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         req.setAttribute("account", account);
         req.getRequestDispatcher("../views/dashboard/admin.jsp").forward(req, resp);
     }
@@ -62,5 +107,34 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
+    }
+
+    public boolean isCurrentDateInRange(String startDateStr, String endDateStr) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startDate = formatter.parse(startDateStr);
+            Date endDate = formatter.parse(endDateStr);
+            Date currentDate = new Date();
+
+
+            return currentDate.compareTo(startDate) >= 0 && currentDate.compareTo(endDate) <= 0;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public String rangeDate(String endDate, int weeks) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long millisecondsPerWeek = 7L * 24 * 60 * 60 * 1000;
+        return sdf.format(new Date(date.getTime() - weeks * millisecondsPerWeek));
     }
 }

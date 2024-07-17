@@ -61,7 +61,7 @@ public class StudentDBContext extends DBContext<Student> {
 
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, termId+1);
+            stm.setInt(1, termId);
             stm.setInt(2, majorId);
             stm.setString(3,username);
             ResultSet rs = stm.executeQuery();
@@ -208,7 +208,7 @@ public class StudentDBContext extends DBContext<Student> {
 
     public static void main(String[] args) throws SQLException {
         StudentDBContext s = new StudentDBContext();
-        System.out.println(s.checkCourseCanRegister("student1",6));
+        System.out.println(s.getMajorID("student40"));
     }
 
     public boolean checkCoursePassOrNot( String username, int courseID){
@@ -239,6 +239,24 @@ public class StudentDBContext extends DBContext<Student> {
         }
         return true;
     }
+    public int getMajorID ( String username){
+        int majorID = 0;
+
+        String sql = "select major_id from student s join account a on s.acc_id = a.account_id where a.username =?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,username);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                majorID = rs.getInt("major_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return majorID;
+    }
+
+
 
 
 

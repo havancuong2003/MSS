@@ -71,9 +71,9 @@ public class TeacherDBContext extends DBContext<MarkData>{
     //- -------------------------------------------------------------------------------------------------------------
     public static void main(String[] args) {
         TeacherDBContext t = new TeacherDBContext();
-        System.out.println(t.checkTeacherCanLearnCourse("t1","t2",1,"2024-06-10"));
+        System.out.println(t.getCourse("2024-09-03", "1", "t1"));
     }
-    public boolean checkTeacherLearnThisSession(String teacherid,String date,int slotID) {
+    public boolean checkTeacherTeachThisSession(String teacherid, String date, int slotID) {
         String sql = "select * from `session` where teacher_id =? and date =? and slot_id = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -90,7 +90,7 @@ public class TeacherDBContext extends DBContext<MarkData>{
         return false;
     }
 
-    public boolean checkTeacherCanLearnCourse(String currentTeacher,String targetTeacher, int slotID,String date) {
+    public boolean checkTeacherCanTeachCourse(String currentTeacher, String targetTeacher, int slotID, String date) {
         String sql ="\n" +
                 "select * from teacher_course where teacher_id = ? and course_id = \n" +
                 "(select g.course_id from `session` s join `group` g on s.group_id = g.id where s.id = \n" +
@@ -177,6 +177,48 @@ public class TeacherDBContext extends DBContext<MarkData>{
 
     @Override
     public MarkData get(int id) throws SQLException {
+        return null;
+    }
+
+    public ArrayList<String> getAllEmailStudent(String teacherid, String slot,String date) {
+        String sql ="\n" +
+                "select a.email from enrollment e\n" +
+                " join student s on e.student_id = s.id \n" +
+                " join `account` a on a.account_id = s.acc_id\n" +
+                " where group_id = (select ss.group_id from `session` ss where ss.date = ? and ss.teacher_id = ? and ss.slot_id = ? )\n" +
+                "\n";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, date);
+            stm.setString(2, teacherid);
+            stm.setString(3, slot);
+            ResultSet rs = stm.executeQuery();
+            ArrayList<String> list = new ArrayList<>();
+            while(rs.next()){
+                list.add(rs.getString("email"));
+            }
+            return list;
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+    public String getCourse(String date, String slot, String teacherid){
+        String sql = "select c.code from `group` g \n" +
+                "join course c on g.course_id = c.id where g.id = " +
+                "(select ss.group_id from `session` ss where ss.date = ? and ss.teacher_id = ? and ss.slot_id = ?)";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, date);
+            stm.setString(2, teacherid);
+            stm.setString(3, slot);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return rs.getString("code");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
         return null;
     }
 }

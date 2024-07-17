@@ -7,15 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Page</title>
     <style>
+        <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background-color: #f0f0f0;
+            color: #333;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .header {
@@ -27,27 +31,25 @@
 
         h2 {
             color: #333;
-            margin-bottom: 0;
+            margin-bottom: 10px;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
+            margin-bottom: 20px;
         }
 
         th,
         td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
 
         th {
-            background-color: #4CAF50;
+            background-color: #333;
             color: white;
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
         }
 
         form {
@@ -55,24 +57,65 @@
             margin-right: 10px;
         }
 
-        input[type="submit"] {
-            background-color: #4CAF50;
+        input[type="submit"], button {
+            background-color: #333;
             color: white;
-            padding: 5px 10px;
+            padding: 8px 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 3px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        input[type="submit"]:hover, button:hover {
+            background-color: #555;
         }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        #requestForm {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+        } .expired {
+              display: none;
+          }
+    </style>
     </style>
 </head>
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<h1>${validDate}</h1>
+<div
+        id="expired"
+        class="${validDate eq 'true' ? 'expired' : 'ab'}"
+        style="margin-top: 120px"
+>
+    <h1>The registration period has expired or has not yet arrived</h1>
 
-<div class="container">
+    <c:if test="${requestScope.timePeriods != 'null'}">
+        <h1>Start at  ${requestScope.timePeriods.startChangeClass} and end at ${requestScope.timePeriods.endChangeClass}</h1>
+
+    </c:if>
+</div>
+<div  class="${validDate eq 'true' ? 'ab' : 'expired'} container">
 
     <div class="header"></div>
     <h2>Change Request</h2>
@@ -229,6 +272,14 @@
             console.log('listChangeRequests', listChangeRequests);
             if (checkCourseExist(course)) {
                 alert("You have already created request for this course");
+                return;
+            }
+            const fromStudent = $('#fromStudent').val();
+            const toStudent = $('#toStudent').val();
+            console.log('fromStudent', fromStudent);
+            console.log('toStudent', toStudent);
+            if (fromStudent == toStudent) {
+                alert("You can not request to yourself");
                 return;
             }
 
