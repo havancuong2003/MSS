@@ -402,6 +402,21 @@ public class GroupDBContext extends DBContext<Group> {
         return list;
     }
 
+    public boolean lockedGroup (int gid){
+        String sql = "select `lock` from `group` where id = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, gid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getBoolean("lock");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         GroupDBContext dao = new GroupDBContext();
         Group groupInfo = dao.getGroupInfo(1);

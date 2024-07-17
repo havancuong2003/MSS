@@ -1,10 +1,15 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Student implements IEntity
 {
+
     private String id;
     private Account account;
     private String currentTerm;
+    private ArrayList<Attendance> attendances = new ArrayList<>();
+
     private Major major;
     public String getId() {
         return id;
@@ -46,5 +51,13 @@ public class Student implements IEntity
     }
 
     public Student() {
+    }
+
+    public ArrayList<Attendance> getAttendances() {
+        return attendances;
+    }
+
+    public void setAttendances(ArrayList<Attendance> attendances) {
+        this.attendances = attendances;
     }
 }
