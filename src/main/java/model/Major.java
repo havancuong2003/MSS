@@ -8,7 +8,7 @@ public class Major implements IEntity{
     private int id;
     private String code;
     private String detail;
-
+    private boolean status;
     private ArrayList<Term> terms;
 
     public Major() {
@@ -55,5 +55,13 @@ public class Major implements IEntity{
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

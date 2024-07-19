@@ -6,7 +6,7 @@ public class Total  implements IEntity{
     private Group group;
     private float avarage_mark ;
     private boolean pass;
-
+    private String reason;
     public int getId() {
         return id;
     }
@@ -45,5 +45,13 @@ public class Total  implements IEntity{
 
     public void setPass(boolean pass) {
         this.pass = pass;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

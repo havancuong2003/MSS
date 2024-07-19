@@ -81,7 +81,7 @@
 </head>
 <body>
 <header>
-    <a href="${role}/groupList">Back</a>
+    <a href="schedule">Back</a>
     <h1>Thông tin lớp học</h1>
 
 </header>

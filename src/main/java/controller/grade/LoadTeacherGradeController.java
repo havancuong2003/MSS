@@ -40,6 +40,8 @@ public class LoadTeacherGradeController extends HttpServlet {
             responseData.put("test", gid);
         if (gid!=null){
             int g = Integer.parseInt(gid);
+            boolean locked = gDB.lockedGroup(g);
+            responseData.put("locked", locked);
             ArrayList<Mark> marks = mDB.getMarkForTeacherByTidSemesterGid(tid, Integer.parseInt(sesid),g);
             responseData.put("marks", marks);
         }
