@@ -32,6 +32,8 @@ public class ManageQuestion extends HttpServlet {
         String indexPage = request.getParameter("page");
         String question_id = request.getParameter("question_id");
         String delete = request.getParameter("delete");
+        String group_id = request.getParameter("group_id");
+        String course_id = request.getParameter("course_id");
         HttpSession session = request.getSession();
         String exercise_id = "";
         exercise_id = request.getParameter("exercise_id");
@@ -127,6 +129,8 @@ public class ManageQuestion extends HttpServlet {
             List<String> question = listAllQuestionOfExercise.stream()
                     .map(Question::getQuestion) // assuming getName() method exists
                     .collect(Collectors.toList());
+            request.setAttribute("group_id",group_id);
+            request.setAttribute("course_id",course_id);
             request.setAttribute("basicQuestion", basicQuestion);
             request.setAttribute("lowQuestion", lowQuestion);
             request.setAttribute("highQuestion", highQuestion);
@@ -151,7 +155,8 @@ public class ManageQuestion extends HttpServlet {
         String exercise_id = request.getParameter("exercise_id");
         String status = request.getParameter("status");
         String course_id = request.getParameter("course_id");
-        course_id = "1";
+//        course_id = "1";
+//        String group_id = request.getParameter("group_id");
         System.out.println(status);
         BufferedReader reader = request.getReader();
         StringBuilder sb = new StringBuilder();

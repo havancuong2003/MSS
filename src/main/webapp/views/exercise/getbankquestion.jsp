@@ -16,7 +16,17 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        .button-wrapper {
+            position: relative;
+        }
+        .back-link {
+            color: #FF6600;
+            font-size: 15px;
+            position: absolute;
+            left: 0;
+        }
         body {
             color: #566787;
             background: #f5f5f5;
@@ -34,7 +44,7 @@
 
         .table-title {
             padding-bottom: 15px;
-            background: #007bff;
+            background: #FF6600;
             color: #fff;
             padding: 16px 30px;
             margin: -20px -25px 10px;
@@ -285,7 +295,7 @@
         }
 
         .pagination li a {
-            color: #007bff;
+            color: #FF6600;
             min-width: 30px;
             padding: 6px 12px;
             text-decoration: none;
@@ -301,12 +311,12 @@
         }
 
         .pagination li a:hover {
-            background-color: #e9ecef;
+            background-color: #FF6600;
             color: #0056b3;
         }
 
         .pagination li.active a {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: white;
             border-color: #007bff;
         }
@@ -503,21 +513,25 @@
         <form class="custom-form" action="select-question-bank" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
             <input type="hidden" name="numQuestion" value="${numQuestion}">
+            <input type="hidden" name="group_id" value="${group_id}">
+            <input type="hidden" name="course_id" value="${course_id}">
             <select name="type_question">
                 <option value="0" class="form-control">Choose type question</option>
                 <option value="1" ${type_question == "1" ? "selected" : ""} class="form-control">Basic Question</option>
                 <option value="2" ${type_question == "2" ? "selected" : ""} class="form-control">Low Application Question</option>
                 <option value="3" ${type_question == "3" ? "selected" : ""} class="form-control">High Application Question</option>
             </select>
-            <button type="submit" class="custom-button">Select</button>
+            <button type="submit" class="custom-button" style="background-color: #FF6600">Select</button>
         </form>
     </div>
     <div class="custom-form-wrapper">
         <form class="custom-form" action="select-question-bank" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
             <input type="hidden" name="numQuestion" value="${numQuestion}">
+            <input type="hidden" name="group_id" value="${group_id}">
+            <input type="hidden" name="course_id" value="${course_id}">
             <input type="text" placeholder="Search by question..." name="search">
-            <button type="submit" class="custom-button">Search</button>
+            <button type="submit" class="custom-button" style="background-color: #FF6600">Search</button>
         </form>
     </div>
 
@@ -578,18 +592,18 @@
             <c:if test="${isRandom != 1}">
                 <ul class="pagination">
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}">Previous</a></li>
+                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}">${i}</a>
+                            <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}">${i}</a>
                         </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -600,18 +614,18 @@
             <c:if test="${isRandom == 1}">
                 <ul class="pagination">
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}">Previous</a></li>
+                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}">${i}</a>
+                            <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">${i}</a>
                         </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -620,7 +634,7 @@
             </c:if>
         </div>
         <div class="button-wrapper">
-            <a href="manage-question?exercise_id=${exercise_id}" id="backToCreateQuestion" class="button-link">Back to create question</a>
+            <a class="back-link" style="color: #FF6600;font-size: 15px;float: left" href="manage-question?exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" id="backToCreateQuestion"> <i class="fas fa-arrow-left"></i> Back to manage question</a>
             <button type="submit" id="selectQuestionsBtn" >Select question for exercise</button>
         </div>
     </div>

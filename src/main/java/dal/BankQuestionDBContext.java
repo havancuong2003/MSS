@@ -109,12 +109,12 @@ public class BankQuestionDBContext extends DBContext<BankQuestion> {
         List<BankQuestion> listQuestion = new ArrayList<>();
         String sql = "SELECT * FROM bank_question q\n" +
                 "WHERE course_id = ? " +
-                "LIMIT 5 OFFSET ? ";
+                "LIMIT 10 OFFSET ? ";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course_id);
-            statement.setInt(2, (index-1)*5);
+            statement.setInt(2, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 BankQuestion bq = new BankQuestion();
@@ -151,13 +151,13 @@ public class BankQuestionDBContext extends DBContext<BankQuestion> {
         List<BankQuestion> listQuestion = new ArrayList<>();
         String sql = "SELECT * FROM bank_question q\n" +
                 "WHERE course_id = ? AND type_question = ? " +
-                "LIMIT 5 OFFSET ? ";
+                "LIMIT 10 OFFSET ? ";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course_id);
             statement.setString(2,type_question);
-            statement.setInt(3, (index-1)*5);
+            statement.setInt(3, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 BankQuestion bq = new BankQuestion();
@@ -194,13 +194,13 @@ public class BankQuestionDBContext extends DBContext<BankQuestion> {
         String sql = "SELECT * FROM bank_question q\n" +
                 "WHERE q.course_id = ?  AND q.question like ? " +
                 "ORDER BY q.bank_question_id DESC " +
-                "LIMIT 5 OFFSET ? ";
+                "LIMIT 10 OFFSET ? ";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course_id);
             statement.setString(2, "%" + question + "%");
-            statement.setInt(3, (index-1)*5);
+            statement.setInt(3, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 BankQuestion bankQuestion = new BankQuestion();

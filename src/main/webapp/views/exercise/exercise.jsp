@@ -5,17 +5,32 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <html>
 <head>
     <title>Exercise</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .form-group {
             display: flex;
             flex-direction: column;
             margin-top: 15px; /* Điều chỉnh khoảng cách giữa các form-group */
         }
-
+        .back-link {
+            color: #FF6600;
+            font-size: 15px;
+            position: absolute;
+            left: 0;
+            top: 100px;
+            /*top: 50%; !* Điều chỉnh giá trị này để căn giữa theo chiều dọc *!*/
+            /*transform: translateY(-50%); !* Điều chỉnh để căn giữa theo chiều dọc *!*/
+        }
         label {
             margin-bottom: 5px;
             font-weight: bold; /* Tùy chọn: làm đậm chữ cho label */
@@ -416,49 +431,53 @@
 </head>
 <body>
 <div class="back">
-    <img src="https://mega.com.vn/media/news/2707_background-pp-hoc-tap-lam-slide3.jpg" class="bgimg" type="jpg/jpeg">
+<%--    <img src="https://mega.com.vn/media/news/2707_background-pp-hoc-tap-lam-slide3.jpg" class="bgimg" type="jpg/jpeg">--%>
 </div>
 
 <div class="container-fluid text-center">
     <div class="row1">
         <div class="col-md-12">
-            <p class="text-right heading">
-                <a class="btn btn-danger" href="Logout"><i
-                        class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
-            </p>
-            <h1>${mess}</h1>
+<%--            <p class="text-right heading">--%>
+<%--                <a class="btn btn-danger" href="Logout"><i--%>
+<%--                        class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>--%>
+<%--            </p>--%>
+<%--            <h1>${mess}</h1>--%>
         </div>
     </div>
     <div class="row" style="margin-top: 15vh">
-
-        <div class="col animated slideInLeft">
-            <a class="btn btn-primary tbtn" href="#createQuizModal" data-toggle="modal">
-                <h1 class="q"><i class="fa fa-plus" aria-hidden="true"></i> Create Quiz</h1></a>
-        </div>
-        <div class="col animated slideInLeft">
-            <a class="btn btn-primary tbtn" href="#randomQuizModal"
-               data-toggle="modal">
-                <h1 class="q"><i class="fa fa-plus" aria-hidden="true"></i> Random Quiz</h1></a>
-        </div>
-        <div class="col animated slideInRight">
-            <a class="btn btn-danger tbtn" href="#participateModal"
-               data-toggle="modal">
-                <h1 class="q">
-                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                    Participate
-                </h1>
+        <div>
+            <a class="back-link" href="${pageContext.request.contextPath}/${role}/dashboard" style="color: #FF6600;font-size: 15px">
+                <i class="fas fa-arrow-left"></i> Back to dashboard
             </a>
         </div>
+        <div class="col animated slideInLeft">
+            <a class="btn btn-primary tbtn" style="background-color: #FF6600" href="#createQuizModal" data-toggle="modal">
+                <h1 class="q" style="text-align: center"><i class="fa fa-plus" aria-hidden="true"></i> Create Exercise</h1></a>
+        </div>
+        <div class="col animated slideInLeft">
+            <a class="btn btn-primary tbtn" style="background-color: #FF6600" href="#randomQuizModal" data-toggle="modal">
+                <h1 class="q"><i class="fa fa-plus" aria-hidden="true"></i> Random Exercise</h1></a>
+        </div>
+<%--        <div class="col animated slideInRight">--%>
+<%--            <a class="btn btn-danger tbtn" href="#participateModal"--%>
+<%--               data-toggle="modal">--%>
+<%--                <h1 class="q">--%>
+<%--                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>--%>
+<%--                    Participate--%>
+<%--                </h1>--%>
+<%--            </a>--%>
+<%--        </div>--%>
     </div>
         <div class="row mt-5">
             <div class="col-md-12">
                 <div class="custom-form-wrapper">
                     <form class="custom-form" action="create-exercise" method="get">
                         <input type="hidden" name="group_id" value="${group_id}">
+                        <input type="hidden" name="course_id" value="${course_id}">
                         <select name="type_exercise">
-                            <option value="0" class="form-control">Choose all exercises</option>
-                            <option value="1"  class="form-control">Test</option>
-                            <option value="2"  class="form-control">Pratice</option>
+                            <option value="0" ${type_exercise == "0" ? "selected" : ""} class="form-control">Choose all exercises</option>
+                            <option value="1" ${type_exercise == "1" ? "selected" : ""}  class="form-control">Test</option>
+                            <option value="2" ${type_exercise == "2" ? "selected" : ""} class="form-control">Pratice</option>
                         </select>
                         <button type="submit" class="custom-button" style="background-color: #FF6600">Select</button>
                     </form>
@@ -466,6 +485,7 @@
                 <div class="custom-form-wrapper">
                     <form class="custom-form" action="create-exercise" method="get">
                         <input type="hidden" name="group_id" value="${group_id}">
+                        <input type="hidden" name="course_id" value="${course_id}">
                         <input type="text" placeholder="Search by exercise name..." name="search">
                         <button type="submit" class="custom-button" style="background-color: #FF6600">Search</button>
                     </form>
@@ -489,24 +509,19 @@
                             <td>${o.exerciseName}</td>
                             <td>${o.course.code}</td>
                             <td>
-                                <c:if test="${o.isRandom == 0}">
-                                    <a href="manage-question?exercise_id=${o.exerciseId}" class="btn">View</a>
-                                </c:if>
-                                <c:if test="${o.isRandom == 1}">
-                                    <a href="manage-question?exercise_id=${o.exerciseId}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" class="btn">View</a>
-                                </c:if>
+                                <a href="manage-question?exercise_id=${o.exerciseId}&group_id=${group_id}&course_id=${course_id}" class="btn">View</a>
                             </td>
                             <td>
                                 <c:if test="${o.status == 0}">
-                                    <h5>Close</h5>
+                                    <h5>Closing</h5>
                                 </c:if>
                                 <c:if test="${o.status == 1}">
-                                    <h5>Preventing</h5>
+                                    <h5>Presenting</h5>
                                 </c:if>
                             </td>
                             <td>
                                 <div class="btn-container">
-                                    <a class="btn btn-danger" href="create-exercise?exercise_id=${o.exerciseId}&delete=1"  onclick="return confirm('Are you sure you want to delete this exercise?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                    <a class="btn btn-danger" href="create-exercise?exercise_id=${o.exerciseId}&delete=1&group_id=${group_id}&course_id=${course_id}"  onclick="return confirm('Are you sure you want to delete this exercise?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                                     <c:if test="${o.isRandom ==0}">
                                         <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalCreateQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
                                     </c:if>
@@ -519,23 +534,22 @@
                         </tbody>
                     </c:forEach>
                 </table>
-
                 <div class="pagination-container">
                     <ul class="pagination">
                         <c:if test="${search != null}" >
                         <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="create-exercise?page=${tag-1}&group_id=${group_id}&search=${search}">Previous</a></li>
+                        <li class="page-item"><a href="create-exercise?page=${tag-1}&group_id=${group_id}&course_id=${course_id}&search=${search}">Previous</a></li>
                         </c:if>
                         <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                         </c:if>
                         <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="create-exercise?page=${i}&group_id=${group_id}&search=${search}">${i}</a>
+                            <a href="create-exercise?page=${i}&group_id=${group_id}&course_id=${course_id}&search=${search}">${i}</a>
                         </li>
                         </c:forEach>
                         <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="create-exercise?page=${tag+1}&group_id=${group_id}&search=${search}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="create-exercise?page=${tag+1}&group_id=${group_id}&course_id=${course_id}&search=${search}" class="page-link">Next</a></li>
                         </c:if>
                         <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -544,25 +558,25 @@
 
                         <c:if test="${search == null}" >
                         <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="create-exercise?page=${tag-1}&group_id=${group_id}&type_exercise=${type_exercise}">Previous</a></li>
+                        <li class="page-item"><a href="create-exercise?page=${tag-1}&group_id=${group_id}&course_id=${course_id}&type_exercise=${type_exercise}">Previous</a></li>
                         </c:if>
                         <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                         </c:if>
                         <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="create-exercise?page=${i}&group_id=${group_id}&type_exercise=${type_exercise}">${i}</a>
+                            <a href="create-exercise?page=${i}&group_id=${group_id}&course_id=${course_id}&type_exercise=${type_exercise}">${i}</a>
                         </li>
                         </c:forEach>
                         <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="create-exercise?page=${tag+1}&group_id=${group_id}&type_exercise=${type_exercise}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="create-exercise?page=${tag+1}&group_id=${group_id}&course_id=${course_id}&type_exercise=${type_exercise}" class="page-link">Next</a></li>
                         </c:if>
                         <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
                         </c:if>
                         </c:if>
-                    <ul/>
-                <div/>
+                        <ul/>
+                        <div/>
                 </div>
             </div>
         </div>
@@ -671,8 +685,11 @@
         if (!numQuestions) {
             document.getElementById('numQuestionsError').innerText = "Please enter the Number of Questions.";
             isValid = false;
-        } else if (!isValidInteger(numQuestions)) {
-            document.getElementById('numQuestionsError').innerText = "Number of questions must be an integer.";
+        } else if (!isValidInteger(numQuestions) || parseInt(numQuestions) <0) {
+            document.getElementById('numQuestionsError').innerText = "Number of questions must be an positive integer.";
+            isValid = false;
+        } else if(parseInt(numQuestions) == 0){
+            document.getElementById('numQuestionsError').innerText = "Number of questions must not equal 0.";
             isValid = false;
         }
         if (!exerciseTime) {
@@ -718,8 +735,8 @@
         if (!numQuestions) {
             document.getElementById('updateNumQuestionsError').innerText = "Please enter the Number of Questions.";
             isValid = false;
-        } else if (!isValidInteger(numQuestions)) {
-            document.getElementById('updateNumQuestionsError').innerText = "Number of questions must be an integer.";
+        } else if (!isValidInteger(numQuestions) || parseInt(numQuestions) <0) {
+            document.getElementById('updateNumQuestionsError').innerText = "Number of questions must be an positive integer.";
             isValid = false;
         }
         if (!exerciseTime) {
@@ -799,8 +816,8 @@
         }  else if (basicQuestion > availableBasicQuestions) {
             document.getElementById('random_basicQuestionError').innerText = "Exceeds available basic questions(have " + availableBasicQuestions + " basic questions in bank)";
             isValid = false;
-        } else if (!isValidInteger(basicQuestion)) {
-            document.getElementById('random_basicQuestionError').innerText = "Basic questions must be an integer.";
+        } else if (!isValidInteger(basicQuestion) || parseInt(basicQuestion) <0) {
+            document.getElementById('random_basicQuestionError').innerText = "Basic questions must be an positive integer.";
             isValid = false;
         }
         // low
@@ -810,8 +827,8 @@
         }  else if (lowQuestion > availableLowQuestions) {
             document.getElementById('random_lowQuestionError').innerText = "Exceeds available low questions(have " + availableLowQuestions + " low questions in bank)";
             isValid = false;
-        } else if (!isValidInteger(lowQuestion)) {
-            document.getElementById('random_lowQuestionError').innerText = "Low application questions must be an integer.";
+        } else if (!isValidInteger(lowQuestion) || parseInt(lowQuestion) <0) {
+            document.getElementById('random_lowQuestionError').innerText = "Low application questions must be an positive integer.";
             isValid = false;
         }
         //high
@@ -821,14 +838,18 @@
         }  else if (highQuestion > availableHighQuestions) {
             document.getElementById('random_highQuestionError').innerText = "Exceeds available high questions(have " + availableHighQuestions + " high questions in bank)";
             isValid = false;
-        } else if (!isValidInteger(highQuestion)) {
-            document.getElementById('random_highQuestionError').innerText = "High application questions must be an integer.";
+        } else if (!isValidInteger(highQuestion) || parseInt(highQuestion) <0) {
+            document.getElementById('random_highQuestionError').innerText = "High application questions must be an positive integer.";
+            isValid = false;
+        }
+        if((parseInt(basicQuestion) + parseInt(lowQuestion) + parseInt(highQuestion)) == 0){
+            document.getElementById('random_highQuestionError').innerText = "Number questions of exercise must not equal 0";
             isValid = false;
         }
         if (!exerciseTime) {
             document.getElementById('random_exerciseTimeError').innerText = "Please enter the Exercise time.";
             isValid = false;
-        } else if (!isValidFloat(exerciseTime)) {
+        } else if (!isValidFloat(exerciseTime) || parseFloat(exerciseTime) <0) {
             document.getElementById('random_exerciseTimeError').innerText = "Exercise time must be a floating-point number.";
             isValid = false;
         }
@@ -1087,7 +1108,7 @@
                            </div>
                             <div>
                                 <label style="display: block;text-align: left">Exercise Time:</label>
-                                <input id="updateExerciseTime" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_exercise_time" class="form-control" placeholder="Exercise time">
+                                <input id="updateExerciseTime" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_exercise_time" class="form-control" placeholder="Time is measured in minutes">
                                 <div id="updateExerciseTimeError" class="text-danger"></div>
                             </div>
                             <div>
@@ -1100,7 +1121,6 @@
                                 <div id="updateExerciseTypeError" class="text-danger"></div>
                             </div>
                            <div id="updateGradeCategoryForm">
-<%--                               <label style="display: block;text-align: left">Grade category:</label>--%>
                                <select id="updateGradeCategory" name="update_grade_category" style="display: none" onchange="toggleUpdateGradeCategory()">
                                    <option value="0">Choose grade category</option>
                                    <c:forEach var="o" items="${listGradeCategory}">
@@ -1112,7 +1132,7 @@
 
                         </div>
                         <div class="form-group">
-                            <input type="submit" name="submit" value="Update" class="btn btn-success bb">
+                            <input type="submit" name="submit" value="Update" style="background-color: #FF6600" class="btn btn-success bb">
                         </div>
                     </div>
                 </form>
@@ -1129,7 +1149,7 @@
                     <input type="hidden" name="random" value="1">
                     <input type="hidden" name="group_id" value="${group_id}">
                     <div class="card-header">
-                        <h2 class="custom-heading">Random Quiz</h2>
+                        <h2 class="custom-heading">Random Exercise</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -1140,22 +1160,22 @@
                             </div>
                             <div>
                                 <label style="display: block;text-align: left">Number of Basic Questions:</label>
-                                <input id="random_basicQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_basicQuestion" class="form-control" placeholder="Number of basic question">
+                                <input id="random_basicQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_basicQuestion" class="form-control">
                                 <div id="random_basicQuestionError" class="text-danger"></div>
                             </div>
                             <div>
-                                <label style="display: block;text-align: left">Number of Low Questions:</label>
-                                <input id="random_lowQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_lowQuestion" class="form-control" placeholder="Number of low application question">
+                                <label style="display: block;text-align: left">Number of Low Application Questions:</label>
+                                <input id="random_lowQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_lowQuestion" class="form-control">
                                 <div id="random_lowQuestionError" class="text-danger"></div>
                             </div>
                             <div>
-                                <label style="display: block;text-align: left">Number of High Questions:</label>
-                                <input id="random_highQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_highQuestion" class="form-control" placeholder="Number of high application question">
+                                <label style="display: block;text-align: left">Number of High Application Questions:</label>
+                                <input id="random_highQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_highQuestion" class="form-control">
                                 <div id="random_highQuestionError" class="text-danger"></div>
                             </div>
                             <div>
                                 <label style="display: block;text-align: left">Exercise Time:</label>
-                                <input id="random_exerciseTime" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_exerciseTime" class="form-control" placeholder="Exercise time">
+                                <input id="random_exerciseTime" style="margin-top: 10px;margin-bottom: 20px" type="text" name="random_exerciseTime" class="form-control" placeholder="Time is measured in minutes">
                                 <div id="random_exerciseTimeError" class="text-danger"></div>
                             </div>
                            <div>
@@ -1204,22 +1224,40 @@
                     <div class="card-body">
                         <div class="form-group">
                             <input type="hidden" id="currentRandomExerciseName" name="currentRandomExerciseName">
-                            <input id="updateRandom_exerciseName" type="text" name="update_random_exerciseName" class="form-control" placeholder="Quiz Name" />
-                            <div id="updateRandom_exerciseNameError" class="text-danger"></div>
-                            <input id="updateRandom_basicQuestion" style="margin-top: 30px" type="text" name="update_random_basicQuestion" class="form-control" placeholder="Number of basic question" readonly>
-                            <div id="updateRandom_basicQuestionError" class="text-danger"></div>
-                            <input id="updateRandom_lowQuestion" style="margin-top: 30px" type="text" name="update_random_lowQuestion" class="form-control" placeholder="Number of low application question" readonly>
-                            <div id="updateRandom_lowQuestionError" class="text-danger"></div>
-                            <input id="updateRandom_highQuestion" style="margin-top: 30px" type="text" name="update_random_highQuestion" class="form-control" placeholder="Number of high application question" readonly>
-                            <div id="updateRandom_highQuestionError" class="text-danger"></div>
-                            <input id="updateRandom_exerciseTime" style="margin-top: 30px" type="text" name="update_random_exerciseTime" class="form-control" placeholder="Exercise time">
-                            <div id="updateRandom_exerciseTimeError" class="text-danger"></div>
-                            <select id="updateRandom_exerciseType" name="update_random_exerciseType" style="margin-top: 30px" onchange="toggleUpdateRandomTypeExercise()">
-                                <option value="0">Choose type of exercise</option>
-                                <option value="1">Test</option>
-                                <option value="2">Practice</option>
-                            </select>
-                            <div id="updateRandom_exerciseTypeError" class="text-danger"></div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Name:</label>
+                                <input id="updateRandom_exerciseName" type="text" name="update_random_exerciseName" class="form-control" placeholder="Quiz Name" />
+                                <div id="updateRandom_exerciseNameError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of Basic Questions:</label>
+                                <input id="updateRandom_basicQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_random_basicQuestion" class="form-control" readonly>
+                                <div id="updateRandom_basicQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of Low Application Questions:</label>
+                                <input id="updateRandom_lowQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_random_lowQuestion" class="form-control" readonly>
+                                <div id="updateRandom_lowQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of High Application Questions:</label>
+                                <input id="updateRandom_highQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_random_highQuestion" class="form-control" readonly>
+                                <div id="updateRandom_highQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Time:</label>
+                                <input id="updateRandom_exerciseTime" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_random_exerciseTime" class="form-control" placeholder="Time is measured in minutes">
+                                <div id="updateRandom_exerciseTimeError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Exercise Type:</label>
+                                <select id="updateRandom_exerciseType" name="update_random_exerciseType" style="margin-top: 10px" onchange="toggleUpdateRandomTypeExercise()">
+                                    <option value="0">Choose type of exercise</option>
+                                    <option value="1">Test</option>
+                                    <option value="2">Practice</option>
+                                </select>
+                                <div id="updateRandom_exerciseTypeError" class="text-danger"></div>
+                            </div>
                             <select id="updateRandom_gradeCategory" name="update_random_gradeCategory" style="display: none; margin-top: 30px;" onchange="toggleUpdateRandomGradeCategory()">
                                 <option value="0">Choose grade category</option>
                                 <c:forEach var="o" items="${listGradeCategory}">
@@ -1229,7 +1267,7 @@
                             <div id="updateRandom_gradeCategoryError" class="text-danger"></div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Update" class="btn btn-success bb">
+                            <input type="submit" value="Update" style="background-color: #FF6600" class="btn btn-success bb">
                         </div>
                     </div>
                 </form>

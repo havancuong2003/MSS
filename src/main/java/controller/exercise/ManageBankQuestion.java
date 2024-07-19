@@ -61,24 +61,24 @@ public class ManageBankQuestion extends HttpServlet {
         if(search == null || search.trim().isEmpty() ){
             if(type_question.equals("0")&&status_question.equals("0")){
                 count = bdao.getTotalBankQuestion(course_id);
-                endPage = count/5;
+                endPage = count/10;
                 listQuestion = bdao.pagingBankQuestion(index,course_id);
             } else {
                 if(status_question.equals("0")&& !type_question.equals("0")){
                     count = bdao.getTotalBankQuestionByTypeQuestion(course_id,type_question);
-                    endPage = count/5;
+                    endPage = count/10;
                     listQuestion = bdao.pagingBankQuestionByTypeQuestion(index,course_id,type_question);
                 }
             }
         } else {
             search = search.trim();
             count = bdao.getTotalBankQuestionBySearch(course_id,search);
-            endPage = count/5;
+            endPage = count/10;
             listQuestion = bdao.pagingListBankQuestionBySearch(index,search,course_id);
         }
 
 
-        if(count % 5 != 0){
+        if(count % 10 != 0){
             endPage++;
         }
         if(listQuestion.size() == 0){

@@ -30,7 +30,7 @@
 
         .table-title {
             padding-bottom: 15px;
-            background: #007bff;
+            background: #FF6600;
             color: #fff;
             padding: 16px 30px;
             margin: -20px -25px 10px;
@@ -281,7 +281,7 @@
         }
 
         .pagination li a {
-            color: #007bff;
+            color: #FF6600;
             min-width: 30px;
             padding: 6px 12px;
             text-decoration: none;
@@ -297,12 +297,12 @@
         }
 
         .pagination li a:hover {
-            background-color: #e9ecef;
+            background-color: #FF6600;
             color: #0056b3;
         }
 
         .pagination li.active a {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: white;
             border-color: #007bff;
         }
@@ -447,13 +447,13 @@
                 <option value="2" ${type_question == "2" ? "selected" : ""} class="form-control">Low Application Question</option>
                 <option value="3" ${type_question == "3" ? "selected" : ""} class="form-control">High Application Question</option>
             </select>
-            <button type="submit" class="custom-button">Select</button>
+            <button type="submit" class="custom-button" style="background-color: #FF6600">Select</button>
         </form>
     </div>
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-bank-question" method="get">
             <input type="text" placeholder="Search by question..." name="search">
-            <button type="submit" class="custom-button">Search</button>
+            <button type="submit" class="custom-button" style="background-color: #FF6600">Search</button>
         </form>
     </div>
     <div class="table-wrapper">

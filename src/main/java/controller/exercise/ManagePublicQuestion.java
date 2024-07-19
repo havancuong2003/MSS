@@ -79,12 +79,12 @@ public class ManagePublicQuestion extends HttpServlet {
         if(search == null || search.trim().isEmpty() ){
             if(type_question.equals("0")&&status_question.equals("0")){
                 count = qdao.getTotalPublicQuestion(course_id);
-                endPage = count/5;
+                endPage = count/10;
                 listQuestion = qdao.pagingListPublicQuestionByCourseId(index,course_id);
             } else {
                 if(status_question.equals("0")&& !type_question.equals("0")) {
                     count = qdao.getTotalPublicQuestionByTypeQuestion(course_id, type_question);
-                    endPage = count / 5;
+                    endPage = count / 10;
                     listQuestion = qdao.pagingListPublicQuestionByTypeQuestion(index, type_question, course_id);
                 }
 //                } else if(!status_question.equals("0") && type_question.equals("0")){
@@ -100,12 +100,12 @@ public class ManagePublicQuestion extends HttpServlet {
         } else {
             search = search.trim();
             count = qdao.getTotalPublicQuestionBySearch(course_id,search);
-            endPage = count/5;
+            endPage = count/10;
             listQuestion = qdao.pagingListPublicQuestionBySearch(index,search,course_id);
         }
 
 
-        if(count % 5 != 0){
+        if(count % 10 != 0){
             endPage++;
         }
         if(listQuestion.size() == 0){

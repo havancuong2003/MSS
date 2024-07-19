@@ -30,7 +30,7 @@
 
         .table-title {
             padding-bottom: 15px;
-            background: #007bff;
+            background: #FF6600;
             color: #fff;
             padding: 16px 30px;
             margin: -20px -25px 10px;
@@ -281,7 +281,7 @@
         }
 
         .pagination li a {
-            color: #007bff;
+            color: #FF6600;
             min-width: 30px;
             padding: 6px 12px;
             text-decoration: none;
@@ -297,12 +297,12 @@
         }
 
         .pagination li a:hover {
-            background-color: #e9ecef;
+            background-color: #FF6600;
             color: #0056b3;
         }
 
         .pagination li.active a {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: white;
             border-color: #007bff;
         }

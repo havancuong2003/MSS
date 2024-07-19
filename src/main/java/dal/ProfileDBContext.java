@@ -2,6 +2,7 @@ package dal;
 
 import com.mysql.cj.jdbc.Blob;
 import model.Account;
+import model.Teacher;
 
 import java.io.InputStream;
 import java.sql.PreparedStatement;
@@ -213,6 +214,27 @@ public class ProfileDBContext extends DBContext<Account> {
         }
         return inputStream;
 
+    }
+
+    public Teacher getTeacherIdByAccountId(String account_id) {
+
+        try {
+            String sql = "select * from teacher where acc_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, account_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+               Teacher t = new Teacher();
+               t.setTid(rs.getString(1));
+               Account a = new Account();
+               a.setId(rs.getInt(2));
+               t.setAccount(a);
+               return t;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     public static void main(String[] args) {
         ProfileDBContext dao = new ProfileDBContext();

@@ -37,8 +37,9 @@ public class SelectQuestionBank extends HttpServlet {
         String type_question = request.getParameter("type_question");
         String question_id = request.getParameter("question_id");
         String exercise_id = request.getParameter("exercise_id");
+        String group_id = request.getParameter("group_id");
         String course_id = request.getParameter("course_id");
-        course_id = "1";
+//        course_id = "1";
         Exercise ex = edao.getExerciseById(exercise_id);
         int basicQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("1", exercise_id);
         int lowQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("2", exercise_id);
@@ -79,17 +80,17 @@ public class SelectQuestionBank extends HttpServlet {
         if(search == null || search.trim().isEmpty()){
             if(type_question.equals("0")){
                 count = bdao.getTotalBankQuestion(course_id);
-                endPage = count/5;
+                endPage = count/10;
                 listBankQuestion = bdao.pagingBankQuestion(index,course_id);
             } else {
                 count = bdao.getTotalBankQuestionByTypeQuestion(course_id,type_question);
-                endPage = count/5;
+                endPage = count/10;
                 listBankQuestion = bdao.pagingBankQuestionByTypeQuestion(index,course_id,type_question);
             }
         } else {
             search = search.trim();
             count = bdao.getTotalBankQuestionBySearch(course_id,search);
-            endPage = count/5;
+            endPage = count/10;
             listBankQuestion = bdao.pagingListBankQuestionBySearch(index,search,course_id);
         }
         for (BankQuestion bank : listBankQuestion){
@@ -99,9 +100,11 @@ public class SelectQuestionBank extends HttpServlet {
                 }
             }
         }
-        if(count % 5 != 0){
+        if(count % 10 != 0){
             endPage++;
         }
+        request.setAttribute("group_id",group_id);
+        request.setAttribute("course_id",course_id);
         request.setAttribute("isRandom", ex.getIsRandom());
         request.setAttribute("basicQuestion",basicQuestion);
         request.setAttribute("lowQuestion",lowQuestion);
