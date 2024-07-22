@@ -19,6 +19,13 @@ public class Slot implements IEntity {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
+    public Slot(String detail, Time startTime, Time endTime) {
+        this.detail = detail;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public int getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package controller.home;
 
 import dal.AccountDBContext;
+import dal.ExerciseDBContext;
 import dal.ProfileDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,11 +10,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
+import model.Course;
+import model.Exercise;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.List;
 
 @WebServlet("/staff/dashboard")
 public class StaffController extends HttpServlet {
@@ -53,6 +57,9 @@ public class StaffController extends HttpServlet {
                 e.printStackTrace();
             }
         }
+        ExerciseDBContext edao = new ExerciseDBContext();
+        List<Course> listCourse = edao.getListCourse();
+        req.setAttribute("listCourse", listCourse);
         req.setAttribute("account", account);
         req.getRequestDispatcher("../views/dashboard/staff.jsp").forward(req, resp);
     }

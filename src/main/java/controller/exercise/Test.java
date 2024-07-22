@@ -28,6 +28,7 @@ public class Test extends HttpServlet {
         exerciseId = Integer.parseInt(req.getParameter("exerciseId"));
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         questionDetail = context.getAllQuestionDetailByExerciseIdAndCourseId(exerciseId, courseId);
+        // tao danh sach cac cau hoi
         for (int i = 0; i < questionDetail.size(); i++ ){
             listanswer.add(0);
         }
@@ -39,12 +40,13 @@ public class Test extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+      // cập nhật câu trả lời được chọn
         if(request.getParameter("questionIndex") != null && request.getParameter("choosenAnswer") != null){
             int questionIndex = Integer.parseInt(request.getParameter("questionIndex"));
             int choosenAnswer = Integer.parseInt(request.getParameter("choosenAnswer"));
             listanswer.set(questionIndex, choosenAnswer);
         }
-
+//cap nhat danh sach cac tra loi da chon xu ly qua ajaxsa
         String option = request.getParameter("option");
 
         if (option != null && option.equals("finish")) {

@@ -2,11 +2,14 @@ package model;
 
 import java.util.Date;
 
+
 public class Semester implements IEntity{
     private int id;
     private String detail;
     private Date start;
     private Date end;
+    private int isCreate;
+
     private int nextSemesterID;
     private int totalCourseRegisterForNextSemester;
 
@@ -63,9 +66,21 @@ public class Semester implements IEntity{
     public Semester() {
     }
 
-    public Semester(int id, String detail, Date start, Date end,  int nextSemesterID, int totalCourseRegisterForNextSemester) {
+    public Semester(int id, String detail, Date start, Date end, int isCreate, int totalCourseRegisterForNextSemester) {
         this.id = id;
         this.detail = detail;
+        this.start = start;
+        this.end = end;
+        this.isCreate = isCreate;
+        this.totalCourseRegisterForNextSemester = totalCourseRegisterForNextSemester;
+    }
+
+    public int getIsCreate() {
+        return isCreate;
+    }
+
+    public void setIsCreate(int isCreate) {
+        this.isCreate = isCreate;
         this.start = start;
         this.end = end;
         this.nextSemesterID = nextSemesterID;

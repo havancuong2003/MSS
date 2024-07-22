@@ -14,16 +14,16 @@ public class GroupDBContext extends DBContext<Group> {
     public ArrayList<Group> getGroupForStudentBySidAndSemester(String sid, int semesterID) {
         ArrayList<Group> groups = new ArrayList<>();
         try {
-        String sql = "select gr.course_id, gr.id, gr.name, c.code, c.detail  from swp391.group gr inner join enrollment en on en.group_id = gr.id \n" +
-                "inner join semester se on se.id = gr.semester_id\n" +
-                "inner join course c on c.id = gr.course_id\n" +
-                "where en.student_id = ? and se.id = ?";
+            String sql = "select gr.course_id, gr.id, gr.name, c.code, c.detail  from swp391.group gr inner join enrollment en on en.group_id = gr.id \n" +
+                    "inner join semester se on se.id = gr.semester_id\n" +
+                    "inner join course c on c.id = gr.course_id\n" +
+                    "where en.student_id = ? and se.id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, sid);
             stm.setInt(2, semesterID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Group g =new Group();
+                Group g = new Group();
                 Course c = new Course();
                 c.setId(rs.getInt("course_id"));
                 c.setCode(rs.getString("code"));
@@ -49,7 +49,7 @@ public class GroupDBContext extends DBContext<Group> {
             stm.setInt(2, semesterID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Group g =new Group();
+                Group g = new Group();
                 Course c = new Course();
                 c.setCode(rs.getString("code"));
                 c.setDetail(rs.getString("detail"));
@@ -229,6 +229,24 @@ public class GroupDBContext extends DBContext<Group> {
         }
     }
 
+    public void deleteSession(int semesterID) {
+        String sql = "delete from `session` \n" +
+                "where group_id in (\n" +
+                "    select group_id \n" +
+                "    from (select ss.group_id \n" +
+                "          from `session` ss \n" +
+                "          join `group` g on g.id = ss.group_id \n" +
+                "          where g.semester_id = ?) as tempTable\n" +
+                ")\n";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, semesterID);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void deleteGroup(int semesterID) {
         String sql = "delete from `group` where semester_id =?";
         try {
@@ -366,7 +384,7 @@ public class GroupDBContext extends DBContext<Group> {
 
     public Group getGroupInfo(int groupID) {
         Group g = null;
-        String sql = "SELECT distinct e.group_id,e.Detail,g.name,g.link,g.semester_id,g.course_id,g.PIC FROM enrollment e join `group` g on g.id=e.group_id where group_id=?\n" ;
+        String sql = "SELECT distinct e.group_id,e.Detail,g.name,g.link,g.semester_id,g.course_id,g.PIC FROM enrollment e join `group` g on g.id=e.group_id where group_id=?\n";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, groupID);
@@ -402,7 +420,7 @@ public class GroupDBContext extends DBContext<Group> {
         return list;
     }
 
-    public boolean lockedGroup (int gid){
+    public boolean lockedGroup(int gid) {
         String sql = "select `lock` from `group` where id = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);

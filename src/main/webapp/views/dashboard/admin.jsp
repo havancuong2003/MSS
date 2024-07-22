@@ -224,7 +224,7 @@
             <a href="createGroup"><i class="fas fa-users-cog"></i> Create Group</a>
             <a href="viewGroup"><i class="fas fa-list"></i> View all Group</a>
         </div>
-        <a href="manage-application"><i class="fas fa-tasks"></i> Manage Application</a>
+        <a href="manage-application"><i class="fas fa-tasks"></i> Manage Request</a>
     </div>
     <div class="content">
         <!-- Nội dung dashboard -->

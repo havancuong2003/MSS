@@ -55,6 +55,7 @@ private final int currentSemester = GetCurrentTerm.currentSemester;
                 GroupDBContext g = new GroupDBContext();
                 SemesterDBContext s = new SemesterDBContext();
                 Semester semester = s.get(currentSemester);
+                g.deleteSession(semester.getNextSemesterID());
                 g.deleteEnrollment(semester.getNextSemesterID());
                 g.deleteGroup(semester.getNextSemesterID());
                 g.setIsCreateIsFalse(semester.getNextSemesterID());
