@@ -269,12 +269,5 @@ public class SemesterDBContext extends DBContext<Semester> {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
-        SemesterDBContext s = new SemesterDBContext();
-        Semester ss = s.get(1);
-        System.out.println(ss.getId() + " " + ss.getStart() + " " + ss.getEnd() + " " + ss.getDetail() + " " + ss.getNextSemesterID() + "\n" + ss.getTotalCourseRegisterForNextSemester());
-    }
-
-
 }
 
