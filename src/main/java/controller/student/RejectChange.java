@@ -58,7 +58,7 @@ public class RejectChange extends HttpServlet {
 
             responseData.put("allRequiredFromSomeOne", allRequiredFromSomeOne);
             responseData.put("allRequired", allRequired);
-            responseData.put("groups", gdb.getGroupForStudent(1, account.getUsername()));
+            responseData.put("groups", gdb.getGroupForStudent(semester.getNextSemesterID(), account.getUsername()));
             String json = new Gson().toJson(responseData);
 
             resp.getWriter().write(json);
