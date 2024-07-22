@@ -27,7 +27,7 @@ public class AddSemester extends HttpServlet {
         String endParam = req.getParameter("end");
         String isCreateParam = req.getParameter("isCreate");
         SemesterDBContext con = new SemesterDBContext();
-        //check xem detail toonf taij chua
+        //check xem detail
         if(!con.checkDetailExists(detail)){
             req.setAttribute("msg", "Semester existed!");
             req.setAttribute("detail", detail);
