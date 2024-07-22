@@ -1029,6 +1029,7 @@
                         <h2 class="custom-heading">Exercise</h2>
                     </div>
                     <input type="hidden" name="group_id" value="${group_id}">
+                    <input type="hidden" name="course_id" value="${course_id}">
                     <div class="card-body">
                         <div class="form-group">
                             <input style="margin-top: 30px" type="hidden" name="teacher_id" value="${teacher.tid}">
@@ -1091,6 +1092,7 @@
                     </div>
                     <input type="hidden" name="status" value="update">
                     <input type="hidden" name="group_id" value="${group_id}">
+                    <input type="hidden" name="course_id" value="${course_id}">
                     <input type="hidden" id="exercise_id" name="exercise_id">
                     <div class="card-body">
                         <div class="form-group">
@@ -1148,6 +1150,8 @@
                 <form method="post" action="create-exercise" onsubmit="return validateRandomForm()">
                     <input type="hidden" name="random" value="1">
                     <input type="hidden" name="group_id" value="${group_id}">
+                    <input type="hidden" name="course_id" value="${course_id}">
+
                     <div class="card-header">
                         <h2 class="custom-heading">Random Exercise</h2>
                     </div>
@@ -1220,6 +1224,8 @@
                     </div>
                     <input type="hidden" name="status" value="update">
                     <input type="hidden" name="group_id" value="${group_id}">
+                    <input type="hidden" name="course_id" value="${course_id}">
+
                     <input type="hidden" id="random_exercise_id" name="exercise_id">
                     <div class="card-body">
                         <div class="form-group">

@@ -432,7 +432,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 Group group = new Group();
                 group.setId(rs.getInt("id"));
                 group.setName(rs.getString("name"));
-                group.setLink(rs.getString("link"));
+//                group.setLink(rs.getString("link"));
                 Course course = new Course();
                 course.setId(rs.getInt("course_id"));
                 group.setCourse(course);
@@ -446,6 +446,25 @@ public class ExerciseDBContext extends DBContext<Exercise>{
         }
         return list;
     }
+    public List<Course> getListCourse() {
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT * FROM `course` WHERE status = 1";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setCode(rs.getString("code"));
+                course.setDetail(rs.getString("detail"));
+                course.setStatus(rs.getBoolean("status"));
+                list.add(course);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 
 
     public static void main(String[] args) {
@@ -453,9 +472,9 @@ public class ExerciseDBContext extends DBContext<Exercise>{
         Teacher teacher = dao.getTeacher("t1");
         System.out.println(teacher.getTid());
         System.out.println(dao.getTotalExerciseByGroupId("1"));
-        List<Group> listE = dao.getListGroup("t1");
-        for (Group e : listE){
-            System.out.println(e.getCourse().getId());
+        List<Course> listE = dao.getListCourse();
+        for (Course e : listE){
+            System.out.println(e.getCode());
         }
     }
 

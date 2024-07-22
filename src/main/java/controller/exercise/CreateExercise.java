@@ -349,6 +349,8 @@ public class CreateExercise extends HttpServlet {
                     response.addCookie(c);
                     HttpSession session = request.getSession();
                     session.setAttribute("exercise_id", exercise_id);
+                    request.setAttribute("group_id",group_id);
+                    request.setAttribute("course_id",course_id);
                     request.setAttribute("type_question","0");
                     request.setAttribute("tag",index);
                     request.setAttribute("endPage", endPage);
@@ -376,6 +378,8 @@ public class CreateExercise extends HttpServlet {
                     Exercise ex = dao.getExerciseById(exercise_id);
                     if(ex != null){
                         HttpSession session = request.getSession();
+                        request.setAttribute("group_id",group_id);
+                        request.setAttribute("course_id",course_id);
                         session.setAttribute("exercise_id", exercise_id);
                         request.setAttribute("listQuestionSize",0);
                         request.setAttribute("numQuestion",Integer.parseInt(question_number));

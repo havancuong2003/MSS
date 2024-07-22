@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -120,15 +121,16 @@ public class ProfileDBContext extends DBContext<Account> {
         return null;
     }
 
-    public void editUserName(String username, String account_id) {
+    public void editUserName(String username, String account_id,String phone) {
 
         String sql = "UPDATE account " +
-                "SET username = ? " +
+                "SET username = ?, phone = ? " +
                 "WHERE account_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
-            st.setString(2, account_id);
+            st.setString(2, phone);
+            st.setString(3, account_id);
             st.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, e);
@@ -236,11 +238,40 @@ public class ProfileDBContext extends DBContext<Account> {
         }
         return null;
     }
+    public List<Account> getListAccount() {
+        List<Account> listA = new ArrayList<>();
+        try {
+            String sql = "select * from account";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setId(rs.getInt(1));
+                a.setUsername(rs.getString(2));
+                a.setPassword(rs.getString(3));
+                a.setFullname(rs.getString(4));
+                a.setPhone(rs.getString(5));
+                a.setEmail(rs.getString(6));
+                a.setDob(rs.getDate(7));
+                a.setAddress(rs.getString(8));
+                a.setRole_id(rs.getInt(9));
+                a.setAvatar((Blob) rs.getBlob(10));
+                a.setGender(rs.getBoolean(11));
+                listA.add(a);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listA;
+    }
     public static void main(String[] args) {
         ProfileDBContext dao = new ProfileDBContext();
         Account a = dao.getAccountByUserPhone("0335545681");
-
-        System.out.println(a.getFullname());
+        List<Account> list = dao.getListAccount();
+        for (Account a1 : list) {
+            System.out.println(a1.getId());
+        }
+//        System.out.println(a.getFullname());
     }
 
 

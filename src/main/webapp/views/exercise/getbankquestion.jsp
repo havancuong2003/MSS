@@ -502,7 +502,22 @@
             color: white;
         }
 
+        .note {
+            background-color: #fef3c7; /* Màu nền vàng nhạt */
+            border-left: 4px solid #f59e0b; /* Đường viền trái màu vàng đậm */
+            color: #92400e; /* Màu chữ vàng đậm */
+            padding: 16px; /* Khoảng đệm bên trong */
+            margin: 16px 0; /* Khoảng cách trên và dưới */
+            border-radius: 4px; /* Bo góc */
+        }
 
+        .note p {
+            margin: 0;
+        }
+
+        .note .font-bold {
+            font-weight: bold; /* Chữ in đậm */
+        }
 
 
     </style>
@@ -546,6 +561,10 @@
         </div>
         <input type="hidden" name="exercise_id" value="${exercise_id}">
         <table class="table table-striped table-hover">
+            <div class="note">
+                <p class="font-bold">Note</p>
+                <p>The select button is disabled because it already exists in the exercise.</p>
+            </div>
             <thead>
             <tr>
                 <th>ID</th>

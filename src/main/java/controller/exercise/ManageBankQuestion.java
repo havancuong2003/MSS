@@ -1,14 +1,13 @@
 package controller.exercise;
 
 import com.google.gson.Gson;
-import dal.BankQuestionDBContext;
-import dal.ExerciseDBContext;
-import dal.QuestionDBContext;
+import dal.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.*;
 
 import java.io.IOException;
@@ -18,6 +17,16 @@ import java.util.List;
 @WebServlet(name = "manageBankQuestion", value = "/staff/manage-bank-question")
 public class ManageBankQuestion extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        ProfileDBContext dao = new ProfileDBContext();
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        int account_id = account.getId();
+        String accountId = String.valueOf(account_id);
+        Account acc = dao.getAccountByID(accountId);
+
+        AccountDBContext adbc = new AccountDBContext();
+        String role = adbc.getRoleByRoleID(account.getRole_id());
+        request.setAttribute("role", role);
         ExerciseDBContext edao = new ExerciseDBContext();
         BankQuestionDBContext bdao = new BankQuestionDBContext();
         QuestionDBContext qdao = new QuestionDBContext();
@@ -28,7 +37,7 @@ public class ManageBankQuestion extends HttpServlet {
         String type_question = request.getParameter("type_question");
         String search = request.getParameter("search");
         String course_id = request.getParameter("course_id");
-        course_id = "1";
+//        course_id = "1";
         if(type_question == null){
             type_question = "0";
         }
@@ -84,6 +93,7 @@ public class ManageBankQuestion extends HttpServlet {
         if(listQuestion.size() == 0){
             request.setAttribute("mess_list_question", "no data...");
         }
+        request.setAttribute("course_id",course_id);
         request.setAttribute("searchtxt",search);
         request.setAttribute("status_question",status_question);
         request.setAttribute("type_question", type_question);

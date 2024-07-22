@@ -571,12 +571,12 @@ public class QuestionDBContext extends DBContext<Question> {
                 "LEFT JOIN account acc ON t.acc_id = acc.account_id\n" +
                 "WHERE q.course_id = ? AND q.status = 1 " +
                 "ORDER BY CASE WHEN q.status = 1 THEN 0 ELSE 1 END, q.question_id DESC " +
-                "LIMIT 5 OFFSET ? ";
+                "LIMIT 10 OFFSET ? ";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course_id);
-            statement.setInt(2, (index-1)*5);
+            statement.setInt(2, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Question q = new Question();
@@ -644,13 +644,13 @@ public class QuestionDBContext extends DBContext<Question> {
                 "LEFT JOIN account acc ON t.acc_id = acc.account_id\n" +
                 "WHERE q.course_id = ? AND q.type_question = ? AND q.status = 1\n " +
                 "ORDER BY CASE WHEN q.status = 1 THEN 0 ELSE 1 END, q.question_id " +
-                "LIMIT 5 OFFSET ? ";
+                "LIMIT 10 OFFSET ? ";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course_id);
             statement.setString(2, type_question);
-            statement.setInt(3, (index-1)*5);
+            statement.setInt(3, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Question q = new Question();

@@ -652,18 +652,18 @@
                 <ul class="pagination">
                     <c:if test="${search != null}" >
                         <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&search=${search}">Previous</a></li>
+                        <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&search=${search}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
                         </c:if>
                         <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                         </c:if>
                         <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="manage-question?page=${i}&exercise_id=${exercise_id}&search=${search}">${i}</a>
+                            <a href="manage-question?page=${i}&exercise_id=${exercise_id}&search=${search}&group_id=${group_id}&course_id=${course_id}">${i}</a>
                         </li>
                         </c:forEach>
                         <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&search=${search}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&search=${search}&group_id=${group_id}&course_id=${course_id}" class="page-link">Next</a></li>
                         </c:if>
                         <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -672,18 +672,18 @@
 
                     <c:if test="${search == null}" >
                         <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&type_question=${type_question}">Previous</a></li>
+                        <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&type_question=${type_question}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
                         </c:if>
                         <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                         </c:if>
                         <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="manage-question?page=${i}&exercise_id=${exercise_id}&type_question=${type_question}">${i}</a>
+                            <a href="manage-question?page=${i}&exercise_id=${exercise_id}&type_question=${type_question}&group_id=${group_id}&course_id=${course_id}">${i}</a>
                         </li>
                         </c:forEach>
                         <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&type_question=${type_question}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&type_question=${type_question}&group_id=${group_id}&course_id=${course_id}" class="page-link">Next</a></li>
                         </c:if>
                         <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
