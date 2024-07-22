@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class ViewHistoryTest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+// lấy ds các câu hỏi và câu trả lời đã nộp
         int historyId = Integer.parseInt(req.getParameter("historyId"));
         TestDBContext db = new TestDBContext();
         ArrayList<QuestionSubmission> questionSubmissions = db.getAllQuestionSubmissionByHistory(historyId);

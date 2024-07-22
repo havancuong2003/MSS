@@ -34,6 +34,11 @@
         /*.btn-submit:hover {*/
         /*    background-color: #0056b3;*/
         /*}*/
+
+        .btn-loading {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -72,6 +77,9 @@
  $(document).ready(function() {
      $('#changeSessionForm').on('submit', function(event) {
          event.preventDefault();
+         const $submitButton = $('.btn-submit');
+         $submitButton.prop('disabled', true).addClass('btn-loading').val('Loading...');
+
          $.ajax({
              type: 'POST',
              url: '/MyStudySpace_war_exploded/admin/changeSessionTeacher',
@@ -85,6 +93,9 @@
              },
              error: function(xhr, status, error) {
                  alert(error);
+             },
+             complete: function() {
+                 $submitButton.prop('disabled', false).removeClass('btn-loading').val('Submit Request');
              }
 
          });

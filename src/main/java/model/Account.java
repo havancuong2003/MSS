@@ -15,6 +15,8 @@ public class Account implements IEntity {
     private Date dob;
     private int role_id;
     private Blob avatar;
+    private String status;
+
     private Role role;
 
 
@@ -23,7 +25,7 @@ public class Account implements IEntity {
 
     }
 
-    public Account(int id, String username, String password, String email, String fullname, String phone, boolean gender, String address, Date dob, int role_id, Blob avatar) {
+    public Account(int id, String username, String password, String email, String fullname, String phone, boolean gender, String address, Date dob, int role_id, Blob avatar, String status) {
         this.aid = id;
         this.username = username;
         this.password = password;
@@ -35,6 +37,7 @@ public class Account implements IEntity {
         this.dob = dob;
         this.role_id = role_id;
         this.avatar = avatar;
+        this.status = status;
     }
 
     public int getId() {
@@ -124,6 +127,10 @@ public class Account implements IEntity {
     public void setAvatar(Blob avatar) {
         this.avatar = avatar;
     }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
 
     public Role getRole() {
         return role;
