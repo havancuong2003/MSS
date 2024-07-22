@@ -12,6 +12,10 @@
     <title>Title</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             color: #566787;
@@ -30,7 +34,7 @@
 
         .table-title {
             padding-bottom: 15px;
-            background: #007bff;
+            background: #FF6600;
             color: #fff;
             padding: 16px 30px;
             margin: -20px -25px 10px;
@@ -281,7 +285,7 @@
         }
 
         .pagination li a {
-            color: #007bff;
+            color: #FF6600;
             min-width: 30px;
             padding: 6px 12px;
             text-decoration: none;
@@ -297,12 +301,12 @@
         }
 
         .pagination li a:hover {
-            background-color: #e9ecef;
+            background-color: #FF6600;
             color: #0056b3;
         }
 
         .pagination li.active a {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: white;
             border-color: #007bff;
         }
@@ -441,19 +445,21 @@
 <div class="container" style="margin-top: 70px">
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-bank-question" method="get">
+            <input type="hidden" name="course_id" value="${course_id}">
             <select name="type_question">
                 <option value="0" class="form-control">Choose type question</option>
                 <option value="1" ${type_question == "1" ? "selected" : ""} class="form-control">Basic Question</option>
                 <option value="2" ${type_question == "2" ? "selected" : ""} class="form-control">Low Application Question</option>
                 <option value="3" ${type_question == "3" ? "selected" : ""} class="form-control">High Application Question</option>
             </select>
-            <button type="submit" class="custom-button">Select</button>
+            <button type="submit" class="custom-button" style="background-color: #FF6600">Select</button>
         </form>
     </div>
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-bank-question" method="get">
+            <input type="hidden" name="course_id" value="${course_id}">
             <input type="text" placeholder="Search by question..." name="search">
-            <button type="submit" class="custom-button">Search</button>
+            <button type="submit" class="custom-button" style="background-color: #FF6600">Search</button>
         </form>
     </div>
     <div class="table-wrapper">
@@ -498,22 +504,27 @@
             </c:forEach>
         </table>
         <p style="text-align: center; font-style: italic;font-size: 18px;margin: 20px 0">${mess_list_question}</p>
+        <div style="margin-top: 10px">
+            <a class="back-link" href="${pageContext.request.contextPath}/${role}/dashboard" style="color: #FF6600;font-size: 15px">
+                <i class="fas fa-arrow-left"></i> Back to dashboard
+            </a>
+        </div>
         <div class="pagination-container">
             <ul class="pagination">
                 <c:if test="${searchtxt != null}" >
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="manage-bank-question?page=${tag-1}&search=${searchtxt}">Previous</a></li>
+                        <li class="page-item"><a href="manage-bank-question?page=${tag-1}&search=${searchtxt}&course_id=${course_id}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="manage-bank-question?page=${i}&search=${searchtxt}">${i}</a>
+                            <a href="manage-bank-question?page=${i}&search=${searchtxt}&course_id=${course_id}">${i}</a>
                         </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="manage-bank-question?page=${tag+1}&search=${searchtxt}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="manage-bank-question?page=${tag+1}&search=${searchtxt}&course_id=${course_id}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -521,18 +532,18 @@
                 </c:if>
                 <c:if test="${searchtxt == null}">
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="manage-bank-question?page=${tag-1}&type_question=${type_question}&status_question=${status_question}">Previous</a></li>
+                        <li class="page-item"><a href="manage-bank-question?page=${tag-1}&type_question=${type_question}&status_question=${status_question}&course_id=${course_id}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="manage-bank-question?page=${i}&type_question=${type_question}&status_question=${status_question}">${i}</a>
+                            <a href="manage-bank-question?page=${i}&type_question=${type_question}&status_question=${status_question}&course_id=${course_id}">${i}</a>
                         </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="manage-bank-question?page=${tag+1}&type_question=${type_question}&status_question=${status_question}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="manage-bank-question?page=${tag+1}&type_question=${type_question}&status_question=${status_question}&course_id=${course_id}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
