@@ -90,7 +90,7 @@ public class MarkDBContext extends DBContext<Mark> {
         return marks;
     }
 
-    public int getGradeItemByItemAndGroup(int gid, String name){
+    public int getGradeItemByItemAndGroup(int gid, String name) {
         int id = 0;
         try {
             String sql = "select gi.id from swp391.group g inner join grade_category gc on gc.course_id = g.course_id \n" +
@@ -109,7 +109,7 @@ public class MarkDBContext extends DBContext<Mark> {
         return id;
     }
 
-    public boolean checkMarkExist(String sid, int itemid, int groupid){
+    public boolean checkMarkExist(String sid, int itemid, int groupid) {
         boolean check = false;
         try {
             String sql = "select * from mark where student_id = ? and grade_item_id = ? and group_id = ?";
@@ -127,7 +127,7 @@ public class MarkDBContext extends DBContext<Mark> {
         return check;
     }
 
-    public void insertMark(String sid, Float grade, int itemId, int gid){
+    public void insertMark(String sid, Float grade, int itemId, int gid) {
         try {
             String sql = "insert into mark(student_id, grade, grade_item_id, group_id) values(?,?,?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -141,7 +141,7 @@ public class MarkDBContext extends DBContext<Mark> {
         }
     }
 
-    public void updateMark(String sid, Float grade, int itemId, int gid){
+    public void updateMark(String sid, Float grade, int itemId, int gid) {
         try {
             String sql = "update mark set grade = ? where student_id = ? and grade_item_id = ? and group_id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -155,28 +155,46 @@ public class MarkDBContext extends DBContext<Mark> {
         }
     }
 
-    @Override
-    public ArrayList<Mark> list() {
-        return null;
+    public int countMarkOfStudent(int gid, String sid) {
+        try {
+            String sql = "select count(*) as count from mark m where m.group_id = ? and m.student_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, gid);
+            stm.setString(2, sid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
     }
 
-    @Override
-    public void insert(Mark entity) {
 
-    }
 
-    @Override
-    public void update(Mark entity) {
+@Override
+public ArrayList<Mark> list() {
+    return null;
+}
 
-    }
+@Override
+public void insert(Mark entity) {
 
-    @Override
-    public void delete(Mark entity) {
+}
 
-    }
+@Override
+public void update(Mark entity) {
 
-    @Override
-    public Mark get(int id) throws SQLException {
-        return null;
-    }
+}
+
+@Override
+public void delete(Mark entity) {
+
+}
+
+@Override
+public Mark get(int id) throws SQLException {
+    return null;
+}
 }

@@ -39,7 +39,7 @@
 </head>
 
 <body>
-
+<h1>${a}</h1>
 <div class="container-fluid d-none d-lg-block">
     <div class="row align-items-center py-4 px-xl-5">
         <div class="col-lg-3">
@@ -111,23 +111,14 @@
                                 href="#"
                                 class="nav-link"
                                 data-toggle="dropdown"
-                        >Web Design
-                            <i
-                                    class="fa fa-angle-down float-right mt-1"
-                            ></i
-                            ></a>
-                        <div
-                                class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0"
-                        >
-                            <a href="" class="dropdown-item">HTML</a>
-                            <a href="" class="dropdown-item">CSS</a>
-                            <a href="" class="dropdown-item">jQuery</a>
-                        </div>
+                        >Software Engineering
+
+                            </a>
+
                     </div>
-                    <a href="" class="nav-item nav-link">Apps Design</a>
-                    <a href="" class="nav-item nav-link">Marketing</a>
-                    <a href="" class="nav-item nav-link">Research</a>
-                    <a href="" class="nav-item nav-link">SEO</a>
+                    <a href="" class="nav-item nav-link">Digital Marketing</a>
+                    <a href="" class="nav-item nav-link">Artificial Intelligence</a>
+
                 </div>
             </nav>
         </div>

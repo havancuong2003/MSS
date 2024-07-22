@@ -10,7 +10,7 @@ public class Group implements IEntity{
     private Course course;
     private Teacher teacher;
     private ArrayList<Student> students;
-
+    private boolean lock;
     public Teacher getTeacher() {
         return teacher;
     }
@@ -80,5 +80,13 @@ public class Group implements IEntity{
 
     public void setStudents(ArrayList<Student> students) {
         this.students = students;
+    }
+
+    public boolean isLock() {
+        return lock;
+    }
+
+    public void setLock(boolean lock) {
+        this.lock = lock;
     }
 }

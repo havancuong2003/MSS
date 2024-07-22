@@ -12,87 +12,134 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: sans-serif;
-            background-color: #f9f9f9; /* Add a light gray background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
         }
 
         header {
-            background-color: #333; /* Dark gray header */
-            padding: 10px;
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 20px;
             text-align: center;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 1;
-            color: #fff; /* White text */
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
         }
 
         footer {
-            background-color: #333; /* Dark gray footer */
-            padding: 10px;
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 20px;
             text-align: center;
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            z-index: 1;
-            color: #fff; /* White text */
+            z-index: 1000;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .container {
+            margin: 120px auto 80px;
             padding: 20px;
-            margin-top: 100px; /* Adjust for header height */
-            margin-bottom: 60px; /* Adjust for footer height */
-            background-color: #fff; /* White background */
-            border: 1px solid #ddd; /* Light gray border */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            max-width: 800px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .current-term {
-            padding: 10px;
-            text-align: center;
-            width: 100%;
-            z-index: 1;
-            background-color: #f7f7f7; /* Light gray background */
-            border-bottom: 1px solid #ddd; /* Light gray border */
+        .current-term, .set-time {
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
         }
 
-        .set-time {
-            padding: 10px;
-            text-align: center;
-            width: 100%;
-            z-index: 1;
-            background-color: #f7f7f7; /* Light gray background */
-        }
 
         .form-settime {
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
 
         label {
             display: block;
             margin-bottom: 10px;
+            font-weight: bold;
         }
 
         input[type="date"] {
+            width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            margin-top: 10px;
+            margin-top: 5px;
+            font-size: 16px;
         }
 
         button {
-            background-color: #4caf50; /* Green button */
+            display: inline-block;
+            background-color: #1a73e8;
             color: #fff;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
         }
 
         button:hover {
-            background-color: #3e8e41; /* Darker green on hover */
+            background-color: #155ab6;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            background-color: #0f4a8d;
+            transform: translateY(0);
+        }
+
+        a.back-button {
+            display: inline-block;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        a.back-button:hover {
+            background-color: #388e3c;
+            transform: translateY(-2px);
+        }
+
+        a.back-button:active {
+            background-color: #2e7031;
+            transform: translateY(0);
+        }
+
+        h1, h2, h3, h4 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        p {
+            margin: 0 0 10px;
         }
 
         /* Responsive design */
@@ -123,33 +170,33 @@
                 font-size: 14px;
             }
         }
-        a.back-button {
-            background-color: #4CAF50; /* Green background */
-            color: #fff; /* White text */
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px; /* Add a rounded corner */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-            text-decoration: none; /* Remove the default underline */
+        /*a.back-button {*/
+        /*    background-color: #4CAF50; !* Green background *!*/
+        /*    color: #fff; !* White text *!*/
+        /*    border: none;*/
+        /*    padding: 10px 20px;*/
+        /*    font-size: 16px;*/
+        /*    cursor: pointer;*/
+        /*    border-radius: 5px; !* Add a rounded corner *!*/
+        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); !* Add a subtle shadow *!*/
+        /*    text-decoration: none; !* Remove the default underline *!*/
 
-            /* existing styles */
-            position: absolute;
-            top: 20px;
-            left: 50px;
-            margin: 10px;
+        /*    !* existing styles *!*/
+        /*    position: absolute;*/
+        /*    top: 20px;*/
+        /*    left: 50px;*/
+        /*    margin: 10px;*/
 
-        }
+        /*}*/
 
-        a.back-button:hover {
-            background-color: #3e8e41; /* Darker green on hover */
-        }
+        /*a.back-button:hover {*/
+        /*    background-color: #3e8e41; !* Darker green on hover *!*/
+        /*}*/
 
-        a.back-button:active {
-            background-color: #3e8e41; /* Darker green on active */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a deeper shadow on active */
-        }
+        /*a.back-button:active {*/
+        /*    background-color: #3e8e41; !* Darker green on active *!*/
+        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); !* Add a deeper shadow on active *!*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -160,16 +207,16 @@
 
 <div class="container">
     <div class="current-term">
-        <h2>Current term: SU24</h2>
-        <p>SU24 from 20/12/2024 to 30/12/2024</p>
+        <h2>Current term: ${semester.detail}</h2>
+        <p>SU24 from ${semester.start} to ${semester.end}</p>
     </div>
     <div class="set-time">
         <h2>
             Set time for students to register for courses for the next
-            semester: FA24
+            semester: ${nextSemester.detail}
         </h2>
-        <p>FA24 start from 01/01/2025 to 30/03/2024</p>
-
+        <p>FA24 start from ${nextSemester.start} to ${nextSemester.end}</p>
+        <p>Time Register must be within the following time: ${startRange} - ${endRange}</p>
         <form id="myForm" class="form-settime">
             <h1 id="error" style="color: red"></h1>
             <input
@@ -187,7 +234,7 @@
                     />
 
                     <label for="endDate" style="margin-top: 20px"
-                >To:</label
+                    >To:</label
                     >
                     <input type="date" id="endDate" name="endDate" />
                 </c:when>
@@ -252,9 +299,11 @@
                     startDate: startDate,
                     endDate: endDate,
                     description: description,
+                    numCourses: $("#numCourses").val(),
                 },
                 dataType: "json",
                 success: function (response) {
+                    console.log("Success:", response);
                     // Handle success response from backend here
                     $("#error")
                         .css("color", "green")
@@ -273,7 +322,7 @@
                     console.error("Error:", error);
                     console.error("status:", status);
                     console.error("xhr:", xhr);
-                    $("#error").text(xhr.responseJSON);
+                    $("#error").text(xhr.responseJSON.message);
                 },
             });
         });

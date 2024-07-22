@@ -180,10 +180,73 @@
             background-image: linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
           }
         }*/
+        /* CSS for label */
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-size: 1.1em;
+            color: #fff; /* Thay đổi màu sắc tùy theo nhu cầu */
+        }
+
+        /* CSS for select element */
+        #majorSelect {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1em;
+            padding: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+            /*width: 100%; !* Tự điều chỉnh theo chiều rộng của form *!*/
+        }
+
+        #majorSelect:hover {
+            border-color: #aaa;
+        }
+
+        #majorSelect:focus {
+            outline: none;
+            border-color: #428bca;
+            box-shadow: 0 0 5px rgba(66, 139, 202, 0.5);
+        }
+
+        /* Adjust select arrow icon */
+        #majorSelect::-ms-expand {
+            display: none; /* Remove default arrow in IE */
+        }
+
+        /* Style for selected option */
+        #majorSelect option {
+            font-weight: normal;
+        }
+
+        /* Style for selected option on hover */
+        #majorSelect option:hover {
+            background-color: #f5f9fc;
+            color: #333;
+        }
+
     </style>
+    <script>
+        function submitForm() {
+            document.getElementById("majorForm").submit();
+        }
+    </script>
 </head>
 <body>
 <div class="container">
+    <form id="majorForm" action="viewCurriculum" method="post">
+        <label for="majorSelect">Select Major:</label>
+        <select id="majorSelect" name="majorId" onchange="submitForm()">
+            <c:forEach items="${majors}" var="major">
+                <option value="${major.id}" ${requestScope.majorSelected == major.id ? "selected" : ""}>${major.code}</option>
+            </c:forEach>
+        </select>
+    </form>
     <h1>Subject Prerequisite</h1>
     <table class="rwd-table">
         <%--        <thead>--%>

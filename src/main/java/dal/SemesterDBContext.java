@@ -148,10 +148,41 @@ public class SemesterDBContext extends DBContext<Semester> {
         return semesters;
     }
 
+    public int getSemesterByGid(int gid) {
+        try {
+            String sql = "select s.id from swp391.group g inner join semester s on g.semester_id = s.id where g.id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, gid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
 
     @Override
     public ArrayList<Semester> list() {
-        return null;
+        String sql ="select * from semester\n";
+
+        ArrayList<Semester> semesters = new ArrayList<>();
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Semester s = new Semester();
+                s.setId(rs.getInt("id"));
+                s.setStart(rs.getDate("start"));
+                s.setEnd(rs.getDate("end"));
+                s.setDetail(rs.getString("detail"));
+                semesters.add(s);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return semesters;
     }
 
     @Override
@@ -236,6 +267,12 @@ public class SemesterDBContext extends DBContext<Semester> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        SemesterDBContext s = new SemesterDBContext();
+        Semester ss = s.get(1);
+        System.out.println(ss.getId() + " " + ss.getStart() + " " + ss.getEnd() + " " + ss.getDetail() + " " + ss.getNextSemesterID() + "\n" + ss.getTotalCourseRegisterForNextSemester());
     }
 
 
