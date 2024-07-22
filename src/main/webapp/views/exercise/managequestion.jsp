@@ -16,6 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             color: #566787;
@@ -34,7 +35,7 @@
 
         .table-title {
             padding-bottom: 15px;
-            background: #007bff;
+            background: #FF6600;
             color: #fff;
             padding: 16px 30px;
             margin: -20px -25px 10px;
@@ -273,7 +274,7 @@
         }
 
         .pagination li a {
-            color: #007bff;
+            color: #FF6600;
             min-width: 30px;
             padding: 6px 12px;
             text-decoration: none;
@@ -289,12 +290,12 @@
         }
 
         .pagination li a:hover {
-            background-color: #e9ecef;
+            background-color: #FF6600;
             color: #0056b3;
         }
 
         .pagination li.active a {
-            background-color: #007bff;
+            background-color: #FF6600;
             color: white;
             border-color: #007bff;
         }
@@ -496,20 +497,24 @@
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-question" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
+            <input type="hidden" name="group_id" value="${group_id}">
+            <input type="hidden" name="course_id" value="${course_id}">
             <select name="type_question">
                 <option value="0" class="form-control">Choose type question</option>
                 <option value="1" ${type_question == "1" ? "selected" : ""} class="form-control">Basic Question</option>
                 <option value="2" ${type_question == "2" ? "selected" : ""} class="form-control">Low Application Question</option>
                 <option value="3" ${type_question == "3" ? "selected" : ""} class="form-control">High Application Question</option>
             </select>
-            <button type="submit" class="custom-button">Select</button>
+            <button type="submit" class="custom-button" style="background-color: #FF6600">Select</button>
         </form>
     </div>
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-question" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
+            <input type="hidden" name="group_id" value="${group_id}">
+            <input type="hidden" name="course_id" value="${course_id}">
             <input type="text" placeholder="Search by question..." name="search">
-            <button type="submit" class="custom-button">Search</button>
+            <button type="submit" class="custom-button" style="background-color: #FF6600">Search</button>
         </form>
     </div>
     <div id="messageContainer"></div>
@@ -533,7 +538,7 @@
                                     <input type="hidden" name="exercise_id" value="${exercise_id}">
                                     <input type="hidden" name="status" value="prevent">
                                     <button type="submit" class="btn btn-success"  onclick="confirmSubmission(event)">
-                                        <i class="material-icons">assignment</i> <span>Prevent</span>
+                                        <i class="material-icons">assignment</i> <span>Present</span>
                                     </button>
                                 </form>
                             </c:if>
@@ -542,7 +547,7 @@
                                     <input type="hidden" name="exercise_id" value="${exercise_id}">
                                     <input type="hidden" name="status" value="prevent">
                                     <button type="submit" class="btn btn-success" onclick="checkQuestions(event)">
-                                        <i class="material-icons">assignment</i> <span>Prevent</span>
+                                        <i class="material-icons">assignment</i> <span>Present</span>
                                     </button>
                                 </form>
                             </c:if>
@@ -560,7 +565,7 @@
 
                         <c:if test="${isRandom != 1}">
                             <c:if test="${listQuestionSize < numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&numQuestion=${numQuestion}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
                                 <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
                             </c:if>
                             <c:if test="${listQuestionSize >= numQuestion}">
@@ -612,7 +617,7 @@
                         </c:if>
                         <td>
                             <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                            <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return confirm('Are you sure you want to delete this question?');" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
                         </td>
                         <c:if test="${o.status == 0}">
                             <td style="text-align: center">
@@ -628,54 +633,61 @@
                     </tbody>
                 </c:forEach>
             </table>
-            <div class="button-wrapper">
-                <c:if test="${listQuestion.size() != 0}" >
-                    <button id="publicQuestionButton" >Public question for bank</button>
-                </c:if>
-                <input type="hidden" name="exercise_id" value="${exercise_id}">
-                <input type="hidden" name="status" value="public">
-                <input type="hidden" name="page" value="${tag}">
+            <div>
+                <div class="button-wrapper" style="margin-top: 20px">
+                    <c:if test="${listQuestion.size() != 0}" >
+                        <button id="publicQuestionButton" >Public question for bank</button>
+                    </c:if>
+                    <input type="hidden" name="exercise_id" value="${exercise_id}">
+                    <input type="hidden" name="status" value="public">
+                    <input type="hidden" name="page" value="${tag}">
+                </div>
+                <div>
+                    <a class="back-link" href="create-exercise?group_id=${group_id}&course_id=${course_id}" style="color: #FF6600;font-size: 15px">
+                        <i class="fas fa-arrow-left"></i> Back to manage exercise
+                    </a>
+                </div>
             </div>
             <div class="pagination-container">
                 <ul class="pagination">
                     <c:if test="${search != null}" >
-                    <c:if test="${tag > 1}">
-                    <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&search=${search}">Previous</a></li>
-                    </c:if>
-                    <c:if test="${tag ==1}">
-                    <li class="page-item"><a href="#">Previous</a></li>
-                    </c:if>
-                    <c:forEach begin="1" end="${endPage}" var="i">
-                    <li class="page-item ${i == tag ? 'active' : ''}">
-                        <a href="manage-question?page=${i}&exercise_id=${exercise_id}&search=${search}">${i}</a>
-                    </li>
-                    </c:forEach>
-                    <c:if test="${tag < endPage}" >
-                    <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&search=${search}" class="page-link">Next</a></li>
-                    </c:if>
-                    <c:if test="${tag == endPage}">
-                    <li class="page-item" ><a href="#" class="page-link">Next</a></li>
-                    </c:if>
+                        <c:if test="${tag > 1}">
+                        <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&search=${search}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
+                        </c:if>
+                        <c:if test="${tag ==1}">
+                        <li class="page-item"><a href="#">Previous</a></li>
+                        </c:if>
+                        <c:forEach begin="1" end="${endPage}" var="i">
+                        <li class="page-item ${i == tag ? 'active' : ''}">
+                            <a href="manage-question?page=${i}&exercise_id=${exercise_id}&search=${search}&group_id=${group_id}&course_id=${course_id}">${i}</a>
+                        </li>
+                        </c:forEach>
+                        <c:if test="${tag < endPage}" >
+                        <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&search=${search}&group_id=${group_id}&course_id=${course_id}" class="page-link">Next</a></li>
+                        </c:if>
+                        <c:if test="${tag == endPage}">
+                        <li class="page-item" ><a href="#" class="page-link">Next</a></li>
+                        </c:if>
                     </c:if>
 
                     <c:if test="${search == null}" >
-                    <c:if test="${tag > 1}">
-                    <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&type_question=${type_question}">Previous</a></li>
-                    </c:if>
-                    <c:if test="${tag ==1}">
-                    <li class="page-item"><a href="#">Previous</a></li>
-                    </c:if>
-                    <c:forEach begin="1" end="${endPage}" var="i">
-                    <li class="page-item ${i == tag ? 'active' : ''}">
-                        <a href="manage-question?page=${i}&exercise_id=${exercise_id}&type_question=${type_question}">${i}</a>
-                    </li>
-                    </c:forEach>
-                    <c:if test="${tag < endPage}" >
-                    <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&type_question=${type_question}" class="page-link">Next</a></li>
-                    </c:if>
-                    <c:if test="${tag == endPage}">
-                    <li class="page-item" ><a href="#" class="page-link">Next</a></li>
-                    </c:if>
+                        <c:if test="${tag > 1}">
+                        <li class="page-item"><a href="manage-question?page=${tag-1}&exercise_id=${exercise_id}&type_question=${type_question}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
+                        </c:if>
+                        <c:if test="${tag ==1}">
+                        <li class="page-item"><a href="#">Previous</a></li>
+                        </c:if>
+                        <c:forEach begin="1" end="${endPage}" var="i">
+                        <li class="page-item ${i == tag ? 'active' : ''}">
+                            <a href="manage-question?page=${i}&exercise_id=${exercise_id}&type_question=${type_question}&group_id=${group_id}&course_id=${course_id}">${i}</a>
+                        </li>
+                        </c:forEach>
+                        <c:if test="${tag < endPage}" >
+                        <li class="page-item" ><a href="manage-question?page=${tag+1}&exercise_id=${exercise_id}&type_question=${type_question}&group_id=${group_id}&course_id=${course_id}" class="page-link">Next</a></li>
+                        </c:if>
+                        <c:if test="${tag == endPage}">
+                        <li class="page-item" ><a href="#" class="page-link">Next</a></li>
+                        </c:if>
                     </c:if>
                     <ul/>
                     <div/>
@@ -693,6 +705,8 @@
                 <input type="hidden" value="${tag}" name="page">
                 <input type="hidden" value="${type_question}" name="type_question">
                 <input type="hidden" name="status" value="add">
+                <input type="hidden" name="group_id" value="${group_id}">
+                <input type="hidden" name="course_id" value="${course_id}">
                 <c:if test="${searchExist == 1}">
                     <input type="hidden" value="${search}" name="search">
                 </c:if>
@@ -712,32 +726,32 @@
                         <div id="type-question-error" class="error-message"></div>
 
                         <div class="form-group">
-                            <input name="question" type="text" id="question" class="form-control" value="${question}" placeholder="Câu hỏi..." >
+                            <input name="question" type="text" id="question" class="form-control" value="${question}" placeholder="Question..." >
                         </div>
                         <div id="question-error" class="error-message"></div>
                         <div class="form-group">
-                            <input name="option1" type="text" class="form-control" value="${option[0]}" placeholder="Tùy chọn A..." >
+                            <input name="option1" type="text" class="form-control" value="${option[0]}" placeholder="Option A..." >
                         </div>
                         <div class="form-group">
-                            <input name="option2" type="text" class="form-control" value="${option[1]}" placeholder="Tùy chọn B..." >
+                            <input name="option2" type="text" class="form-control" value="${option[1]}" placeholder="Option B..." >
                         </div>
                         <div id="additional-options" style="width: 100%; display: flex;justify-content: center; flex-wrap: wrap">
                         </div>
                         <div id="option-error" class="error-message"></div>
                         <div class="form-group row">
-                            <button type="button" id="add-option" class="btn btn-secondary col-md-6">Thêm tùy chọn</button>
-                            <button type="button" id="remove-option" class="btn btn-danger col-md-6">Xóa tùy chọn</button>
+                            <button type="button" id="add-option" class="btn btn-secondary col-md-6">Add more option</button>
+                            <button type="button" id="remove-option" class="btn btn-danger col-md-6">Remove option</button>
                         </div>
                         <div class="form-group">
-                            <input name="correct_answer1" type="text" value="${correct_answer[0]}" class="form-control" placeholder="Đáp án đúng">
+                            <input name="correct_answer1" type="text" value="${correct_answer[0]}" class="form-control" placeholder="Answer...">
                         </div>
                         <div id="multiple-choice-options" style="width: 100%; display: flex;justify-content: center; flex-wrap: wrap">
                         </div>
                         <div id="correct-answer-error" class="error-message"></div>
                         <div id="correct-answer-error-multiple" class="error-message"></div>
                         <div class="form-group row">
-                            <button type="button" id="add-multiple-choice" class="btn btn-secondary col-md-6">Thêm đáp án đúng</button>
-                            <button type="button" id="remove-multiple-choice" class="btn btn-danger col-md-6">Xóa đáp án</button>
+                            <button type="button" id="add-multiple-choice" class="btn btn-secondary col-md-6">Add more answer</button>
+                            <button type="button" id="remove-multiple-choice" class="btn btn-danger col-md-6">Remove answer</button>
                         </div>
                     </div>
                 </div>
@@ -750,7 +764,7 @@
         </div>
     </div>
 </div>
-// update Modal
+<%--Update modal--%>
 <div id="updateModal" class="modal fade">
     <div class="modal-dialog custom-dialog">
         <div class="modal-content custom-content" style="text-align: center;">
@@ -760,6 +774,8 @@
                 <input type="hidden" value="${type_question}" name="type_question">
                 <input type="hidden" id="update_question_id" name="question_id">
                 <input type="hidden" name="status" value="update">
+                <input type="hidden" name="group_id" value="${group_id}">
+                <input type="hidden" name="course_id" value="${course_id}">
                 <input type="hidden" id="optionCountUpdate" value="2" name="optionCountUpdate">
                 <input type="hidden" id="correctAnswerCountUpdate" value="1" name="correctAnswerCountUpdate">
                 <c:if test="${searchExist == 1}">
@@ -779,35 +795,35 @@
                         <div id="update_type-question-error" class="error-message"></div>
 
                         <div class="form-group">
-                            <input name="question" type="text" id="update_question" class="form-control" value="${question}" placeholder="Câu hỏi..." >
+                            <input name="question" type="text" id="update_question" class="form-control" value="${question}" placeholder="Question..." >
                         </div>
                         <div class="form-group">
                             <input type="hidden" id="originQuestion" class="form-control" >
                         </div>
                         <div id="update_question-error" class="error-message"></div>
                         <div class="form-group">
-                            <input name="option1" id="option1" type="text" class="form-control" placeholder="Tùy chọn A..." >
+                            <input name="option1" id="option1" type="text" class="form-control" placeholder="Option A..." >
                         </div>
                         <div class="form-group">
-                            <input name="option2" id="option2" type="text" class="form-control"  placeholder="Tùy chọn B..." >
+                            <input name="option2" id="option2" type="text" class="form-control"  placeholder="Option B..." >
                         </div>
                         <div id="update-additional-options" style="width: 100%; display: flex;justify-content: center; flex-wrap: wrap">
                         </div>
                         <div id="update-option-error" class="error-message"></div>
                         <div class="form-group row">
-                            <button type="button" id="update-add-option" class="btn btn-secondary col-md-6">Thêm tùy chọn</button>
-                            <button type="button" id="update-remove-option" class="btn btn-danger col-md-6">Xóa tùy chọn</button>
+                            <button type="button" id="update-add-option" class="btn btn-secondary col-md-6">Add more option</button>
+                            <button type="button" id="update-remove-option" class="btn btn-danger col-md-6">Remove option</button>
                         </div>
                         <div class="form-group">
-                            <input name="correct_answer1" id="correct_answer1" type="text" class="form-control" placeholder="Đáp án đúng">
+                            <input name="correct_answer1" id="correct_answer1" type="text" class="form-control" placeholder="Answer...">
                         </div>
                         <div id="update-multiple-choice-options" style="width: 100%; display: flex; justify-content: center; flex-wrap: wrap">
                         </div>
                         <div id="update-correct-answer-error" class="error-message"></div>
                         <div id="update-correct-answer-error-multiple" class="error-message"></div>
                         <div class="form-group row">
-                            <button type="button" id="update-add-multiple-choice" class="btn btn-secondary col-md-6">Thêm đáp án đúng</button>
-                            <button type="button" id="update-remove-multiple-choice" class="btn btn-danger col-md-6">Xóa đáp án</button>
+                            <button type="button" id="update-add-multiple-choice" class="btn btn-secondary col-md-6">Add more answer</button>
+                            <button type="button" id="update-remove-multiple-choice" class="btn btn-danger col-md-6">Remove answer</button>
                         </div>
                     </div>
                 </div>
@@ -919,7 +935,7 @@
         newOptionInput.name = 'option' + optionCountUpdate;
         newOptionInput.type = 'text';
         newOptionInput.className = 'form-control';
-        newOptionInput.placeholder = 'Tùy chọn ' + String.fromCharCode(64 + optionCountUpdate) + '...';
+        newOptionInput.placeholder = 'Option ' + String.fromCharCode(64 + optionCountUpdate) + '...';
 
         newOptionDiv.appendChild(newOptionInput);
         document.getElementById('update-additional-options').appendChild(newOptionDiv);
@@ -949,7 +965,7 @@
         newMultipleChoiceInput.name = 'correct_answer' + correctOptionCountUpdate;
         newMultipleChoiceInput.type = 'text';
         newMultipleChoiceInput.className = 'form-control';
-        newMultipleChoiceInput.placeholder = 'Đáp án đúng';
+        newMultipleChoiceInput.placeholder = 'Answer...';
 
         newMultipleChoiceDiv.appendChild(newMultipleChoiceInput);
         document.getElementById('update-multiple-choice-options').appendChild(newMultipleChoiceDiv);
@@ -982,7 +998,7 @@
         // Kiểm tra loại câu hỏi
         const typeQuestionModal = document.getElementById('update_type_question_modal').value;
         if (typeQuestionModal === "0") {
-            document.getElementById('update_type-question-error').innerText = 'Vui lòng chọn loại câu hỏi';
+            document.getElementById('update_type-question-error').innerText = 'Please select type of question';
             isValid = false;
         } else {
             document.getElementById('update_type-question-error').innerText = '';
@@ -994,10 +1010,10 @@
         console.log(originalQuestion);
         console.log(question);
         if (question === "") {
-            document.getElementById('update_question-error').innerText = 'Vui lòng nhập câu hỏi';
+            document.getElementById('update_question-error').innerText = 'Please enter question';
             isValid = false;
         } else if (listQuestions.includes(question) && question !== originalQuestion) {
-            document.getElementById('update_question-error').innerText = 'Câu hỏi đã tồn tại!';
+            document.getElementById('update_question-error').innerText = 'Question is already exist in this exercise!';
             isValid = false;
         } else {
             document.getElementById('update_question-error').innerText = '';
@@ -1009,10 +1025,10 @@
         // console.log(option1);
         // console.log(option2);
         if (option1 === "" || option2 === "") {
-            document.getElementById('update-option-error').innerText = 'Vui lòng nhập ít nhất hai tùy chọn';
+            document.getElementById('update-option-error').innerText = 'Please enter at least two options';
             isValid = false;
         } else if (option1 === option2) {
-            document.getElementById('update-option-error').innerText = 'Các tùy chọn không được trùng nhau';
+            document.getElementById('update-option-error').innerText = 'Options must not duplicate';
             isValid = false;
         } else {
             document.getElementById('update-option-error').innerText = '';
@@ -1024,12 +1040,12 @@
         for (let i = 0; i < options.length; i++) {
             const optionValue = options[i].value.trim();
             if (optionValue === "") {
-                document.getElementById('update-option-error').innerText = 'Vui lòng nhập tất cả các tùy chọn';
+                document.getElementById('update-option-error').innerText = 'Please enter all options';
                 isValid = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             }
             if (optionValues.includes(optionValue) || optionValue === option1 || optionValue === option2) {
-                document.getElementById('update-option-error').innerText = 'Các tùy chọn không được trùng nhau';
+                document.getElementById('update-option-error').innerText = 'Options must not duplicate';
                 isValid = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             }
@@ -1039,11 +1055,13 @@
         // Kiểm tra đáp án đúng
         const correct_answer1 = document.getElementById("correct_answer1").value.trim();
         if (correct_answer1 === "") {
-            document.getElementById('update-correct-answer-error').innerText = 'Vui lòng nhập đáp án';
+            document.getElementById('update-correct-answer-error').innerText = 'Please enter answer';
             isValid = false;
         } else if (!optionValues.includes(correct_answer1) && option1 !== correct_answer1 && option2 !== correct_answer1) {
-            document.getElementById('update-correct-answer-error').innerText = 'Đáp án đúng không nằm trong danh sách tùy chọn';
+            document.getElementById('update-correct-answer-error').innerText = 'The answer is not on the list of options';
             isValid = false;
+        } else {
+            document.getElementById('update-correct-answer-error').innerText = '';
         }
         let isValidAnswer = true;
         // Kiểm tra các đáp án đúng còn lại
@@ -1055,19 +1073,19 @@
             console.log(correctAnswerValue);
             if (correctAnswerValue === "") {
                 console.log("loi 1")
-                document.getElementById('update-correct-answer-error').innerText = 'Vui lòng nhập tất cả các đáp án đúng';
+                document.getElementById('update-correct-answer-error').innerText = 'Please enter all answers';
                 isValid = false;
                 isValidAnswer = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             } else if (!optionValues.includes(correctAnswerValue) && option1 !== correct_answer1 && option2 !== correct_answer1) {
                 console.log("loi 2")
-                document.getElementById('update-correct-answer-error').innerText = 'Các đáp án đúng không nằm trong danh sách tùy chọn';
+                document.getElementById('update-correct-answer-error').innerText = 'The answer is not on the list of options';
                 isValid = false;
                 isValidAnswer = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             }else if (correctAnswerValues.includes(correctAnswerValue) || correctAnswerValue === correct_answer1) {
                 console.log("loi 3")
-                document.getElementById('update-correct-answer-error-multiple').innerText = 'Các đáp án đúng không được trùng nhau';
+                document.getElementById('update-correct-answer-error-multiple').innerText = 'Answer must not duplicate';
                 isValid = false;
                 isValidAnswer = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
@@ -1205,7 +1223,7 @@
         newOptionInput.name = 'option' + optionCount;
         newOptionInput.type = 'text';
         newOptionInput.className = 'form-control';
-        newOptionInput.placeholder = 'Tùy chọn ' + String.fromCharCode(64 + optionCount) + '...';
+        newOptionInput.placeholder = 'Option ' + String.fromCharCode(64 + optionCount) + '...';
         // newOptionInput.required = true;
 
         newOptionDiv.appendChild(newOptionInput);
@@ -1233,7 +1251,7 @@
         newMultipleChoiceInput.name = 'correct_answer' + multipleChoiceCount;
         newMultipleChoiceInput.type = 'text';
         newMultipleChoiceInput.className = 'form-control';
-        newMultipleChoiceInput.placeholder = 'Đáp án đúng';
+        newMultipleChoiceInput.placeholder = 'Answer...';
         // newMultipleChoiceInput.required = true;
 
         newMultipleChoiceDiv.appendChild(newMultipleChoiceInput);
@@ -1269,17 +1287,17 @@
         // Kiểm tra loại câu hỏi
         const typeQuestionModal = document.getElementById('type_question_modal').value;
         if (typeQuestionModal === "0") {
-            document.getElementById('type-question-error').innerText = 'Vui lòng chọn loại câu hỏi';
+            document.getElementById('type-question-error').innerText = 'Please select type of question';
             isValid = false;
         } else {
             document.getElementById('type-question-error').innerText = '';
         }
         const question = document.getElementById('question').value.trim();
         if (question === "") {
-            document.getElementById('question-error').innerText = 'Vui lòng nhập câu hỏi';
+            document.getElementById('question-error').innerText = 'Please enter question';
             isValid = false;
         } else if(questions.includes(question)){
-            document.getElementById('question-error').innerText = 'Câu hỏi đã tồn tại!';
+            document.getElementById('question-error').innerText = 'Question is already exist in this exercise!';
             isValid = false;
         } else {
             document.getElementById('question-error').innerText = '';
@@ -1288,10 +1306,11 @@
         const option1 = document.getElementsByName('option1')[0].value.trim();
         const option2 = document.getElementsByName('option2')[0].value.trim();
         if (option1 === "" || option2 === "") {
-            document.getElementById('option-error').innerText = 'Vui lòng nhập ít nhất hai tùy chọn';
+            document.getElementById('option-error').innerText = 'Please enter at least two options';
             isValid = false;
         } else if(option1 === option2){
-            document.getElementById('option-error').innerText = 'Các tùy chọn không được trùng nhau';
+            document.getElementById('option-error').innerText = 'Options must not duplicate';
+            isValid = false;
         } else {
             document.getElementById('option-error').innerText = '';
         }
@@ -1301,12 +1320,12 @@
         for (let i = 0; i < options.length; i++) {
             const optionValue = options[i].value.trim();
             if (optionValue === "") {
-                document.getElementById('option-error').innerText = 'Vui lòng nhập tất cả các tùy chọn';
+                document.getElementById('option-error').innerText = 'Please enter all options';
                 isValid = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             }
             if (optionValues.includes(optionValue) || optionValue === option1 || optionValue === option2) {
-                document.getElementById('option-error').innerText = 'Các tùy chọn không được trùng nhau';
+                document.getElementById('option-error').innerText = 'Options must not duplicate';
                 isValid = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             }
@@ -1318,11 +1337,13 @@
         }
         const correct_answer1 = document.getElementsByName("correct_answer1")[0].value.trim();
         if (correct_answer1 === "") {
-            document.getElementById('correct-answer-error').innerText =  'Vui lòng nhập đáp án';
+            document.getElementById('correct-answer-error').innerText =  'Please enter answer';
             isValid = false;
         } else if (!optionValues.includes(correct_answer1) && option1 !== correct_answer1 && option2 !== correct_answer1) {
-            document.getElementById('correct-answer-error').innerText = 'Đáp án đúng không nằm trong danh sách tùy chọn'
+            document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options'
             isValid = false;
+        } else {
+            document.getElementById('correct-answer-error').innerText = '';
         }
 
         // Kiểm tra các đáp án đúng còn lại
@@ -1331,17 +1352,17 @@
         for (let i = 0; i < correctAnswers.length; i++) {
             const correctAnswerValue = correctAnswers[i].value.trim();
             if (correctAnswerValue === "") {
-                document.getElementById('correct-answer-error').innerText = 'Vui lòng nhập tất cả các đáp án đúng';
+                document.getElementById('correct-answer-error').innerText = 'Please enter all answers';
                 isValid = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             }
             if (!optionValues.includes(correctAnswerValue) && option1 !== correct_answer1 && option2 !== correct_answer1) {
-                document.getElementById('correct-answer-error').innerText = 'Các đáp án đúng không nằm trong danh sách tùy chọn';
+                document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options';
                 isValid = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             }
             if (correctAnswerValues.includes(correctAnswerValue) || correctAnswerValue === correct_answer1) {
-                document.getElementById('correct-answer-error-multiple').innerText = 'Các đáp án đúng không được trùng nhau';
+                document.getElementById('correct-answer-error-multiple').innerText = 'The answers is not duplicate';
                 isValid = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             } else {

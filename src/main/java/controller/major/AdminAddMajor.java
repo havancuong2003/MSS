@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/admin/addmajor")
+@WebServlet("/admin/viewmajor")
 public class AdminAddMajor extends HttpServlet {
 
     private boolean hasSpecialCharacter(String str) {

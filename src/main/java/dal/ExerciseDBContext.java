@@ -70,12 +70,12 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 "WHERE e.group_id = ? " +
                 "AND e.status IN (0,1)\n" +
 //                "ORDER BY e.exercise_id DESC " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, group_id);
-            statement.setInt(2, (index-1)*5);
+            statement.setInt(2, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Exercise e = new Exercise();
@@ -126,13 +126,13 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 "WHERE e.group_id = ? AND e.get_score = ?" +
                 "AND e.status IN (0,1)\n" +
 //                "ORDER BY e.exercise_id DESC " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, group_id);
             statement.setString(2, get_score);
-            statement.setInt(3, (index-1)*5);
+            statement.setInt(3, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Exercise e = new Exercise();
@@ -183,13 +183,13 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 "WHERE e.group_id = ? AND e.exercise_name like ?" +
                 "AND e.status IN (0,1)\n" +
 //                "ORDER BY e.exercise_id DESC " +
-                "LIMIT 5 OFFSET ?";
+                "LIMIT 10 OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, group_id);
             statement.setString(2, "%" + searchtxt + "%");
-            statement.setInt(3, (index-1)*5);
+            statement.setInt(3, (index-1)*10);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Exercise e = new Exercise();
@@ -421,15 +421,60 @@ public class ExerciseDBContext extends DBContext<Exercise>{
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public List<Group> getListGroup(String PIC) {
+        List<Group> list = new ArrayList<>();
+        String sql = "SELECT * FROM `group` WHERE PIC like ? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, PIC);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Group group = new Group();
+                group.setId(rs.getInt("id"));
+                group.setName(rs.getString("name"));
+//                group.setLink(rs.getString("link"));
+                Course course = new Course();
+                course.setId(rs.getInt("course_id"));
+                group.setCourse(course);
+                Teacher teacher = new Teacher();
+                teacher.setTid(rs.getString("PIC"));
+                group.setTeacher(teacher);
+                list.add(group);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    public List<Course> getListCourse() {
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT * FROM `course` WHERE status = 1";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setCode(rs.getString("code"));
+                course.setDetail(rs.getString("detail"));
+                course.setStatus(rs.getBoolean("status"));
+                list.add(course);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
 
     public static void main(String[] args) {
         ExerciseDBContext dao = new ExerciseDBContext();
         Teacher teacher = dao.getTeacher("t1");
         System.out.println(teacher.getTid());
         System.out.println(dao.getTotalExerciseByGroupId("1"));
-        List<Exercise> listE = dao.pagingExerciseByGroupId(1,"1");
-        for (Exercise e : listE){
-            System.out.println(e.getExerciseName());
+        List<Course> listE = dao.getListCourse();
+        for (Course e : listE){
+            System.out.println(e.getCode());
         }
     }
 

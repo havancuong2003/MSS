@@ -3,15 +3,14 @@ package controller.exercise;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import dal.BankQuestionDBContext;
-import dal.ExerciseDBContext;
-import dal.QuestionDBContext;
+import dal.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.*;
+import util.GetCurrentTerm;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +22,16 @@ import java.util.stream.Collectors;
 @MultipartConfig()
 public class CreateExercise extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        ProfileDBContext dao = new ProfileDBContext();
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        int account_id = account.getId();
+        String accountId = String.valueOf(account_id);
+        Account acc = dao.getAccountByID(accountId);
+
+        AccountDBContext adbc = new AccountDBContext();
+        String role = adbc.getRoleByRoleID(account.getRole_id());
+        request.setAttribute("role", role);
         ExerciseDBContext edao = new ExerciseDBContext();
         QuestionDBContext qdao = new QuestionDBContext();
         BankQuestionDBContext bdao = new BankQuestionDBContext();
@@ -36,12 +45,9 @@ public class CreateExercise extends HttpServlet {
         }
         Exercise ex = edao.getExerciseById(exercise_id);
         String group_id = request.getParameter("group_id");
-        group_id = "1";
+//        group_id = "1";
         String course_id = request.getParameter("course_id");
-        course_id = "1";
-        Teacher teacher = edao.getTeacher("t1");
-        String teacherId = teacher.getTid();
-        String teacher_id = String.valueOf(teacherId);
+        System.out.println("course_id: " + course_id);
         if(type_exercise == null || type_exercise.equals("")) {
             type_exercise = "0";
         }
@@ -73,31 +79,52 @@ public class CreateExercise extends HttpServlet {
             if (type_exercise.equals("0")) {
                 System.out.println("chay toi phan trang");
                 count = edao.getTotalExerciseByGroupId(group_id);
-                endPage = count / 5;
+                endPage = count / 10;
                 listExercise = edao.pagingExerciseByGroupId(index, group_id);
             } else {
                 count = edao.getTotalExerciseByGetScore(group_id,type_exercise);
-                endPage = count / 5;
+                endPage = count / 10;
                 listExercise = edao.pagingExerciseByGetScore(index, group_id, type_exercise);
             }
         } else {
             request.setAttribute("searchExist", 1);
             search = search.trim();
             count = edao.getTotalExerciseBySearch(group_id, search);
-            endPage = count / 5;
+            endPage = count / 10;
             listExercise = edao.pagingExerciseBySearch(index, group_id, search);
         }
 
-        if (count % 5 != 0) {
+        if (count % 10 != 0) {
             endPage++;
+        }
+        Cookie[] arrE = request.getCookies();
+        String txt = "";
+        if (arrE != null) {
+            for (Cookie c : arrE) {
+                if (c.getName().equals("exercise")) {
+                    txt += c.getValue();
+                    c.setMaxAge(0);
+                    response.addCookie(c);
+                }
+            }
+        }
+        Cookie c = new Cookie("exercise", txt);
+        c.setMaxAge(60 * 24 * 60 * 60);
+        response.addCookie(c);
+        System.out.println("txt : " + txt);
+        List<Exercise_Constructor> listE = Constructor(txt);
+        for (Exercise_Constructor e : listE) {
+            request.setAttribute("basicQuestion" +e.getExercise_id(), e.getBasicQuestion());
+            request.setAttribute("lowQuestion" + e.getExercise_id(), e.getLowQuestion());
+            request.setAttribute("highQuestion" + e.getExercise_id(), e.getHighQuestion());
         }
         List<String> exerciseNames = listExercise.stream()
                 .map(Exercise::getExerciseName) // assuming getName() method exists
                 .collect(Collectors.toList());
         List<Question> listAllQuestionOfExercise = qdao.getListQuestionByExerciseId(exercise_id);
-        int basicBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("1","1");
-        int lowBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("1","2");
-        int highBankQuestion = bdao.getTotalBankQuestionByTypeQuestion("1","3");
+        int basicBankQuestion = bdao.getTotalBankQuestionByTypeQuestion(course_id,"1");
+        int lowBankQuestion = bdao.getTotalBankQuestionByTypeQuestion(course_id,"2");
+        int highBankQuestion = bdao.getTotalBankQuestionByTypeQuestion(course_id,"3");
         System.out.println("basic : " + basicBankQuestion);
         System.out.println("low : " + lowBankQuestion);
         System.out.println("high : " + highBankQuestion);
@@ -106,14 +133,13 @@ public class CreateExercise extends HttpServlet {
         request.setAttribute("type_exercise",type_exercise);
         request.setAttribute("search", search);
         request.setAttribute("group_id", group_id);
+        request.setAttribute("course_id",course_id);
         request.setAttribute("basicBankQuestion", basicBankQuestion);
         request.setAttribute("lowBankQuestion", lowBankQuestion);
         request.setAttribute("highBankQuestion", highBankQuestion);
         request.setAttribute("listGradeCategory", listGradeCategory);
         request.setAttribute("listExercise", listExercise);
         request.setAttribute("exerciseNames", new Gson().toJson(exerciseNames));
-        request.setAttribute("teacher_id",teacher_id);
-        request.setAttribute("teacher", teacher);
         request.getRequestDispatcher("/views/exercise/exercise.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -123,13 +149,15 @@ public class CreateExercise extends HttpServlet {
         String randomExercise = request.getParameter("random");
         String status = request.getParameter("status");
         String exerciseId = request.getParameter("exerciseId");
-        String group_id = request.getParameter("groupId");
+//        String group_id = request.getParameter("groupId");
+        String group_id = request.getParameter("group_id");
         System.out.println("Exercise ID: " + exerciseId);
         String course_id = request.getParameter("course_id");
         course_id = "1";
         String teacher_id = request.getParameter("teacher_id");
         teacher_id = "t1";
         if(status != null && status.equals("view")){
+            group_id = request.getParameter("groupId");
             Exercise exercise = dao.getExerciseById(exerciseId);
             JsonObject json = new JsonObject();
             json.addProperty("exercise_name", exercise.getExerciseName());
@@ -293,10 +321,10 @@ public class CreateExercise extends HttpServlet {
                     int index = Integer.parseInt(indexPage);
                     QuestionDBContext qdao = new QuestionDBContext();
                     count = qdao.getTotalQuestion(exercise_id);
-                    endPage = count/5;
+                    endPage = count/10;
                     listQuestion = qdao.pagingQuestionByExercise_id(index, exercise_id);
                     List<Question> listQuestionOfExerciseId = qdao.getListQuestionByExerciseId(exercise_id);
-                    if(count % 5 != 0){
+                    if(count % 10 != 0){
                         endPage++;
                     }
                     Cookie [] arrE = request.getCookies();
@@ -321,6 +349,8 @@ public class CreateExercise extends HttpServlet {
                     response.addCookie(c);
                     HttpSession session = request.getSession();
                     session.setAttribute("exercise_id", exercise_id);
+                    request.setAttribute("group_id",group_id);
+                    request.setAttribute("course_id",course_id);
                     request.setAttribute("type_question","0");
                     request.setAttribute("tag",index);
                     request.setAttribute("endPage", endPage);
@@ -348,6 +378,8 @@ public class CreateExercise extends HttpServlet {
                     Exercise ex = dao.getExerciseById(exercise_id);
                     if(ex != null){
                         HttpSession session = request.getSession();
+                        request.setAttribute("group_id",group_id);
+                        request.setAttribute("course_id",course_id);
                         session.setAttribute("exercise_id", exercise_id);
                         request.setAttribute("listQuestionSize",0);
                         request.setAttribute("numQuestion",Integer.parseInt(question_number));

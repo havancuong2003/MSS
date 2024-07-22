@@ -109,7 +109,7 @@ public class SemesterDBContext extends DBContext<Semester> {
     public ArrayList<Semester> getSemesterForStudent(String sid) {
         ArrayList<Semester> semesters = new ArrayList<>();
         try {
-            String sql = "select distinct se.id, se.detail from 'group' gr inner join enrollment en on en.group_id = gr.id \n" +
+            String sql = "select distinct se.id, se.detail from `group` gr inner join enrollment en on en.group_id = gr.id \n" +
                     "inner join semester se on se.id = gr.semester_id where en.student_id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, sid);
@@ -131,7 +131,7 @@ public class SemesterDBContext extends DBContext<Semester> {
     public ArrayList<Semester> getSemesterForTeacher(String tid) {
         ArrayList<Semester> semesters = new ArrayList<>();
         try {
-            String sql = "select distinct s.id, s.detail from 'group' g inner join semester s on g.semester_id = s.id\n" +
+            String sql = "select distinct s.id, s.detail from `group` g inner join semester s on g.semester_id = s.id\n" +
                     "where g.PIC = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, tid);
@@ -150,7 +150,7 @@ public class SemesterDBContext extends DBContext<Semester> {
 
     public int getSemesterByGid(int gid) {
         try {
-            String sql = "select s.id from 'group' g inner join semester s on g.semester_id = s.id where g.id = ?";
+            String sql = "select s.id from `group` g inner join semester s on g.semester_id = s.id where g.id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, gid);
             ResultSet rs = stm.executeQuery();
