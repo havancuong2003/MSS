@@ -15,7 +15,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         try {
             String sql = "select ses.id as sesid, ses.teacher_id as teacherid, r.detail as room, ses.date, ses.isTaken, att.isPresent, att.time, att.description, en.student_id, g.id as groupid, g.name as groupname, c.code as coursecode, sl.id as slot, sl.start, sl.end\n" +
                     "from enrollment en inner join session ses on en.group_id = ses.group_id \n" +
-                    "inner join swp391.group g on g.id = en.group_id inner join slot sl on sl.id = ses.slot_id inner join teacher t on t.id = ses.teacher_id \n" +
+                    "inner join `group` g on g.id = en.group_id inner join slot sl on sl.id = ses.slot_id inner join teacher t on t.id = ses.teacher_id \n" +
                     "inner join room r on r.id = ses.room_id inner join course c on c.id = g.course_id \n" +
                     "left join attendance att on att.ses_id = ses.id and att.student_id = en.student_id where en.student_id = ? and ses.date between ? and ?";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -63,8 +63,8 @@ public class AttendanceDBContext extends DBContext<Attendance> {
     public ArrayList<Attendance> getAttendancesForTeacher(int sesid) {
         ArrayList<Attendance> attendances = new ArrayList<>();
         try {
-            String sql = "select s.id, acc.fullname, g.id as groupid, g.name as groupname, att.id as attid, att.description, att.isPresent, att.time, ses.date,ses.isTaken as isTaken, sl.id as slot, sl.start, sl.end from student s inner join enrollment en on en.student_id = s.id inner join swp391.group g on g.id = en.group_id\n" +
-                    "inner join swp391.session ses on ses.group_id = g.id left join attendance att on att.ses_id = ses.id and att.student_id = s.id inner join swp391.account acc on acc.account_id = s.acc_id\n" +
+            String sql = "select s.id, acc.fullname, g.id as groupid, g.name as groupname, att.id as attid, att.description, att.isPresent, att.time, ses.date,ses.isTaken as isTaken, sl.id as slot, sl.start, sl.end from student s inner join enrollment en on en.student_id = s.id inner join `group` g on g.id = en.group_id\n" +
+                    "inner join `session` ses on ses.group_id = g.id left join attendance att on att.ses_id = ses.id and att.student_id = s.id inner join `account` acc on acc.account_id = s.acc_id\n" +
                     "inner join slot sl on sl.id = ses.slot_id where ses.id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, sesid);
@@ -139,7 +139,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         try {
             String sql = "select ses.id as sesid, ses.teacher_id as teacherid, acc.fullname as teachername, r.detail as room, ses.date, ses.isTaken, att.isPresent, att.time, att.description, en.student_id, g.id as groupid, g.name as groupname, c.code as coursecode, c.detail as coursename, sl.id as slot, sl.start, sl.end\n" +
                     "from enrollment en inner join session ses on en.group_id = ses.group_id \n" +
-                    "inner join swp391.group g on g.id = en.group_id inner join slot sl on sl.id = ses.slot_id inner join teacher t on t.id = ses.teacher_id \n" +
+                    "inner join `group` g on g.id = en.group_id inner join slot sl on sl.id = ses.slot_id inner join teacher t on t.id = ses.teacher_id \n" +
                     "inner join room r on r.id = ses.room_id inner join course c on c.id = g.course_id inner join account acc on acc.account_id = t.acc_id \n" +
                     "left join attendance att on att.ses_id = ses.id and att.student_id = en.student_id where en.student_id = ? and ses.id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -188,7 +188,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
     public ArrayList<Attendance> getAttendanceReportForStudent(String student_id, int group_id) {
         ArrayList<Attendance> attendances = new ArrayList<>();
         try {
-            String sql = "select ses.id, ses.date, ses.slot_id, ses.isTaken, att.id as attid, att.isPresent, stu.id as sid, acc.fullname from session ses inner join swp391.group g on g.id = ses.group_id\n" +
+            String sql = "select ses.id, ses.date, ses.slot_id, ses.isTaken, att.id as attid, att.isPresent, stu.id as sid, acc.fullname from session ses inner join `group` g on g.id = ses.group_id\n" +
                     "inner join enrollment en on en.group_id = g.id\n" +
                     "left join attendance att on att.ses_id = ses.id and att.student_id = en.student_id\n" +
                     "inner join student stu  on stu.id = en.student_id\n" +

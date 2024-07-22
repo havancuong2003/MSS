@@ -12,7 +12,7 @@ public class SessionDBContext extends DBContext<Session> {
     public ArrayList<Session> getSessionForTeacher(String teacher_id, Date from, Date to) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "select s.id, c.code as coursecode, c.detail as coursename, g.name as groupname, s.date, r.detail as room, sl.id as slot_id, sl.detail , sl.start , sl.end, s.isTaken from swp391.session s inner join swp391.group g on s.group_id = g.id inner join course c on c.id = g.course_id inner join room r \n" +
+            String sql = "select s.id, c.code as coursecode, c.detail as coursename, g.name as groupname, s.date, r.detail as room, sl.id as slot_id, sl.detail , sl.start , sl.end, s.isTaken from `session` s inner join `group` g on s.group_id = g.id inner join course c on c.id = g.course_id inner join room r \n" +
                     "on r.id = s.room_id inner join slot sl on sl.id = s.slot_id where s.teacher_id = ? and s.date between ? and ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, teacher_id);
@@ -52,7 +52,7 @@ public class SessionDBContext extends DBContext<Session> {
 
     public boolean getIsTakenSession(int sesid){
         try {
-            String sql = "select s.isTaken from swp391.session s where s.id = ?";
+            String sql = "select s.isTaken from `session` s where s.id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, sesid);
             ResultSet rs = stm.executeQuery();
@@ -67,7 +67,7 @@ public class SessionDBContext extends DBContext<Session> {
 
     public void updateIsTakenSession(int sesid){
         try {
-            String sql = "update swp391.session set isTaken = 1 where id = ?";
+            String sql = "update `session` set isTaken = 1 where id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, sesid);
             stm.executeUpdate();

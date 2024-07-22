@@ -31,7 +31,7 @@ public class TotalDBContext extends DBContext<Total> {
 
     public int count(int gid) {
         try {
-            String sql = "select count(*) as count from swp391.course g inner join swp391.group c on c.course_id = g.id inner join grade_category gc on gc.course_id = g.id inner join grade_item gi on gi.grade_categoryid = gc.id\n" +
+            String sql = "select count(*) as count from `course` g inner join `group` c on c.course_id = g.id inner join grade_category gc on gc.course_id = g.id inner join grade_item gi on gi.grade_categoryid = gc.id\n" +
                     "where c.id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, gid);

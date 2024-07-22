@@ -14,7 +14,7 @@ public class GroupDBContext extends DBContext<Group> {
     public ArrayList<Group> getGroupForStudentBySidAndSemester(String sid, int semesterID) {
         ArrayList<Group> groups = new ArrayList<>();
         try {
-            String sql = "select gr.course_id, gr.id, gr.name, c.code, c.detail  from swp391.group gr inner join enrollment en on en.group_id = gr.id \n" +
+            String sql = "select gr.course_id, gr.id, gr.name, c.code, c.detail  from `group` gr inner join enrollment en on en.group_id = gr.id \n" +
                     "inner join semester se on se.id = gr.semester_id\n" +
                     "inner join course c on c.id = gr.course_id\n" +
                     "where en.student_id = ? and se.id = ?";
@@ -42,7 +42,7 @@ public class GroupDBContext extends DBContext<Group> {
     public ArrayList<Group> getGroupForTeacherByTidSemester(String tid, int semesterID) {
         ArrayList<Group> groups = new ArrayList<>();
         try {
-            String sql = "select g.id, g.name, c.code, c.detail from swp391.group g inner join course c on c.id = g.course_id\n" +
+            String sql = "select g.id, g.name, c.code, c.detail from `group` g inner join course c on c.id = g.course_id\n" +
                     "where g.PIC = ? and g.semester_id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, tid);

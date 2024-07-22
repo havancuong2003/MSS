@@ -11,7 +11,7 @@ public class MarkDBContext extends DBContext<Mark> {
     public ArrayList<Mark> getMarkForStudent(String sid, int groupid, int semesterId) {
         ArrayList<Mark> marks = new ArrayList<>();
         try {
-            String sql = "select gc.name as catename, gi.name as itemname,gc.id as cateid, gi.id as itemid, gi.weight, m.grade from swp391.group g inner join enrollment en on g.id = en.group_id\n" +
+            String sql = "select gc.name as catename, gi.name as itemname,gc.id as cateid, gi.id as itemid, gi.weight, m.grade from `group` g inner join enrollment en on g.id = en.group_id\n" +
                     "inner join semester se on se.id = g.semester_id\n" +
                     "inner join course co on co.id = g.course_id\n" +
                     "inner join grade_category gc on gc.course_id = co.id\n" +
@@ -49,7 +49,7 @@ public class MarkDBContext extends DBContext<Mark> {
         try {
             String sql = "select stu.id, acc.fullname, gc.id as cateid, gc.name as catename, gi.id as itemid , \n" +
                     "gi.name as itemname, gi.weight , m.grade\n" +
-                    "from swp391.group g inner join semester se on se.id = g.semester_id\n" +
+                    "from `group` g inner join semester se on se.id = g.semester_id\n" +
                     "inner join enrollment en on g.id = en.group_id\n" +
                     "inner join course co on co.id = g.course_id\n" +
                     "inner join grade_category gc on gc.course_id = co.id\n" +
@@ -93,7 +93,7 @@ public class MarkDBContext extends DBContext<Mark> {
     public int getGradeItemByItemAndGroup(int gid, String name) {
         int id = 0;
         try {
-            String sql = "select gi.id from swp391.group g inner join grade_category gc on gc.course_id = g.course_id \n" +
+            String sql = "select gi.id from `group` g inner join grade_category gc on gc.course_id = g.course_id \n" +
                     "inner join grade_item gi on gi.grade_categoryid = gc.id\n" +
                     "where g.id = ? and gi.name = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
