@@ -421,12 +421,13 @@ public class ExerciseDBContext extends DBContext<Exercise>{
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public List<Group> getListGroup(String PIC) {
+    public List<Group> getListGroup(String PIC,int semester_id) {
         List<Group> list = new ArrayList<>();
-        String sql = "SELECT * FROM `group` WHERE PIC like ? ";
+        String sql = "SELECT * FROM `group` WHERE PIC like ? AND semester_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, PIC);
+            statement.setInt(2, semester_id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()){
                 Group group = new Group();

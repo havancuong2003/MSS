@@ -129,6 +129,7 @@ public class ManageQuestion extends HttpServlet {
             List<String> question = listAllQuestionOfExercise.stream()
                     .map(Question::getQuestion) // assuming getName() method exists
                     .collect(Collectors.toList());
+            request.setAttribute("statusExercise",ex.getStatus());
             request.setAttribute("group_id",group_id);
             request.setAttribute("course_id",course_id);
             request.setAttribute("basicQuestion", basicQuestion);
@@ -156,7 +157,7 @@ public class ManageQuestion extends HttpServlet {
         String status = request.getParameter("status");
         String course_id = request.getParameter("course_id");
 //        course_id = "1";
-//        String group_id = request.getParameter("group_id");
+        String group_id = request.getParameter("group_id");
         System.out.println(status);
         BufferedReader reader = request.getReader();
         StringBuilder sb = new StringBuilder();
@@ -465,10 +466,13 @@ public class ManageQuestion extends HttpServlet {
             doGet(request, response);
         } else if (status != null && status.equals("prevent")) {
             edao.editExerciseStatusForPrevent(exercise_id);
-            response.sendRedirect("create-exercise");
+//            response.sendRedirect("create-exercise");
+            response.sendRedirect("create-exercise?group_id=" + group_id + "&course_id=" + course_id);
+
         } else if (status != null && status.equals("close")) {
             edao.editExerciseStatusForClose(exercise_id);
-            response.sendRedirect("create-exercise");
+//            response.sendRedirect("create-exercise");
+            response.sendRedirect("create-exercise?group_id=" + group_id + "&course_id=" + course_id);
         } else {
             if (jsonObject == null || !jsonObject.has("exercise_id") || !jsonObject.has("selectedIds") || !jsonObject.has("status")) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

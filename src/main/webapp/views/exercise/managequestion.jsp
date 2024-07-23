@@ -536,6 +536,8 @@
                             <c:if test="${listQuestionSize == numQuestion}">
                                 <form action="manage-question" method="post">
                                     <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                    <input type="hidden" name="group_id" value="${group_id}">
+                                    <input type="hidden" name="course_id" value="${course_id}">
                                     <input type="hidden" name="status" value="prevent">
                                     <button type="submit" class="btn btn-success"  onclick="confirmSubmission(event)">
                                         <i class="material-icons">assignment</i> <span>Present</span>
@@ -545,6 +547,8 @@
                             <c:if test="${listQuestionSize < numQuestion}">
                                 <form action="manage-question" method="post">
                                     <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                    <input type="hidden" name="group_id" value="${group_id}">
+                                    <input type="hidden" name="course_id" value="${course_id}">
                                     <input type="hidden" name="status" value="prevent">
                                     <button type="submit" class="btn btn-success" onclick="checkQuestions(event)">
                                         <i class="material-icons">assignment</i> <span>Present</span>
@@ -556,6 +560,8 @@
                         <c:if test="${exercise_status == 1}">
                             <form action="manage-question" method="post">
                                 <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                <input type="hidden" name="group_id" value="${group_id}">
+                                <input type="hidden" name="course_id" value="${course_id}">
                                 <input type="hidden" name="status" value="close">
                                 <button type="submit" class="btn btn-success"  onclick="confirmClose(event)">
                                     <i class="material-icons">check_circle</i> <span>Close</span>
@@ -576,7 +582,7 @@
 
                         <c:if test="${isRandom == 1}">
                             <c:if test="${listQuestionSize < numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
                                 <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
                             </c:if>
                             <c:if test="${listQuestionSize >= numQuestion}">
@@ -616,8 +622,14 @@
                             <td>High Application Question</td>
                         </c:if>
                         <td>
-                            <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return confirm('Are you sure you want to delete this question?');" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                            <c:if test="${statusExercise == 1}">
+                                <a href="#updateModal"  onclick="return handleEditClick(${o.status});"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return handleDeleteClick(${o.status});" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                            </c:if>
+                            <c:if test="${statusExercise == 0}">
+                                <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return confirm('Are you sure you want to delete this question?');" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                            </c:if>
                         </td>
                         <c:if test="${o.status == 0}">
                             <td style="text-align: center">
@@ -836,6 +848,23 @@
     </div>
 </div>
 
+<script>
+    function handleEditClick(status) {
+        if (status === 1) {
+            alert("The test is currently being presented. You cannot update the question at this time.");
+            return false; // Ngăn không cho mở modal
+        }
+        return true; // Cho phép mở modal
+    }
+
+    function handleDeleteClick(status) {
+        if (status === 1) {
+            alert("The test is currently being presented. You cannot delete the question at this time.");
+            return false; // Ngăn không cho thực hiện hành động xóa
+        }
+        return confirm('Are you sure you want to delete this question?'); // Hiển thị thông báo xác nhận xóa
+    }
+</script>
 
 <script>
     var listQuestionSize = ${listQuestionSize}; // Lấy giá trị từ JSP
@@ -1305,10 +1334,12 @@
 
         const option1 = document.getElementsByName('option1')[0].value.trim();
         const option2 = document.getElementsByName('option2')[0].value.trim();
+        console.log(option1);
+        console.log(option2);
         if (option1 === "" || option2 === "") {
             document.getElementById('option-error').innerText = 'Please enter at least two options';
             isValid = false;
-        } else if(option1 === option2){
+        } else if(option1 === option2 ){
             document.getElementById('option-error').innerText = 'Options must not duplicate';
             isValid = false;
         } else {

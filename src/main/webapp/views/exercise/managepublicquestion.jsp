@@ -498,8 +498,8 @@
                     <c:if test="${o.status == 1}">
                         <td>
                             <a href="#" class="view" data-question-id="${o.question_id}" data-toggle="modal"><i class="material-icons text-primary" data-toggle="tooltip" title="View">visibility</i></a>
-                            <a href="manage-public-question?question_id=${o.question_id}&page=${tag}&status=accept" class="accept" onclick="return confirm('Are you sure you want to accept this question?');" ><i class="material-icons text-success" title="Accept">done</i></a>
-                            <a href="manage-public-question?question_id=${o.question_id}&page=${tag}&status=refuse" class="reject" onclick="return confirm('Are you sure you want to reject this question?');" ><i class="material-icons text-danger" title="Reject">cancel</i></a>
+                            <a href="manage-public-question?question_id=${o.question_id}&page=${tag}&status=accept&course_id=${course_id}" class="accept" onclick="return confirm('Are you sure you want to accept this question?');" ><i class="material-icons text-success" title="Accept">done</i></a>
+                            <a href="manage-public-question?question_id=${o.question_id}&page=${tag}&status=refuse&course_id=${course_id}" class="reject" onclick="return confirm('Are you sure you want to reject this question?');" ><i class="material-icons text-danger" title="Reject">cancel</i></a>
                         </td>
                     </c:if>
                 </tr>

@@ -521,13 +521,31 @@
                             </td>
                             <td>
                                 <div class="btn-container">
-                                    <a class="btn btn-danger" href="create-exercise?exercise_id=${o.exerciseId}&delete=1&group_id=${group_id}&course_id=${course_id}"  onclick="return confirm('Are you sure you want to delete this exercise?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
-                                    <c:if test="${o.isRandom ==0}">
-                                        <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalCreateQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                    <c:if test="${o.status == 0}">
+                                        <a class="btn btn-danger" href="create-exercise?exercise_id=${o.exerciseId}&delete=1&group_id=${group_id}&course_id=${course_id}"  onclick="return confirm('Are you sure you want to delete this exercise?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                        <c:if test="${o.isRandom ==0}">
+                                            <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalCreateQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                        </c:if>
+                                        <c:if test="${o.isRandom ==1}">
+                                            <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalRandomQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                        </c:if>
                                     </c:if>
-                                    <c:if test="${o.isRandom ==1}">
-                                        <a class="btn btn-warning update-btn" href="#" data-exercise-id="${o.exerciseId}"  data-group-id="${o.group_id}" data-toggle="modal" data-target="#updateModalRandomQuiz"><i class="fa fa-pencil" aria-hidden="true"></i> Update</a>
+                                    <c:if test="${o.status == 1}">
+                                        <a class="btn btn-danger" href="create-exercise?exercise_id=${o.exerciseId}&delete=1&group_id=${group_id}&course_id=${course_id}" onclick="return handleDeleteExercise(${o.status});">
+                                            <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                        </a>
+                                        <c:if test="${o.isRandom == 0}">
+                                            <a class="btn btn-warning update-btn" href="#" onclick="return handleUpdateExercise(${o.status});">
+                                                <i class="fa fa-pencil" aria-hidden="true"></i> Update
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${o.isRandom == 1}">
+                                            <a class="btn btn-warning update-btn" href="#" onclick="return handleUpdateExercise(${o.status});">
+                                                <i class="fa fa-pencil" aria-hidden="true"></i> Update
+                                            </a>
+                                        </c:if>
                                     </c:if>
+
                                 </div>
                             </td>
                         </tr>
@@ -698,6 +716,9 @@
         } else if (!isValidFloat(exerciseTime)) {
             document.getElementById('exerciseTimeError').innerText = "Exercise time must be a floating-point number.";
             isValid = false;
+        } else if (parseFloat(exerciseTime)==0 || parseFloat(exerciseTime) <0){
+            document.getElementById('exerciseTimeError').innerText = "Exercise time must be more than 0";
+            isValid = false;
         }
         if (exerciseType == "0") {
             document.getElementById('exerciseTypeError').innerText = "Please choose the type of exercise.";
@@ -744,6 +765,9 @@
             isValid = false;
         } else if (!isValidFloat(exerciseTime)) {
             document.getElementById('updateExerciseTimeError').innerText = "Exercise time must be a floating-point number.";
+            isValid = false;
+        } else if(parseFloat(exerciseTime)==0 || parseFloat(exerciseTime) < 0) {
+            document.getElementById('updateExerciseTimeError').innerText = "Exercise time must be more than 0";
             isValid = false;
         }
         if (exerciseType == "0") {
@@ -849,8 +873,11 @@
         if (!exerciseTime) {
             document.getElementById('random_exerciseTimeError').innerText = "Please enter the Exercise time.";
             isValid = false;
-        } else if (!isValidFloat(exerciseTime) || parseFloat(exerciseTime) <0) {
+        } else if (!isValidFloat(exerciseTime)) {
             document.getElementById('random_exerciseTimeError').innerText = "Exercise time must be a floating-point number.";
+            isValid = false;
+        } else if(parseFloat(exerciseTime) == 0 || parseFloat(exerciseTime) < 0){
+            document.getElementById('random_exerciseTimeError').innerText = "Exercise time must be more than 0";
             isValid = false;
         }
         if (exerciseType == "0") {
@@ -934,6 +961,9 @@
         } else if (!isValidFloat(exerciseTime)) {
             document.getElementById('updateRandom_exerciseTimeError').innerText = "Exercise time must be a floating-point number.";
             isValid = false;
+        } else if(parseFloat(exerciseTime) == 0 || parseFloat(exerciseTime) <0){
+            document.getElementById('updateRandom_exerciseTimeError').innerText = "Exercise time must be more than 0";
+            isValid = false;
         }
         if (exerciseType == "0") {
             document.getElementById('updateRandom_exerciseTypeError').innerText = "Please choose the type of exercise.";
@@ -1016,6 +1046,24 @@
         });
     });
 </script>
+<script>
+    function handleDeleteExercise(status) {
+        if (status === 1) {
+            alert("The test is currently being presented. You cannot delete the exercise at this time.");
+            return false; // Ngăn không cho thực hiện hành động xóa
+        }
+        return confirm('Are you sure you want to delete this exercise?'); // Hiển thị thông báo xác nhận xóa
+    }
+
+    function handleUpdateExercise(status) {
+        if (status === 1) {
+            alert("The test is currently being presented. You cannot update the exercise at this time.");
+            return false; // Ngăn không cho mở modal để cập nhật bài kiểm tra
+        }
+        return true; // Cho phép mở modal
+    }
+</script>
+
 </body>
 
 <!-- Create Modal HTML -->

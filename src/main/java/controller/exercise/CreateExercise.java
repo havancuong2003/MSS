@@ -153,7 +153,7 @@ public class CreateExercise extends HttpServlet {
         String group_id = request.getParameter("group_id");
         System.out.println("Exercise ID: " + exerciseId);
         String course_id = request.getParameter("course_id");
-        course_id = "1";
+//        course_id = "1";
         String teacher_id = request.getParameter("teacher_id");
         teacher_id = "t1";
         if(status != null && status.equals("view")){
