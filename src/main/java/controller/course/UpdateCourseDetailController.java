@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name="updateCourse", value = "/updateCourse")
+@WebServlet(name="updateCourse", value = "/admin/updateCourse")
 public class UpdateCourseDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,7 +26,7 @@ public class UpdateCourseDetailController extends HttpServlet {
             req.setAttribute("exist",false);
             req.setAttribute("ms","Course does not exist. Update course failed!");
             req.setAttribute("id",id);
-            req.getRequestDispatcher("views/course/update.jsp").forward(req,resp);
+            req.getRequestDispatcher("../views/course/update.jsp").forward(req,resp);
             return;
         }
         GradeCategoryDBContext cateDB = new GradeCategoryDBContext();
@@ -48,7 +48,7 @@ public class UpdateCourseDetailController extends HttpServlet {
         req.setAttribute("cates", cate);
         req.setAttribute("id",id);
         req.setAttribute("exist",true);
-        req.getRequestDispatcher("views/course/update.jsp").forward(req,resp);
+        req.getRequestDispatcher("../views/course/update.jsp").forward(req,resp);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class UpdateCourseDetailController extends HttpServlet {
                 if (c.getCode().equalsIgnoreCase(code) || c.getDetail().equalsIgnoreCase(detail)) {
                     req.setAttribute("ms", "This course already exists. Update course failed!");
                     req.setAttribute("id", id);
-                    req.getRequestDispatcher("views/course/update.jsp").forward(req, resp);
+                    req.getRequestDispatcher("../views/course/update.jsp").forward(req, resp);
                     return;
                 }
             }
@@ -90,6 +90,6 @@ public class UpdateCourseDetailController extends HttpServlet {
         req.setAttribute("cates", cate);
         req.setAttribute("exist",true);
         req.setAttribute("ms","Update course successfully!");
-        req.getRequestDispatcher("views/course/update.jsp").forward(req,resp);
+        req.getRequestDispatcher("../views/course/update.jsp").forward(req,resp);
     }
 }

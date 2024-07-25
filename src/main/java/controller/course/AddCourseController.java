@@ -16,11 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-    @WebServlet(name="addCourse",value = "/addCourse")
+    @WebServlet(name="addCourse",value = "/admin/addCourse")
 public class AddCourseController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("views/course/add.jsp").forward(req, resp);
+        req.getRequestDispatcher("../views/course/add.jsp").forward(req, resp);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AddCourseController extends HttpServlet {
         for (Course c : courses) {
             if (c.getCode().equalsIgnoreCase(code)||c.getDetail().equalsIgnoreCase(detail)) {
                 req.setAttribute("ms","This course already exists. Add course failed!");
-                req.getRequestDispatcher("views/course/add.jsp").forward(req, resp);
+                req.getRequestDispatcher("../views/course/add.jsp").forward(req, resp);
                 return;
             }
         }
@@ -123,6 +123,6 @@ public class AddCourseController extends HttpServlet {
             resp.sendRedirect("viewCourse?id="+couID);
             return;
         }
-        req.getRequestDispatcher("views/course/add.jsp").forward(req, resp);
+        req.getRequestDispatcher("../views/course/add.jsp").forward(req, resp);
     }
 }

@@ -7,10 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
-import model.Group;
-import model.Mark;
-import model.Semester;
+import model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +37,7 @@ public class StudentViewGradeController extends HttpServlet {
         SemesterDBContext seDB = new SemesterDBContext();
         GroupDBContext gDB = new GroupDBContext();
         MarkDBContext mDB = new MarkDBContext();
+        TotalDBContext tDB = new TotalDBContext();
         if (sesid != null){
             int ses = Integer.parseInt(sesid);
             ArrayList<Group> groups = gDB.getGroupForStudentBySidAndSemester(sid, ses);
@@ -50,6 +48,8 @@ public class StudentViewGradeController extends HttpServlet {
             int gid = Integer.parseInt(groupid);
             ArrayList<Mark> marks = mDB.getMarkForStudent(sid, gid, Integer.parseInt(sesid));
             responseData.put("marks", marks);
+            Total total = tDB.getTotalBySidAndGid(sid, gid);
+            responseData.put("total", total);
         }
 
         Gson gson = new Gson();

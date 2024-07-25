@@ -132,13 +132,11 @@ public class CourseDBContext extends DBContext<Course> {
         try {
             String sql = "UPDATE course " +
                     "SET\n" +
-                    "`code` = ?,\n" +
                     "`detail` = ?\n" +
                     "WHERE `id` = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1,code);
-            stm.setString(2,detail);
-            stm.setInt(3,id);
+            stm.setString(1,detail);
+            stm.setInt(2,id);
             stm.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
