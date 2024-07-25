@@ -209,7 +209,7 @@
         </tr>
         <tr>
             <th>Student Group</th>
-            <td><a href="/student/groupDetail?id=${requestScope.attendance.session.group.id}">${requestScope.attendance.session.group.name}</a></td>
+            <td><a href="groupDetail?id=${requestScope.attendance.session.group.id}">${requestScope.attendance.session.group.name}</a></td>
         </tr>
         <tr>
             <th>Instructor</th>
