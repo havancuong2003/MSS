@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Semester;
 import model.Slot;
 
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 public class ViewSlot extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        String msgAddSlot = (String) session.getAttribute("msgAddSlot");
+        session.removeAttribute("msgAddSlot");
         String searchName = req.getParameter("searchName");
         SlotDBContext con = new SlotDBContext();
         ArrayList<Slot> slots = new ArrayList<>();
@@ -29,6 +33,7 @@ public class ViewSlot extends HttpServlet {
         }else{
             slots = con.getSlotsBySearchName(searchName);
         }
+        req.setAttribute("msg", msgAddSlot);
         req.setAttribute("slots", slots);
         req.setAttribute("searchName", searchName);
         req.getRequestDispatcher("../views/admin/createSlot/viewslot.jsp").forward(req, resp);
@@ -38,6 +43,7 @@ public class ViewSlot extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        HttpSession session = req.getSession();
         try {
             // Lấy dữ liệu từ form
             String detail = req.getParameter("detail");
@@ -50,7 +56,7 @@ public class ViewSlot extends HttpServlet {
 
             // Kiểm tra xem các giá trị không bị null hoặc rỗng
             if (detail == null || startTimeStr == null || endTimeStr == null || detail.isEmpty() || startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
-                req.setAttribute("msg", "All fields are required.");
+                session.setAttribute("msgAddSlot", "All fields are required.");
                 doGet(req, resp);
                 return;
             }
@@ -75,19 +81,19 @@ public class ViewSlot extends HttpServlet {
                 Slot slot = new Slot(id, detail, Time.valueOf(startTime), Time.valueOf(endTime));
                 SlotDBContext con = new SlotDBContext();
                 con.updateSlot(slot);
-                req.setAttribute("msg", "Update successfully");
+                session.setAttribute("msgAddSlot", "Update successfully");
                 doGet(req, resp);
                 return;
             } else {
-                req.setAttribute("msg", "Start time must be before end time.");
+                session.setAttribute("msgAddSlot", "Start time must be before end time.");
                 doGet(req, resp);
                 return;
             }
         } catch (NumberFormatException e) {
-            req.setAttribute("msg", "Invalid ID format.");
+            session.setAttribute("msgAddSlot", "Invalid ID format.");
             doGet(req, resp);
         } catch (DateTimeParseException e) {
-            req.setAttribute("msg", "Time format error. Please use HH:mm format.");
+            session.setAttribute("msgAddSlot", "Time format error. Please use HH:mm format.");
             doGet(req, resp);
         }
     }

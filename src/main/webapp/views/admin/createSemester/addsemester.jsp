@@ -362,40 +362,40 @@
                                     class="form-group"
                                     style="margin-bottom: 15px"
                             >
-                                <label>Is Create</label>
-                                <div>
-                                    <div
-                                            class="btn-group btn-group-toggle"
-                                            data-toggle="buttons"
-                                    >
-                                        <label
-                                                class="btn btn-outline-primary"
-                                        >
-                                            <input
-                                                    type="radio"
-                                                    name="isCreate"
-                                                    id="male"
-                                                    value="1"
-                                                    autocomplete="off"
-                                                    required
-                                            />
-                                            Yes
-                                        </label>
-                                        <label
-                                                class="btn btn-outline-primary"
-                                        >
-                                            <input
-                                                    type="radio"
-                                                    name="isCreate"
-                                                    id="female"
-                                                    value="1"
-                                                    autocomplete="off"
-                                                    required
-                                            />
-                                            No
-                                        </label>
-                                    </div>
-                                </div>
+<%--                                <label>Is Create</label>--%>
+<%--                                <div>--%>
+<%--                                    <div--%>
+<%--                                            class="btn-group btn-group-toggle"--%>
+<%--                                            data-toggle="buttons"--%>
+<%--                                    >--%>
+<%--                                        <label--%>
+<%--                                                class="btn btn-outline-primary"--%>
+<%--                                        >--%>
+<%--                                            <input--%>
+<%--                                                    type="radio"--%>
+<%--                                                    name="isCreate"--%>
+<%--                                                    id="male"--%>
+<%--                                                    value="1"--%>
+<%--                                                    autocomplete="off"--%>
+<%--                                                    required--%>
+<%--                                            />--%>
+<%--                                            Yes--%>
+<%--                                        </label>--%>
+<%--                                        <label--%>
+<%--                                                class="btn btn-outline-primary"--%>
+<%--                                        >--%>
+<%--                                            <input--%>
+<%--                                                    type="radio"--%>
+<%--                                                    name="isCreate"--%>
+<%--                                                    id="female"--%>
+<%--                                                    value="1"--%>
+<%--                                                    autocomplete="off"--%>
+<%--                                                    required--%>
+<%--                                            />--%>
+<%--                                            No--%>
+<%--                                        </label>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
                             </div>
                             <div class="form-group mt-3">
                                 <button

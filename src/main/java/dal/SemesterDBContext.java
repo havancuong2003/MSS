@@ -68,7 +68,7 @@ public class SemesterDBContext extends DBContext<Semester> {
                 semester.setId(rs.getInt(1));
                 semester.setStart(rs.getDate(3));
                 semester.setEnd(rs.getDate(4));
-                semester.setIsCreate(rs.getInt(5));
+//                semester.setIsCreate(rs.getInt(5));
                 semesters.add(semester);
             }
             return semesters;

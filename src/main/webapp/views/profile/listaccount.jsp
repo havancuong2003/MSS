@@ -265,22 +265,22 @@
                     <td>Not found!</td>
                     </c:otherwise>
                     </c:choose>
-                    <td>
-                        <form action="list-account" method="post">
-                            <input type="hidden" name="aid" value="${user.getId()}">
-                            <select name="status">
-                                <c:if test="${user.status =='active'}">
-                                    <option value="0" selected="">Active</option>
-                                    <option value="1">deActive</option>
-                                </c:if>
-                                <c:if test="${user.status == 'deactive'}">
-                                    <option value="0">Active</option>
-                                    <option value="1" selected="">deActive</option>
-                                </c:if>
-                            </select><button>Save</button>
-                        </form>
+<%--                    <td>--%>
+<%--                        <form action="list-account" method="post">--%>
+<%--                            <input type="hidden" name="aid" value="${user.getId()}">--%>
+<%--                            <select name="status">--%>
+<%--                                <c:if test="${user.status =='active'}">--%>
+<%--                                    <option value="0" selected="">Active</option>--%>
+<%--                                    <option value="1">Deactive</option>--%>
+<%--                                </c:if>--%>
+<%--                                <c:if test="${user.status == 'deactive'}">--%>
+<%--                                    <option value="0">Active</option>--%>
+<%--                                    <option value="1" selected="">Deactive</option>--%>
+<%--                                </c:if>--%>
+<%--                            </select><button>Save</button>--%>
+<%--                        </form>--%>
 
-                    </td>
+<%--                    </td>--%>
                     <td>${user.phone}</td>
                     <td>${user.gender ? "Male" : "Female"}</td>
                     <td>${user.password}</td>

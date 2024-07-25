@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @WebServlet("/admin/addSemester")
 public class AddSemester extends HttpServlet {
@@ -25,7 +26,7 @@ public class AddSemester extends HttpServlet {
         String detail = req.getParameter("detail");
         String startParam = req.getParameter("start");
         String endParam = req.getParameter("end");
-        String isCreateParam = req.getParameter("isCreate");
+//        String isCreateParam = req.getParameter("isCreate");
         SemesterDBContext con = new SemesterDBContext();
         //check xem detail
         if(!con.checkDetailExists(detail)){
@@ -33,7 +34,7 @@ public class AddSemester extends HttpServlet {
             req.setAttribute("detail", detail);
             req.setAttribute("start", startParam);
             req.setAttribute("end", endParam);
-            req.setAttribute("isCreate", isCreateParam);
+//            req.setAttribute("isCreate", isCreateParam);
             req.getRequestDispatcher("../views/admin/createSemester/addsemester.jsp").forward(req, resp);
             return;
         }
@@ -60,18 +61,25 @@ public class AddSemester extends HttpServlet {
             hasErrors = true;
         }
 
-        try {
-            isCreate = Integer.parseInt(isCreateParam);
-        } catch (NumberFormatException e) {
-            errorMsg.append("Invalid value for isCreate. ");
-            hasErrors = true;
-        }
+//        try {
+//            isCreate = Integer.parseInt(isCreateParam);
+//        } catch (NumberFormatException e) {
+//            errorMsg.append("Invalid value for isCreate. ");
+//            hasErrors = true;
+//        }
 
         // Validate date sequence
         if (start != null && end != null) {
             if (start.after(end)) {
-                errorMsg.append("Dates are not in the correct sequence. ");
+                errorMsg.append("Start date must be before end date. ");
                 hasErrors = true;
+            } else {
+                // Validate that the start date is at least 30 days before the end date
+                long daysBetween = ChronoUnit.DAYS.between(start.toLocalDate(), end.toLocalDate());
+                if (daysBetween < 30) {
+                    errorMsg.append("Start date must be at least 30 days before the end date. ");
+                    hasErrors = true;
+                }
             }
         }
 
@@ -80,7 +88,7 @@ public class AddSemester extends HttpServlet {
             req.setAttribute("detail", detail);
             req.setAttribute("start", startParam);
             req.setAttribute("end", endParam);
-            req.setAttribute("isCreate", isCreateParam);
+//            req.setAttribute("isCreate", isCreateParam);
 
             req.getRequestDispatcher("../views/admin/createSemester/addsemester.jsp").forward(req, resp);
             return;

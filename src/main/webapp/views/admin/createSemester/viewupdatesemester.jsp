@@ -128,7 +128,7 @@
                     <th>Detail</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Is Create</th>
+<%--                    <th>Is Create</th>--%>
                     <th>Edit</th>
                 </tr>
                 </thead>
@@ -145,12 +145,12 @@
                                 <td>${semester.getDetail()}</td>
                                 <td>${semester.getStart()}</td>
                                 <td>${semester.getEnd()}</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${semester.getIsCreate() == 1}">Yes</c:when>
-                                        <c:otherwise>No</c:otherwise>
-                                    </c:choose>
-                                </td>
+<%--                                <td>--%>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${semester.getIsCreate() == 1}">Yes</c:when>--%>
+<%--                                        <c:otherwise>No</c:otherwise>--%>
+<%--                                    </c:choose>--%>
+<%--                                </td>--%>
                                 <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#popup-updateStatus-${semester.getId()}">Edit</button></td>
                             </tr>
                         </c:forEach>
@@ -187,13 +187,13 @@
                             <label for="endDate-${semester.id}" class="form-label">End Date</label>
                             <input type="date" class="form-control" id="endDate-${semester.id}" name="endDate" value="${semester.end}" required />
                         </div>
-                        <div class="mb-3">
-                            <label for="isCreate-${semester.id}" class="form-label">Is Create</label>
-                            <select class="form-select" id="isCreate-${semester.id}" name="isCreate">
-                                <option value="1" ${semester.isCreate == 1 ? 'selected' : ''}>Yes</option>
-                                <option value="0" ${semester.isCreate == 0 ? 'selected' : ''}>No</option>
-                            </select>
-                        </div>
+<%--                        <div class="mb-3">--%>
+<%--                            <label for="isCreate-${semester.id}" class="form-label">Is Create</label>--%>
+<%--                            <select class="form-select" id="isCreate-${semester.id}" name="isCreate">--%>
+<%--                                <option value="1" ${semester.isCreate == 1 ? 'selected' : ''}>Yes</option>--%>
+<%--                                <option value="0" ${semester.isCreate == 0 ? 'selected' : ''}>No</option>--%>
+<%--                            </select>--%>
+<%--                        </div>--%>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="deletesemester?semesterId=${semester.id}" class="btn btn-primary">Delete</a>
                     </form>
@@ -241,7 +241,7 @@
 </script>
 <script src="templates/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-Vo0ewNxsZn2Zr2sfotIsOzKQC4fTJPfdHCw2t1jPj2QgW9FpHkAPc6k7cWz1V6k4" crossorigin="anonymous"></script>
 </body>
 </html>
