@@ -513,10 +513,10 @@
                             </td>
                             <td>
                                 <c:if test="${o.status == 0}">
-                                    <h5>Closing</h5>
+                                    <h5 style="color: red">Closing</h5>
                                 </c:if>
                                 <c:if test="${o.status == 1}">
-                                    <h5>Presenting</h5>
+                                    <h5 style="color: green">Presenting</h5>
                                 </c:if>
                             </td>
                             <td>
@@ -684,11 +684,18 @@
 
         // Clear previous error messages
         document.getElementById('exerciseNameError').innerText = "";
-        document.getElementById('numQuestionsError').innerText = "";
+        // document.getElementById('numQuestionsError').innerText = "";
+
         document.getElementById('exerciseTimeError').innerText = "";
+        document.getElementById('basicQuestionError').innerText = "";
+        document.getElementById('lowQuestionError').innerText = "";
+        document.getElementById('highQuestionError').innerText = "";
         // Get form values
         var exerciseName = document.getElementById('exerciseName').value;
-        var numQuestions = document.getElementById('numQuestions').value;
+        // var numQuestions = document.getElementById('numQuestions').value;
+        var basicQuestion = document.getElementById('basicQuestion').value;
+        var lowQuestion = document.getElementById('lowQuestion').value;
+        var highQuestion = document.getElementById('highQuestion').value;
         var exerciseTime = document.getElementById('exerciseTime').value;
         var exerciseType = document.getElementById('exerciseType').value;
         var gradeCategory = document.getElementById('gradeCategory').value;
@@ -700,14 +707,38 @@
             document.getElementById('exerciseNameError').innerText = "Quiz name already exists. Please choose another name.";
             isValid = false;
         }
-        if (!numQuestions) {
-            document.getElementById('numQuestionsError').innerText = "Please enter the Number of Questions.";
+        // if (!numQuestions) {
+        //     document.getElementById('numQuestionsError').innerText = "Please enter the Number of Questions.";
+        //     isValid = false;
+        // } else if (!isValidInteger(numQuestions) || parseInt(numQuestions) <0) {
+        //     document.getElementById('numQuestionsError').innerText = "Number of questions must be an positive integer.";
+        //     isValid = false;
+        // } else if(parseInt(numQuestions) == 0){
+        //     document.getElementById('numQuestionsError').innerText = "Number of questions must not equal 0.";
+        //     isValid = false;
+        // }
+        //basic
+        if (!basicQuestion) {
+            document.getElementById('basicQuestionError').innerText = "Please enter the Number of basic questions.";
             isValid = false;
-        } else if (!isValidInteger(numQuestions) || parseInt(numQuestions) <0) {
-            document.getElementById('numQuestionsError').innerText = "Number of questions must be an positive integer.";
+        } else if (!isValidInteger(basicQuestion) || parseInt(basicQuestion) <0) {
+            document.getElementById('basicQuestionError').innerText = "Basic questions must be an positive integer.";
             isValid = false;
-        } else if(parseInt(numQuestions) == 0){
-            document.getElementById('numQuestionsError').innerText = "Number of questions must not equal 0.";
+        }
+        // low
+        if (!lowQuestion) {
+            document.getElementById('lowQuestionError').innerText = "Please enter the Number of low application questions.";
+            isValid = false;
+        } else if (!isValidInteger(lowQuestion) || parseInt(lowQuestion) <0) {
+            document.getElementById('lowQuestionError').innerText = "Low application questions must be an positive integer.";
+            isValid = false;
+        }
+        //high
+        if (!highQuestion) {
+            document.getElementById('highQuestionError').innerText = "Please enter the Number of high application questions.";
+            isValid = false;
+        } else if (!isValidInteger(highQuestion) || parseInt(highQuestion) <0) {
+            document.getElementById('highQuestionError').innerText = "High application questions must be an positive integer.";
             isValid = false;
         }
         if (!exerciseTime) {
@@ -992,7 +1023,10 @@
                     console.log(response.isRandom);
                     if(response.isRandom == 0){
                         $('#updateExerciseName').val(response.exercise_name);
-                        $('#updateNumQuestions').val(response.question_number);
+                        $('#updateBasicQuestion').val(response.basic_question);
+                        $('#updateLowQuestion').val(response.low_question);
+                        $('#updateHighQuestion').val(response.high_question);
+
                         $('#updateExerciseTime').val(response.exercise_time);
                         $('#updateExerciseType').val(response.exercise_type);
                         $('#currentExerciseName').val(response.exercise_name);
@@ -1087,10 +1121,25 @@
                                 <div  id="exerciseNameError" class="text-danger">
                             </div>
                             </div>
+<%--                            <div>--%>
+<%--                                <label style="display: block;text-align: left">Number of Questions:</label>--%>
+<%--                                <input id="numQuestions" style="margin-top: 5px;margin-bottom: 20px" type="text" name="question_number" class="form-control">--%>
+<%--                                <div  id="numQuestionsError" class="text-danger"></div>--%>
+<%--                            </div>--%>
                             <div>
-                                <label style="display: block;text-align: left">Number of Questions:</label>
-                                <input id="numQuestions" style="margin-top: 5px;margin-bottom: 20px" type="text" name="question_number" class="form-control">
-                                <div  id="numQuestionsError" class="text-danger"></div>
+                                <label style="display: block;text-align: left">Number of Basic Questions:</label>
+                                <input id="basicQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="basicQuestion" class="form-control">
+                                <div id="basicQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of Low Application Questions:</label>
+                                <input id="lowQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="lowQuestion" class="form-control">
+                                <div id="lowQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of High Application Questions:</label>
+                                <input id="highQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="highQuestion" class="form-control">
+                                <div id="highQuestionError" class="text-danger"></div>
                             </div>
                             <div>
                                 <label style="display: block;text-align: left">Exercise Time:</label>
@@ -1151,11 +1200,26 @@
                                 <input id="updateExerciseName" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_exercise_name" class="form-control" placeholder="Exercise Name"/>
                                 <div id="updateExerciseNameError" class="text-danger"></div>
                             </div>
-                           <div>
-                               <label style="display: block;text-align: left">Number of Questions:</label>
-                               <input id="updateNumQuestions" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_question_number" class="form-control" placeholder="Number of Questions" readonly>
-                               <div id="updateNumQuestionsError" class="text-danger"></div>
-                           </div>
+<%--                           <div>--%>
+<%--                               <label style="display: block;text-align: left">Number of Questions:</label>--%>
+<%--                               <input id="updateNumQuestions" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_question_number" class="form-control" placeholder="Number of Questions" readonly>--%>
+<%--                               <div id="updateNumQuestionsError" class="text-danger"></div>--%>
+<%--                           </div>--%>
+                            <div>
+                                <label style="display: block;text-align: left">Number of Basic Questions:</label>
+                                <input id="updateBasicQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_basicQuestion" class="form-control" readonly>
+                                <div id="updatebasicQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of Low Application Questions:</label>
+                                <input id="updateLowQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_lowQuestion" class="form-control" readonly>
+                                <div id="updatelowQuestionError" class="text-danger"></div>
+                            </div>
+                            <div>
+                                <label style="display: block;text-align: left">Number of High Application Questions:</label>
+                                <input id="updateHighQuestion" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_highQuestion" class="form-control" readonly>
+                                <div id="updatehighQuestionError" class="text-danger"></div>
+                            </div>
                             <div>
                                 <label style="display: block;text-align: left">Exercise Time:</label>
                                 <input id="updateExerciseTime" style="margin-top: 10px;margin-bottom: 20px" type="text" name="update_exercise_time" class="form-control" placeholder="Time is measured in minutes">

@@ -571,7 +571,7 @@
 
                         <c:if test="${isRandom != 1}">
                             <c:if test="${listQuestionSize < numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
                                 <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
                             </c:if>
                             <c:if test="${listQuestionSize >= numQuestion}">
@@ -1082,6 +1082,7 @@
         }
 
         // Kiểm tra đáp án đúng
+        console.log("Option value" + optionValues.length);
         const correct_answer1 = document.getElementById("correct_answer1").value.trim();
         if (correct_answer1 === "") {
             document.getElementById('update-correct-answer-error').innerText = 'Please enter answer';
@@ -1106,7 +1107,7 @@
                 isValid = false;
                 isValidAnswer = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
-            } else if (!optionValues.includes(correctAnswerValue) && option1 !== correct_answer1 && option2 !== correct_answer1) {
+            } else if (!optionValues.includes(correctAnswerValue) && option1 !== correctAnswerValue && option2 !== correctAnswerValue) {
                 console.log("loi 2")
                 document.getElementById('update-correct-answer-error').innerText = 'The answer is not on the list of options';
                 isValid = false;
@@ -1310,99 +1311,106 @@
         alert(message);  // Hiển thị thông báo
     }
     var questions = <%= request.getAttribute("questions") %>;
-    function validateForm() {
-        let isValid = true;
+    document.addEventListener('DOMContentLoaded', (event) => {
+        function validateForm() {
+            let isValid = true;
 
-        // Kiểm tra loại câu hỏi
-        const typeQuestionModal = document.getElementById('type_question_modal').value;
-        if (typeQuestionModal === "0") {
-            document.getElementById('type-question-error').innerText = 'Please select type of question';
-            isValid = false;
-        } else {
-            document.getElementById('type-question-error').innerText = '';
-        }
-        const question = document.getElementById('question').value.trim();
-        if (question === "") {
-            document.getElementById('question-error').innerText = 'Please enter question';
-            isValid = false;
-        } else if(questions.includes(question)){
-            document.getElementById('question-error').innerText = 'Question is already exist in this exercise!';
-            isValid = false;
-        } else {
-            document.getElementById('question-error').innerText = '';
-        }
-
-        const option1 = document.getElementsByName('option1')[0].value.trim();
-        const option2 = document.getElementsByName('option2')[0].value.trim();
-        console.log(option1);
-        console.log(option2);
-        if (option1 === "" || option2 === "") {
-            document.getElementById('option-error').innerText = 'Please enter at least two options';
-            isValid = false;
-        } else if(option1 === option2 ){
-            document.getElementById('option-error').innerText = 'Options must not duplicate';
-            isValid = false;
-        } else {
-            document.getElementById('option-error').innerText = '';
-        }
-        // return isValid;
-        const options = document.querySelectorAll('#additional-options input.form-control');
-        const optionValues = [];
-        for (let i = 0; i < options.length; i++) {
-            const optionValue = options[i].value.trim();
-            if (optionValue === "") {
-                document.getElementById('option-error').innerText = 'Please enter all options';
+            // Kiểm tra loại câu hỏi
+            const typeQuestionModal = document.getElementById('type_question_modal').value;
+            if (typeQuestionModal === "0") {
+                document.getElementById('type-question-error').innerText = 'Please select type of question';
                 isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            } else {
+                document.getElementById('type-question-error').innerText = '';
             }
-            if (optionValues.includes(optionValue) || optionValue === option1 || optionValue === option2) {
+            const question = document.getElementById('question').value.trim();
+            if (question === "") {
+                document.getElementById('question-error').innerText = 'Please enter question';
+                isValid = false;
+            } else if(questions.includes(question)){
+                document.getElementById('question-error').innerText = 'Question is already exist in this exercise!';
+                isValid = false;
+            } else {
+                document.getElementById('question-error').innerText = '';
+            }
+
+            const option1 = document.getElementsByName('option1')[0].value.trim();
+            const option2 = document.getElementsByName('option2')[0].value.trim();
+            console.log(option1);
+            console.log(option2);
+            if (option1 === "" || option2 === "") {
+                document.getElementById('option-error').innerText = 'Please enter at least two options';
+                isValid = false;
+            } else if(option1 === option2 ){
                 document.getElementById('option-error').innerText = 'Options must not duplicate';
                 isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
-            }
-            optionValues.push(optionValue);
-        }
-        console.log(optionValues.length);
-        for (let i = 0; i < options.length; i++) {
-            console.log(options[i].value);
-        }
-        const correct_answer1 = document.getElementsByName("correct_answer1")[0].value.trim();
-        if (correct_answer1 === "") {
-            document.getElementById('correct-answer-error').innerText =  'Please enter answer';
-            isValid = false;
-        } else if (!optionValues.includes(correct_answer1) && option1 !== correct_answer1 && option2 !== correct_answer1) {
-            document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options'
-            isValid = false;
-        } else {
-            document.getElementById('correct-answer-error').innerText = '';
-        }
-
-        // Kiểm tra các đáp án đúng còn lại
-        const correctAnswers = document.querySelectorAll('#multiple-choice-options input.form-control');
-        const correctAnswerValues = [];
-        for (let i = 0; i < correctAnswers.length; i++) {
-            const correctAnswerValue = correctAnswers[i].value.trim();
-            if (correctAnswerValue === "") {
-                document.getElementById('correct-answer-error').innerText = 'Please enter all answers';
-                isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
-            }
-            if (!optionValues.includes(correctAnswerValue) && option1 !== correct_answer1 && option2 !== correct_answer1) {
-                document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options';
-                isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
-            }
-            if (correctAnswerValues.includes(correctAnswerValue) || correctAnswerValue === correct_answer1) {
-                document.getElementById('correct-answer-error-multiple').innerText = 'The answers is not duplicate';
-                isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             } else {
-                document.getElementById('correct-answer-error-multiple').innerText = '';
+                document.getElementById('option-error').innerText = '';
             }
-            correctAnswerValues.push(correctAnswerValue);
+            // return isValid;
+            const options = document.querySelectorAll('#additional-options input.form-control');
+            const optionValues = [];
+            for (let i = 0; i < options.length; i++) {
+                const optionValue = options[i].value.trim();
+                if (optionValue === "") {
+                    document.getElementById('option-error').innerText = 'Please enter all options';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                }
+                if (optionValues.includes(optionValue) || optionValue === option1 || optionValue === option2) {
+                    document.getElementById('option-error').innerText = 'Options must not duplicate';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                }
+                optionValues.push(optionValue);
+            }
+            console.log(optionValues.length);
+            for (let i = 0; i < options.length; i++) {
+                console.log(options[i].value);
+            }
+            const correct_answer1 = document.getElementsByName("correct_answer1")[0].value.trim();
+            if (correct_answer1 === "") {
+                document.getElementById('correct-answer-error').innerText =  'Please enter answer';
+                isValid = false;
+            } else if (!optionValues.includes(correct_answer1) && option1 !== correct_answer1 && option2 !== correct_answer1) {
+                document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options'
+                isValid = false;
+            } else {
+                document.getElementById('correct-answer-error').innerText = '';
+            }
+
+            // Kiểm tra các đáp án đúng còn lại
+            const correctAnswers = document.querySelectorAll('#multiple-choice-options input.form-control');
+            const correctAnswerValues = [];
+            for (let i = 0; i < correctAnswers.length; i++) {
+                const correctAnswerValue = correctAnswers[i].value.trim();
+                if (correctAnswerValue === "") {
+                    document.getElementById('correct-answer-error').innerText = 'Please enter all answers';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                }
+                if (!optionValues.includes(correctAnswerValue) && option1 !== correctAnswerValue && option2 !== correctAnswerValue) {
+                    document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                }
+                if (correctAnswerValues.includes(correctAnswerValue) || correctAnswerValue === correct_answer1) {
+                    document.getElementById('correct-answer-error-multiple').innerText = 'The answers is not duplicate';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                } else {
+                    document.getElementById('correct-answer-error-multiple').innerText = '';
+                }
+                correctAnswerValues.push(correctAnswerValue);
+            }
+            return isValid;
         }
-        return isValid;
-    }
+        document.getElementById('create-question-form').addEventListener('submit', (e) => {
+            if (!validateForm()) {
+                e.preventDefault();
+            }
+        });
+    })
 </script>
 </body>
 </html>

@@ -24,7 +24,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 Exercise exercise = new Exercise();
                 exercise.setExerciseId(rs.getInt("exercise_id"));
                 exercise.setExerciseName(rs.getString("exercise_name"));
-                exercise.setQuestion_number(rs.getInt("question_number"));
+//                exercise.setQuestion_number(rs.getInt("question_number"));
                 exercise.setExercise_time(rs.getFloat("exercise_time"));
                 exercise.setGet_score(rs.getInt("get_score"));
                 exercise.setGroup_id((rs.getInt("group_id")));
@@ -81,6 +81,10 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 Exercise e = new Exercise();
                 e.setExerciseId(rs.getInt("exercise_id"));
                 e.setExerciseName(rs.getString("exercise_name"));
+//                e.setQuestion_number(rs.getInt("question_number"));
+                e.setExercise_time(rs.getFloat("exercise_time"));
+                e.setGet_score(rs.getInt("get_score"));
+                e.setGroup_id((rs.getInt("group_id")));
                 e.setStatus(rs.getInt("status"));
                 Teacher t = new Teacher();
                 t.setTid(rs.getString("teacher_id"));
@@ -89,7 +93,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 c.setId(rs.getInt("course_id"));
                 c.setCode(rs.getString("code"));
                 e.setCourse(c);
-                e.setQuestion_number(rs.getInt("question_number"));
+//                e.setQuestion_number(rs.getInt("question_number"));
                 e.setGet_score(rs.getInt("get_score"));
                 e.setGroup_id((rs.getInt("group_id")));
                 e.setGrade_category(rs.getInt("grade_category"));
@@ -146,7 +150,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 c.setId(rs.getInt("course_id"));
                 c.setCode(rs.getString("code"));
                 e.setCourse(c);
-                e.setQuestion_number(rs.getInt("question_number"));
+//                e.setQuestion_number(rs.getInt("question_number"));
                 e.setGet_score(rs.getInt("get_score"));
                 e.setGroup_id((rs.getInt("group_id")));
                 e.setGrade_category(rs.getInt("grade_category"));
@@ -203,7 +207,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 c.setId(rs.getInt("course_id"));
                 c.setCode(rs.getString("code"));
                 e.setCourse(c);
-                e.setQuestion_number(rs.getInt("question_number"));
+//                e.setQuestion_number(rs.getInt("question_number"));
                 e.setGet_score(rs.getInt("get_score"));
                 e.setGroup_id((rs.getInt("group_id")));
                 e.setGrade_category(rs.getInt("grade_category"));
@@ -215,42 +219,46 @@ public class ExerciseDBContext extends DBContext<Exercise>{
         }
         return  listExercise;
     }
-    public void insertExerciseGetMark(String exercise_id, String exercise_name, String teacher_id, String course_id,String question_number,String exercise_time,String get_score,String group_id,String grade_category,String isRandom) {
+    public void insertExerciseGetMark(String exercise_id, String exercise_name, String teacher_id, String course_id,String basicQuestion,String lowQuestion,String highQuestion,String exercise_time,String get_score,String group_id,String grade_category,String isRandom) {
         LocalDateTime currentTime = LocalDateTime.now();
         String time = currentTime.toString();
-        String sql = "INSERT INTO exercise (exercise_id,exercise_name,status,teacher_id,course_id,question_number,exercise_time,get_score,group_id,grade_category,isRandom) VALUES (?,?,0,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO exercise (exercise_id,exercise_name,status,teacher_id,course_id,basic_question,low_question,high_question,exercise_time,get_score,group_id,grade_category,isRandom) VALUES (?,?,0,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, exercise_id);
             statement.setString(2, exercise_name);
             statement.setString(3, teacher_id);
             statement.setString(4, course_id);
-            statement.setString(5, question_number);
-            statement.setString(6, exercise_time);
-            statement.setString(7, get_score);
-            statement.setString(8, group_id);
-            statement.setString(9, grade_category);
-            statement.setString(10, isRandom);
+            statement.setString(5, basicQuestion);
+            statement.setString(6,lowQuestion);
+            statement.setString(7,highQuestion);
+            statement.setString(8, exercise_time);
+            statement.setString(9, get_score);
+            statement.setString(10, group_id);
+            statement.setString(11, grade_category);
+            statement.setString(12, isRandom);
             statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void insertExerciseNotGetMark(String exercise_id, String exercise_name, String teacher_id, String course_id,String question_number,String exercise_time,String get_score,String group_id,String isRandom) {
+    public void insertExerciseNotGetMark(String exercise_id, String exercise_name, String teacher_id, String course_id,String basicQuestion,String lowQuestion,String highQuestion,String exercise_time,String get_score,String group_id,String isRandom) {
 
-        String sql = "INSERT INTO exercise (exercise_id,exercise_name,status,teacher_id,course_id,question_number,exercise_time,get_score,group_id,isRandom) VALUES (?,?,0,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO exercise (exercise_id,exercise_name,status,teacher_id,course_id,basic_question,low_question,high_question,exercise_time,get_score,group_id,isRandom) VALUES (?,?,0,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, exercise_id);
             statement.setString(2, exercise_name);
             statement.setString(3, teacher_id);
             statement.setString(4, course_id);
-            statement.setString(5, question_number);
-            statement.setString(6, exercise_time);
-            statement.setString(7, get_score);
-            statement.setString(8, group_id);
-            statement.setString(9, isRandom);
+            statement.setString(5, basicQuestion);
+            statement.setString(6, lowQuestion);
+            statement.setString(7, highQuestion);
+            statement.setString(8, exercise_time);
+            statement.setString(9, get_score);
+            statement.setString(10, group_id);
+            statement.setString(11, isRandom);
             statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -322,7 +330,10 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 exercise.setExerciseId(rs.getInt("exercise_id"));
                 exercise.setExerciseName(rs.getString("exercise_name"));
                 exercise.setStatus(rs.getInt(3));
-                exercise.setQuestion_number(rs.getInt("question_number"));
+//                exercise.setQuestion_number(rs.getInt("question_number"));
+                exercise.setBasic_question(rs.getInt("basic_question"));
+                exercise.setLow_question(rs.getInt("low_question"));
+                exercise.setHigh_question(rs.getInt("high_question"));
                 exercise.setExercise_time(rs.getFloat("exercise_time"));
                 exercise.setGet_score(rs.getInt("get_score"));
                 exercise.setGroup_id((rs.getInt("group_id")));
@@ -470,13 +481,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
 
     public static void main(String[] args) {
         ExerciseDBContext dao = new ExerciseDBContext();
-        Teacher teacher = dao.getTeacher("t1");
-        System.out.println(teacher.getTid());
-        System.out.println(dao.getTotalExerciseByGroupId("1"));
-        List<Course> listE = dao.getListCourse();
-        for (Course e : listE){
-            System.out.println(e.getCode());
-        }
+        dao.insertExerciseGetMark("123456","demo","t1","1","5","5","5","10","1","1","1","0");
     }
 
     @Override

@@ -97,27 +97,6 @@ public class CreateExercise extends HttpServlet {
         if (count % 10 != 0) {
             endPage++;
         }
-        Cookie[] arrE = request.getCookies();
-        String txt = "";
-        if (arrE != null) {
-            for (Cookie c : arrE) {
-                if (c.getName().equals("exercise")) {
-                    txt += c.getValue();
-                    c.setMaxAge(0);
-                    response.addCookie(c);
-                }
-            }
-        }
-        Cookie c = new Cookie("exercise", txt);
-        c.setMaxAge(60 * 24 * 60 * 60);
-        response.addCookie(c);
-        System.out.println("txt : " + txt);
-        List<Exercise_Constructor> listE = Constructor(txt);
-        for (Exercise_Constructor e : listE) {
-            request.setAttribute("basicQuestion" +e.getExercise_id(), e.getBasicQuestion());
-            request.setAttribute("lowQuestion" + e.getExercise_id(), e.getLowQuestion());
-            request.setAttribute("highQuestion" + e.getExercise_id(), e.getHighQuestion());
-        }
         List<String> exerciseNames = listExercise.stream()
                 .map(Exercise::getExerciseName) // assuming getName() method exists
                 .collect(Collectors.toList());
@@ -163,35 +142,17 @@ public class CreateExercise extends HttpServlet {
             json.addProperty("exercise_name", exercise.getExerciseName());
             if(exercise.getIsRandom() == 1){
                 System.out.println("chay vao duoc random");
-                Cookie[] arrE = request.getCookies();
-                String txt = "";
-                if (arrE != null) {
-                    for (Cookie c : arrE) {
-                        if (c.getName().equals("exercise")) {
-                            txt += c.getValue();
-                            c.setMaxAge(0);
-                            response.addCookie(c);
-                        }
-                    }
-                }
-                Cookie c = new Cookie("exercise", txt);
-                c.setMaxAge(60 * 24 * 60 * 60);
-                response.addCookie(c);
-                System.out.println("txt : " + txt);
-                List<Exercise_Constructor> listE = Constructor(txt);
-                for (Exercise_Constructor e : listE) {
                     System.out.println("chay duoc vao random 2");
-                    if(e.getExercise_id() == Integer.parseInt(exerciseId)){
-                        System.out.println("basic: " + e.getBasicQuestion());
-                        System.out.println("low: " + e.getLowQuestion());
-                        System.out.println("high: " + e.getHighQuestion());
-                        json.addProperty("basic_question",e.getBasicQuestion());
-                        json.addProperty("low_question",e.getLowQuestion());
-                        json.addProperty("high_question",e.getHighQuestion());
-                    }
-                }
+                        System.out.println("basic: " + exercise.getBasic_question());
+                        System.out.println("low: " + exercise.getLow_question());
+                        System.out.println("high: " + exercise.getHigh_question());
+                        json.addProperty("basic_question",exercise.getBasic_question());
+                        json.addProperty("low_question",exercise.getLow_question());
+                        json.addProperty("high_question",exercise.getHigh_question());
             } else {
-                json.addProperty("question_number", exercise.getQuestion_number());
+                json.addProperty("basic_question",exercise.getBasic_question());
+                json.addProperty("low_question",exercise.getLow_question());
+                json.addProperty("high_question",exercise.getHigh_question());
             }
             json.addProperty("exercise_id", exerciseId);
             json.addProperty("isRandom", exercise.getIsRandom());
@@ -292,7 +253,7 @@ public class CreateExercise extends HttpServlet {
                 String random_gradeCategory = request.getParameter("random_gradeCategory");
                 System.out.println("Random grade: " + random_gradeCategory);
                 List<Question> listQuestion = new ArrayList<>();
-                int numQuestion = numBasicQuestion + numHighQuestion + numLowQuestion;
+//                int numQuestion = numBasicQuestion + numHighQuestion + numLowQuestion;
                 List<BankQuestion> listBasicBankQuestion = bankDAO.getListBankQuestionByTypeQuesion("1");
                 List<BankQuestion> listLowBankQuestion = bankDAO.getListBankQuestionByTypeQuesion("2");
                 List<BankQuestion> listHighBankQuestion = bankDAO.getListBankQuestionByTypeQuesion("3");
@@ -300,10 +261,10 @@ public class CreateExercise extends HttpServlet {
                     System.out.println("join 2");
                     if(random_exerciseType.equals("2")){
                         System.out.println("create success");
-                        dao.insertExerciseNotGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, group_id,"1");
+                        dao.insertExerciseNotGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, random_basicQuestion,random_lowQuestion,random_highQuestion, random_exerciseTime, random_exerciseType, group_id,"1");
                     } else {
                         System.out.println("create success");
-                        dao.insertExerciseGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, String.valueOf(numQuestion), random_exerciseTime, random_exerciseType, group_id,random_gradeCategory,"1");
+                        dao.insertExerciseGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, random_basicQuestion,random_lowQuestion,random_highQuestion, random_exerciseTime, random_exerciseType, group_id,random_gradeCategory,"1");
                     }
                 }
 
@@ -312,68 +273,51 @@ public class CreateExercise extends HttpServlet {
                     addRandomQuestions(listBasicBankQuestion,numBasicQuestion,exercise_id,course_id);
                     addRandomQuestions(listLowBankQuestion,numLowQuestion,exercise_id,course_id);
                     addRandomQuestions(listHighBankQuestion,numHighQuestion,exercise_id,course_id);
-                    String indexPage = request.getParameter("page");
-                    int count =0;
-                    int endPage =0;
-                    if (indexPage == null){
-                        indexPage = "1";
-                    }
-                    int index = Integer.parseInt(indexPage);
-                    QuestionDBContext qdao = new QuestionDBContext();
-                    count = qdao.getTotalQuestion(exercise_id);
-                    endPage = count/10;
-                    listQuestion = qdao.pagingQuestionByExercise_id(index, exercise_id);
-                    List<Question> listQuestionOfExerciseId = qdao.getListQuestionByExerciseId(exercise_id);
-                    if(count % 10 != 0){
-                        endPage++;
-                    }
-                    Cookie [] arrE = request.getCookies();
-                    String txt = "";
-                    if(arrE != null){
-                        for(Cookie c : arrE){
-                            if(c.getName().equals("exercise")){
-                                txt += c.getValue();
-                                c.setMaxAge(0);
-                                response.addCookie(c);
-                            }
-                        }
-                    }
-                    if(txt.isEmpty()){
-                        txt = exercise_id + ":" + random_basicQuestion + ":" + random_lowQuestion + ":" + random_highQuestion;
-                    } else {
-                        txt = txt + "a" + exercise_id + ":" + random_basicQuestion + ":" + random_lowQuestion + ":" + random_highQuestion;
-                    }
-                    System.out.println("txt: " + txt);
-                    Cookie c = new Cookie("exercise", txt);
-                    c.setMaxAge(60*24*60*60);
-                    response.addCookie(c);
+//                    String indexPage = request.getParameter("page");
+//                    int count =0;
+//                    int endPage =0;
+//                    if (indexPage == null){
+//                        indexPage = "1";
+//                    }
+//                    int index = Integer.parseInt(indexPage);
+//                    QuestionDBContext qdao = new QuestionDBContext();
+//                    count = qdao.getTotalQuestion(exercise_id);
+//                    endPage = count/10;
+//                    listQuestion = qdao.pagingQuestionByExercise_id(index, exercise_id);
+//                    List<Question> listQuestionOfExerciseId = qdao.getListQuestionByExerciseId(exercise_id);
+//                    if(count % 10 != 0){
+//                        endPage++;
+//                    }
                     HttpSession session = request.getSession();
                     session.setAttribute("exercise_id", exercise_id);
                     request.setAttribute("group_id",group_id);
                     request.setAttribute("course_id",course_id);
                     request.setAttribute("type_question","0");
-                    request.setAttribute("tag",index);
-                    request.setAttribute("endPage", endPage);
+//                    request.setAttribute("tag",index);
+//                    request.setAttribute("endPage", endPage);
                     request.setAttribute("listQuestion", listQuestion);
-                    request.setAttribute("listQuestionSize",listQuestionOfExerciseId.size());
-                    request.setAttribute("numQuestion",numQuestion);
+//                    request.setAttribute("listQuestionSize",listQuestionOfExerciseId.size());
+//                    request.setAttribute("numQuestion",numQuestion);
                     request.setAttribute("firstLoad",true);
                     request.setAttribute("exercise_id", exercise_id);
-                    request.getRequestDispatcher("/views/exercise/managequestion.jsp").forward(request, response);
+                    doGet(request,response);
                 } else {
                     System.out.println("Fail to create exercise");
                 }
             } else {
                 String exercise_name = request.getParameter("excercise_name");
-                String question_number = request.getParameter("question_number");
+                String question_number = "5";
                 String exercise_time = request.getParameter("exercise_time");
                 String exercise_type = request.getParameter("exercise_type");
                 String grade_category = request.getParameter("grade_category");
-                if(exercise_name != null && teacher_id != null && question_number != null && exercise_time != null && exercise_type != null && grade_category != null){
+                String basiQuestion = request.getParameter("basicQuestion");
+                String lowQuestion = request.getParameter("lowQuestion");
+                String highQuestion = request.getParameter("highQuestion");
+                if(exercise_name != null && teacher_id != null && exercise_time != null && basiQuestion != null && lowQuestion != null && highQuestion != null && exercise_type != null && grade_category != null){
                     if(!exercise_type.equals("2")){
-                        dao.insertExerciseGetMark(exercise_id, exercise_name.trim(), teacher_id,course_id,question_number.trim(),exercise_time.trim(),exercise_type,group_id,grade_category,"0");
+                        dao.insertExerciseGetMark(exercise_id, exercise_name.trim(), teacher_id,course_id,basiQuestion.trim(),lowQuestion.trim(),highQuestion.trim(),exercise_time.trim(),exercise_type,group_id,grade_category,"0");
                     } else {
-                        dao.insertExerciseNotGetMark(exercise_id, exercise_name.trim(), teacher_id,course_id,question_number.trim(),exercise_time.trim(),exercise_type,group_id,"0");
+                        dao.insertExerciseNotGetMark(exercise_id, exercise_name.trim(), teacher_id,course_id,basiQuestion.trim(),lowQuestion.trim(),highQuestion.trim(),exercise_time.trim(),exercise_type,group_id,"0");
                     }
                     Exercise ex = dao.getExerciseById(exercise_id);
                     if(ex != null){
@@ -386,7 +330,7 @@ public class CreateExercise extends HttpServlet {
                         request.setAttribute("type_question","0");
                         request.setAttribute("firstLoad",true);
                         request.setAttribute("exercise_id", exercise_id);
-                        request.getRequestDispatcher("/views/exercise/managequestion.jsp").forward(request, response);
+                        doGet(request, response);
                     }
                 }
             }
