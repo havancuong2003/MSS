@@ -384,7 +384,7 @@ public class GroupDBContext extends DBContext<Group> {
 
     public Group getGroupInfo(int groupID) {
         Group g = null;
-        String sql = "SELECT distinct e.group_id,e.Detail,g.name,g.link,g.semester_id,g.course_id,g.PIC FROM enrollment e join `group` g on g.id=e.group_id where group_id=?\n";
+        String sql = "SELECT distinct e.group_id,g.name,g.semester_id,g.course_id,g.PIC FROM enrollment e join `group` g on g.id=e.group_id where group_id=?\n";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, groupID);
@@ -395,7 +395,7 @@ public class GroupDBContext extends DBContext<Group> {
                 g.setCourse(courseDBContext.getCourseByID(rs.getInt("course_id")));
                 g.setTeacher(getTeacherByID(rs.getString("pic")));
                 g.setName(rs.getString("name"));
-                g.setLink(rs.getString("link"));
+
                 g.setStudents(getStudentForGroupByGroupID(groupID));
             }
         } catch (SQLException e) {
