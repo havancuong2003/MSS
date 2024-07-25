@@ -87,8 +87,8 @@
 </header>
 <div class="content">
     <div class="info">
-        <p>Tên nhóm: <span id="group-name"></span></p>
-        <p>Giáo viên: <span id="teacher"></span></p>
+        <p>Tên nhóm: <span id="group-name">${group.name}</span></p>
+        <p>Giáo viên: <span id="teacher">${group.teacher.account.fullname}</span></p>
     </div>
 
     <h2>Danh sách sinh viên</h2>
