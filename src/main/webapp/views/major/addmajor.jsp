@@ -451,7 +451,7 @@
         var status = document.getElementById("status").value;
         console.log(status);
         $.ajax({
-            url: "${pageContext.request.contextPath}/admin/addmajor",
+            url: "${pageContext.request.contextPath}/admin/viewmajor",
             type: "post",
             dataType: "json",
             data: {

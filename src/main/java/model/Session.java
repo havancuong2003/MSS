@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+
 public class Session implements IEntity {
     private int id;
     private Group group;
@@ -12,10 +13,11 @@ public class Session implements IEntity {
     private Date date;
     private Teacher teacher;
 
-    private Slot slot ;
+    private Slot slot;
     private boolean taken;
     private boolean isChange;
     private boolean lock;
+
     public int getId() {
         return id;
     }

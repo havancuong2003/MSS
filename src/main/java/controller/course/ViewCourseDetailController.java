@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name="viewCourse", value = "/viewCourse")
+@WebServlet(name="viewCourse", value = "/admin/viewCourse")
 public class ViewCourseDetailController extends HttpServlet {
 
     @Override
@@ -26,7 +26,7 @@ public class ViewCourseDetailController extends HttpServlet {
         if (course == null||course.getDetail()==null||course.getCode()==null) {
             req.setAttribute("exist",false);
             req.setAttribute("ms","Course does not exist. View course failed!");
-            req.getRequestDispatcher("views/course/detail.jsp").forward(req,resp);
+            req.getRequestDispatcher("../views/course/detail.jsp").forward(req,resp);
             return;
         }
         GradeCategoryDBContext cateDB = new GradeCategoryDBContext();
@@ -48,7 +48,7 @@ public class ViewCourseDetailController extends HttpServlet {
         req.setAttribute("cates", cate);
         req.setAttribute("id",id);
         req.setAttribute("exist",true);
-        req.getRequestDispatcher("views/course/detail.jsp").forward(req,resp);
+        req.getRequestDispatcher("../views/course/detail.jsp").forward(req,resp);
     }
 
     @Override

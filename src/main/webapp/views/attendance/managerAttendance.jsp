@@ -221,7 +221,7 @@
 </header>
 <div class="container">
     <h2>Attendance</h2>
-    <form action="takeAttendance" method="post">
+    <form action="<%=request.getContextPath()%>/manager/viewManagerAttendance" method="post">
         <input type="hidden" name="sesid" value="${requestScope.sesid}">
         <table>
             <thead>
@@ -240,25 +240,27 @@
                     <td>${a.student.account.fullname}</td>
                     <td>
                         <div class="form-check-inline">
-                            <input type="radio" id="present_yes_${a.student.id}" name="present${a.student.id}" disabled
+                            <input type="radio" id="present_yes_${a.student.id}" name="present${a.student.id}"
                                    value="yes"
                                    <c:if test="${a.present}">checked</c:if> >
                             <label for="present_yes_${a.student.id}" class="form-check-label">Present</label>
 
-                            <input type="radio" id="present_no_${a.student.id}" name="present${a.student.id}" value="no" disabled
+                            <input type="radio" id="present_no_${a.student.id}" name="present${a.student.id}" value="no"
                                    <c:if test="${!a.present}">checked</c:if> >
                             <label for="present_no_${a.student.id}" class="form-check-label">Absent</label>
                         </div>
                     </td>
                     <td>
                         <input type="text" name="description${a.student.id}" value="${a.description}"
-                               class="form-control" disabled>
+                               class="form-control" >
                     </td>
                     <td>${a.date}</td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
+        <button type="submit" class="btn btn-primary" >Submit</button>${requestScope.ms}
+
     </form>
 </div>
 
