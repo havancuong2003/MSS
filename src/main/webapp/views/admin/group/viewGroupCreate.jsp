@@ -59,49 +59,12 @@
             text-shadow: 0px 0px 5px rgba(0, 91, 187, 0.5);
         }
 
-        .header {
-            background-color: #ccc;
-            color: black;
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-        }
 
-        .header a {
-            position: absolute;
-            left: 20px;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 20px;
-            background-color: #0056b3;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
 
-        .header a:hover {
-            background-color: #003d80;
-            color: white;
-        }
-
-        footer {
-            background-color: #f2f2f2;
-            padding: 20px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: 10;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
-<div class="header">
-    <a href="createGroup">Back</a>
-    <h1>Header</h1>
-</div>
+<jsp:include page="../../common/header.jsp" />
 <div class="contain">
 
     <label for="semesters"><h1>Group Details</h1></label>
@@ -129,9 +92,7 @@
         </tbody>
     </table>
 </div>
-<footer>
-    <p>Footer</p>
-</footer>
+<jsp:include page="../../common/footer.jsp" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {

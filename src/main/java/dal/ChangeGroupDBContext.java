@@ -45,8 +45,8 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
     public ArrayList<ChangeGroup> getAllRequired(String username, int semesterID) {
         ArrayList<ChangeGroup> changeGroups = new ArrayList<>();
         try {
-            String sql = "select cc.id,fromStudent,fromGroup,toStudent,toGroup,status,semester from changeClass cc join Student s on s.id=cc.fromStudent join `account` a on a.account_id=s.acc_id\n" +
-                    "                    where a.userName = ? and status = 'processing' and semester = ?";
+            String sql = "select cc.id,fromStudent,fromGroup,toStudent,toGroup,cc.status,semester from changeClass cc join Student s on s.id=cc.fromStudent join `account` a on a.account_id=s.acc_id\n" +
+                    "                    where a.userName = ? and cc.status = 'processing' and semester = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setInt(2, semesterID);
@@ -71,8 +71,8 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
     public ArrayList<ChangeGroup> getAllRequiredToSwap(String username, int semesterID) {
         ArrayList<ChangeGroup> changeGroups = new ArrayList<>();
         try {
-            String sql = "select cc.id,fromStudent,fromGroup,toStudent,toGroup,status,semester from changeClass cc join Student s on s.id=cc.toStudent join `account` a on a.account_id=s.acc_id\n" +
-                    "                    where a.userName = ? and status = 'processing' and semester = ?";
+            String sql = "select cc.id,fromStudent,fromGroup,toStudent,toGroup,cc.status,semester from changeClass cc join Student s on s.id=cc.toStudent join `account` a on a.account_id=s.acc_id\n" +
+                    "                    where a.userName = ? and cc.status = 'processing' and semester = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setInt(2, semesterID);

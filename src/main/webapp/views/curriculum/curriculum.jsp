@@ -126,27 +126,7 @@
             display: block;
             text-align: center;
         }
-        h3 {
-            display: inline-block;
-            position: relative;
-            text-align: center;
-            font-size: 1.5em;
-            color: #cecece;
-        }
-        h3:before {
-            content: "\25C0";
-            position: absolute;
-            left: -50px;
-            -webkit-animation: leftRight 2s linear infinite;
-            animation: leftRight 2s linear infinite;
-        }
-        h3:after {
-            content: "\25b6";
-            position: absolute;
-            right: -50px;
-            -webkit-animation: leftRight 2s linear infinite reverse;
-            animation: leftRight 2s linear infinite reverse;
-        }
+
         @-webkit-keyframes leftRight {
             0%    { -webkit-transform: translateX(0)}
             25%   { -webkit-transform: translateX(-10px)}
@@ -307,5 +287,6 @@
         </tbody>
     </table>
 </div>
+<jsp:include page="../common/footer.jsp" />
 </body>
 </html>

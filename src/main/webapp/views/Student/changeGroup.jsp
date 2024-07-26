@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Page</title>
     <style>
-        <style>
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
@@ -22,12 +22,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
 
         h2 {
             color: #333;
@@ -94,15 +88,18 @@
             border: 1px solid #ddd;
             border-radius: 3px;
             background-color: #f9f9f9;
-        } .expired {
-              display: none;
-          }
+        }
+
+        .expired {
+            display: none;
+        }
     </style>
-    </style>
+
 </head>
 <body>
+<jsp:include page="../common/header.jsp"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<h1>${validDate}</h1>
+
 <div
         id="expired"
         class="${validDate eq 'true' ? 'expired' : 'ab'}"
@@ -111,11 +108,12 @@
     <h1>The registration period has expired or has not yet arrived</h1>
 
     <c:if test="${requestScope.timePeriods != 'null'}">
-        <h1>Start at  ${requestScope.timePeriods.startChangeClass} and end at ${requestScope.timePeriods.endChangeClass}</h1>
+        <h1>Start at ${requestScope.timePeriods.startChangeClass} and end
+            at ${requestScope.timePeriods.endChangeClass}</h1>
 
     </c:if>
 </div>
-<div  class="${validDate eq 'true' ? 'ab' : 'expired'} container">
+<div class="${validDate eq 'true' ? 'ab' : 'expired'} container">
 
     <div class="header"></div>
     <h2>Change Request</h2>
@@ -123,11 +121,18 @@
     <div id="requestForm" style="">
         <form id="changeRequestForm">
             <label for="course">Course:</label>
-            <select id="course" name="course">
+
+            <select id="course" name="course" class="${gSize == 0 ? 'expired' : ''}">
                 <c:forEach items="${requestScope.groups}" var="g" varStatus="loop">
                     <option value="${g.course.id}">${g.course.code}</option>
                 </c:forEach>
             </select>
+
+            <div id="noCoursesMessage" class="${gSize == 0 ? 'ab' : 'expired'}">
+                Bạn chưa đăng kí môn nào ở kỳ tới
+            </div>
+
+
             <br>
             <label for="fromStudent">From Student:</label>
             <input type="text" id="fromStudent" name="fromStudent" readonly="true"
@@ -135,7 +140,7 @@
 
             <label for="toStudent">To Student:</label>
             <input type="text" id="toStudent" name="toStudent" required="true"><br>
-            <button id="addRequestButton">Thêm Yêu Cầu</button>
+            <button id="addRequestButton" class="${gSize == 0 ? 'expired' : ''}">Add</button>
         </form>
     </div>
     <br>
@@ -235,6 +240,9 @@
 
 
 </div>
+<jsp:include page="../common/footer.jsp"/>
+
+
 <script>
     $(document).ready(function () {
 
@@ -290,10 +298,9 @@
                 success: function (data) {
                     // updatePage(data);
                     console.log('data add', data);
-                    if(data.status == "success"){
+                    if (data.status == "success") {
                         updatePage(data);
-                    }
-                    else{
+                    } else {
                         alert(data.error);
                     }
                 },
@@ -434,6 +441,12 @@
                 const newRow = '<option value="' + group.course.id + '">' + group.course.code + '</option>';
                 $('#course').append(newRow);
             });
+
+            if ($('#course option').length === 0) {
+                $('#noCoursesMessage').show();
+            } else {
+                $('#noCoursesMessage').hide();
+            }
             bindAcceptRejectForms();
 
         };
