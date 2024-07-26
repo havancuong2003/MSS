@@ -238,6 +238,7 @@
     </script>
 </head>
 <body>
+<jsp:include page="../common/header.jsp" />
 <div class="container">
     <form id="majorForm" action="viewCurriculum" method="post">
         <label for="majorSelect">Select Major:</label>
