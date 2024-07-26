@@ -31,23 +31,7 @@
             background-color: #f2f2f2;
         }
 
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #f2f2f2;
-            padding: 10px;
-            text-align: center;
-        }
 
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #f2f2f2;
-            padding: 10px;
-            text-align: center;
-        }
 
         .content {
             padding-top: 50px; /* để header không che khuất nội dung */
@@ -62,30 +46,13 @@
             transform: translate(-50%, -50%);
             text-align: center;
         }
-        header a {
-            position: absolute;
-            left: 20px;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 20px;
-            background-color: #0056b3;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
 
-        header a:hover {
-            background-color: #003d80;
-            color:white;
-        }
     </style>
 </head>
 <body>
-<header>
-    <a href="schedule">Back</a>
-    <h1>Thông tin lớp học</h1>
-
-</header>
+<jsp:include page="../common/header.jsp"/>
 <div class="content">
+    <h1>Thông tin lớp học</h1>
     <div class="info">
         <p>Tên nhóm: <span id="group-name">${group.name}</span></p>
         <p>Giáo viên: <span id="teacher">${group.teacher.account.fullname}</span></p>
@@ -116,9 +83,8 @@
 </div>
 
 
-<footer>
-    <h2>Footer</h2>
-</footer>
+<jsp:include page="../common/footer.jsp"/>
+
 
 
 <%--<script>--%>

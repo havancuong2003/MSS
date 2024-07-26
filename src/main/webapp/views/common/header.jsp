@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,14 +13,15 @@
             border-bottom: 1px solid #ddd;
             padding: 10px;
         }
-        .profile-img {
-            width: 40px;
-            height: 40px;
-        }
+
         .dropdown-menu {
             min-width: 150px;
+            display: none; /* Ẩn menu dropdown mặc định */
         }
-        nav{
+        .dropdown-menu.show {
+            display: block; /* Hiện menu khi có lớp 'show' */
+        }
+        nav {
             margin-bottom: 50px;
         }
     </style>
@@ -34,20 +34,31 @@
 
     <div class="ml-auto">
         <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
                 Profile
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="setting">Setting</a>
                 <a class="dropdown-item" href="../logout">Logout</a>
             </div>
         </div>
     </div>
 </nav>
+<script>
+    document.getElementById('dropdownMenuButton').addEventListener('click', function () {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    });
 
-<%--<!-- Include Bootstrap JavaScript and FontAwesome for icons -->--%>
-<%--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>--%>
-<%--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>--%>
-<%--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>--%>
+    // Đóng menu nếu nhấp ra ngoài
+    document.addEventListener('click', function (event) {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu && !menu.contains(event.target) && !document.getElementById('dropdownMenuButton').contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+</script>
 </body>
 </html>
