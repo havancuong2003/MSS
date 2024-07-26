@@ -207,6 +207,21 @@
         .profile-actions a:hover {
             color: #0056b3;
         }
+        .total-row {
+            font-weight: bold;
+            /*background-color: #e3f2fd;*/
+            /*color: #0d47a1;*/
+        }
+
+        .total-row td {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .total-label {
+            text-align: left;
+        }
+
     </style>
     <script>
         function toggleProfileDropdown() {
@@ -415,15 +430,17 @@
             },
             success: function (data) {
                 var marks = data.marks;
+                var total = data.total;
+                console.log(total);
                 console.log(marks);
                 if (data.role === "student") {
-                    displayGrades(marks);
+                    displayGrades(marks,total);
                 }
             }
         });
     }
 
-    function displayGrades(marks) {
+    function displayGrades(marks,total) {
         var tableBody = document.getElementById("gradesTableBody");
         tableBody.innerHTML = "";
 
@@ -453,7 +470,32 @@
             row.appendChild(gradeCell);
 
             tableBody.appendChild(row);
-        });
+            // Thêm hàng tổng kết vào bảng
+        }
+        );
+        var totalRow = document.createElement("tr");
+        totalRow.className = "total-row";
+
+        var totalLabelCell = document.createElement("td");
+        totalLabelCell.colSpan = 1;
+        totalLabelCell.textContent = "Summary";
+        totalLabelCell.className = "total-label";
+        totalRow.appendChild(totalLabelCell);
+
+        var averageMarkCell = document.createElement("td");
+        averageMarkCell.textContent = "Average Mark: " + total.avarage_mark;
+        totalRow.appendChild(averageMarkCell);
+
+        var reasonCell = document.createElement("td");
+        reasonCell.textContent = "Reason: " + total.reason;
+        totalRow.appendChild(reasonCell);
+
+        var statusCell = document.createElement("td");
+        statusCell.textContent = "Status: " + (total.pass ? "Passed" : "Failed");
+        totalRow.appendChild(statusCell);
+
+        tableBody.appendChild(totalRow);
+
     }
 
 

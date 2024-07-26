@@ -148,7 +148,7 @@
             <input type="hidden" name="cid" value="${requestScope.id}">
             <h2>Course Information</h2>
             <label for="code">Course's Code:</label>
-            <input type="text" id="code" name="code" value="${requestScope.course.code}">
+            <input type="text" id="code" name="code" value="${requestScope.course.code}" disabled>
 
             <label for="detail">Course's Detail:</label>
             <input type="text" id="detail" name="detail" value="${requestScope.course.detail}">

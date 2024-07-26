@@ -214,17 +214,13 @@
 <div class="main-container">
     <div class="sidebar">
         <a href="#" onclick="toggleSubMenu('homeSubMenu')"><i class="fas fa-home"></i> Home</a>
-<%--        <a href="#" onclick="toggleSubMenu('userManagementSubMenu')"><i class="fas fa-users"></i> User Management</a>--%>
-<%--        <div id="userManagementSubMenu" class="submenu" style="display: none;">--%>
-<%--            <a href="<%=request.getContextPath()%>/add-New-Account"><i class="fas fa-user-plus"></i> Add New Account</a>--%>
-<%--            <a href="<%=request.getContextPath()%>/list-account"><i class="fas fa-list"></i> Account List</a>--%>
-<%--        </div>--%>
-<%--        <a href="#" onclick="toggleSubMenu('courseManagementSubMenu')"><i class="fas fa-book"></i> Course Management</a>--%>
-<%--        <div id="courseManagementSubMenu" class="submenu" style="display: none;">--%>
-<%--            <a href="<%=request.getContextPath()%>/addCourse"><i class="fas fa-plus"></i> Add New Course</a>--%>
-<%--            <a href="<%=request.getContextPath()%>/listCourse"><i class="fas fa-list"></i> Course List</a>--%>
-<%--        </div>--%>
-
+        <a href="#" onclick="toggleSubMenu('scheduleSubMenu')"><i class="fas fa-calendar-alt"></i> Education </a>
+        <div id="scheduleSubMenu" class="submenu" style="display: none;">
+            <a href="schedule"><i class="fas fa-calendar"></i> View Schedule</a>
+            <a href="attendancereport"><i class="fas fa-check"></i> View Attendance Report</a>
+            <a href="viewstudentgrade"><i class="fas fa-tasks"></i> View Grade Report</a>
+            <a href="takegrade"><i class="fas fa-graduation-cap"></i> Take Grade</a>
+        </div>
         <a href="#manageExerciseModal" data-toggle="modal"> <i class="fas fa-tasks"></i> Manage Exercise</a>
     </div>
     <div class="content">

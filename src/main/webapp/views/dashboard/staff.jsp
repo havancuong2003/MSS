@@ -246,6 +246,12 @@
             <a href="<%=request.getContextPath()%>/addCourse"><i class="fas fa-plus"></i> Add New Course</a>
             <a href="<%=request.getContextPath()%>/listCourse"><i class="fas fa-list"></i> Course List</a>
         </div>
+        <a href="#" onclick="toggleSubMenu('scheduleSubMenu')"><i class="fas fa-calendar-alt"></i> Education </a>
+        <div id="scheduleSubMenu" class="submenu" style="display: none;">
+            <a href="../manager/schedule"><i class="fas fa-calendar"></i> View Schedule</a>
+            <a href="../manager/viewattendancereport"><i class="fas fa-check"></i> View Attendance Report</a>
+            <a href="../manager/viewgrade"><i class="fas fa-tasks"></i> View Grade Report</a>
+        </div>
         <a href="#managePublicQuestions" data-toggle="modal"> <i class="fas fa-tasks"></i> Manage Public Question</a>
         <a href="#manageBankQuestions" data-toggle="modal"> <i class="fas fa-database"></i> Manage Question Bank</a>
     </div>
