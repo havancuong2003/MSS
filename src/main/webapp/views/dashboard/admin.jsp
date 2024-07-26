@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -296,6 +297,9 @@
         .dropdown-menu a:hover {
             background-color: #f1f1f1;
         }
+        .submenu a i {
+            color: #FFFFFF; /* Màu trắng cho icon trong submenu */
+        }
     </style>
     <script>
         function toggleProfileDropdown() {
@@ -316,6 +320,19 @@
     </script>
 </head>
 <body>
+
+<div>
+    <c:if test="${timeRegister eq 'null'}">
+        <jsp:include page="./modalRegisterGroup.jsp"/>
+    </c:if>
+    <c:if test="${CreateGroup eq 'null'}">
+        <jsp:include page="./modalErrorCreateGroup.jsp"/>
+    </c:if>
+    <c:if test="${ChangeGroup eq 'nulladasdss'}">
+        <jsp:include page="./modalTimeChangeGroup.jsp"/>
+    </c:if>
+
+</div>
 <header class="site-header">
     <div class="site-identity">
         <a href="dashboard"><img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/000/532/351/datas/medium.jpg" alt="Site Name" /></a>

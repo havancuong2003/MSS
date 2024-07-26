@@ -19,32 +19,32 @@
             color: #333;
         }
 
-        header {
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-           
-        }
+        /*header {*/
+        /*    background-color: #1a1a1a;*/
+        /*    color: #fff;*/
+        /*    padding: 20px;*/
+        /*    text-align: center;*/
+        /*    position: fixed;*/
+        /*    top: 0;*/
+        /*    left: 0;*/
+        /*    width: 100%;*/
+        /*    z-index: 1000;*/
+        /*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+        /*   */
+        /*}*/
 
-        footer {
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-        }
+        /*footer {*/
+        /*    background-color: #1a1a1a;*/
+        /*    color: #fff;*/
+        /*    padding: 20px;*/
+        /*    text-align: center;*/
+        /*    position: fixed;*/
+        /*    bottom: 0;*/
+        /*    left: 0;*/
+        /*    width: 100%;*/
+        /*    z-index: 1000;*/
+        /*    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);*/
+        /*}*/
 
         .container {
             margin: 120px auto 80px;
@@ -201,11 +201,7 @@
     </style>
 </head>
 <body>
-<header>
-    <a class="back-button" href="dashboard">Back</a>
-    <h1>Header</h1>
-</header>
-
+<jsp:include page="../../common/header.jsp" />
 <div class="container">
     <div class="current-term">
         <h2>Current term: ${semester.detail}</h2>
@@ -214,11 +210,10 @@
 
     <div class="set-time">
         <h2>
-            Set time for students to register for courses for the next
-            semester: ${nextSemester.detail}
+            Set time for students to swap group for the next semester: ${nextSemester.detail}
         </h2>
         <p>${nextSemester.detail} start from ${nextSemester.start} to ${nextSemester.end}</p>
-
+        <p>Time Register must be within the following time: ${startRange} - ${endRange}</p>
         <form id="myForm">
             <input type="hidden" name="description" value="${requestScope.timePeriods == 'null' ? '' : requestScope.timePeriods.semester.id}">
             <c:choose>
@@ -229,15 +224,6 @@
                 <c:when test="${requestScope.timePeriods != 'null'}">
                     <c:choose>
                         <c:when test="${requestScope.add == true}">
-<%--                            <div class="notice">--%>
-<%--                                <div>--%>
-<%--                                    <h2>Notice</h2>--%>
-<%--                                    <h3><i>Start date</i> must be after <i>end of register time</i> and--%>
-<%--                                        <i>end date</i> must before <i>end date of semester</i></h3>--%>
-<%--                                    <h3>Time register course end at: ${timePeriods.endRegister}</h3>--%>
-<%--                                    <h3>Time Semester end at: ${semester.end}</h3>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
                             <h2 id="error" class="error-message"></h2>
                             <c:choose>
                                 <c:when test="${timePeriods.startChangeClass == null}">
@@ -266,9 +252,7 @@
         </form>
     </div>
 </div>
-<footer>
-    <p>Footer</p>
-</footer>
+<jsp:include page="../../common/footer.jsp" />
 <script>
     $(document).ready(function () {
         $("#myForm").submit(function (event) {
@@ -295,7 +279,7 @@
                 },
                 dataType: "json",
                 success: function (response) {
-                    console.log("response",response)
+                    console.log("response", response);
                     // Handle success response from backend here
                     $("#error")
                         .css("color", "green")

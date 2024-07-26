@@ -53,11 +53,11 @@ public class StudentDBContext extends DBContext<Student> {
     public ArrayList<Course> getAllCourseRegisterForStudent(int termId, int majorId,String username) {
         ArrayList<Course> courses = new ArrayList<>();
         String sql = "SELECT  distinct c.course_id FROM curriculum c left join registercourse r on c.course_id = r.course_id\n" +
-                "left join student s on s.id = r.student_id\n" +
-                "                WHERE c.term_id <= ?\n" +
-                "                AND c.major_id = ?\n" +
-                "\t\t\tAND c.course_id NOT IN (SELECT course_id FROM total)\n" +
-                "            and c.course_id not in ( select r.Course_id from registercourse r join student s on s.id= r.student_id join account a on a.account_id = s.acc_id where a.username =? )";
+                "                left join student s on s.id = r.student_id\n" +
+                "                                WHERE c.term_id <= ?\n" +
+                "                              AND c.major_id = ?\n" +
+                "              AND c.course_id NOT IN (SELECT g.course_id FROM total t join `group` g on g.id = t.group_id)\n" +
+                "                          and c.course_id not in ( select r.Course_id from registercourse r join student s on s.id= r.student_id join account a on a.account_id = s.acc_id where a.username =? )";
 
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -77,9 +77,9 @@ public class StudentDBContext extends DBContext<Student> {
 
     public ArrayList<Course> getCourseRegisterAgain(String username) {
         ArrayList<Course> courses = new ArrayList<>();
-        String sql = "select t.course_id from total t join student s on t.student_id = s.id join account a on a.account_id = s.acc_id where isPass =0 and a.username =?\n" +
-                "\n" +
-                " and t.course_id not in ( select r.Course_id from registercourse r join student s on s.id= r.student_id join account a on a.account_id = s.acc_id where a.username = ? )";
+        String sql = "    select g.course_id from total t join `group` g on g.id = t.group_id join student s on t.student_id = s.id join account a on a.account_id = s.acc_id where isPass =0 and a.username = ?\n" +
+                "          \n" +
+                "                and g.course_id not in ( select r.Course_id from registercourse r join student s on s.id= r.student_id join account a on a.account_id = s.acc_id where a.username =? )";
 
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -98,9 +98,8 @@ public class StudentDBContext extends DBContext<Student> {
 
     public ArrayList<Course> getCourseRegisterImprove(String username) {
         ArrayList<Course> courses = new ArrayList<>();
-        String sql = "select t.course_id from total t join student s on t.student_id = s.id join account a on a.account_id = s.acc_id where isPass =1 and a.username =? \n" +
-                "\n" +
-                " and t.course_id not in ( select r.Course_id from registercourse r join student s on s.id= r.student_id join account a on a.account_id = s.acc_id where a.username =? )";
+        String sql = "    select g.course_id from total t join `group` g on g.id = t.group_id join student s on t.student_id = s.id join account a on a.account_id = s.acc_id where isPass =1 and a.username = ?\n" +
+                "                and g.course_id not in ( select r.Course_id from registercourse r join student s on s.id= r.student_id join account a on a.account_id = s.acc_id where a.username =? )";
 
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
