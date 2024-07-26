@@ -3,7 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Major</title>
+    <title>Major</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
     <style>
         /* Base styles */
         body {
@@ -61,7 +63,7 @@
             width: 80%;
             max-width: 500px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .close {
@@ -82,7 +84,7 @@
             width: 80%;
             margin: 20px auto;
             border-collapse: collapse;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
             border-radius: 10px 10px 0 0;
             overflow: hidden;
         }
@@ -114,7 +116,7 @@
             display: block;
             border: 1px solid #ddd;
             border-radius: 4px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         /* Form styles */
@@ -132,7 +134,7 @@
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         form button {
@@ -163,7 +165,8 @@
                 font-size: 14px;
             }
         }
-        .sp{
+
+        .sp {
             font-family: 'Poppins', sans-serif;
             font-size: 28px;
             font-weight: 600;
@@ -173,6 +176,7 @@
             display: inline-block;
             padding-left: 10px;
         }
+
         header {
             display: flex;
             justify-content: space-between;
@@ -183,63 +187,75 @@
             width: 100%;
             box-sizing: border-box;
         }
+
         header img {
             height: 40px;
             width: 40px;
         }
+
         header span {
             font-size: 24px;
             font-weight: bold;
         }
+
         .profile-container {
             position: relative;
             display: inline-block;
         }
+
         .profile-img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             cursor: pointer;
         }
+
         .profile-dropdown {
             display: none;
             position: absolute;
             right: 0;
             top: 50px;
             background-color: #ffffff;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
             padding: 20px;
             z-index: 1;
             width: 160px;
             border-radius: 8px;
         }
+
         .profile-info {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
+
         .profile-info img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             margin-right: 10px;
         }
+
         .profile-info div {
             display: flex;
             flex-direction: column;
         }
+
         .profile-info span {
             font-size: 16px;
         }
+
         .profile-info span.role {
             font-size: 14px;
             color: #888;
         }
+
         .profile-actions {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
+
         .profile-actions a {
             text-decoration: none;
             color: rgb(105, 122, 141);
@@ -249,8 +265,151 @@
             gap: 10px;
             transition: color 0.3s;
         }
+
         .profile-actions a:hover {
             color: #0056b3;
+        }
+
+        .header {
+            background-color: #fff;
+            box-shadow: none;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .dropdown-menu {
+            min-width: 150px;
+            display: none; /* Ẩn menu dropdown mặc định */
+        }
+
+        .dropdown-menu.show {
+            display: block; /* Hiện menu khi có lớp 'show' */
+        }
+
+        nav {
+            margin-bottom: 50px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+
+
+        footer {
+            width: 100%;
+            margin-top: 100px;
+        }
+
+        h3 {
+            font-size: 25px;
+        }
+
+        .footer-container {
+            position: relative;
+            bottom: 0;
+            background: #E8E8E8;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding: 15px 0;
+        }
+
+        .left-area ul {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px
+        }
+
+        .center-area, .right-area, .left-area {
+            height: 50%;
+            margin-bottom: 10px;
+        }
+
+
+        .center-area a {
+            position: relative;
+            text-decoration: none;
+            color: #333;
+
+        }
+
+        .center-area a::after {
+            content: "";
+
+            width: 100%;
+            height: 2px;
+            left: 0;
+            bottom: -5px;
+            background-color: #495464;
+            border-radius: 40px;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .center-area a:hover::after {
+            transform-origin: center;
+            transform: scaleX(1);
+        }
+
+
+        .center-area a, .right-area li {
+            font-size: 20px;
+            padding: 5px 0;
+        }
+
+        .center-area li, .right-area li {
+            padding: 5px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        .text {
+            width: 100%;
+            height: 50px;
+            background-color: #535C5F;
+            color: #FFFCEB;
+            margin-top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-area i:hover {
+            color: rgb(205, 127, 50);
+            transition: 0.3s;
+        }
+
+        @media screen and (max-width: 576px) {
+            .footer-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            a, li {
+                font-size: 14px;
+            }
+
+            .center-area a, .right-area li {
+                font-size: 18px;
+            }
+
+            ul {
+                margin-bottom: 14px;
+            }
         }
     </style>
     <script>
@@ -269,34 +428,46 @@
             submenu.style.display = (submenu.style.display === "block") ? "none" : "block";
         }
     </script>
-<%--    </style>--%>
+    <%--    </style>--%>
 </head>
 <body>
-<header>
-    <div>
-        <img src="logo.png" alt="">
-        <span class="sp">MyStudySpace</span>
-    </div>
-    <div class="profile-container">
-        <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()">
-        <div id="profileDropdown" class="profile-dropdown">
-            <div class="profile-info">
-                <img src="data:image/jpeg;base64,${photoBase64}" alt="">
-                <div>
-                    <span id="profileFullName">${requestScope.account.fullname}</span>
-                    <span id="profileRole" class="role">${requestScope.roleName}</span>
-                </div>
-            </div>
-            <div class="profile-actions">
-                <a href="<%=request.getContextPath()%>/load-profile"><i class="fas fa-user"></i> My Profile</a>
-                <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+<nav class="navbar navbar-expand-lg header">
+    <button class="btn btn-light" onclick="window.location.href='dashboard';">
+        <i class="fas fa-arrow-left"></i> Home
+    </button>
+
+    <div class="ml-auto">
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true"
+                    aria-expanded="false">
+                Profile
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="setting">Setting</a>
+                <a class="dropdown-item" href="../logout">Logout</a>
             </div>
         </div>
     </div>
-</header>
+</nav>
+<script>
+    document.getElementById('dropdownMenuButton').addEventListener('click', function () {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    });
+
+    // Đóng menu nếu nhấp ra ngoài
+    document.addEventListener('click', function (event) {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu && !menu.contains(event.target) && !document.getElementById('dropdownMenuButton').contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+</script>
 <h2>Major List</h2>
-<input type="text" id="searchInput" name="search" placeholder="Enter name or code of major ..." oninput="getMajorSearch()" style="width:50%;">
+<input type="text" id="searchInput" name="search" placeholder="Enter name or code of major ..."
+       oninput="getMajorSearch()" style="width:50%;">
 <table id="majorTable">
     <thead>
     <tr>
@@ -311,7 +482,7 @@
 </table>
 <!-- Trigger/Open The Modal -->
 <div style="text-align: center">
-<button class="button" id="addMajorBtn" >Add Major</button>
+    <button class="button" id="addMajorBtn">Add Major</button>
 </div>
 
 <!-- The Add Modal -->
@@ -491,6 +662,36 @@
         })
     }
 </script>
+<footer>
+    <section class="footer-container">
+        <div class="left-area">
+            <h3>FOLLOW US</h3>
+            <ul>
+                <li><a href="">
+                    <i class="fa-brands fa-square-instagram fa-2x"></i>
+                </a></li>
+                <li><a href="">
+                    <i class="fa-brands fa-square-facebook fa-2x"></i>
+                </a></li>
+                <li><a href="">
+                    <i class="fa-brands fa-linkedin fa-2x"></i>
+                </a></li>
+                <li><a href="">
+                    <i class="fa-brands fa-x-twitter fa-2x"></i>
+                </a></li>
+            </ul>
+        </div>
 
+        <div class="right-area">
+            <h3>CONTACT</h3>
+            <ul>
+                <li>Address: 123 FPT University Ha Noi</li>
+                <li><a href="#">Mail: mss@fpt.edu.vn</a></li>
+                <li><a href="#">Phone: 0123456789</a></li>
+            </ul>
+        </div>
+    </section>
+
+</footer>
 </body>
 </html>

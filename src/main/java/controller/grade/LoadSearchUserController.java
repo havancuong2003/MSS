@@ -1,10 +1,7 @@
 package controller.grade;
 
 import com.google.gson.Gson;
-import dal.AccountDBContext;
-import dal.GroupDBContext;
-import dal.MarkDBContext;
-import dal.SemesterDBContext;
+import dal.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,6 +22,7 @@ public class LoadSearchUserController extends HttpServlet {
         AccountDBContext adb = new AccountDBContext();
         Account acc = adb.getIdBySearchGradeInput(input);
         Map<String, Object> responseData = new HashMap<>();
+        TotalDBContext tDB = new TotalDBContext();
         if (acc.getRole_id() == 4){
             Student s = adb.getStudentByAccId(acc.getId(), acc.getRole_id());
             responseData.put("role", "student");
@@ -44,6 +42,8 @@ public class LoadSearchUserController extends HttpServlet {
                 int gid = Integer.parseInt(groupid);
                 ArrayList<Mark> marks = mDB.getMarkForStudent(s.getId(), gid, Integer.parseInt(sesid));
                 responseData.put("marks", marks);
+                Total total = tDB.getTotalBySidAndGid(s.getId(), gid);
+                responseData.put("total", total);
             }
         }else {
             Teacher t = adb.getTeacherByAccId(acc.getId(), acc.getRole_id());
@@ -65,6 +65,7 @@ public class LoadSearchUserController extends HttpServlet {
                 int g = Integer.parseInt(gid);
                 ArrayList<Mark> marks = mDB.getMarkForTeacherByTidSemesterGid(t.getTid(), Integer.parseInt(sesid),g);
                 responseData.put("marks", marks);
+
             }
         }
 

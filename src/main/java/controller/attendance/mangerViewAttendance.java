@@ -1,5 +1,6 @@
 package controller.attendance;
 
+import dal.AccountDBContext;
 import dal.AttendanceDBContext;
 import dal.SessionDBContext;
 import jakarta.servlet.ServletException;
@@ -7,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Attendance;
 
 import java.io.IOException;
@@ -16,9 +18,13 @@ import java.util.ArrayList;
 public class mangerViewAttendance extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Account account = (Account) req.getSession().getAttribute("account");
+        AccountDBContext adb = new AccountDBContext();
+        req.setAttribute("role", adb.getRoleByRoleID(account.getRole_id()));
         int sesid = Integer.parseInt(req.getParameter("sesid"));
         AttendanceDBContext attdb = new AttendanceDBContext();
         ArrayList<Attendance> attendances = attdb.getAttendancesForTeacher(sesid);
+
         req.setAttribute("sesid", sesid);
         req.setAttribute("attendances", attendances);
         req.getRequestDispatcher("../views/attendance/managerAttendance.jsp").forward(req, resp);

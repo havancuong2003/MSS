@@ -14,6 +14,8 @@
     <title>Attendance</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+
     <!-- Custom CSS -->
     <style>
 
@@ -177,6 +179,23 @@
         input[type="radio"] {
             margin-left: 10px;
         }
+        .header {
+            background-color: #fff;
+            box-shadow: none;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .dropdown-menu {
+            min-width: 150px;
+            display: none; /* Ẩn menu dropdown mặc định */
+        }
+        .dropdown-menu.show {
+            display: block; /* Hiện menu khi có lớp 'show' */
+        }
+        nav {
+            margin-bottom: 50px;
+        }
     </style>
     <script>
         function toggleProfileDropdown() {
@@ -196,29 +215,39 @@
     </script>
 </head>
 <body>
-<header>
-    <div>
-        <img src="logo.png" alt="">
-        <span class="sp">MyStudySpace</span>
-    </div>
-    <div class="profile-container">
-        <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()">
-        <div id="profileDropdown" class="profile-dropdown">
-            <div class="profile-info">
-                <img src="data:image/jpeg;base64,${photoBase64}" alt="">
-                <div>
-                    <span id="profileFullName">${requestScope.account.fullname}</span>
-                    <span id="profileRole" class="role">${requestScope.roleName}</span>
-                </div>
-            </div>
-            <div class="profile-actions">
-                <a href="<%=request.getContextPath()%>/load-profile"><i class="fas fa-user"></i> My Profile</a>
-                <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+<nav class="navbar navbar-expand-lg header">
+    <button class="btn btn-light" onclick="window.location.href='<%=request.getContextPath()%>/${requestScope.role}/dashboard';">
+        <i class="fas fa-arrow-left"></i> Home
+    </button>
+
+    <div class="ml-auto">
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                Profile
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="setting">Setting</a>
+                <a class="dropdown-item" href="../logout">Logout</a>
             </div>
         </div>
     </div>
-</header>
+</nav>
+<script>
+    document.getElementById('dropdownMenuButton').addEventListener('click', function () {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    });
+
+    // Đóng menu nếu nhấp ra ngoài
+    document.addEventListener('click', function (event) {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu && !menu.contains(event.target) && !document.getElementById('dropdownMenuButton').contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+</script>
 <div class="container">
     <h2>Attendance</h2>
     <form action="<%=request.getContextPath()%>/manager/viewManagerAttendance" method="post">
