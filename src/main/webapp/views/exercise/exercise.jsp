@@ -17,6 +17,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        #mess {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #fff;
+            text-align: center;
+            width: 300px;
+            margin: 20px auto;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
         .form-group {
             display: flex;
             flex-direction: column;
@@ -490,6 +501,7 @@
                         <button type="submit" class="custom-button" style="background-color: #FF6600">Search</button>
                     </form>
                 </div>
+                <div id="mess" style="display: none"></div>
                 <table class="table table-hover table-light table-borderless"
                        style="width: 60%; margin: 0 auto;'">
                     <thead class="thead-dark">
@@ -608,6 +620,28 @@
         src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script>
+    function showMessage(message) {
+        var messageDiv = document.getElementById('mess');
+        if (message) {
+            messageDiv.textContent = message;
+            messageDiv.style.backgroundColor = '#28a745'; // Thêm màu nền khi có thông báo
+            messageDiv.style.display = 'block';
+
+            // Ẩn thông báo sau 3 giây
+            setTimeout(function() {
+                messageDiv.style.display = 'none';
+                messageDiv.style.backgroundColor = ''; // Loại bỏ màu nền khi ẩn thông báo
+            }, 3000);
+        } else {
+            messageDiv.style.display = 'none';
+            messageDiv.style.backgroundColor = ''; // Loại bỏ màu nền nếu không có thông báo
+        }
+    }
+
+    // Gọi hàm showMessage với nội dung thông báo
+    showMessage('${mess}');
+</script>
 <script>
     var exerciseNames = <%= request.getAttribute("exerciseNames") %>;
     function isValidInteger(value) {
@@ -739,6 +773,10 @@
             isValid = false;
         } else if (!isValidInteger(highQuestion) || parseInt(highQuestion) <0) {
             document.getElementById('highQuestionError').innerText = "High application questions must be an positive integer.";
+            isValid = false;
+        }
+        if((parseInt(basicQuestion) + parseInt(lowQuestion) + parseInt(highQuestion)) == 0){
+            document.getElementById('highQuestionError').innerText = "Number questions of exercise must not equal 0";
             isValid = false;
         }
         if (!exerciseTime) {
@@ -1263,7 +1301,6 @@
                     <input type="hidden" name="random" value="1">
                     <input type="hidden" name="group_id" value="${group_id}">
                     <input type="hidden" name="course_id" value="${course_id}">
-
                     <div class="card-header">
                         <h2 class="custom-heading">Random Exercise</h2>
                     </div>

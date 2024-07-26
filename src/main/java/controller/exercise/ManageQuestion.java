@@ -346,31 +346,8 @@ public class ManageQuestion extends HttpServlet {
             int basicQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("1", exercise_id);
             int lowQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("2", exercise_id);
             int highQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("3", exercise_id);
-            if(exercise.getIsRandom() == 1) {
+            if(exercise.getIsRandom() == 1 || exercise.getIsRandom() == 0) {
                 request.setAttribute("isRandom","1");
-//                Cookie[] arrE = request.getCookies();
-//                String txt = "";
-//                if (arrE != null) {
-//                    for (Cookie c : arrE) {
-//                        if (c.getName().equals("exercise")) {
-//                            txt += c.getValue();
-//                            c.setMaxAge(0);
-//                            response.addCookie(c);
-//                        }
-//                    }
-//                }
-//                Cookie c = new Cookie("exercise", txt);
-//                c.setMaxAge(60 * 24 * 60 * 60);
-//                response.addCookie(c);
-//                List<Exercise_Constructor> listE = Constructor(txt);
-//                for (Exercise_Constructor e : listE) {
-//                    if (e.getExercise_id() == Integer.parseInt(exercise_id)) {
-//                        basicQuestion = e.getBasicQuestion();
-//                        lowQuestion = e.getLowQuestion();
-//                        highQuestion = e.getHighQuestion();
-//                        break;
-//                    }
-//                }
                 System.out.println("basic" + basicQuestion + "low" + lowQuestion + "high" + highQuestion);
                 System.out.println("basicE" + basicQuestionOfExercise + "lowE" + lowQuestionOfExercise + "highE" + highQuestionOfExercise);
                 if(Integer.parseInt(type_question_modal) == questionDB.getType_question()){

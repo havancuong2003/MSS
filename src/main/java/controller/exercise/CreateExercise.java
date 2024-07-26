@@ -41,6 +41,7 @@ public class CreateExercise extends HttpServlet {
         String exercise_id = request.getParameter("exercise_id");
         String delete = request.getParameter("delete");
         if(delete != null && delete.equals("1") && exercise_id != null && !exercise_id.trim().isEmpty()) {
+            request.setAttribute("mess","Delete successfully ");
             edao.editExerciseStatusForDelete(exercise_id);
         }
         Exercise ex = edao.getExerciseById(exercise_id);
@@ -259,6 +260,7 @@ public class CreateExercise extends HttpServlet {
                 List<BankQuestion> listHighBankQuestion = bankDAO.getListBankQuestionByTypeQuesion("3");
                 if(random_exerciseName != null && random_exerciseTime != null && random_exerciseType != null) {
                     System.out.println("join 2");
+                    request.setAttribute("mess","Add exercise successfully!");
                     if(random_exerciseType.equals("2")){
                         System.out.println("create success");
                         dao.insertExerciseNotGetMark(exercise_id, random_exerciseName.trim(), teacher_id, course_id, random_basicQuestion,random_lowQuestion,random_highQuestion, random_exerciseTime, random_exerciseType, group_id,"1");
@@ -273,21 +275,6 @@ public class CreateExercise extends HttpServlet {
                     addRandomQuestions(listBasicBankQuestion,numBasicQuestion,exercise_id,course_id);
                     addRandomQuestions(listLowBankQuestion,numLowQuestion,exercise_id,course_id);
                     addRandomQuestions(listHighBankQuestion,numHighQuestion,exercise_id,course_id);
-//                    String indexPage = request.getParameter("page");
-//                    int count =0;
-//                    int endPage =0;
-//                    if (indexPage == null){
-//                        indexPage = "1";
-//                    }
-//                    int index = Integer.parseInt(indexPage);
-//                    QuestionDBContext qdao = new QuestionDBContext();
-//                    count = qdao.getTotalQuestion(exercise_id);
-//                    endPage = count/10;
-//                    listQuestion = qdao.pagingQuestionByExercise_id(index, exercise_id);
-//                    List<Question> listQuestionOfExerciseId = qdao.getListQuestionByExerciseId(exercise_id);
-//                    if(count % 10 != 0){
-//                        endPage++;
-//                    }
                     HttpSession session = request.getSession();
                     session.setAttribute("exercise_id", exercise_id);
                     request.setAttribute("group_id",group_id);
@@ -306,7 +293,7 @@ public class CreateExercise extends HttpServlet {
                 }
             } else {
                 String exercise_name = request.getParameter("excercise_name");
-                String question_number = "5";
+//                String question_number = "5";
                 String exercise_time = request.getParameter("exercise_time");
                 String exercise_type = request.getParameter("exercise_type");
                 String grade_category = request.getParameter("grade_category");
@@ -314,6 +301,7 @@ public class CreateExercise extends HttpServlet {
                 String lowQuestion = request.getParameter("lowQuestion");
                 String highQuestion = request.getParameter("highQuestion");
                 if(exercise_name != null && teacher_id != null && exercise_time != null && basiQuestion != null && lowQuestion != null && highQuestion != null && exercise_type != null && grade_category != null){
+                    request.setAttribute("mess","Add exercise successfully!");
                     if(!exercise_type.equals("2")){
                         dao.insertExerciseGetMark(exercise_id, exercise_name.trim(), teacher_id,course_id,basiQuestion.trim(),lowQuestion.trim(),highQuestion.trim(),exercise_time.trim(),exercise_type,group_id,grade_category,"0");
                     } else {
@@ -326,7 +314,7 @@ public class CreateExercise extends HttpServlet {
                         request.setAttribute("course_id",course_id);
                         session.setAttribute("exercise_id", exercise_id);
                         request.setAttribute("listQuestionSize",0);
-                        request.setAttribute("numQuestion",Integer.parseInt(question_number));
+//                        request.setAttribute("numQuestion",Integer.parseInt(question_number));
                         request.setAttribute("type_question","0");
                         request.setAttribute("firstLoad",true);
                         request.setAttribute("exercise_id", exercise_id);
