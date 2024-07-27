@@ -68,7 +68,7 @@
 
 <script>
     function goToHome() {
-        window.location.href = "home";
+        window.location.href = "dashboard";
     }
 </script>
 </body>

@@ -346,6 +346,40 @@ public class GroupDBContext extends DBContext<Group> {
         return list;
     }
 
+    public ArrayList<Group> getGroupForStudentById(int semesterID, int accId) {
+        ArrayList<Group> list = new ArrayList<>();
+        String sql = "SELECT g.*, c.id, c.detail, se.detail FROM enrollment e \n" +
+                "join `group` g on g.id=e.group_id \n" +
+                "join course c on c.id = g.course_id\n" +
+                "join student s on s.id=e.student_id \n" +
+                "join semester se on se.id = g.semester_id\n" +
+                "join account a on a.account_id=s.acc_id \n" +
+                "where g.semester_id= ? and a.account_id = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, semesterID);
+            stm.setInt(2, accId);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Group g = new Group();
+                Course c = new Course();
+                Semester se = new Semester();
+                g.setId(rs.getInt(1));
+                g.setName(rs.getString(2));
+                c.setId(rs.getInt(7));
+                c.setDetail(rs.getString(8));
+                g.setCourse(c);
+                se.setDetail(rs.getString(9));
+                se.setId(rs.getInt(3));
+                g.setSemester(se);
+                list.add(g);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
 //    public Group getGroupByID(int groupID) {
 //        Group g = null;
 //        String sql = "select * from `group` where id = ?";

@@ -57,6 +57,31 @@ public class TestDBContext extends DBContext<Account> {
         return answers;
     }
 
+    public ArrayList<History> getAllHistoryByStIdAndCourseId(int accId, int courseId)  {
+        ArrayList<History> list = new ArrayList<>();
+        try {
+            String sql = "select h.* from history h\n" +
+                    "join student s on s.id = h.student_id\n" +
+                    "join account a on a.account_id = s.acc_id\n" +
+                    "where a.account_id = ? and h.exercise_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, accId);
+            stm.setInt(2, courseId);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                History his = new History();
+                his.setId(rs.getInt(1));
+                his.setScore(rs.getInt(2));
+                his.setDate_submit(rs.getDate(3));
+                list.add(his);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(TestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
     public ArrayList<Question> getAllQuestionByExerciseIdAndCourseId(int exerciseId, int courseId)  {
         ArrayList<Question> questions = new ArrayList<>();
         try {
@@ -99,6 +124,14 @@ public class TestDBContext extends DBContext<Account> {
         }
 
         return questionDetailList;
+    }
+
+    public static void main(String[] args) {
+        TestDBContext testDBContext = new TestDBContext();
+        ArrayList<Question> questions = testDBContext.getAllQuestionByExerciseIdAndCourseId(123458  , 3);
+        for (Question question : questions) {
+            System.out.println(question.getQuestion_id());
+        }
     }
 
     // phaan xuwr insert lis lichj suwr

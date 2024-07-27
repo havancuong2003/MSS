@@ -26,6 +26,7 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 exercise.setExerciseName(rs.getString("exercise_name"));
 //                exercise.setQuestion_number(rs.getInt("question_number"));
                 exercise.setExercise_time(rs.getFloat("exercise_time"));
+                exercise.setStatus(rs.getInt(3));
                 exercise.setGet_score(rs.getInt("get_score"));
                 exercise.setGroup_id((rs.getInt("group_id")));
                 exercise.setGrade_category(rs.getInt("grade_category"));
