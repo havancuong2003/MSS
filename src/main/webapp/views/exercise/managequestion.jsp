@@ -23,6 +23,8 @@
             background: #f5f5f5;
             font-family: 'Varela Round', sans-serif;
             font-size: 13px;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .table-wrapper {
@@ -210,10 +212,10 @@
             padding-top: 10px;
         }
 
-        .modal-footer {
-            display: flex;
-            justify-content: center;
-        }
+        /*.modal-footer {*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*}*/
 
         .form-group input {
             margin-bottom: 15px;
@@ -493,7 +495,9 @@
     </style>
 </head>
 <body>
-<div class="container" style="margin-top: 70px">
+<jsp:include page="/views/common/header.jsp"></jsp:include>
+<div style="margin-top: 70px">
+    <div class="container">
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-question" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
@@ -529,7 +533,7 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h2>Manage <b>Question</b></h2>
+                        <h2 style="color: whitesmoke">Manage <b style="color: whitesmoke">Question</b></h2>
                     </div>
                     <div class="col-sm-6">
                         <c:if test="${exercise_status == 0}">
@@ -540,7 +544,7 @@
                                     <input type="hidden" name="course_id" value="${course_id}">
                                     <input type="hidden" name="status" value="prevent">
                                     <button type="submit" class="btn btn-success"  onclick="confirmSubmission(event)">
-                                        <i class="material-icons">assignment</i> <span>Present</span>
+                                        <i class="material-icons" style="color: whitesmoke">assignment</i> <span style="color: whitesmoke">Present</span>
                                     </button>
                                 </form>
                             </c:if>
@@ -551,7 +555,7 @@
                                     <input type="hidden" name="course_id" value="${course_id}">
                                     <input type="hidden" name="status" value="prevent">
                                     <button type="submit" class="btn btn-success" onclick="checkQuestions(event)">
-                                        <i class="material-icons">assignment</i> <span>Present</span>
+                                        <i class="material-icons" style="color: whitesmoke">assignment</i> <span style="color: whitesmoke">Present</span>
                                     </button>
                                 </form>
                             </c:if>
@@ -571,23 +575,23 @@
 
                         <c:if test="${isRandom != 1}">
                             <c:if test="${listQuestionSize < numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Get Questions From Bank</span></a>
+                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal" style="color: whitesmoke"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Add New Question</span></a>
                             </c:if>
                             <c:if test="${listQuestionSize >= numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Get Questions From Bank</span></a>
+                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal" style="color: whitesmoke"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Add New Question</span></a>
                             </c:if>
                         </c:if>
 
                         <c:if test="${isRandom == 1}">
                             <c:if test="${listQuestionSize < numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Get Questions From Bank</span></a>
+                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal" style="color: whitesmoke"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Add New Question</span></a>
                             </c:if>
                             <c:if test="${listQuestionSize >= numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Get Questions From Bank</span></a>
+                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal" style="color: whitesmoke"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Add New Question</span></a>
                             </c:if>
                         </c:if>
                     </div>
@@ -623,12 +627,12 @@
                         </c:if>
                         <td>
                             <c:if test="${statusExercise == 1}">
-                                <a href="#updateModal"  onclick="return handleEditClick(${o.status});"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return handleDeleteClick(${o.status});" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                                <a href="#updateModal"  onclick="return handleEditClick(${o.status});"><i class="material-icons" data-toggle="tooltip" title="Edit" style="color: yellow">&#xE254;</i></a>
+                                <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return handleDeleteClick(${o.status});" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons" style="color: red">&#xE872;</i></a>
                             </c:if>
                             <c:if test="${statusExercise == 0}">
-                                <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return confirm('Are you sure you want to delete this question?');" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                                <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit" style="color: yellow">&#xE254;</i></a>
+                                <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return confirm('Are you sure you want to delete this question?');" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons" style="color: red">&#xE872;</i></a>
                             </c:if>
                         </td>
                         <c:if test="${o.status == 0}">
@@ -656,7 +660,7 @@
                 </div>
                 <div>
                     <a class="back-link" href="create-exercise?group_id=${group_id}&course_id=${course_id}" style="color: #FF6600;font-size: 15px">
-                        <i class="fas fa-arrow-left"></i> Back to manage exercise
+                        <i class="fas fa-arrow-left" style="color: #FF6600"></i> Back to manage exercise
                     </a>
                 </div>
             </div>
@@ -706,8 +710,7 @@
             </div>
         </div>
     </form>
-
-
+    </div>
 </div>
 <div id="addQuestionModal" class="modal fade">
     <div class="modal-dialog custom-dialog">
@@ -797,6 +800,7 @@
                 <div class="modal-body">
                     <div  class="form-container">
                         <div class="form-group">
+                            <label style="display: block; text-align: left">Choose type question:</label>
                             <select name="update_type_question_modal"  id="update_type_question_modal" class="form-control">
                                 <option value="0" class="form-control">Choose type question</option>
                                 <option value="1" ${type_question_modal == "1" ? "selected" : ""} class="form-control">Basic Question</option>
@@ -807,6 +811,7 @@
                         <div id="update_type-question-error" class="error-message"></div>
 
                         <div class="form-group">
+                            <label style="display: block; text-align: left">Question:</label>
                             <input name="question" type="text" id="update_question" class="form-control" value="${question}" placeholder="Question..." >
                         </div>
                         <div class="form-group">
@@ -814,6 +819,7 @@
                         </div>
                         <div id="update_question-error" class="error-message"></div>
                         <div class="form-group">
+                            <label style="display: block; text-align: left">Options:</label>
                             <input name="option1" id="option1" type="text" class="form-control" placeholder="Option A..." >
                         </div>
                         <div class="form-group">
@@ -827,6 +833,7 @@
                             <button type="button" id="update-remove-option" class="btn btn-danger col-md-6">Remove option</button>
                         </div>
                         <div class="form-group">
+                            <label style="display: block; text-align: left">Answer:</label>
                             <input name="correct_answer1" id="correct_answer1" type="text" class="form-control" placeholder="Answer...">
                         </div>
                         <div id="update-multiple-choice-options" style="width: 100%; display: flex; justify-content: center; flex-wrap: wrap">
@@ -1412,5 +1419,7 @@
         });
     })
 </script>
+
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

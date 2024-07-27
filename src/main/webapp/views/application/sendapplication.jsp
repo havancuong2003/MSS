@@ -9,15 +9,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Send application</title>
+    <title>Send request</title>
     <style>
-
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f8ff; /* Light blue background */
             margin: 0;
             padding: 0;
-            display: flex;
+            /*display: flex;*/
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -31,6 +30,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 80%;
             max-width: 600px;
+            margin-left: 30vw;
         }
 
         h2 {
@@ -117,50 +117,57 @@
 
 
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
 </head>
 <body>
-<div class="form-container">
-    <h2>Application Form</h2>
-    <div class="note">
-        <p><strong>Send an application to Academic Administration dept (Gửi đơn cho Phòng quản lý đào tạo)</strong></p>
-        <p><strong>Lưu ý: V/v gửi đơn/email đến các phòng ban</strong></p>
-        <p>Bộ phận xử lý đơn sẽ trả lời đơn/email của sinh viên</p>
-        <p>Sinh viên cần cân nhắc trước khi gửi đơn/email với cùng một nội dung để nhận được trả lời/giải quyết nhanh nhất theo quy định.</p>
-    </div>
-    <form action="send-application" method="post">
-        <table>
-            <tr>
-                <td><label for="application">Application type:</label></td>
-                <td>
-                    <select name="applicationCategory" id="application">
-                        <option value="0">Choose Application Type (Chọn loại đơn)</option>
-                        <c:forEach var="o" items="${listApplicationCategory}">
-                            <option value="${o.category_id}" ${category_id == o.category_id ? 'selected' : ''}>${o.description}</option>
-                        </c:forEach>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="reason">Reason (Lý do):</label></td>
-                <td><textarea style="resize: none" name="reason" id="reason" rows="4" cols="50" required> ${reason}</textarea></td>
-            </tr>
-            <td colspan="2">
-                <p class="mess_wrong">${mess_wrong}</p>
-                <p class="mess_success">${mess_success}</p>
-            </td>
-            <tr>
-                <td colspan="2" style="text-align: center;">
-                    <input type="submit" value="Submit">
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align: right;">
-                    <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Back to home</a>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
+    <jsp:include page="/views/common/header.jsp"></jsp:include>
 
+<div class="form-container">
+    <div>
+        <h2>Request Form</h2>
+        <div class="note">
+            <p><strong>Send an application to Academic Administration dept (Gửi đơn cho Phòng quản lý đào tạo)</strong></p>
+            <p><strong>Lưu ý: V/v gửi đơn/email đến các phòng ban</strong></p>
+            <p>Bộ phận xử lý đơn sẽ trả lời đơn/email của sinh viên</p>
+            <p>Sinh viên cần cân nhắc trước khi gửi đơn/email với cùng một nội dung để nhận được trả lời/giải quyết nhanh nhất theo quy định.</p>
+        </div>
+        <form action="send-application" method="post">
+            <table>
+                <tr>
+                    <td><label for="application">Request type:</label></td>
+                    <td>
+                        <select name="applicationCategory" id="application">
+                            <option value="0">Choose Request Type (Chọn loại đơn)</option>
+                            <c:forEach var="o" items="${listApplicationCategory}">
+                                <option value="${o.category_id}" ${category_id == o.category_id ? 'selected' : ''}>${o.description}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="reason">Reason (Lý do):</label></td>
+                    <td><textarea style="resize: none" name="reason" id="reason" rows="4" cols="50" required> ${reason}</textarea></td>
+                </tr>
+                <td colspan="2">
+                    <p class="mess_wrong">${mess_wrong}</p>
+                    <p class="mess_success">${mess_success}</p>
+                </td>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </td>
+                </tr>
+                <tr>
+<%--                    <td colspan="2" style="text-align: right;">--%>
+<%--                        <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Back to home</a>--%>
+<%--                    </td>--%>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</div>
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

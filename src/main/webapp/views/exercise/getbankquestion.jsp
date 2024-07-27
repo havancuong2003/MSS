@@ -415,32 +415,32 @@
         }
 
         /* Styles for the pagination */
-        .pagination {
-            justify-content: center;
-        }
+        /*.pagination {*/
+        /*    justify-content: center;*/
+        /*}*/
 
-        .pagination li {
-            display: inline;
-            margin: 0 2px;
-        }
+        /*.pagination li {*/
+        /*    display: inline;*/
+        /*    margin: 0 2px;*/
+        /*}*/
 
-        .pagination li a {
-            padding: 6px 12px;
-            border: 1px solid #ddd;
-            color: #007bff;
-            text-decoration: none;
-            cursor: pointer;
-        }
+        /*.pagination li a {*/
+        /*    padding: 6px 12px;*/
+        /*    border: 1px solid #ddd;*/
+        /*    color: #007bff;*/
+        /*    text-decoration: none;*/
+        /*    cursor: pointer;*/
+        /*}*/
 
-        .pagination li a:hover, .pagination li a:focus {
-            background-color: #f1f1f1;
-        }
+        /*.pagination li a:hover, .pagination li a:focus {*/
+        /*    background-color: #f1f1f1;*/
+        /*}*/
 
-        .pagination li.active a {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
+        /*.pagination li.active a {*/
+        /*    background-color: #007bff;*/
+        /*    color: white;*/
+        /*    border-color: #007bff;*/
+        /*}*/
 
         /* Added styles for centered modal footer */
         .modal-footer {
@@ -523,6 +523,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/views/common/header.jsp"></jsp:include>
 <div class="container" style="margin-top: 70px">
     <div class="custom-form-wrapper">
         <input type="hidden" id="basicQuestionOfExercise" value="${basicQuestionOfExercise}">
@@ -562,7 +563,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Question<b> Bank</b></h2>
+                    <h2 style="color: whitesmoke">Questions<b style="color: whitesmoke"> Bank</b></h2>
                 </div>
             </div>
         </div>
@@ -616,9 +617,9 @@
         </table>
         <div class="pagination-container">
             <c:if test="${isRandom != 1}">
-                <ul class="pagination">
+                <ul class="pagination" style="color: #FF6600">
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
+                        <li class="page-item" style="color: #FF6600"><a style="color: #FF6600" href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
@@ -638,9 +639,9 @@
             </c:if>
 
             <c:if test="${isRandom == 1}">
-                <ul class="pagination">
+                <ul class="pagination" style="color: #FF6600">
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
+                        <li class="page-item" style="color: #FF6600"><a style="color: #FF6600" href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
@@ -660,7 +661,7 @@
             </c:if>
         </div>
         <div class="button-wrapper">
-            <a class="back-link" style="color: #FF6600;font-size: 15px;float: left" href="manage-question?exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" id="backToCreateQuestion"> <i class="fas fa-arrow-left"></i> Back to manage question</a>
+            <a class="back-link" style="color: #FF6600;font-size: 15px;float: left" href="manage-question?exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" id="backToCreateQuestion"> <i class="fas fa-arrow-left" style="color: #FF6600"></i> Back to manage question</a>
             <button type="submit" id="selectQuestionsBtn" >Select question for exercise</button>
         </div>
     </div>
@@ -893,6 +894,7 @@
 
             // Get the application_id from the hidden input field
             var questionId = $(this).data('question-id');
+            var exerciseId = $("input[name='exercise_id']").val(); // Lấy giá trị của exercise_id từ input hidden
 
             // Send AJAX request to the servlet to get the response data
             $.ajax({
@@ -901,7 +903,8 @@
                 data: {
                     question_id: questionId,
                     status : 'view',
-                    numQuestion : numQuestion
+                    numQuestion : numQuestion,
+                    exercise_id : exerciseId
                 },
                 dataType: "json",
                 success: function(data) {
@@ -942,5 +945,6 @@
         });
     });
 </script>
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

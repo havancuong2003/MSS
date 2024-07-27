@@ -442,6 +442,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/views/common/header.jsp"></jsp:include>
 <div class="container" style="margin-top: 70px">
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-bank-question" method="get">
@@ -466,7 +467,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Manage <b>Question Bank</b></h2>
+                    <h2 style="color: whitesmoke">Manage <b style="color: whitesmoke">Question Bank</b></h2>
                 </div>
             </div>
         </div>
@@ -504,11 +505,11 @@
             </c:forEach>
         </table>
         <p style="text-align: center; font-style: italic;font-size: 18px;margin: 20px 0">${mess_list_question}</p>
-        <div style="margin-top: 10px">
-            <a class="back-link" href="${pageContext.request.contextPath}/${role}/dashboard" style="color: #FF6600;font-size: 15px">
-                <i class="fas fa-arrow-left"></i> Back to dashboard
-            </a>
-        </div>
+<%--        <div style="margin-top: 10px">--%>
+<%--            <a class="back-link" href="${pageContext.request.contextPath}/${role}/dashboard" style="color: #FF6600;font-size: 15px">--%>
+<%--                <i class="fas fa-arrow-left"></i> Back to dashboard--%>
+<%--            </a>--%>
+<%--        </div>--%>
         <div class="pagination-container">
             <ul class="pagination">
                 <c:if test="${searchtxt != null}" >
@@ -644,5 +645,6 @@
     //     });
     // });
 </script>
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

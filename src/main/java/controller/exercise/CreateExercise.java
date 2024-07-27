@@ -46,8 +46,16 @@ public class CreateExercise extends HttpServlet {
         }
         Exercise ex = edao.getExerciseById(exercise_id);
         String group_id = request.getParameter("group_id");
+        if(group_id == null){
+            group_id = session.getAttribute("group_id").toString();
+        }
 //        group_id = "1";
         String course_id = request.getParameter("course_id");
+        if(course_id == null){
+            course_id = session.getAttribute("course_id").toString();
+        }
+        session.setAttribute("group_id", group_id);
+        session.setAttribute("course_id", course_id);
         System.out.println("course_id: " + course_id);
         if(type_exercise == null || type_exercise.equals("")) {
             type_exercise = "0";

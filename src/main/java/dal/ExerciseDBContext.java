@@ -330,7 +330,6 @@ public class ExerciseDBContext extends DBContext<Exercise>{
                 exercise.setExerciseId(rs.getInt("exercise_id"));
                 exercise.setExerciseName(rs.getString("exercise_name"));
                 exercise.setStatus(rs.getInt(3));
-//                exercise.setQuestion_number(rs.getInt("question_number"));
                 exercise.setBasic_question(rs.getInt("basic_question"));
                 exercise.setLow_question(rs.getInt("low_question"));
                 exercise.setHigh_question(rs.getInt("high_question"));

@@ -40,7 +40,7 @@ public class SendApplication extends HttpServlet {
         Student student = dao.getStudentByAccountID(String.valueOf(account_id));
         if(applicationCategory_id.equals("0")){
             request.setAttribute("reason",reasontxt);
-            request.setAttribute("mess_wrong","You must choose application type");
+            request.setAttribute("mess_wrong","You must choose request type");
             doGet(request,response);
         } else {
             if(reasontxt == null || checkApplicationCharacter(reasontxt)){
@@ -50,7 +50,7 @@ public class SendApplication extends HttpServlet {
                 doGet(request,response);
             } else {
                 dao.insertApplication(reasontxt, student.getId(), applicationCategory_id);
-                request.setAttribute("mess_success","Send application successfully");
+                request.setAttribute("mess_success","Send request successfully");
                 doGet(request,response);
             }
         }

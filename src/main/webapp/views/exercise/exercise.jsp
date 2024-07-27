@@ -2,11 +2,11 @@
 
 <%--<jsp:include page="header.jsp" />--%>
 <%--<jsp:include page="auth.jsp" />--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
 <html>
 <head>
     <title>Exercise</title>
@@ -327,7 +327,7 @@
             border-radius: 8px;
         }
 
-        .card-header {
+        .card-header2 {
             background-color: #FF6600;
             color: #fff;
             border-bottom: 2px solid #dee2e6;
@@ -335,7 +335,7 @@
             text-align: center;
         }
 
-        .card-header .custom-heading {
+        .card-header2 .custom-heading {
             margin: 0;
             font-size: 1.5rem;
         }
@@ -399,7 +399,7 @@
                 margin: 1rem;
             }
 
-            .card-header, .card-body, .form-group, .btn {
+            .card-header2, .card-body, .form-group, .btn {
                 padding: 15px;
             }
 
@@ -441,6 +441,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/views/common/header.jsp" />
 <div class="back">
 <%--    <img src="https://mega.com.vn/media/news/2707_background-pp-hoc-tap-lam-slide3.jpg" class="bgimg" type="jpg/jpeg">--%>
 </div>
@@ -456,18 +457,18 @@
         </div>
     </div>
     <div class="row" style="margin-top: 15vh">
-        <div>
-            <a class="back-link" href="${pageContext.request.contextPath}/${role}/dashboard" style="color: #FF6600;font-size: 15px">
-                <i class="fas fa-arrow-left"></i> Back to dashboard
-            </a>
-        </div>
+<%--        <div>--%>
+<%--            <a class="back-link" href="${pageContext.request.contextPath}/${role}/dashboard" style="color: #FF6600;font-size: 15px">--%>
+<%--                <i class="fas fa-arrow-left"></i> Back to dashboard--%>
+<%--            </a>--%>
+<%--        </div>--%>
         <div class="col animated slideInLeft">
             <a class="btn btn-primary tbtn" style="background-color: #FF6600" href="#createQuizModal" data-toggle="modal">
-                <h1 class="q" style="text-align: center"><i class="fa fa-plus" aria-hidden="true"></i> Create Exercise</h1></a>
+                <h1 class="q" style="text-align: center; color: whitesmoke">Create Exercise</h1></a>
         </div>
         <div class="col animated slideInLeft">
             <a class="btn btn-primary tbtn" style="background-color: #FF6600" href="#randomQuizModal" data-toggle="modal">
-                <h1 class="q"><i class="fa fa-plus" aria-hidden="true"></i> Random Exercise</h1></a>
+                <h1 class="q" style="color: whitesmoke"> Random Exercise</h1></a>
         </div>
 <%--        <div class="col animated slideInRight">--%>
 <%--            <a class="btn btn-danger tbtn" href="#participateModal"--%>
@@ -1135,7 +1136,7 @@
         return true; // Cho phép mở modal
     }
 </script>
-
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 
 <!-- Create Modal HTML -->
@@ -1145,8 +1146,8 @@
         <div class="modal-content">
             <div class="card">
                 <form method="post" action="create-exercise" onsubmit="return validateForm()">
-                    <div class="card-header">
-                        <h2 class="custom-heading">Exercise</h2>
+                    <div class="card-header2">
+                        <h2 class="custom-heading" style="color: whitesmoke">Exercise</h2>
                     </div>
                     <input type="hidden" name="group_id" value="${group_id}">
                     <input type="hidden" name="course_id" value="${course_id}">
@@ -1222,8 +1223,8 @@
         <div class="modal-content">
             <div class="card">
                 <form method="post" action="create-exercise" onsubmit="return validateUpdateForm()">
-                    <div class="card-header">
-                        <h2 class="custom-heading">Update Exercise</h2>
+                    <div class="card-header2">
+                        <h2 class="custom-heading" style="color: whitesmoke">Update Exercise</h2>
                     </div>
                     <input type="hidden" name="status" value="update">
                     <input type="hidden" name="group_id" value="${group_id}">
@@ -1301,8 +1302,8 @@
                     <input type="hidden" name="random" value="1">
                     <input type="hidden" name="group_id" value="${group_id}">
                     <input type="hidden" name="course_id" value="${course_id}">
-                    <div class="card-header">
-                        <h2 class="custom-heading">Random Exercise</h2>
+                    <div class="card-header2">
+                        <h2 class="custom-heading" style="color: whitesmoke">Random Exercise</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -1368,8 +1369,8 @@
             <div class="card">
                 <form method="post" action="create-exercise" onsubmit="return validateUpdateRandomForm()">
                     <input type="hidden" name="random" value="1">
-                    <div class="card-header">
-                        <h2 class="custom-heading">Update Random Quiz</h2>
+                    <div class="card-header2">
+                        <h2 class="custom-heading" style="color: whitesmoke">Update Random Quiz</h2>
                     </div>
                     <input type="hidden" name="status" value="update">
                     <input type="hidden" name="group_id" value="${group_id}">

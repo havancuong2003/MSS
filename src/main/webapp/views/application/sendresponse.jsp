@@ -17,7 +17,7 @@
             background-color: #f0f8ff; /* Light blue background */
             margin: 0;
             padding: 0;
-            display: flex;
+            /*display: flex;*/
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -31,6 +31,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 80%;
             max-width: 600px;
+            margin-left: 30vw;
         }
 
         h2 {
@@ -119,6 +120,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/views/common/header.jsp"></jsp:include>
 <div class="form-container">
     <c:if test="${status == 2}">
         <h2>Response Form</h2>
@@ -186,5 +188,6 @@
         submitButton.value = 'Processing...';
     }
 </script>
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

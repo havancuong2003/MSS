@@ -8,6 +8,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <style>
+    .header {
+        background-color: #fff;
+        box-shadow: none;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    .dropdown-menu {
+        min-width: 150px;
+        display: none; /* Ẩn menu dropdown mặc định */
+    }
+    .dropdown-menu.show {
+        display: block; /* Hiện menu khi có lớp 'show' */
+    }
+    nav {
+        margin-bottom: 50px;
+    }
     input[type="file"] {
         width: 50%; /* Độ rộng của input type "file" */
         margin-bottom: 10px; /* Khoảng cách dưới của input */
@@ -139,6 +156,23 @@
 
 </style>
 <body>
+<nav class="navbar navbar-expand-lg header">
+    <button class="btn btn-light">
+        <a href="${pageContext.request.contextPath}/${role}/dashboard"> <i class="fas fa-arrow-left"></i> Home</a>
+    </button>
+
+    <div class="ml-auto">
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                Profile
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="setting">Setting</a>
+                <a class="dropdown-item" href="../logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <div class="main-body">
         <div class="row gutters-sm justify-content-center">
@@ -151,7 +185,7 @@
                             <div class="file-submit-container">
                                 <input type="hidden" name="account_id" value="${account.id}">
                                 <input type="file" id="fileInput" name="photo" accept=".png, .jpg, .jpeg"/>
-                                <input type="submit" value="Save" class="btn btn-primary btn-save">
+                                <input type="submit" value="Save" style="background-color: #FF6600" class="btn btn-primary btn-save">
                             </div>
                         </form>
                         <div class="mt-3">
@@ -238,8 +272,8 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12 d-flex justify-content-between">
-                                <a class="profile-back-btn" href="${pageContext.request.contextPath}/${role}/dashboard">Back to home</a>
-                                <button type="submit" class="btn btn-primary profile-save-btn">Save Changes</button>
+<%--                                <a class="profile-back-btn" href="${pageContext.request.contextPath}/${role}/dashboard">Back to home</a>--%>
+                                <button type="submit" style="background-color: #FF6600" class="btn btn-primary profile-save-btn">Save Changes</button>
                             </div>
                         </div>
                         </form>
@@ -397,5 +431,6 @@
     });
 
 </script>
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>
