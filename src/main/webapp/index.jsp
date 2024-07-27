@@ -207,10 +207,10 @@
                             style="width: 100%; max-width: 900px"
                     >
                         <h5 class="text-white text-uppercase mb-md-3">
-                            Best Online Leanring
+                            Best Leanring Platform
                         </h5>
                         <h1 class="display-3 text-white mb-md-4">
-                            Best Education From Your Home
+                            Best Education Platform
                         </h1>
                         <a
                                 href=""
@@ -234,10 +234,10 @@
                             style="width: 100%; max-width: 900px"
                     >
                         <h5 class="text-white text-uppercase mb-md-3">
-                            Best Online Courses
+                            Best Leanring Platform
                         </h5>
                         <h1 class="display-3 text-white mb-md-4">
-                            Best Online Learning Platform
+                            Best Education Platform
                         </h1>
                         <a
                                 href=""
@@ -261,10 +261,10 @@
                             style="width: 100%; max-width: 900px"
                     >
                         <h5 class="text-white text-uppercase mb-md-3">
-                            Best Online Courses
+                            Best Leanring Platform
                         </h5>
                         <h1 class="display-3 text-white mb-md-4">
-                            New Way To Learn From Home
+                            Best Education Platform
                         </h1>
                         <a
                                 href=""
@@ -300,19 +300,10 @@
                     </h5>
                     <h1>Innovative Way To Learn</h1>
                 </div>
-                <p>
-                    Aliquyam accusam clita nonumy ipsum sit sea clita
-                    ipsum clita, ipsum dolores amet voluptua duo dolores
-                    et sit ipsum rebum, sadipscing et erat eirmod diam
-                    kasd labore clita est. Diam sanctus gubergren sit
-                    rebum clita amet, sea est sea vero sed et.
-                    Sadipscing labore tempor at sit dolor clita
-                    consetetur diam. Diam ut diam tempor no et, lorem
-                    dolore invidunt no nonumy stet ea labore, dolor
-                    justo et sit gubergren diam sed sed no ipsum. Sit
-                    tempor ut nonumy elitr dolores justo aliquyam ipsum
-                    stet
-                </p>
+                <p>At our institution, we believe in fostering a learning environment that nurtures curiosity and encourages growth. Our innovative approach to education combines traditional teaching methods with modern technology to create a dynamic and interactive learning experience. We are committed to providing our students with the skills and knowledge they need to succeed in an ever-changing world.</p>
+                <p>Our programs are designed to be flexible and adaptive, ensuring that each student can learn at their own pace and in their own style. We offer a wide range of courses and resources that cater to different learning preferences and career goals. Whether you are looking to advance in your current career or explore new fields of interest, our comprehensive curriculum has something for everyone.</p>
+                <p>We are proud of our diverse and inclusive community where students from all backgrounds can come together to learn and grow. Our dedicated faculty and staff are here to support you every step of the way, providing guidance, mentorship, and encouragement. Join us and discover a new way of learning that is both effective and enjoyable.</p>
+
                 <a
                         href=""
                         class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2"
