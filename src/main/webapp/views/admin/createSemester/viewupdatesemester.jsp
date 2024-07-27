@@ -86,6 +86,7 @@
                     <th>End Date</th>
 <%--                    <th>Is Create</th>--%>
                     <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -108,6 +109,9 @@
 <%--                                    </c:choose>--%>
 <%--                                </td>--%>
                                 <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#popup-updateStatus-${semester.getId()}">Edit</button></td>
+                                <td>
+                                    <a href="#" class="btn btn-primary" onclick="confirmDelete(${semester.id})">Delete</a>
+                                </td>
                             </tr>
                         </c:forEach>
                     </c:otherwise>
@@ -151,7 +155,7 @@
 <%--                            </select>--%>
 <%--                        </div>--%>
                         <button type="submit" class="btn btn-primary">Update</button>
-                        <a href="deletesemester?semesterId=${semester.id}" class="btn btn-primary">Delete</a>
+<%--                        <a href="deletesemester?semesterId=${semester.id}" class="btn btn-primary">Delete</a>--%>
                     </form>
                 </div>
             </div>
@@ -194,6 +198,13 @@
             $('#myModal').modal('hide'); // Tắt modal
         });
     };
+
+    function confirmDelete(semesterId) {
+        var confirmation = confirm("Are you sure you want to delete this semester?");
+        if (confirmation) {
+            window.location.href = 'deletesemester?semesterId=' + semesterId;
+        }
+    }
 </script>
 <script src="templates/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

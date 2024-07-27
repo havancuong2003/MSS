@@ -83,6 +83,14 @@ public class AddSemester extends HttpServlet {
             }
         }
 
+        if (start != null) {
+            Date currentDate = new Date(System.currentTimeMillis());
+            if (start.before(currentDate)) {
+                errorMsg.append("Start date cannot be in the past. ");
+                hasErrors = true;
+            }
+        }
+
         if (hasErrors) {
             req.setAttribute("msg", errorMsg.toString());
             req.setAttribute("detail", detail);
