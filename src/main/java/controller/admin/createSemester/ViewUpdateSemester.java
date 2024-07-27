@@ -1,6 +1,7 @@
 package controller.admin.createSemester;
 
 import dal.SemesterDBContext;
+import dal.SlotDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -86,6 +87,20 @@ public class ViewUpdateSemester extends HttpServlet {
                 errorMsg.append("Dates are not in the correct sequence. ");
                 hasErrors = true;
             }
+        }
+
+//        if (start != null) {
+//            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+//            if (start.before(currentDate)) {
+//                errorMsg.append("Start date cannot be in the past. ");
+//                hasErrors = true;
+//            }
+//        }
+
+        SlotDBContext conSlot = new SlotDBContext();
+        if (!conSlot.checkDateRangeValidForUpdate(start, end, id)) {
+            errorMsg.append("Date range is not valid. ");
+            hasErrors = true;
         }
 
         if (hasErrors) {

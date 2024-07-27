@@ -23,12 +23,13 @@ public class AddSlot extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String slotId = req.getParameter("slotId");
+        HttpSession session = req.getSession();
         SlotDBContext con = new SlotDBContext();
         boolean isDelete = con.deleteSlot(Integer.parseInt(slotId));
         if(isDelete){
-            req.setAttribute("msg", "Delete successfully!");
+            session.setAttribute("msgAddSlot", "Delete successfully!");
         }else{
-            req.setAttribute("msg", "Delete fail, Please check the reference items!");
+            session.setAttribute("msgAddSlot", "Delete fail, Please check the reference items!");
         }
         req.getRequestDispatcher("viewslot").forward(req, resp);
     }

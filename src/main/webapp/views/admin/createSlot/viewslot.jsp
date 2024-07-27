@@ -94,7 +94,9 @@
                 <td>${slot.getStartTime()}</td>
                 <td>${slot.getEndTime()}</td>
                 <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#popup-updateStatus-${slot.getId()}">Edit</button></td>
-                <th><a href="addslot?slotId=${slot.id}" class="btn btn-primary">Delete</a></th>
+                <th>
+                  <a href="#" class="btn btn-primary" onclick="confirmDelete(${slot.id})">Delete</a>
+                </th>
               </tr>
             </c:forEach>
           </c:otherwise>
@@ -202,6 +204,14 @@
       $('#myModal').modal('hide'); // Tắt modal
     });
   };
+
+
+  function confirmDelete(slotId) {
+    var confirmation = confirm("Are you sure you want to delete this slot?");
+    if (confirmation) {
+      window.location.href = 'addslot?slotId=' + slotId;
+    }
+  }
 </script>
 <script src="templates/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

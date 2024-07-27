@@ -82,6 +82,37 @@ public class TestDBContext extends DBContext<Account> {
         return list;
     }
 
+    public boolean checkTestExist(int account_id, int exercise_id)  {
+        ArrayList<History> list = new ArrayList<>();
+        try {
+            String sql = "select * from history h\n" +
+                    "join student st on st.id = h.student_id\n" +
+                    "join account ac on ac.account_id = st.acc_id\n" +
+                    "join exercise ex on ex.exercise_id = h.exercise_id\n" +
+                    "where ac.account_id = ? \n" +
+                    "and h.exercise_id = ? \n" +
+                    "and ex.get_score = 1";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, account_id);
+            stm.setInt(2, exercise_id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                History his = new History();
+                his.setId(rs.getInt(1));
+                list.add(his);
+            }
+            if(list.size() != 0) {
+                return false;
+            }
+            return true;
+
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(TestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     public ArrayList<Question> getAllQuestionByExerciseIdAndCourseId(int exerciseId, int courseId)  {
         ArrayList<Question> questions = new ArrayList<>();
         try {

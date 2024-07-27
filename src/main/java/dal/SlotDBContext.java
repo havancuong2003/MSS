@@ -31,6 +31,46 @@ public class SlotDBContext extends DBContext<TimeSlot> {
         return slots;
     }
 
+    public boolean checkDateRangeValid(Date startDate, Date endDate) {
+        String sql = "SELECT COUNT(*) FROM semester WHERE (start <= ? AND end >= ?) OR (start <= ? AND end >= ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setDate(1, endDate);
+            statement.setDate(2, startDate);
+            statement.setDate(3, startDate);
+            statement.setDate(4, endDate);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count == 0; // Return true if no overlapping date ranges are found
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public boolean checkDateRangeValidForUpdate(Date startDate, Date endDate, int id) {
+        String sql = "SELECT COUNT(*) FROM semester WHERE ((start <= ? AND end >= ?) OR (start <= ? AND end >= ?)) AND id != ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setDate(1, endDate);
+            statement.setDate(2, startDate);
+            statement.setDate(3, startDate);
+            statement.setDate(4, endDate);
+            statement.setInt(5, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count == 0; // Return true if no overlapping date ranges are found
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+
     public void updateSlot(Slot slot) {
         try {
             String sql = "UPDATE slot SET detail = ?, start = ?, end = ? WHERE id = ?";
