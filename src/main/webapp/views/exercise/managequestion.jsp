@@ -23,6 +23,8 @@
             background: #f5f5f5;
             font-family: 'Varela Round', sans-serif;
             font-size: 13px;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .table-wrapper {
@@ -210,10 +212,10 @@
             padding-top: 10px;
         }
 
-        .modal-footer {
-            display: flex;
-            justify-content: center;
-        }
+        /*.modal-footer {*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*}*/
 
         .form-group input {
             margin-bottom: 15px;
@@ -493,7 +495,9 @@
     </style>
 </head>
 <body>
-<div class="container" style="margin-top: 70px">
+<jsp:include page="/views/common/header.jsp"></jsp:include>
+<div style="margin-top: 70px">
+    <div class="container">
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-question" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
@@ -529,25 +533,29 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h2>Manage <b>Question</b></h2>
+                        <h2 style="color: whitesmoke">Manage <b style="color: whitesmoke">Question</b></h2>
                     </div>
                     <div class="col-sm-6">
                         <c:if test="${exercise_status == 0}">
                             <c:if test="${listQuestionSize == numQuestion}">
                                 <form action="manage-question" method="post">
                                     <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                    <input type="hidden" name="group_id" value="${group_id}">
+                                    <input type="hidden" name="course_id" value="${course_id}">
                                     <input type="hidden" name="status" value="prevent">
                                     <button type="submit" class="btn btn-success"  onclick="confirmSubmission(event)">
-                                        <i class="material-icons">assignment</i> <span>Present</span>
+                                        <i class="material-icons" style="color: whitesmoke">assignment</i> <span style="color: whitesmoke">Present</span>
                                     </button>
                                 </form>
                             </c:if>
                             <c:if test="${listQuestionSize < numQuestion}">
                                 <form action="manage-question" method="post">
                                     <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                    <input type="hidden" name="group_id" value="${group_id}">
+                                    <input type="hidden" name="course_id" value="${course_id}">
                                     <input type="hidden" name="status" value="prevent">
                                     <button type="submit" class="btn btn-success" onclick="checkQuestions(event)">
-                                        <i class="material-icons">assignment</i> <span>Present</span>
+                                        <i class="material-icons" style="color: whitesmoke">assignment</i> <span style="color: whitesmoke">Present</span>
                                     </button>
                                 </form>
                             </c:if>
@@ -556,6 +564,8 @@
                         <c:if test="${exercise_status == 1}">
                             <form action="manage-question" method="post">
                                 <input type="hidden" name="exercise_id" value="${exercise_id}">
+                                <input type="hidden" name="group_id" value="${group_id}">
+                                <input type="hidden" name="course_id" value="${course_id}">
                                 <input type="hidden" name="status" value="close">
                                 <button type="submit" class="btn btn-success"  onclick="confirmClose(event)">
                                     <i class="material-icons">check_circle</i> <span>Close</span>
@@ -565,23 +575,23 @@
 
                         <c:if test="${isRandom != 1}">
                             <c:if test="${listQuestionSize < numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Get Questions From Bank</span></a>
+                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal" style="color: whitesmoke"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Add New Question</span></a>
                             </c:if>
                             <c:if test="${listQuestionSize >= numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Get Questions From Bank</span></a>
+                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal" style="color: whitesmoke"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Add New Question</span></a>
                             </c:if>
                         </c:if>
 
                         <c:if test="${isRandom == 1}">
                             <c:if test="${listQuestionSize < numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="btn btn-success"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Get Questions From Bank</span></a>
+                                <a href="#addQuestionModal"  class="btn btn-success" data-toggle="modal" style="color: whitesmoke"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Add New Question</span></a>
                             </c:if>
                             <c:if test="${listQuestionSize >= numQuestion}">
-                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Get Questions From Bank</span></a>
-                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
+                                <a href="select-question-bank?exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}" onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Get Questions From Bank</span></a>
+                                <a onclick="showAlertAndPreventDefault(event,'The exercise have enough questions')"  class="btn btn-success" data-toggle="modal" style="color: whitesmoke"><i class="material-icons" style="color: whitesmoke">&#xE147;</i> <span style="color: whitesmoke">Add New Question</span></a>
                             </c:if>
                         </c:if>
                     </div>
@@ -616,8 +626,14 @@
                             <td>High Application Question</td>
                         </c:if>
                         <td>
-                            <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return confirm('Are you sure you want to delete this question?');" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons">&#xE872;</i></a>
+                            <c:if test="${statusExercise == 1}">
+                                <a href="#updateModal"  onclick="return handleEditClick(${o.status});"><i class="material-icons" data-toggle="tooltip" title="Edit" style="color: yellow">&#xE254;</i></a>
+                                <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return handleDeleteClick(${o.status});" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons" style="color: red">&#xE872;</i></a>
+                            </c:if>
+                            <c:if test="${statusExercise == 0}">
+                                <a href="#updateModal"  class="edit" data-toggle="modal" data-question-id="${o.question_id}"><i class="material-icons" data-toggle="tooltip" title="Edit" style="color: yellow">&#xE254;</i></a>
+                                <a href="manage-question?question_id=${o.question_id}&delete=1&exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" onclick="return confirm('Are you sure you want to delete this question?');" class="delete" data-toggle="tooltip" title="Delete"><i class="material-icons" style="color: red">&#xE872;</i></a>
+                            </c:if>
                         </td>
                         <c:if test="${o.status == 0}">
                             <td style="text-align: center">
@@ -644,7 +660,7 @@
                 </div>
                 <div>
                     <a class="back-link" href="create-exercise?group_id=${group_id}&course_id=${course_id}" style="color: #FF6600;font-size: 15px">
-                        <i class="fas fa-arrow-left"></i> Back to manage exercise
+                        <i class="fas fa-arrow-left" style="color: #FF6600"></i> Back to manage exercise
                     </a>
                 </div>
             </div>
@@ -694,8 +710,7 @@
             </div>
         </div>
     </form>
-
-
+    </div>
 </div>
 <div id="addQuestionModal" class="modal fade">
     <div class="modal-dialog custom-dialog">
@@ -785,6 +800,7 @@
                 <div class="modal-body">
                     <div  class="form-container">
                         <div class="form-group">
+                            <label style="display: block; text-align: left">Choose type question:</label>
                             <select name="update_type_question_modal"  id="update_type_question_modal" class="form-control">
                                 <option value="0" class="form-control">Choose type question</option>
                                 <option value="1" ${type_question_modal == "1" ? "selected" : ""} class="form-control">Basic Question</option>
@@ -795,6 +811,7 @@
                         <div id="update_type-question-error" class="error-message"></div>
 
                         <div class="form-group">
+                            <label style="display: block; text-align: left">Question:</label>
                             <input name="question" type="text" id="update_question" class="form-control" value="${question}" placeholder="Question..." >
                         </div>
                         <div class="form-group">
@@ -802,6 +819,7 @@
                         </div>
                         <div id="update_question-error" class="error-message"></div>
                         <div class="form-group">
+                            <label style="display: block; text-align: left">Options:</label>
                             <input name="option1" id="option1" type="text" class="form-control" placeholder="Option A..." >
                         </div>
                         <div class="form-group">
@@ -815,6 +833,7 @@
                             <button type="button" id="update-remove-option" class="btn btn-danger col-md-6">Remove option</button>
                         </div>
                         <div class="form-group">
+                            <label style="display: block; text-align: left">Answer:</label>
                             <input name="correct_answer1" id="correct_answer1" type="text" class="form-control" placeholder="Answer...">
                         </div>
                         <div id="update-multiple-choice-options" style="width: 100%; display: flex; justify-content: center; flex-wrap: wrap">
@@ -836,6 +855,23 @@
     </div>
 </div>
 
+<script>
+    function handleEditClick(status) {
+        if (status === 1) {
+            alert("The test is currently being presented. You cannot update the question at this time.");
+            return false; // Ngăn không cho mở modal
+        }
+        return true; // Cho phép mở modal
+    }
+
+    function handleDeleteClick(status) {
+        if (status === 1) {
+            alert("The test is currently being presented. You cannot delete the question at this time.");
+            return false; // Ngăn không cho thực hiện hành động xóa
+        }
+        return confirm('Are you sure you want to delete this question?'); // Hiển thị thông báo xác nhận xóa
+    }
+</script>
 
 <script>
     var listQuestionSize = ${listQuestionSize}; // Lấy giá trị từ JSP
@@ -1053,6 +1089,7 @@
         }
 
         // Kiểm tra đáp án đúng
+        console.log("Option value" + optionValues.length);
         const correct_answer1 = document.getElementById("correct_answer1").value.trim();
         if (correct_answer1 === "") {
             document.getElementById('update-correct-answer-error').innerText = 'Please enter answer';
@@ -1077,7 +1114,7 @@
                 isValid = false;
                 isValidAnswer = false;
                 break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
-            } else if (!optionValues.includes(correctAnswerValue) && option1 !== correct_answer1 && option2 !== correct_answer1) {
+            } else if (!optionValues.includes(correctAnswerValue) && option1 !== correctAnswerValue && option2 !== correctAnswerValue) {
                 console.log("loi 2")
                 document.getElementById('update-correct-answer-error').innerText = 'The answer is not on the list of options';
                 isValid = false;
@@ -1281,97 +1318,108 @@
         alert(message);  // Hiển thị thông báo
     }
     var questions = <%= request.getAttribute("questions") %>;
-    function validateForm() {
-        let isValid = true;
+    document.addEventListener('DOMContentLoaded', (event) => {
+        function validateForm() {
+            let isValid = true;
 
-        // Kiểm tra loại câu hỏi
-        const typeQuestionModal = document.getElementById('type_question_modal').value;
-        if (typeQuestionModal === "0") {
-            document.getElementById('type-question-error').innerText = 'Please select type of question';
-            isValid = false;
-        } else {
-            document.getElementById('type-question-error').innerText = '';
-        }
-        const question = document.getElementById('question').value.trim();
-        if (question === "") {
-            document.getElementById('question-error').innerText = 'Please enter question';
-            isValid = false;
-        } else if(questions.includes(question)){
-            document.getElementById('question-error').innerText = 'Question is already exist in this exercise!';
-            isValid = false;
-        } else {
-            document.getElementById('question-error').innerText = '';
-        }
-
-        const option1 = document.getElementsByName('option1')[0].value.trim();
-        const option2 = document.getElementsByName('option2')[0].value.trim();
-        if (option1 === "" || option2 === "") {
-            document.getElementById('option-error').innerText = 'Please enter at least two options';
-            isValid = false;
-        } else if(option1 === option2){
-            document.getElementById('option-error').innerText = 'Options must not duplicate';
-            isValid = false;
-        } else {
-            document.getElementById('option-error').innerText = '';
-        }
-        // return isValid;
-        const options = document.querySelectorAll('#additional-options input.form-control');
-        const optionValues = [];
-        for (let i = 0; i < options.length; i++) {
-            const optionValue = options[i].value.trim();
-            if (optionValue === "") {
-                document.getElementById('option-error').innerText = 'Please enter all options';
+            // Kiểm tra loại câu hỏi
+            const typeQuestionModal = document.getElementById('type_question_modal').value;
+            if (typeQuestionModal === "0") {
+                document.getElementById('type-question-error').innerText = 'Please select type of question';
                 isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+            } else {
+                document.getElementById('type-question-error').innerText = '';
             }
-            if (optionValues.includes(optionValue) || optionValue === option1 || optionValue === option2) {
+            const question = document.getElementById('question').value.trim();
+            if (question === "") {
+                document.getElementById('question-error').innerText = 'Please enter question';
+                isValid = false;
+            } else if(questions.includes(question)){
+                document.getElementById('question-error').innerText = 'Question is already exist in this exercise!';
+                isValid = false;
+            } else {
+                document.getElementById('question-error').innerText = '';
+            }
+
+            const option1 = document.getElementsByName('option1')[0].value.trim();
+            const option2 = document.getElementsByName('option2')[0].value.trim();
+            console.log(option1);
+            console.log(option2);
+            if (option1 === "" || option2 === "") {
+                document.getElementById('option-error').innerText = 'Please enter at least two options';
+                isValid = false;
+            } else if(option1 === option2 ){
                 document.getElementById('option-error').innerText = 'Options must not duplicate';
                 isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
-            }
-            optionValues.push(optionValue);
-        }
-        console.log(optionValues.length);
-        for (let i = 0; i < options.length; i++) {
-            console.log(options[i].value);
-        }
-        const correct_answer1 = document.getElementsByName("correct_answer1")[0].value.trim();
-        if (correct_answer1 === "") {
-            document.getElementById('correct-answer-error').innerText =  'Please enter answer';
-            isValid = false;
-        } else if (!optionValues.includes(correct_answer1) && option1 !== correct_answer1 && option2 !== correct_answer1) {
-            document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options'
-            isValid = false;
-        } else {
-            document.getElementById('correct-answer-error').innerText = '';
-        }
-
-        // Kiểm tra các đáp án đúng còn lại
-        const correctAnswers = document.querySelectorAll('#multiple-choice-options input.form-control');
-        const correctAnswerValues = [];
-        for (let i = 0; i < correctAnswers.length; i++) {
-            const correctAnswerValue = correctAnswers[i].value.trim();
-            if (correctAnswerValue === "") {
-                document.getElementById('correct-answer-error').innerText = 'Please enter all answers';
-                isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
-            }
-            if (!optionValues.includes(correctAnswerValue) && option1 !== correct_answer1 && option2 !== correct_answer1) {
-                document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options';
-                isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
-            }
-            if (correctAnswerValues.includes(correctAnswerValue) || correctAnswerValue === correct_answer1) {
-                document.getElementById('correct-answer-error-multiple').innerText = 'The answers is not duplicate';
-                isValid = false;
-                break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
             } else {
-                document.getElementById('correct-answer-error-multiple').innerText = '';
+                document.getElementById('option-error').innerText = '';
             }
-            correctAnswerValues.push(correctAnswerValue);
+            // return isValid;
+            const options = document.querySelectorAll('#additional-options input.form-control');
+            const optionValues = [];
+            for (let i = 0; i < options.length; i++) {
+                const optionValue = options[i].value.trim();
+                if (optionValue === "") {
+                    document.getElementById('option-error').innerText = 'Please enter all options';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                }
+                if (optionValues.includes(optionValue) || optionValue === option1 || optionValue === option2) {
+                    document.getElementById('option-error').innerText = 'Options must not duplicate';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                }
+                optionValues.push(optionValue);
+            }
+            console.log(optionValues.length);
+            for (let i = 0; i < options.length; i++) {
+                console.log(options[i].value);
+            }
+            const correct_answer1 = document.getElementsByName("correct_answer1")[0].value.trim();
+            if (correct_answer1 === "") {
+                document.getElementById('correct-answer-error').innerText =  'Please enter answer';
+                isValid = false;
+            } else if (!optionValues.includes(correct_answer1) && option1 !== correct_answer1 && option2 !== correct_answer1) {
+                document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options'
+                isValid = false;
+            } else {
+                document.getElementById('correct-answer-error').innerText = '';
+            }
+
+            // Kiểm tra các đáp án đúng còn lại
+            const correctAnswers = document.querySelectorAll('#multiple-choice-options input.form-control');
+            const correctAnswerValues = [];
+            for (let i = 0; i < correctAnswers.length; i++) {
+                const correctAnswerValue = correctAnswers[i].value.trim();
+                if (correctAnswerValue === "") {
+                    document.getElementById('correct-answer-error').innerText = 'Please enter all answers';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                }
+                if (!optionValues.includes(correctAnswerValue) && option1 !== correctAnswerValue && option2 !== correctAnswerValue) {
+                    document.getElementById('correct-answer-error').innerText = 'The answer is not on the list of options';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                }
+                if (correctAnswerValues.includes(correctAnswerValue) || correctAnswerValue === correct_answer1) {
+                    document.getElementById('correct-answer-error-multiple').innerText = 'The answers is not duplicate';
+                    isValid = false;
+                    break;  // Ngừng kiểm tra khi gặp lỗi đầu tiên
+                } else {
+                    document.getElementById('correct-answer-error-multiple').innerText = '';
+                }
+                correctAnswerValues.push(correctAnswerValue);
+            }
+            return isValid;
         }
-        return isValid;
-    }
+        document.getElementById('create-question-form').addEventListener('submit', (e) => {
+            if (!validateForm()) {
+                e.preventDefault();
+            }
+        });
+    })
 </script>
+
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>
