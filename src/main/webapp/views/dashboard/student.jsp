@@ -1,213 +1,274 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Trang chủ</title>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <!-- Thêm Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f5f5f5;
+        }   html, body {
+                height: 100%;
+                margin: 0;
+            }
+        .container-feedback {
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
         }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #f8f8f8;
-            border-bottom: 1px solid #e7e7e7;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        header img {
-            height: 40px;
-            width: 40px;
-        }
-        header span {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .profile-container {
-            position: relative;
-            display: inline-block;
-        }
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .profile-dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 50px;
-            background-color: #ffffff;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
             padding: 20px;
-            z-index: 1;
-            width: 160px;
-            border-radius: 8px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-height: calc(100vh - 450px);
         }
-        .profile-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
+
+        h1 {
+            text-align: center;
+            color: #333;
         }
-        .profile-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
+
+        nav {
+            margin-top: 30px;
+            text-align: center;
         }
-        .profile-info div {
-            display: flex;
-            flex-direction: column;
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+            margin: 0;
         }
-        .profile-info span {
-            font-size: 16px;
+
+        li {
+            display: inline-block;
+            margin: 0 10px;
         }
-        .profile-info span.role {
-            font-size: 14px;
-            color: #888;
-        }
-        .profile-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .profile-actions a {
+
+        a {
             text-decoration: none;
-            color: rgb(105, 122, 141);
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: color 0.3s;
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s ease;
         }
-        .profile-actions a:hover {
+
+        a:hover {
             color: #0056b3;
         }
-        .main-container {
-            display: flex;
-            flex: 1;
-            height: calc(100vh - 71px); /* Chiều cao của header */
+
+
+        .listFeature {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            justify-content: center;
         }
-        .sidebar {
-            width: 250px;
-            background-color: #333;
-            color: white;
+
+        .listFeature ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .listFeature li {
+            text-align: center;
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px;
+        }
+
+        .listFeature li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .listFeature li a:hover {
+            color: #007bff;
+        }
+
+
+
+        .welcome h2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* CSS Styles for Modal */
+        .modal {
+            display: none; /* Ensure modal is hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-buttons {
             display: flex;
             flex-direction: column;
-            padding-top: 20px;
-            box-sizing: border-box;
+            gap: 10px;
         }
-        .sidebar a {
-            padding: 15px 20px;
-            text-decoration: none;
-            color: white;
+
+        .modal-buttons a {
             display: block;
-            transition: background 0.3s;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
-        .sidebar a:hover {
-            background-color: #575757;
+
+        .modal-buttons a:hover {
+            background-color: #0056b3;
         }
-        .sidebar .submenu a {
-            padding-left: 40px;
-            font-size: 14px;
+        .header {
+            background-color: #fff;
+            box-shadow: none;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
         }
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #f1f1f1;
-            overflow-y: auto;
+
+        .dropdown-menu {
+            min-width: 150px;
+            display: none; /* Ẩn menu dropdown mặc định */
         }
-        .sp{
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            font-weight: 600;
-            background: linear-gradient(90deg, #ff8a00, #e52e71);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            padding-left: 10px;
+        .dropdown-menu.show {
+            display: block; /* Hiện menu khi có lớp 'show' */
+        }
+        nav {
+            margin-bottom: 50px;
         }
     </style>
-    <script>
-        function toggleProfileDropdown() {
-            var dropdown = document.getElementById("profileDropdown");
-            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
-        }
-        //
-        // function logout() {
-        //     // Add your logout logic here
-        //     alert('Logged out');
-        // }
-
-        function toggleSubMenu(menuId) {
-            var submenu = document.getElementById(menuId);
-            submenu.style.display = (submenu.style.display === "block") ? "none" : "block";
-        }
-    </script>
 </head>
 <body>
-<header>
-    <div>
-        <img src="logo.png" alt="">
-        <span class="sp">MyStudySpace</span>
-    </div>
-    <div class="profile-container">
-        <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()">
-        <div id="profileDropdown" class="profile-dropdown">
-            <div class="profile-info">
-                <img src="data:image/jpeg;base64,${photoBase64}" alt="">
-                <div>
-                    <span id="profileFullName">${requestScope.account.fullname}</span>
-                    <span id="profileRole" class="role">${requestScope.roleName}</span>
-                </div>
-            </div>
-            <div class="profile-actions">
-                <a href="<%=request.getContextPath()%>/load-profile"><i class="fas fa-user"></i> My Profile</a>
-                <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+<h1 style="text-align: center">Hello ${account.fullname}</h1>
+<nav class="navbar navbar-expand-lg header">
+
+
+    <div class="ml-auto">
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                Profile
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="setting">Setting</a>
+                <a class="dropdown-item" href="../logout">Logout</a>
             </div>
         </div>
     </div>
-</header>
-<div class="main-container">
-    <div class="sidebar">
-        <a href="#" onclick="toggleSubMenu('homeSubMenu')"><i class="fas fa-home"></i> Home</a>
-<%--        <a href="#" onclick="toggleSubMenu('userManagementSubMenu')"><i class="fas fa-users"></i> User Management</a>--%>
-<%--        <div id="userManagementSubMenu" class="submenu" style="display: none;">--%>
-<%--            <a href="<%=request.getContextPath()%>/add-New-Account"><i class="fas fa-user-plus"></i> Add New Account</a>--%>
-<%--            <a href="<%=request.getContextPath()%>/list-account"><i class="fas fa-list"></i> Account List</a>--%>
-<%--        </div>--%>
-<%--        <a href="#" onclick="toggleSubMenu('courseManagementSubMenu')"><i class="fas fa-book"></i> Course Management</a>--%>
-<%--        <div id="courseManagementSubMenu" class="submenu" style="display: none;">--%>
-<%--            <a href="<%=request.getContextPath()%>/addCourse"><i class="fas fa-plus"></i> Add New Course</a>--%>
-<%--            <a href="<%=request.getContextPath()%>/listCourse"><i class="fas fa-list"></i> Course List</a>--%>
-<%--        </div>--%>
-        <a href="groupList"><i class="fas fa-chalkboard-teacher"></i> View All Classes</a>
-        <a href="RegisterCourse"><i class="fas fa-book"></i> Register Course</a>
-        <a href="viewCurriculum"><i class="fas fa-graduation-cap"></i> View Curriculum</a>
-        <a href="send-application"><i class="fas fa-paper-plane"></i> Send request</a>
-        <a href="changeGroup"><i class="fas fa-exchange-alt"></i> Swap Class</a>
-        <a href="#" onclick="toggleSubMenu('scheduleSubMenu')"><i class="fas fa-calendar-alt"></i> Education </a>
-        <div id="scheduleSubMenu" class="submenu" style="display: none;">
-            <a href="schedule"><i class="fas fa-calendar"></i> View Schedule</a>
-            <a href="attendancereport"><i class="fas fa-check"></i> View Attendance Report</a>
-            <a href="viewgrade"><i class="fas fa-tasks"></i> View Grade Report</a>
+</nav>
+<div class="container container-feedback">
+
+    <nav>
+        <ul class="listFeature">
+            <li><a href="groupList"><i class="fas fa-chalkboard-teacher"></i> View All Classes</a></li>
+            <li><a href="RegisterCourse"><i class="fas fa-book"></i> Register Course</a></li>
+            <li><a href="viewCurriculum"><i class="fas fa-graduation-cap"></i> View Curriculum</a></li>
+            <li><a href="send-application"><i class="fas fa-paper-plane"></i> Send application</a></li>
+            <li><a href="changeGroup"><i class="fas fa-exchange-alt"></i> Swap Class</a></li>
+            <li><a href="#" onclick="showModal('scheduleModal')"><i class="fas fa-calendar-alt"></i> Education</a></li>
+        </ul>
+    </nav>
+</div>
+<!-- Modal for Education -->
+<div id="scheduleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('scheduleModal')">&times;</span>
+        <h2>Education</h2>
+        <div class="modal-buttons">
+            <a href="schedule">View Schedule</a>
+            <a href="attendancereport">View Attendance Report</a>
+            <a href="viewgrade">View Grades Report</a>
+
         </div>
-    </div>
-    <div class="content">
-        <!-- Nội dung dashboard -->
     </div>
 </div>
+<script>
+    document.getElementById('dropdownMenuButton').addEventListener('click', function () {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    });
+
+    // Đóng menu nếu nhấp ra ngoài
+    document.addEventListener('click', function (event) {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu && !menu.contains(event.target) && !document.getElementById('dropdownMenuButton').contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+</script>
+<script>
+    function showModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    };
+
+
+</script>
+<jsp:include page="../common/footer.jsp" />
 </body>
 </html>
+
+

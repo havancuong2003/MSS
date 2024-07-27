@@ -129,7 +129,7 @@ public class ChangeGroupDBContext extends DBContext<ChangeGroup> {
                 g.setName(rs.getString("name"));
                 g.setCourse(cdbc.getCourseByID(rs.getInt("course_id")));
                 g.setTeacher(gdbc.getTeacherByID(rs.getString("pic")));
-                g.setLink(rs.getString("link"));
+
                 g.setSemester(getSemesterByID(rs.getInt("semester_id")));
 
             }
