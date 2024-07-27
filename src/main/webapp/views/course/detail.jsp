@@ -19,38 +19,38 @@
             background-color: #f4f4f9;
             margin: 0;
             padding: 0;
-            display: flex;
+
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
 
-        header {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            width: 100%;
-        }
+        /*header {*/
+        /*    display: flex;*/
+        /*    align-items: center;*/
+        /*    padding: 20px;*/
+        /*    background-color: #fff;*/
+        /*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+        /*    position: fixed;*/
+        /*    top: 0;*/
+        /*    width: 100%;*/
+        /*}*/
 
-        header img {
-            height: 50px;
-            margin-right: 20px;
-        }
+        /*header img {*/
+        /*    height: 50px;*/
+        /*    margin-right: 20px;*/
+        /*}*/
 
-        header span {
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            font-weight: 600;
-            background: linear-gradient(90deg, #ff8a00, #e52e71);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            padding-left: 10px;
-        }
+        /*header span {*/
+        /*    font-family: 'Poppins', sans-serif;*/
+        /*    font-size: 28px;*/
+        /*    font-weight: 600;*/
+        /*    background: linear-gradient(90deg, #ff8a00, #e52e71);*/
+        /*    -webkit-background-clip: text;*/
+        /*    -webkit-text-fill-color: transparent;*/
+        /*    display: inline-block;*/
+        /*    padding-left: 10px;*/
+        /*}*/
 
         .container {
             background-color: #ffffff;
@@ -120,12 +120,7 @@
             background-color: #6200ea;
             transform: translateY(2px);
         }
-        .header {
-            background-color: #fff;
-            box-shadow: none;
-            border-bottom: 1px solid #ddd;
-            padding: 10px;
-        }
+
 
         .dropdown-menu {
             min-width: 150px;
@@ -144,24 +139,12 @@
         }
 
 
-        footer {
-            width: 100%;
-            margin-top: 100px;
-        }
 
         h3 {
             font-size: 25px;
         }
 
-        .footer-container {
-            position: relative;
-            bottom: 0;
-            background: #E8E8E8;
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            padding: 15px 0;
-        }
+
 
         .left-area ul {
             display: flex;
@@ -214,71 +197,21 @@
             list-style-type: none;
         }
 
-        a {
-            text-decoration: none;
-        }
 
 
-        .text {
-            width: 100%;
-            height: 50px;
-            background-color: #535C5F;
-            color: #FFFCEB;
-            margin-top: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+
 
         .left-area i:hover {
             color: rgb(205, 127, 50);
             transition: 0.3s;
         }
 
-        @media screen and (max-width: 576px) {
-            .footer-container {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px;
-            }
 
-            h3 {
-                font-size: 18px;
-            }
-
-            a, li {
-                font-size: 14px;
-            }
-
-            .center-area a, .right-area li {
-                font-size: 18px;
-            }
-
-            ul {
-                margin-bottom: 14px;
-            }
-        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg header">
-    <button class="btn btn-light" onclick="window.location.href='dashboard';">
-        <i class="fas fa-arrow-left"></i> Home
-    </button>
+<jsp:include page="../common/header.jsp" />
 
-    <div class="ml-auto">
-        <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
-                Profile
-            </button>
-            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="setting">Setting</a>
-                <a class="dropdown-item" href="../logout">Logout</a>
-            </div>
-        </div>
-    </div>
-</nav>
 <script>
     document.getElementById('dropdownMenuButton').addEventListener('click', function () {
         var menu = document.getElementById('dropdownMenu');
@@ -327,36 +260,7 @@
         <a href="<%=request.getContextPath()%>/admin/updateCourse?id=${requestScope.id}">Update Course Detail</a>
     </div>
 </c:if>
-<footer>
-    <section class="footer-container">
-        <div class="left-area">
-            <h3>FOLLOW US</h3>
-            <ul>
-                <li><a href="">
-                    <i class="fa-brands fa-square-instagram fa-2x"></i>
-                </a></li>
-                <li><a href="">
-                    <i class="fa-brands fa-square-facebook fa-2x"></i>
-                </a></li>
-                <li><a href="">
-                    <i class="fa-brands fa-linkedin fa-2x"></i>
-                </a></li>
-                <li><a href="">
-                    <i class="fa-brands fa-x-twitter fa-2x"></i>
-                </a></li>
-            </ul>
-        </div>
-
-        <div class="right-area">
-            <h3>CONTACT</h3>
-            <ul>
-                <li>Address: 123 FPT University Ha Noi</li>
-                <li><a href="#">Mail: mss@fpt.edu.vn</a></li>
-                <li><a href="#">Phone: 0123456789</a></li>
-            </ul>
-        </div>
-    </section>
-
-</footer>
+<%----%>
+<jsp:include page="../common/footer.jsp" />
 </body>
 </html>
