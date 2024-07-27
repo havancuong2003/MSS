@@ -3,6 +3,7 @@ package controller.home;
 import dal.AccountDBContext;
 import dal.ExerciseDBContext;
 import dal.ProfileDBContext;
+import dal.SemesterDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -59,7 +60,10 @@ public class TeacherController extends HttpServlet {
         }
         ExerciseDBContext edao = new ExerciseDBContext();
         Teacher teacher = dao.getTeacherIdByAccountId(accountId);
-        List<Group> listGroup = edao.getListGroup(teacher.getTid());
+        SemesterDBContext sdao = new SemesterDBContext();
+        int semester_id = sdao.getCurrentSemester();
+        System.out.println("semester_id: " + semester_id);
+        List<Group> listGroup = edao.getListGroup(teacher.getTid(),semester_id);
         req.setAttribute("account", account);
         req.setAttribute("listGroup", listGroup);
         req.getRequestDispatcher("../views/dashboard/teacher.jsp").forward(req, resp);

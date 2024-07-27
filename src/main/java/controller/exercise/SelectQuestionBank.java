@@ -28,7 +28,7 @@ public class SelectQuestionBank extends HttpServlet {
         ExerciseDBContext edao = new ExerciseDBContext();
         List<BankQuestion> listBankQuestion = new ArrayList<>();
         List<BankAnswer> listBankAnswer = new ArrayList<>();
-        String numQuestions = request.getParameter("numQuestion");
+//        String numQuestions = request.getParameter("numQuestion");
         String basicQuestion = request.getParameter("basicQuestion");
         String lowQuestion = request.getParameter("lowQuestion");
         String highQuestion = request.getParameter("highQuestion");
@@ -46,6 +46,9 @@ public class SelectQuestionBank extends HttpServlet {
         int highQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("3", exercise_id);
         List<Question> listAllQuestionOfExercise = qdao.getListQuestionByExerciseId(exercise_id);
         int numMissQuestion = 0;
+        int numQ = ex.getBasic_question() + ex.getLow_question() + ex.getHigh_question();
+        String numQuestions = String.valueOf(numQ);
+        System.out.println("NumberQuestion: " + numQuestions);
         if(numQuestions != null && !numQuestions.trim().isEmpty()){
             numMissQuestion = Integer.parseInt(numQuestions) - listAllQuestionOfExercise.size();
             request.setAttribute("numQuestion",numQuestions);
@@ -188,7 +191,7 @@ public class SelectQuestionBank extends HttpServlet {
         // Xử lý kết quả cuối cùng và gửi phản hồi về client
         if (questionIds.size() != 0) {
             response.setStatus(HttpServletResponse.SC_OK); // Trả về mã thành công 200 nếu không có lỗi
-            String jsonResponse = "{\"message\": \"add question successfully!\"}";
+            String jsonResponse = "{\"message\": \"Add question successfully!\"}";
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
             out.print(jsonResponse);

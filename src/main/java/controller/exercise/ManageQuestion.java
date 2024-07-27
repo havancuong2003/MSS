@@ -32,14 +32,26 @@ public class ManageQuestion extends HttpServlet {
         String indexPage = request.getParameter("page");
         String question_id = request.getParameter("question_id");
         String delete = request.getParameter("delete");
-        String group_id = request.getParameter("group_id");
-        String course_id = request.getParameter("course_id");
         HttpSession session = request.getSession();
+        String group_id = request.getParameter("group_id");
+        if(group_id == null){
+            group_id = session.getAttribute("group_id").toString();
+        }
+        String course_id = request.getParameter("course_id");
+        if(course_id == null){
+            course_id = session.getAttribute("course_id").toString();
+        }
+
+        session.setAttribute("group_id", group_id);
+        session.setAttribute("course_id", course_id);
+
         String exercise_id = "";
         exercise_id = request.getParameter("exercise_id");
         if (exercise_id == null) {
             exercise_id = (String) session.getAttribute("exercise_id");
         }
+        Exercise exercise = edao.getExerciseById(exercise_id);
+        System.out.println("Exercise id: " + exercise_id);
         Exercise ex = new Exercise();
         if (exercise_id != null) {
             ex = edao.getExerciseById(exercise_id);
@@ -95,40 +107,16 @@ public class ManageQuestion extends HttpServlet {
                 }
             }
         }
-        Exercise exercise = edao.getExerciseById(exercise_id);
-        int basicQuestion = 0;
-        int lowQuestion = 0;
-        int highQuestion = 0;
-        String txt = "";
-        if (exercise.getIsRandom() == 1) {
-            Cookie[] arrE = request.getCookies();
-            if (arrE != null) {
-                for (Cookie c : arrE) {
-                    if (c.getName().equals("exercise")) {
-                        txt += c.getValue();
-                        c.setMaxAge(0);
-                        response.addCookie(c);
-                    }
-                }
-            }
-            Cookie c = new Cookie("exercise", txt);
-            c.setMaxAge(60 * 24 * 60 * 60);
-            response.addCookie(c);
-        }
-            List<Exercise_Constructor> listE = Constructor(txt);
-            for (Exercise_Constructor e : listE) {
-                if(exercise_id !=null && !exercise_id.trim().isEmpty()){
-                    if (e.getExercise_id() == Integer.parseInt(exercise_id)) {
-                        basicQuestion = e.getBasicQuestion();
-                        lowQuestion = e.getLowQuestion();
-                        highQuestion = e.getHighQuestion();
-                        break;
-                    }
-                }
-            }
+        int basicQuestion = exercise.getBasic_question();
+        int lowQuestion = exercise.getLow_question();
+        int highQuestion = exercise.getHigh_question();
+        System.out.println("basic : " + basicQuestion);
+        System.out.println("low : " + lowQuestion);
+        System.out.println("high : " + highQuestion);
             List<String> question = listAllQuestionOfExercise.stream()
                     .map(Question::getQuestion) // assuming getName() method exists
                     .collect(Collectors.toList());
+            request.setAttribute("statusExercise",ex.getStatus());
             request.setAttribute("group_id",group_id);
             request.setAttribute("course_id",course_id);
             request.setAttribute("basicQuestion", basicQuestion);
@@ -136,7 +124,7 @@ public class ManageQuestion extends HttpServlet {
             request.setAttribute("highQuestion", highQuestion);
             request.setAttribute("isRandom", ex.getIsRandom());
             request.setAttribute("questions", new Gson().toJson(question));
-            request.setAttribute("numQuestion", ex.getQuestion_number());
+            request.setAttribute("numQuestion", basicQuestion+lowQuestion+highQuestion);
             request.setAttribute("listQuestionSize", listAllQuestionOfExercise.size());
             request.setAttribute("search", search);
             request.setAttribute("type_question", type_question);
@@ -156,7 +144,7 @@ public class ManageQuestion extends HttpServlet {
         String status = request.getParameter("status");
         String course_id = request.getParameter("course_id");
 //        course_id = "1";
-//        String group_id = request.getParameter("group_id");
+        String group_id = request.getParameter("group_id");
         System.out.println(status);
         BufferedReader reader = request.getReader();
         StringBuilder sb = new StringBuilder();
@@ -218,35 +206,12 @@ public class ManageQuestion extends HttpServlet {
             int basicQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("1", exercise_id);
             int lowQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("2", exercise_id);
             int highQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("3", exercise_id);
-            if(exercise.getIsRandom() == 1) {
+            if(exercise.getIsRandom() == 1 || exercise.getIsRandom() == 0) {
                 request.setAttribute("isRandom","1");
-                Cookie[] arrE = request.getCookies();
-                String txt = "";
-                if (arrE != null) {
-                    for (Cookie c : arrE) {
-                        if (c.getName().equals("exercise")) {
-                            txt += c.getValue();
-                            c.setMaxAge(0);
-                            response.addCookie(c);
-                        }
-                    }
-                }
-                Cookie c = new Cookie("exercise", txt);
-                c.setMaxAge(60 * 24 * 60 * 60);
-                response.addCookie(c);
-                List<Exercise_Constructor> listE = Constructor(txt);
-                for (Exercise_Constructor e : listE) {
-                    if (e.getExercise_id() == Integer.parseInt(exercise_id)) {
-                        basicQuestion = e.getBasicQuestion();
-                        lowQuestion = e.getLowQuestion();
-                        highQuestion = e.getHighQuestion();
-                        break;
-                    }
-                }
-                System.out.println("basic" + basicQuestion + "low" + lowQuestion + "high" + highQuestion);
+                System.out.println("basic" + exercise.getBasic_question() + "low" + exercise.getLow_question() + "high" + exercise.getHigh_question());
                 System.out.println("basicE" + basicQuestionOfExercise + "lowE" + lowQuestionOfExercise + "highE" + highQuestionOfExercise);
                 if (type_question_modal.equals("1")) {
-                    if (basicQuestionOfExercise >= basicQuestion) {
+                    if (basicQuestionOfExercise >= exercise.getBasic_question()) {
                         System.out.println("da vao basic");
                         request.setAttribute("mess_constructor", "Your exercise structure only has " + basicQuestion + " basic question so you are exceeding the number");
                         request.setAttribute("exercise_id", exercise_id);
@@ -255,7 +220,7 @@ public class ManageQuestion extends HttpServlet {
                         return;
                     }
                 } else if (type_question_modal.equals("2")) {
-                    if (lowQuestionOfExercise >= lowQuestion) {
+                    if (lowQuestionOfExercise >= exercise.getLow_question()) {
                         System.out.println("da vao low");
                         request.setAttribute("mess_constructor", "Your exercise structure only has " + lowQuestion + " low question so you are exceeding the number");
                         request.setAttribute("exercise_id", exercise_id);
@@ -264,7 +229,7 @@ public class ManageQuestion extends HttpServlet {
                         return;
                     }
                 } else if(type_question_modal.equals("3")) {
-                    if (highQuestionOfExercise >= highQuestion) {
+                    if (highQuestionOfExercise >= exercise.getHigh_question()) {
                         System.out.println("da vao high");
                         request.setAttribute("mess_constructor", "Your exercise structure only has " + highQuestion + " high question so you are exceeding the number");
                         request.setAttribute("exercise_id", exercise_id);
@@ -373,66 +338,48 @@ public class ManageQuestion extends HttpServlet {
             String question = request.getParameter("question");
             String question_id = request.getParameter("question_id");
             String type_question_modal = request.getParameter("update_type_question_modal");
+            Question questionDB = qdao.getQuestionById(question_id);
             Exercise exercise = edao.getExerciseById(exercise_id);
-            int basicQuestion = 0;
-            int lowQuestion = 0;
-            int highQuestion = 0;
+            int basicQuestion = exercise.getBasic_question();
+            int lowQuestion = exercise.getLow_question();
+            int highQuestion = exercise.getHigh_question();
             int basicQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("1", exercise_id);
             int lowQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("2", exercise_id);
             int highQuestionOfExercise = qdao.getTotalQuestionByTypeQuestion("3", exercise_id);
-            if(exercise.getIsRandom() == 1) {
+            if(exercise.getIsRandom() == 1 || exercise.getIsRandom() == 0) {
                 request.setAttribute("isRandom","1");
-                Cookie[] arrE = request.getCookies();
-                String txt = "";
-                if (arrE != null) {
-                    for (Cookie c : arrE) {
-                        if (c.getName().equals("exercise")) {
-                            txt += c.getValue();
-                            c.setMaxAge(0);
-                            response.addCookie(c);
-                        }
-                    }
-                }
-                Cookie c = new Cookie("exercise", txt);
-                c.setMaxAge(60 * 24 * 60 * 60);
-                response.addCookie(c);
-                List<Exercise_Constructor> listE = Constructor(txt);
-                for (Exercise_Constructor e : listE) {
-                    if (e.getExercise_id() == Integer.parseInt(exercise_id)) {
-                        basicQuestion = e.getBasicQuestion();
-                        lowQuestion = e.getLowQuestion();
-                        highQuestion = e.getHighQuestion();
-                        break;
-                    }
-                }
                 System.out.println("basic" + basicQuestion + "low" + lowQuestion + "high" + highQuestion);
                 System.out.println("basicE" + basicQuestionOfExercise + "lowE" + lowQuestionOfExercise + "highE" + highQuestionOfExercise);
-                if (type_question_modal.equals("1")) {
-                    if (basicQuestionOfExercise >= basicQuestion) {
-                        System.out.println("da vao basic");
-                        request.setAttribute("mess_constructor", "Can't update !!! Your exercise structure only has " + basicQuestion + " high question so you are exceeding the number");
-                        request.setAttribute("exercise_id", exercise_id);
-                        request.setAttribute("course_id", course_id);
-                        doGet(request, response);
-                        return;
-                    }
-                } else if (type_question_modal.equals("2")) {
-                    if (lowQuestionOfExercise >= lowQuestion) {
-                        System.out.println("da vao low");
-                        request.setAttribute("mess_constructor", "Can't update !!! Your exercise structure only has " + lowQuestion + " high question so you are exceeding the number");
-                        request.setAttribute("exercise_id", exercise_id);
-                        request.setAttribute("course_id", course_id);
-                        doGet(request, response);
-                        return;
-                    }
-                } else if(type_question_modal.equals("3")) {
-                    if (highQuestionOfExercise >= highQuestion) {
-                        System.out.println("da vao high");
-                        request.setAttribute("mess_constructor", "Can't update !!! Your exercise structure only has " + highQuestion + " high question so you are exceeding the number");
-                        request.setAttribute("exercise_id", exercise_id);
-                        request.setAttribute("course_id", course_id);
-                        doGet(request, response);
-                        return;
+                if(Integer.parseInt(type_question_modal) == questionDB.getType_question()){
+                    System.out.println("type_question" + questionDB.getType_question());
+                } else {
+                    if (type_question_modal.equals("1")) {
+                        if (basicQuestionOfExercise >= basicQuestion) {
+                            System.out.println("da vao basic");
+                            request.setAttribute("mess_constructor", "Can't update !!! Your exercise structure only has " + basicQuestion + " basic question so you are exceeding the number");
+                            request.setAttribute("exercise_id", exercise_id);
+                            request.setAttribute("course_id", course_id);
+                            doGet(request, response);
+                            return;
+                        }
+                    } else if (type_question_modal.equals("2")) {
+                        if (lowQuestionOfExercise >= lowQuestion) {
+                            System.out.println("da vao low");
+                            request.setAttribute("mess_constructor", "Can't update !!! Your exercise structure only has " + lowQuestion + " low application question so you are exceeding the number");
+                            request.setAttribute("exercise_id", exercise_id);
+                            request.setAttribute("course_id", course_id);
+                            doGet(request, response);
+                            return;
+                        }
+                    } else if (type_question_modal.equals("3")) {
+                        if (highQuestionOfExercise >= highQuestion) {
+                            System.out.println("da vao high");
+                            request.setAttribute("mess_constructor", "Can't update !!! Your exercise structure only has " + highQuestion + " high application question so you are exceeding the number");
+                            request.setAttribute("exercise_id", exercise_id);
+                            request.setAttribute("course_id", course_id);
+                            doGet(request, response);
+                            return;
+                        }
                     }
                 }
             }
@@ -465,10 +412,13 @@ public class ManageQuestion extends HttpServlet {
             doGet(request, response);
         } else if (status != null && status.equals("prevent")) {
             edao.editExerciseStatusForPrevent(exercise_id);
-            response.sendRedirect("create-exercise");
+//            response.sendRedirect("create-exercise");
+            response.sendRedirect("create-exercise?group_id=" + group_id + "&course_id=" + course_id);
+
         } else if (status != null && status.equals("close")) {
             edao.editExerciseStatusForClose(exercise_id);
-            response.sendRedirect("create-exercise");
+//            response.sendRedirect("create-exercise");
+            response.sendRedirect("create-exercise?group_id=" + group_id + "&course_id=" + course_id);
         } else {
             if (jsonObject == null || !jsonObject.has("exercise_id") || !jsonObject.has("selectedIds") || !jsonObject.has("status")) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

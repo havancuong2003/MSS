@@ -223,6 +223,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/views/common/header.jsp"></jsp:include>
 <div class="container">
     <div class="search-container">
         <div class="form-container">
@@ -242,7 +243,7 @@
                 </select>
                 <button type="submit">Select</button>
             </form>
-            <form action="search-application" method="get">
+            <form action="search-application" method="get" style="margin-top: 10px">
                 <input type="text" placeholder="Search by user name..." name="search">
                 <button type="submit">Search</button>
             </form>
@@ -303,11 +304,11 @@
         </c:forEach>
     </table>
     <p style="text-align: center; font-style: italic;font-size: 18px;margin: 20px 0">${mess}</p>
-    <tr>
-        <td colspan="7" style="text-align: right;">
-            <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
-        </td>
-    </tr>
+<%--    <tr>--%>
+<%--        <td colspan="7" style="text-align: right;">--%>
+<%--            <a href="${pageContext.request.contextPath}/${role}/dashboard" style="display: inline-block; padding: 10px 20px; margin: 10px 5px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>--%>
+<%--        </td>--%>
+<%--    </tr>--%>
     <div class="pagination-container">
         <%--        <div class="hint-text">Showing <b>4</b> out of <b>25</b> entries</div>--%>
         <ul class="pagination">
@@ -409,5 +410,6 @@
         });
     });
 </script>
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

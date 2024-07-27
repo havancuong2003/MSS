@@ -8,7 +8,9 @@ public class Exercise implements IEntity {
     private int exerciseId;
     private String exerciseName;
     private int status;
-    private int question_number;
+    private int basic_question;
+    private int low_question;
+    private int high_question;
     private float exercise_time;
     private int get_score;
     private int group_id;
@@ -30,12 +32,28 @@ public class Exercise implements IEntity {
     public Exercise() {
     }
 
-    public int getQuestion_number() {
-        return question_number;
+    public int getBasic_question() {
+        return basic_question;
     }
 
-    public void setQuestion_number(int question_number) {
-        this.question_number = question_number;
+    public void setBasic_question(int basic_question) {
+        this.basic_question = basic_question;
+    }
+
+    public int getLow_question() {
+        return low_question;
+    }
+
+    public void setLow_question(int low_question) {
+        this.low_question = low_question;
+    }
+
+    public int getHigh_question() {
+        return high_question;
+    }
+
+    public void setHigh_question(int high_question) {
+        this.high_question = high_question;
     }
 
     public float getExercise_time() {
@@ -94,11 +112,13 @@ public class Exercise implements IEntity {
         this.exerciseId = exerciseId;
     }
 
-    public Exercise(int exerciseId, String exerciseName, int status, int question_number, float exercise_time, int get_score, int group_id, int grade_category, int isRandom, Teacher teacher, Course course, ArrayList<History> histories) {
+    public Exercise(int exerciseId, String exerciseName, int status, int basic_question, int low_question, int high_question, float exercise_time, int get_score, int group_id, int grade_category, int isRandom, Teacher teacher, Course course, ArrayList<History> histories) {
         this.exerciseId = exerciseId;
         this.exerciseName = exerciseName;
         this.status = status;
-        this.question_number = question_number;
+        this.basic_question = basic_question;
+        this.low_question = low_question;
+        this.high_question = high_question;
         this.exercise_time = exercise_time;
         this.get_score = get_score;
         this.group_id = group_id;
