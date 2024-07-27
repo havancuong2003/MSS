@@ -442,6 +442,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/views/common/header.jsp"></jsp:include>
 <div class="container" style="margin-top: 70px">
     <div class="custom-form-wrapper">
         <form class="custom-form" action="manage-bank-question" method="get">
@@ -466,7 +467,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Manage <b>Question Bank</b></h2>
+                    <h2 style="color: whitesmoke">Manage <b style="color: whitesmoke">Question Bank</b></h2>
                 </div>
             </div>
         </div>
@@ -497,18 +498,18 @@
                     <td>${o.created_by}</td>
                         <td>
                             <a href="#" class="view" data-question-id="${o.bank_question_id}" data-toggle="modal"><i class="material-icons text-primary" data-toggle="tooltip" title="View">visibility</i></a>
-                            <a href="manage-bank-question?question_id=${o.bank_question_id}&page=${tag-1}&status=delete" class="delete" onclick="return confirm('Are you sure you want to delete this question?');"><i class="material-icons text-danger" title="Delete">delete</i></a>
+                            <a href="manage-bank-question?question_id=${o.bank_question_id}&page=${tag}&status=delete&course_id=${course_id}" class="delete" onclick="return confirm('Are you sure you want to delete this question?');"><i class="material-icons text-danger" title="Delete">delete</i></a>
                         </td>
                 </tr>
                 </tbody>
             </c:forEach>
         </table>
         <p style="text-align: center; font-style: italic;font-size: 18px;margin: 20px 0">${mess_list_question}</p>
-        <div style="margin-top: 10px">
-            <a class="back-link" href="${pageContext.request.contextPath}/${role}/dashboard" style="color: #FF6600;font-size: 15px">
-                <i class="fas fa-arrow-left"></i> Back to dashboard
-            </a>
-        </div>
+<%--        <div style="margin-top: 10px">--%>
+<%--            <a class="back-link" href="${pageContext.request.contextPath}/${role}/dashboard" style="color: #FF6600;font-size: 15px">--%>
+<%--                <i class="fas fa-arrow-left"></i> Back to dashboard--%>
+<%--            </a>--%>
+<%--        </div>--%>
         <div class="pagination-container">
             <ul class="pagination">
                 <c:if test="${searchtxt != null}" >
@@ -644,5 +645,6 @@
     //     });
     // });
 </script>
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>
