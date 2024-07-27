@@ -11,82 +11,97 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh; /* Đảm bảo chiều cao tối thiểu của body là 100% viewport height */
+            margin: 0;
         }
+
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 20px;
-            background-color: #f8f8f8;
+            background-color: #FFFFFF;
             border-bottom: 1px solid #e7e7e7;
             width: 100%;
             box-sizing: border-box;
         }
+
         header img {
             height: 40px;
             width: 40px;
         }
+
         header span {
             font-size: 24px;
             font-weight: bold;
+            color: white;
         }
+
         .profile-container {
             position: relative;
             display: inline-block;
         }
+
         .profile-img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             cursor: pointer;
         }
+
         .profile-dropdown {
             display: none;
             position: absolute;
             right: 0;
             top: 50px;
             background-color: #ffffff;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
             padding: 20px;
             z-index: 1;
             width: 160px;
             border-radius: 8px;
         }
+
         .profile-info {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
+
         .profile-info img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             margin-right: 10px;
         }
+
         .profile-info div {
             display: flex;
             flex-direction: column;
         }
+
         .profile-info span {
             font-size: 16px;
         }
+
         .profile-info span.role {
             font-size: 14px;
             color: #888;
         }
+
         .profile-actions {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
+
         .profile-actions a {
             text-decoration: none;
             color: rgb(105, 122, 141);
@@ -96,44 +111,102 @@
             gap: 10px;
             transition: color 0.3s;
         }
+
         .profile-actions a:hover {
             color: #0056b3;
         }
+
         .main-container {
-            display: flex;
             flex: 1;
-            height: calc(100vh - 71px); /* Chiều cao của header */
+            display: flex;
         }
+
         .sidebar {
             width: 250px;
-            background-color: #333;
-            color: white;
+            background-color: #f5f5f5;
+            color: #333;
             display: flex;
             flex-direction: column;
-            padding-top: 20px;
+            padding: 20px;
             box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc; /* Border cho sidebar */
+            margin:30px;
+            height: max-content;
         }
+
         .sidebar a {
             padding: 15px 20px;
             text-decoration: none;
-            color: white;
+            color: #333;
             display: block;
             transition: background 0.3s;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            background-color: #d0d0d0; /* Màu nền cho mỗi chức năng */
         }
+
         .sidebar a:hover {
-            background-color: #575757;
+            background-color: #b8b8b8; /* Màu nền khi di chuột qua */
         }
+
         .sidebar .submenu a {
-            padding-left: 40px;
-            font-size: 14px;
+            padding: 15px 30px;
+            background-color: #4d4d4d; /* Màu nền cho submenu */
+            margin-left: 15px;
+            border-radius: 4px;
+            color: #FFFFFF;
         }
+
+        .sidebar .submenu a:hover {
+            background-color: #333333; /* Màu nền khi di chuột qua submenu */
+        }
+        /* CSS cho submenu */
+        .submenu {
+            display: none; /* Ẩn submenu mặc định */
+            padding: 0;
+
+
+            border-radius: 4px;
+
+
+        }
+
+        .submenu a {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .submenu a:hover {
+            background-color: #c0c0c0; /* Màu nền khi di chuột qua submenu */
+        }
+
+
+
+        .sidebar a:hover {
+            background-color: #e0e0e0; /* Màu nền khi di chuột qua các mục sidebar */
+        }
+
+
         .content {
             flex-grow: 1;
             padding: 20px;
             background-color: #f1f1f1;
-            overflow-y: auto;
+            /*overflow-y: auto;*/
         }
-        .sp{
+        footer {
+            background-color: #E8E8E8;
+            padding: 15px;
+            width: 100%;
+            position: relative;
+            margin-top: 20px; /* Cách phần nội dung chính để tránh bị che khuất */
+        }
+
+        .sp {
             font-family: 'Poppins', sans-serif;
             font-size: 28px;
             font-weight: 600;
@@ -142,6 +215,97 @@
             -webkit-text-fill-color: transparent;
             display: inline-block;
             padding-left: 10px;
+        }
+
+        body {
+            font-family: Helvetica;
+            margin: 0;
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+        .site-header {
+            border-bottom: 1px solid #ccc;
+            padding: .5em 1em;
+            position: relative;
+        }
+
+        .site-header::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .site-identity {
+            float: left;
+        }
+
+        .site-identity h1 {
+            font-size: 1.5em;
+            margin: .7em 0 .3em 0;
+            display: inline-block;
+            color: white;
+        }
+
+        .site-identity img {
+            max-width: 55px;
+            float: left;
+            margin: 0 10px 0 0;
+        }
+
+        .site-navigation {
+            float: right;
+        }
+
+        .site-navigation ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .site-navigation li {
+            display: inline-block;
+            margin: 1.4em 1em 1em 1em;
+        }
+
+        .avatar-container {
+            float: right;
+            position: absolute;
+            margin: 1em 1em 1em 0;
+            cursor: pointer;
+            right: 20px; /* Di chuyển avatar sát bên phải */
+        }
+
+        .avatar {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 200%;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+        }
+        .submenu a i {
+            color: #FFFFFF; /* Màu trắng cho icon trong submenu */
         }
         .modal-body {
             padding: 20px;
@@ -210,42 +374,25 @@
     </script>
 </head>
 <body>
-<header>
-    <div>
-        <img src="logo.png" alt="">
-        <span class="sp">MyStudySpace</span>
+<header class="site-header">
+    <div class="site-identity">
+        <a href="dashboard"><img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/000/532/351/datas/medium.jpg" alt="Site Name" /></a>
+        <h1><a href="dashboard">My study space</a></h1>
     </div>
-    <div class="profile-container">
-        <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()">
-        <div id="profileDropdown" class="profile-dropdown">
-            <div class="profile-info">
-                <img src="data:image/jpeg;base64,${photoBase64}" alt="">
-                <div>
-                    <span id="profileFullName">${requestScope.account.fullname}</span>
-                    <span id="profileRole" class="role">${requestScope.roleName}</span>
-                </div>
-            </div>
-            <div class="profile-actions">
-                <a href="<%=request.getContextPath()%>/load-profile"><i class="fas fa-user"></i> My Profile</a>
-                <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
+
+    <div class="avatar-container" onclick="toggleProfileDropdown()">
+        <img src="data:image/jpeg;base64,${photoBase64}" alt="Avatar" class="avatar" />
+        <div id="profileDropdown" class="dropdown-menu">
+            <a href="../load-profile">Setting</a>
+            <a href="../logout" onclick="logout()">Logout</a>
         </div>
     </div>
 </header>
 <div class="main-container">
     <div class="sidebar">
-        <a href="#" onclick="toggleSubMenu('homeSubMenu')"><i class="fas fa-home"></i> Home</a>
-<%--        <a href="#" onclick="toggleSubMenu('userManagementSubMenu')"><i class="fas fa-users"></i> User Management</a>--%>
-<%--        <div id="userManagementSubMenu" class="submenu" style="display: none;">--%>
-<%--            <a href="<%=request.getContextPath()%>/add-New-Account"><i class="fas fa-user-plus"></i> Add New Account</a>--%>
-<%--            <a href="<%=request.getContextPath()%>/list-account"><i class="fas fa-list"></i> Account List</a>--%>
-<%--        </div>--%>
-        <a href="#" onclick="toggleSubMenu('courseManagementSubMenu')"><i class="fas fa-book"></i> Course Management</a>
-        <div id="courseManagementSubMenu" class="submenu" style="display: none;">
-            <a href="<%=request.getContextPath()%>/addCourse"><i class="fas fa-plus"></i> Add New Course</a>
-            <a href="<%=request.getContextPath()%>/listCourse"><i class="fas fa-list"></i> Course List</a>
-        </div>
+        <a href="dashboard">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
         <a href="#" onclick="toggleSubMenu('scheduleSubMenu')"><i class="fas fa-calendar-alt"></i> Education </a>
         <div id="scheduleSubMenu" class="submenu" style="display: none;">
             <a href="../manager/schedule"><i class="fas fa-calendar"></i> View Schedule</a>
