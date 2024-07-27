@@ -2,6 +2,7 @@ package controller.group;
 
 import dal.ExerciseDBContext;
 import dal.GroupDBContext;
+import dal.TestDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,6 +14,8 @@ import model.Exercise;
 import util.GetCurrentTerm;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/student/groupList")
 public class GroupStudentController extends HttpServlet {
@@ -33,8 +36,15 @@ public class GroupStudentController extends HttpServlet {
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("account");
         ExerciseDBContext con = new ExerciseDBContext();
+        TestDBContext conTest = new TestDBContext();
         if(!groupId.isEmpty() && groupId != null) {
-            req.setAttribute("exercises", con.getListExercise(groupId));
+            List<Exercise> exercises = con.getListExercise(groupId);
+            for (Exercise exercise : exercises) {
+                if(!conTest.checkTestExist(account.getId(), exercise.getExerciseId())) {
+                    exercise.setGet_score(3);
+                }
+            }
+            req.setAttribute("exercises", exercises);
         }
         req.setAttribute("groupId", groupId);
         req.setAttribute("groupName", groupName);
