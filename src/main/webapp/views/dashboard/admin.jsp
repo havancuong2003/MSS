@@ -418,6 +418,22 @@
             </a>
         </div>
 
+
+        <!-- Semester -->
+        <a href="#" onclick="toggleSubMenu('semesterSubMenu', event)">
+            <i class="fas fa-university"></i> Semester
+        </a>
+        <div id="semesterSubMenu" class="submenu">
+            <a href="addSemester">
+                <i class="fas fa-plus-square"></i> Add New Semester
+            </a>
+            <a href="viewupdatesemester">
+                <i class="fas fa-eye"></i> View Semester
+            </a>
+
+        </div>
+
+
         <!-- Curriculum Management -->
         <a href="#" onclick="toggleSubMenu('curSubMenu', event)">
             <i class="fas fa-book"></i> Curriculum Management
