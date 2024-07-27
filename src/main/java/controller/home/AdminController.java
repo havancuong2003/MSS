@@ -76,25 +76,45 @@ public class AdminController extends HttpServlet {
                     req.setAttribute("timeRegister", "true");
                 }
             }
-            if (isCurrentDateInRange(rangeDate(semester.getEnd().toString(), 4), rangeDate(semester.getEnd().toString(), 3))) {
+            else{
+
+                req.setAttribute("timeRegister", "not null");
+            }
+            if (isCurrentDateInRange(rangeDate(semester.getEnd().toString(), 3), rangeDate(semester.getEnd().toString(), 2))) {
              boolean statusCreateGroup =   gdb.getStatusCreateGroup(semester.getNextSemesterID());
+                System.out.println("start"+ rangeDate(semester.getEnd().toString(), 3));
+                System.out.println("end"+ rangeDate(semester.getEnd().toString(), 2));
                 if (!statusCreateGroup) {
                     req.setAttribute("CreateGroup", "null");
                 } else {
                     req.setAttribute("CreateGroup", "true");
                 }
             }
+            else{
+
+                req.setAttribute("CreateGroup", "not null");
+            }
+
             if (isCurrentDateInRange(rangeDate(semester.getEnd().toString(), 2), rangeDate(semester.getEnd().toString(), 1))) {
+
                 if (timePeriods == null) {
                     req.setAttribute("ChangeGroup", "null");
+
                 } else if (timePeriods != null) {
                     if (timePeriods.getStartChangeClass() == null) {
                         req.setAttribute("ChangeGroup", "null");
+
                     } else {
                         req.setAttribute("ChangeGroup", "true");
+
                     }
 
                 }
+            }
+            else{
+
+                req.setAttribute("ChangeGroup", "not null");
+
             }
 
         } catch (SQLException e) {

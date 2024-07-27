@@ -38,6 +38,8 @@ public class ChangeGroupController extends HttpServlet {
             Account account = (Account) session.getAttribute("account");
 
             req.setAttribute("groups", gdb.getGroupForStudent(semester.getNextSemesterID(), account.getUsername()));
+
+            req.setAttribute("gSize", gdb.getGroupForStudent(semester.getNextSemesterID(), account.getUsername()).size());
             req.setAttribute("studentid", sdb.getStudentID(account.getUsername()));
 
             ArrayList<ChangeGroup> allRequired = cgdb.getAllRequired(account.getUsername(), semester.getNextSemesterID());

@@ -12,7 +12,7 @@ import model.Course;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "ListAllCourse", value = "/listCourse")
+@WebServlet(name = "ListAllCourse", value = "/admin/listCourse")
 public class ListAllCourseController extends HttpServlet {
 
     @Override
@@ -21,7 +21,7 @@ public class ListAllCourseController extends HttpServlet {
         ArrayList<Course> courses = dbContext.getCourseList();
 
         req.setAttribute("courses", courses);
-        req.getRequestDispatcher("/views/course/list.jsp").forward(req, resp);
+        req.getRequestDispatcher("../views/course/list.jsp").forward(req, resp);
     }
 
     @Override

@@ -45,10 +45,13 @@ public class CreateTimeChangeClass extends HttpServlet {
 
         }
         SemesterDBContext semesterDBContext = new SemesterDBContext();
+
         try {
             Semester semester = semesterDBContext.get(currentSemester);
             req.setAttribute("semester", semester);
             req.setAttribute("nextSemester",semesterDBContext.get(semester.getNextSemesterID()));
+            req.setAttribute("startRange", rangeDate(semester.getEnd().toString(), 2));
+            req.setAttribute("endRange", rangeDate(semester.getEnd().toString(), 1));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

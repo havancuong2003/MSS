@@ -1,10 +1,7 @@
 package controller.grade;
 
 import com.google.gson.Gson;
-import dal.AccountDBContext;
-import dal.GroupDBContext;
-import dal.MarkDBContext;
-import dal.SemesterDBContext;
+import dal.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -39,6 +36,7 @@ public class TeacherViewStudentGradeController extends HttpServlet {
             String sesid = req.getParameter("sesid");
             GroupDBContext gDB = new GroupDBContext();
             MarkDBContext mDB = new MarkDBContext();
+            TotalDBContext tDB = new TotalDBContext();
             if (sesid != null) {
                 int ses = Integer.parseInt(sesid);
                 ArrayList<Group> groups = gDB.getGroupForStudentBySidAndSemester(s.getId(), ses);
@@ -49,6 +47,8 @@ public class TeacherViewStudentGradeController extends HttpServlet {
                 int gid = Integer.parseInt(groupid);
                 ArrayList<Mark> marks = mDB.getMarkForStudent(s.getId(), gid, Integer.parseInt(sesid));
                 responseData.put("marks", marks);
+                Total total = tDB.getTotalBySidAndGid(s.getId(), gid);
+                responseData.put("total", total);
             }
         } else {
 

@@ -160,6 +160,8 @@
 </header>
 <div class="container">
     <h2 class="text-center">Attendance</h2>
+    <a href="schedule" class="btn btn-primary">Back to Schedule</a><br>
+    <br>
     <form action="takeAttendance" method="post">
         <input type="hidden" name="sesid" value="${requestScope.sesid}">
         <table class="table table-striped">
@@ -197,6 +199,7 @@
             </tbody>
         </table>
         <button type="submit" class="btn btn-primary" <c:if test="${requestScope.lock}">disabled</c:if>>Submit</button>${requestScope.ms}
+
     </form>
 </div>
 </body>

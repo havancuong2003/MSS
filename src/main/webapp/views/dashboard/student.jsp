@@ -198,7 +198,12 @@
         <a href="viewCurriculum"><i class="fas fa-graduation-cap"></i> View Curriculum</a>
         <a href="send-application"><i class="fas fa-paper-plane"></i> Send application</a>
         <a href="changeGroup"><i class="fas fa-exchange-alt"></i> Swap Class</a>
-
+        <a href="#" onclick="toggleSubMenu('scheduleSubMenu')"><i class="fas fa-calendar-alt"></i> Education </a>
+        <div id="scheduleSubMenu" class="submenu" style="display: none;">
+            <a href="schedule"><i class="fas fa-calendar"></i> View Schedule</a>
+            <a href="attendancereport"><i class="fas fa-check"></i> View Attendance Report</a>
+            <a href="viewgrade"><i class="fas fa-tasks"></i> View Grade Report</a>
+        </div>
     </div>
     <div class="content">
         <!-- Nội dung dashboard -->

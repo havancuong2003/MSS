@@ -11,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-       GroupDBContext gdb = new GroupDBContext();
-        System.out.println(gdb.lockedGroup(1));
+       TotalDBContext tdb = new TotalDBContext();
+        System.out.println(tdb.getTotalBySidAndGid("s1",3).getAvarage_mark());
         }
      }
 

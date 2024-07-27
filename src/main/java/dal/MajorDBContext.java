@@ -16,7 +16,7 @@ public class MajorDBContext extends DBContext<Major>{
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, major.getCode());
             stm.setString(2, major.getDetail());
-            stm.setBoolean(3, true);
+            stm.setBoolean(3, major.isStatus());
             stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

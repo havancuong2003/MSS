@@ -154,7 +154,7 @@
                 </c:forEach>
             </c:forEach>
         </table>
-        <a href="<%=request.getContextPath()%>/updateCourse?id=${requestScope.id}">Update Course Detail</a>
+        <a href="<%=request.getContextPath()%>/admin/updateCourse?id=${requestScope.id}">Update Course Detail</a>
     </div>
 </c:if>
 </body>
