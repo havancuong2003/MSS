@@ -15,6 +15,201 @@
     <link rel="stylesheet" href="./css/practice.css" />
     <link rel="stylesheet" href="./css/bootstrapmin.css" />
     <script src="./css/bootstrap.min.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+    />
+    <style>body,
+    html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: rgba(192, 192, 192, 0.37);
+    }
+
+    .containers {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: rgb(242 241 241 / 78%);
+    }
+
+    .headers {
+        background-color: #ffb157;
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        height: 70px;
+    }
+
+    .home-icon {
+        background-color: white;
+        padding: 10px;
+        font-size: 17px;
+        color: black;
+        text-decoration: none;
+    }
+
+    .home-icon img {
+        height: 24px;
+        margin-right: 10px;
+    }
+
+    .username {
+        margin-left: auto;
+    }
+
+    .contents {
+        display: flex;
+        flex-grow: 1;
+    }
+
+    .question-section {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .question-area {
+        background-color: rgb(255 252 252);
+        flex: 1;
+        font-size: 24px;
+        border-radius: 10px;
+        box-shadow: 1px 2px 7px rgb(255 255 255 / 7%);
+        position: relative;
+    }
+
+    .question-area p {
+        word-wrap: break-word;
+        max-width: 35vw;
+        max-height: 450px;
+        margin: 20px 0px 20px 20px;
+        background-color: rgba(255, 255, 255, 0.753);
+        display: inline-block;
+        padding: 10px;
+    }
+
+    .question-area img {
+        margin: 20px 30px 0px 20px;
+        height: 300px;
+        float: right;
+    }
+
+    .options {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        height: 30vh;
+        width: 100%;
+    }
+
+    .options div {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .option-btn {
+        flex: 1 1 50%;
+        margin: 20px;
+        padding: 20px;
+        background-color: white;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        font-size: 18px;
+        width: 30vw;
+        border: 5px solid rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ben phai */
+
+    .sidebars {
+        flex: 1;
+        /* display: flex;
+        flex-direction: column; */
+        padding: 20px;
+        background-color:#b7b9c366;
+        margin: 40px 40px 60px 20px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .questions-list {
+        flex: 1;
+        background-color: white;
+        padding: 20px;
+        overflow-y: scroll;
+        height: 500px;
+        display: grid;
+        border-radius: 5px;
+        grid-template-columns: auto auto auto auto auto;
+        grid-template-rows: 80px 80px 80px 80px;
+    }
+
+    .list-item {
+        padding: 10px;
+        background-color: #cedff0;
+        margin: 5px 0;
+        cursor: pointer;
+        height: 70px;
+        width: 70px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .list-item.active {
+        background-color: red !important;
+        color: white;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+    }
+
+    .navigation-buttons-up {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn,
+    .finish-btn {
+        width: 120px;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: white;
+        border: none;
+        color: black;
+        font-weight: 600;
+        font-size: 17px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .finish-btn {
+        background-color: #007bff;
+        font-size: 18px;
+        color: white;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 150px;
+    }
+
+    .gray {
+        background-color: #91b2c3; /* hoặc bất kỳ thuộc tính CSS nào bạn muốn */
+    }
+    </style>
 </head>
 
 <body>
@@ -256,7 +451,13 @@
         let countdownInterval = setInterval(updateTime, 1000);
     });
 </script>
-<script src="./js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-Vo0ewNxsZn2Zr2sfotIsOzKQC4fTJPfdHCw2t1jPj2QgW9FpHkAPc6k7cWz1V6k4" crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+></script>
 </body>
 </html>
 

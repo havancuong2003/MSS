@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Danh Sách Lớp</title>
+    <title>Exercise List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,49 +86,53 @@
 
 
 <div class="container">
-    <div class="headerclass"> <h1>Class list</h1></div>
+    <div class="headerclass"> <h1>Exercise list Of ${groupName}</h1></div>
     <table>
         <tr>
-            <th>Semeser</th>
-            <th>Group Name</th>
-            <th>Course</th>
-            <th>View</th>
+            <th>Exercise Id</th>
+            <th>Exercise Name</th>
+            <th>Exercise Time</th>
+            <th>Get Score?</th>
+            <th>Status</th>
+            <th>Start</th>
+            <th>History</th>
         </tr>
-        <c:forEach items="${groups}" var="group">
+        <c:forEach items="${exercises}" var="exercise">
             <tr>
-                <td>${group.getSemester().getDetail()}</td>
-                <td>${group.getName()}</td>
-                <td>${group.getCourse().getDetail()}</td>
-                <form action="groupList" method="post">
-                    <td><button type="submit">View Exercise</button></td>
-                    <input type="hidden" name="groupId" value="${group.getId()}">
-                    <input type="hidden" name="groupName" value="${group.getName()}">
-                </form>
+                <td>${exercise.getExerciseId()}</td>
+                <td>${exercise.getExerciseName()}</td>
+                <td>${exercise.getExercise_time()}</td>
+                <td>${exercise.getGet_score() == 2? 'Practice' : 'Exam'}</td>
+                <td>${exercise.getStatus() == 1 ? 'Open' : 'Close'}</td>
+                <c:if test="${exercise.getStatus() == 1  && exercise.getGet_score() == 2}">
+                    <form action="practice" method="get">
+                        <td><button type="submit">Start Exercise</button></td>
+                        <input type="hidden" name="exerciseId" value="${exercise.getExerciseId()}">
+                        <input type="hidden" name="courseId" value="${exercise.getCourse().getId()}">
+                    </form>
+                </c:if>
+
+                <c:if test="${exercise.getStatus() == 1  && exercise.getGet_score() == 1}">
+                    <form action="test" method="get">
+                        <td><button type="submit">Start Exercise</button></td>
+                        <input type="hidden" name="exerciseId" value="${exercise.getExerciseId()}">
+                        <input type="hidden" name="courseId" value="${exercise.getCourse().getId()}">
+                    </form>
+                </c:if>
+
+                <c:if test="${exercise.getStatus() == 0 }">
+                        <td>Close</td>
+                </c:if>
+                <td><a href="../student/viewlisthistory?exerciseId=${exercise.getExerciseId()}&exName=${exercise.getExerciseName()}">View</a></td>
+
 
             </tr>
         </c:forEach>
 
-<%--        <tr>--%>
-<%--            <td>Class 2</td>--%>
-<%--            <td><a href="#">Schedule</a></td>--%>
-<%--            <td><a href="#">Mark</a></td>--%>
-<%--            <td><a href="#">Attendance</a></td>--%>
-<%--            <td><a href="#">Exercises</a></td>--%>
-<%--            <td><a href="#">Exam</a></td>--%>
-<%--        </tr>--%>
-<%--        <tr>--%>
-<%--            <td>Class 3</td>--%>
-<%--            <td><a href="#">Schedule</a></td>--%>
-<%--            <td><a href="#">Mark</a></td>--%>
-<%--            <td><a href="#">Attendance</a></td>--%>
-<%--            <td><a href="#">Exercises</a></td>--%>
-<%--            <td><a href="#">Exam</a></td>--%>
-<%--        </tr>--%>
+
     </table>
 </div>
 
 <jsp:include page="../common/footer.jsp"/>
-
-
 </body>
 </html>

@@ -12,11 +12,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-@WebServlet(name="addNewAccount",value = "/add-New-Account")
+@WebServlet(name="addNewAccount",value = "/admin/add-New-Account")
 public class AddNewAccountByAdmin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("views/profile/addnewaccount.jsp").forward(req, resp);
+        req.getRequestDispatcher("../views/profile/addnewaccount.jsp").forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

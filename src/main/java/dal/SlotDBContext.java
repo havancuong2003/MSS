@@ -112,7 +112,7 @@ public class SlotDBContext extends DBContext<TimeSlot> {
             stm.setString(1, slot.getDetail());
             stm.setTime(2, slot.getStartTime());
             stm.setTime(3, slot.getEndTime());
-            stm.execute();
+            stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, e);
         }

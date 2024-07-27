@@ -57,53 +57,9 @@
     </script>
 </head>
 <body>
-<header>
-    <div>
-        <img src="logo.png" alt="" />
-        <span class="sp">MyStudySpace</span>
-    </div>
-    <div class="profile-container">
-        <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()" />
-        <div id="profileDropdown" class="profile-dropdown">
-            <div class="profile-info">
-                <img src="data:image/jpeg;base64,${photoBase64}" alt="" />
-                <div>
-                    <span id="profileFullName">${requestScope.account.fullname}</span>
-                    <span id="profileRole" class="role">${requestScope.roleName}</span>
-                </div>
-            </div>
-            <div class="profile-actions">
-                <a href="<%=request.getContextPath()%>/load-profile"><i class="fas fa-user"></i> My Profile</a>
-                <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </div>
-</header>
+<jsp:include page="../../common/header.jsp"/>
 <div class="main-container">
-    <div class="sidebar">
-        <a href="#" onclick="toggleSubMenu('homeSubMenu')"><i class="fas fa-home"></i> Home</a>
-        <a href="#" onclick="toggleSubMenu('userManagementSubMenu')"><i class="fas fa-users"></i> User Management</a>
-        <div id="userManagementSubMenu" class="submenu" style="display: none">
-            <a href="<%=request.getContextPath()%>/add-New-Account"><i class="fas fa-user-plus"></i> Add New Account</a>
-            <a href="<%=request.getContextPath()%>/list-account"><i class="fas fa-list"></i> Account List</a>
-        </div>
-        <a href="#" onclick="toggleSubMenu('courseManagementSubMenu')"><i class="fas fa-book"></i> Course Management</a>
-        <div id="courseManagementSubMenu" class="submenu" style="display: none">
-            <a href="<%=request.getContextPath()%>/addCourse"><i class="fas fa-plus"></i> Add New Course</a>
-            <a href="<%=request.getContextPath()%>/listCourse"><i class="fas fa-list"></i> Course List</a>
-        </div>
-        <a href="#" onclick="toggleSubMenu('timePeriodsSubMenu')"><i class="fas fa-clock"></i> Time Periods</a>
-        <div id="timePeriodsSubMenu" class="submenu" style="display: none">
-            <a href="timeChangeClass"><i class="fas fa-exchange-alt"></i> Time Change Class</a>
-            <a href="registerTime"><i class="fas fa-calendar-check"></i> Time Register Course</a>
-        </div>
-        <a href="#" onclick="toggleSubMenu('scheduleSubMenu')"><i class="fas fa-calendar-alt"></i> Schedule</a>
-        <div id="scheduleSubMenu" class="submenu" style="display: none">
-            <a href="createGroup"><i class="fas fa-users-cog"></i> Create Group</a>
-            <a href="createSchedule"><i class="fas fa-calendar-plus"></i> Create Schedule</a>
-        </div>
-    </div>
+
     <div class="content">
         <!-- Nội dung dashboard -->
 
@@ -128,7 +84,7 @@
                     <th>Detail</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Is Create</th>
+<%--                    <th>Is Create</th>--%>
                     <th>Edit</th>
                 </tr>
                 </thead>
@@ -145,12 +101,12 @@
                                 <td>${semester.getDetail()}</td>
                                 <td>${semester.getStart()}</td>
                                 <td>${semester.getEnd()}</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${semester.getIsCreate() == 1}">Yes</c:when>
-                                        <c:otherwise>No</c:otherwise>
-                                    </c:choose>
-                                </td>
+<%--                                <td>--%>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${semester.getIsCreate() == 1}">Yes</c:when>--%>
+<%--                                        <c:otherwise>No</c:otherwise>--%>
+<%--                                    </c:choose>--%>
+<%--                                </td>--%>
                                 <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#popup-updateStatus-${semester.getId()}">Edit</button></td>
                             </tr>
                         </c:forEach>
@@ -187,13 +143,13 @@
                             <label for="endDate-${semester.id}" class="form-label">End Date</label>
                             <input type="date" class="form-control" id="endDate-${semester.id}" name="endDate" value="${semester.end}" required />
                         </div>
-                        <div class="mb-3">
-                            <label for="isCreate-${semester.id}" class="form-label">Is Create</label>
-                            <select class="form-select" id="isCreate-${semester.id}" name="isCreate">
-                                <option value="1" ${semester.isCreate == 1 ? 'selected' : ''}>Yes</option>
-                                <option value="0" ${semester.isCreate == 0 ? 'selected' : ''}>No</option>
-                            </select>
-                        </div>
+<%--                        <div class="mb-3">--%>
+<%--                            <label for="isCreate-${semester.id}" class="form-label">Is Create</label>--%>
+<%--                            <select class="form-select" id="isCreate-${semester.id}" name="isCreate">--%>
+<%--                                <option value="1" ${semester.isCreate == 1 ? 'selected' : ''}>Yes</option>--%>
+<%--                                <option value="0" ${semester.isCreate == 0 ? 'selected' : ''}>No</option>--%>
+<%--                            </select>--%>
+<%--                        </div>--%>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="deletesemester?semesterId=${semester.id}" class="btn btn-primary">Delete</a>
                     </form>
@@ -241,7 +197,8 @@
 </script>
 <script src="templates/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-Vo0ewNxsZn2Zr2sfotIsOzKQC4fTJPfdHCw2t1jPj2QgW9FpHkAPc6k7cWz1V6k4" crossorigin="anonymous"></script>
+<jsp:include page="../../common/footer.jsp"/>
 </body>
 </html>

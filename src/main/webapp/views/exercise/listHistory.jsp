@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Danh Sách Lớp</title>
+    <title>List History</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,7 +54,7 @@
         }
 
         th {
-            background-color: #E8E8E8; /* Cam */
+            background-color: #E8E8E8;
             color: black;
         }
 
@@ -84,51 +84,42 @@
 <body>
 <jsp:include page="../common/header.jsp"/>
 
-
 <div class="container">
-    <div class="headerclass"> <h1>Class list</h1></div>
+    <div class="headerclass"> <h1>History list Of ${exName}</h1></div>
     <table>
         <tr>
-            <th>Semeser</th>
-            <th>Group Name</th>
-            <th>Course</th>
+            <th>History Score</th>
+            <th>Date Submit</th>
             <th>View</th>
         </tr>
-        <c:forEach items="${groups}" var="group">
+        <c:forEach items="${list}" var="history">
             <tr>
-                <td>${group.getSemester().getDetail()}</td>
-                <td>${group.getName()}</td>
-                <td>${group.getCourse().getDetail()}</td>
-                <form action="groupList" method="post">
-                    <td><button type="submit">View Exercise</button></td>
-                    <input type="hidden" name="groupId" value="${group.getId()}">
-                    <input type="hidden" name="groupName" value="${group.getName()}">
-                </form>
+                <td>${history.getScore()}</td>
+                <td>${history.getDate_submit()}</td>
+                <td><a href="../student/viewhistorytest?historyId=${history. getId()}">View</a></td>
+
 
             </tr>
         </c:forEach>
 
-<%--        <tr>--%>
-<%--            <td>Class 2</td>--%>
-<%--            <td><a href="#">Schedule</a></td>--%>
-<%--            <td><a href="#">Mark</a></td>--%>
-<%--            <td><a href="#">Attendance</a></td>--%>
-<%--            <td><a href="#">Exercises</a></td>--%>
-<%--            <td><a href="#">Exam</a></td>--%>
-<%--        </tr>--%>
-<%--        <tr>--%>
-<%--            <td>Class 3</td>--%>
-<%--            <td><a href="#">Schedule</a></td>--%>
-<%--            <td><a href="#">Mark</a></td>--%>
-<%--            <td><a href="#">Attendance</a></td>--%>
-<%--            <td><a href="#">Exercises</a></td>--%>
-<%--            <td><a href="#">Exam</a></td>--%>
-<%--        </tr>--%>
+        <%--        <tr>--%>
+        <%--            <td>Class 2</td>--%>
+        <%--            <td><a href="#">Schedule</a></td>--%>
+        <%--            <td><a href="#">Mark</a></td>--%>
+        <%--            <td><a href="#">Attendance</a></td>--%>
+        <%--            <td><a href="#">Exercises</a></td>--%>
+        <%--            <td><a href="#">Exam</a></td>--%>
+        <%--        </tr>--%>
+        <%--        <tr>--%>
+        <%--            <td>Class 3</td>--%>
+        <%--            <td><a href="#">Schedule</a></td>--%>
+        <%--            <td><a href="#">Mark</a></td>--%>
+        <%--            <td><a href="#">Attendance</a></td>--%>
+        <%--            <td><a href="#">Exercises</a></td>--%>
+        <%--            <td><a href="#">Exam</a></td>--%>
+        <%--        </tr>--%>
     </table>
 </div>
-
 <jsp:include page="../common/footer.jsp"/>
-
-
 </body>
 </html>

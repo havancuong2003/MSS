@@ -15,26 +15,227 @@
     <title>Quiz Interface</title>
     <link rel="stylesheet" href="./css/taketest.css">
     <link rel="stylesheet" href="./css/bootstrapmin.css" />
-    <script src="./css/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+    />
     <style>
         .isChoosenAnswer{
             background-color:#92bfbf;
         }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: rgba(192, 192, 192, 0.37);
+        }
+
+        .containers {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .headers {
+            background-color: #9fb4e2;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            height: 70px;
+        }
+
+        .home-icon{
+            background-color: white;
+            padding: 10px;
+            font-size: 17px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .home-icon img {
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .username {
+            margin-left: auto;
+        }
+
+        .contents {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .question-section {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border: 1px solid rgb(223, 4, 4);
+            background-color: #f5f5f5;
+        }
+
+        .question-area {
+            flex: 1;
+            display: flex;
+            font-size: 24px;
+            position: relative;
+            background-color: antiquewhite;
+        }
+
+        .question-area p{
+            word-wrap: break-word;
+            max-width: 35vw;
+            max-height: 450px;
+            margin: 20px 0px 20px 20px;
+            display: inline-block;
+            padding: 10px;
+        }
+
+        .question-area img{
+            margin: 20px 30px 0px 20px;
+            height: 300px;
+            float: right;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            height: 30vh;
+            width: 100%;
+
+        }
+
+        .option-btn:hover{
+            border: 2px solid grey;
+        }
+
+        .options div{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        .option-btn {
+            flex: 1 1 50%;
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.986);
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            font-size: 18px;
+            width: 30vw;
+            border-radius: 10px;
+
+        }
+
+        /* ben phai */
+
+        .sidebars {
+            flex: 1;
+            padding: 20px;
+            background-color: #a6accc63;
+            margin: 40px 40px 60px 20px;
+            position: fixed;
+            right: 0;
+        }
+
+        .sidebarclone{
+            width: 30%;
+        }
+
+        .questions-list {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            overflow-y: scroll;
+            height: 500px;
+            display: grid;
+            border-radius: 5px;
+            grid-template-columns: auto auto auto auto auto;
+            grid-template-rows: 80px 80px 80px 80px;
+        }
+
+        .list-item {
+            padding: 10px;
+            background-color: #cedff0;
+            margin: 5px 0;
+            cursor: pointer;
+            height: 70px;
+            width: 70px;
+            text-align: center;
+            align-items: center;
+        }
+
+        .list-item.active {
+            background-color: red !important;
+            color: white;
+        }
+
+        .list-item .isChoosenAnswer{
+            background-color:#92bfbf;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons-up{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav-btn, .finish-btn {
+            width: 120px;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: rgb(131, 193, 255);
+            border: none;
+            color: rgb(19, 10, 10);
+            font-weight: 600;
+            font-size: 17px;
+            border-radius: 5px;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+
+        .finish-btn {
+            background-color: #0073ee;
+            font-size: 18px;
+            color: white;
+            bottom: 20px;
+            border-radius: 15px;
+        }
+
+        .navigation-buttons-down{
+            display: flex;
+            justify-content: right;
+        }
+
+        .gray {
+            background-color: rgba(107, 184, 119, 0.342);
+        }
+
     </style>
 </head>
 
 <body>
 <div class="containers">
     <div class="headers">
-        <a href="#" class="home-icon">
+        <a href="dashboard" class="home-icon">
             <img src="home-icon.png" alt="Home">
         </a>
-        <span class="username">LinhND</span>
+        <span class="username">${sessionScope.account.getUsername()}</span>
     </div>
     <div class="contents">
         <div class="question-section">
-            // hiển thị từng câu hỏi và câu trả lời
             <c:forEach items="${questionSubmissions}" var="ques" varStatus="status">
                 <div class="question-section" id="question-${status.index}">
                     <div class="question-area">
@@ -106,7 +307,16 @@
     });
 
 </script>
-<script src="./js/bootstrap.min.js"></script>
-</body>s
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-Vo0ewNxsZn2Zr2sfotIsOzKQC4fTJPfdHCw2t1jPj2QgW9FpHkAPc6k7cWz1V6k4" crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+</body>
 
 </html>
