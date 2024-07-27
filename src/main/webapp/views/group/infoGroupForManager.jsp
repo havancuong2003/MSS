@@ -19,27 +19,12 @@
             padding: 0;
         }
 
-        header, footer {
-            background-color: #333;
-            color: white;
-            /*text-align: center;*/
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-        }
 
-        header {
-            top: 0;
-        }
 
-        footer {
-            bottom: 0;
-        }
 
         .content {
-            margin-top: 130px; /* để header không che khuất nội dung */
-            margin-bottom: 70px; /* để footer không che khuất nội dung */
+
+
             padding: 20px;
             text-align: center;
         }

@@ -14,112 +14,12 @@
     <title>Attendance</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+
     <!-- Custom CSS -->
     <style>
 
-        .sp {
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            font-weight: 600;
-            background: linear-gradient(90deg, #ff8a00, #e52e71);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            padding-left: 10px;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #f8f8f8;
-            border-bottom: 1px solid #e7e7e7;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        header img {
-            height: 40px;
-            width: 40px;
-        }
-
-        header span {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .profile-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .profile-dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 50px;
-            background-color: #ffffff;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            z-index: 1;
-            width: 160px;
-            border-radius: 8px;
-        }
-
-        .profile-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .profile-info div {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .profile-info span {
-            font-size: 16px;
-        }
-
-        .profile-info span.role {
-            font-size: 14px;
-            color: #888;
-        }
-
-        .profile-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .profile-actions a {
-            text-decoration: none;
-            color: rgb(105, 122, 141);
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: color 0.3s;
-        }
-
-        .profile-actions a:hover {
-            color: #0056b3;
-        }
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
@@ -177,6 +77,23 @@
         input[type="radio"] {
             margin-left: 10px;
         }
+        .header {
+            background-color: #fff;
+            box-shadow: none;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .dropdown-menu {
+            min-width: 150px;
+            display: none; /* Ẩn menu dropdown mặc định */
+        }
+        .dropdown-menu.show {
+            display: block; /* Hiện menu khi có lớp 'show' */
+        }
+        nav {
+            margin-bottom: 50px;
+        }
     </style>
     <script>
         function toggleProfileDropdown() {
@@ -196,29 +113,39 @@
     </script>
 </head>
 <body>
-<header>
-    <div>
-        <img src="logo.png" alt="">
-        <span class="sp">MyStudySpace</span>
-    </div>
-    <div class="profile-container">
-        <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()">
-        <div id="profileDropdown" class="profile-dropdown">
-            <div class="profile-info">
-                <img src="data:image/jpeg;base64,${photoBase64}" alt="">
-                <div>
-                    <span id="profileFullName">${requestScope.account.fullname}</span>
-                    <span id="profileRole" class="role">${requestScope.roleName}</span>
-                </div>
-            </div>
-            <div class="profile-actions">
-                <a href="<%=request.getContextPath()%>/load-profile"><i class="fas fa-user"></i> My Profile</a>
-                <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+<nav class="navbar navbar-expand-lg header">
+    <button class="btn btn-light" onclick="window.location.href='<%=request.getContextPath()%>/${requestScope.role}/dashboard';">
+        <i class="fas fa-arrow-left"></i> Home
+    </button>
+
+    <div class="ml-auto">
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                Profile
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="setting">Setting</a>
+                <a class="dropdown-item" href="../logout">Logout</a>
             </div>
         </div>
     </div>
-</header>
+</nav>
+<script>
+    document.getElementById('dropdownMenuButton').addEventListener('click', function () {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    });
+
+    // Đóng menu nếu nhấp ra ngoài
+    document.addEventListener('click', function (event) {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu && !menu.contains(event.target) && !document.getElementById('dropdownMenuButton').contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+</script>
 <div class="container">
     <h2>Attendance</h2>
     <form action="<%=request.getContextPath()%>/manager/viewManagerAttendance" method="post">
@@ -263,7 +190,7 @@
 
     </form>
 </div>
-
+<jsp:include page="../common/footer.jsp" />
 
 </body>
 </html>

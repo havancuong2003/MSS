@@ -86,7 +86,7 @@
             <tr>
                 <td>${g.id}</td>
                 <td>${g.name}</td>
-                <td>${g.course.code}</td>
+                <td><a href="groupDetail?id=${g.id}">${g.course.code}</a></td>
             </tr>
         </c:forEach>
         </tbody>
