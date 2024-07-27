@@ -415,32 +415,32 @@
         }
 
         /* Styles for the pagination */
-        .pagination {
-            justify-content: center;
-        }
+        /*.pagination {*/
+        /*    justify-content: center;*/
+        /*}*/
 
-        .pagination li {
-            display: inline;
-            margin: 0 2px;
-        }
+        /*.pagination li {*/
+        /*    display: inline;*/
+        /*    margin: 0 2px;*/
+        /*}*/
 
-        .pagination li a {
-            padding: 6px 12px;
-            border: 1px solid #ddd;
-            color: #007bff;
-            text-decoration: none;
-            cursor: pointer;
-        }
+        /*.pagination li a {*/
+        /*    padding: 6px 12px;*/
+        /*    border: 1px solid #ddd;*/
+        /*    color: #007bff;*/
+        /*    text-decoration: none;*/
+        /*    cursor: pointer;*/
+        /*}*/
 
-        .pagination li a:hover, .pagination li a:focus {
-            background-color: #f1f1f1;
-        }
+        /*.pagination li a:hover, .pagination li a:focus {*/
+        /*    background-color: #f1f1f1;*/
+        /*}*/
 
-        .pagination li.active a {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
+        /*.pagination li.active a {*/
+        /*    background-color: #007bff;*/
+        /*    color: white;*/
+        /*    border-color: #007bff;*/
+        /*}*/
 
         /* Added styles for centered modal footer */
         .modal-footer {
@@ -523,11 +523,17 @@
     </style>
 </head>
 <body>
+<jsp:include page="/views/common/header.jsp"></jsp:include>
 <div class="container" style="margin-top: 70px">
     <div class="custom-form-wrapper">
+        <input type="hidden" id="basicQuestionOfExercise" value="${basicQuestionOfExercise}">
+        <input type="hidden" id="lowQuestionOfExercise" value="${lowQuestionOfExercise}">
+        <input type="hidden" id="highQuestionOfExercise" value="${highQuestionOfExercise}">
         <form class="custom-form" action="select-question-bank" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
-            <input type="hidden" name="numQuestion" value="${numQuestion}">
+            <input type="hidden" name="basicQuestion" value="${basicQuestion}">
+            <input type="hidden" name="lowQuestion" value="${lowQuestion}">
+            <input type="hidden" name="highQuestion" value="${highQuestion}">
             <input type="hidden" name="group_id" value="${group_id}">
             <input type="hidden" name="course_id" value="${course_id}">
             <select name="type_question">
@@ -542,7 +548,9 @@
     <div class="custom-form-wrapper">
         <form class="custom-form" action="select-question-bank" method="get">
             <input type="hidden" name="exercise_id" value="${exercise_id}">
-            <input type="hidden" name="numQuestion" value="${numQuestion}">
+            <input type="hidden" name="basicQuestion" value="${basicQuestion}">
+            <input type="hidden" name="lowQuestion" value="${lowQuestion}">
+            <input type="hidden" name="highQuestion" value="${highQuestion}">
             <input type="hidden" name="group_id" value="${group_id}">
             <input type="hidden" name="course_id" value="${course_id}">
             <input type="text" placeholder="Search by question..." name="search">
@@ -555,7 +563,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Question<b> Bank</b></h2>
+                    <h2 style="color: whitesmoke">Questions<b style="color: whitesmoke"> Bank</b></h2>
                 </div>
             </div>
         </div>
@@ -609,20 +617,20 @@
         </table>
         <div class="pagination-container">
             <c:if test="${isRandom != 1}">
-                <ul class="pagination">
+                <ul class="pagination" style="color: #FF6600">
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
+                        <li class="page-item" style="color: #FF6600"><a style="color: #FF6600" href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
                     </c:if>
                     <c:forEach begin="1" end="${endPage}" var="i">
                         <li class="page-item ${i == tag ? 'active' : ''}">
-                            <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}">${i}</a>
+                            <a href="select-question-bank?page=${i}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">${i}</a>
                         </li>
                     </c:forEach>
                     <c:if test="${tag < endPage}" >
-                        <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}&numQuestion=${numQuestion}&group_id=${group_id}&course_id=${course_id}" class="page-link">Next</a></li>
+                        <li class="page-item" ><a href="select-question-bank?page=${tag+1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}" class="page-link">Next</a></li>
                     </c:if>
                     <c:if test="${tag == endPage}">
                         <li class="page-item" ><a href="#" class="page-link">Next</a></li>
@@ -631,9 +639,9 @@
             </c:if>
 
             <c:if test="${isRandom == 1}">
-                <ul class="pagination">
+                <ul class="pagination" style="color: #FF6600">
                     <c:if test="${tag > 1}">
-                        <li class="page-item"><a href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
+                        <li class="page-item" style="color: #FF6600"><a style="color: #FF6600" href="select-question-bank?page=${tag-1}&type_question=${type_question}&exercise_id=${exercise_id}&basicQuestion=${basicQuestion}&lowQuestion=${lowQuestion}&highQuestion=${highQuestion}&group_id=${group_id}&course_id=${course_id}">Previous</a></li>
                     </c:if>
                     <c:if test="${tag ==1}">
                         <li class="page-item"><a href="#">Previous</a></li>
@@ -653,7 +661,7 @@
             </c:if>
         </div>
         <div class="button-wrapper">
-            <a class="back-link" style="color: #FF6600;font-size: 15px;float: left" href="manage-question?exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" id="backToCreateQuestion"> <i class="fas fa-arrow-left"></i> Back to manage question</a>
+            <a class="back-link" style="color: #FF6600;font-size: 15px;float: left" href="manage-question?exercise_id=${exercise_id}&group_id=${group_id}&course_id=${course_id}" id="backToCreateQuestion"> <i class="fas fa-arrow-left" style="color: #FF6600"></i> Back to manage question</a>
             <button type="submit" id="selectQuestionsBtn" >Select question for exercise</button>
         </div>
     </div>
@@ -685,7 +693,13 @@
 <script type="text/javascript">
     jQuery.noConflict();
     jQuery(document).ready(function($) {
-
+        var basicQuestionOfExercise = parseInt($('#basicQuestionOfExercise').val());
+        var lowQuestionOfExercise = parseInt($('#lowQuestionOfExercise').val());
+        var highQuestionOfExercise = parseInt($('#highQuestionOfExercise').val());
+        var numMissQuestion = parseInt("${numMissQuesion}");
+        var basicQuestion = parseInt("${basicQuestion}");
+        var lowQuestion = parseInt("${lowQuestion}");
+        var highQuestion = parseInt("${highQuestion}");
         function saveCheckboxState() {
             var selectedCheckboxes = JSON.parse(localStorage.getItem('selectedCheckboxes')) || {};
             $('input[type="checkbox"][name="choose"]').each(function() {
@@ -738,14 +752,9 @@
                 console.error('exercise_id is not defined');
                 return;
             }
-
-            var numMissQuestion = parseInt("${numMissQuesion}");
-            var basicQuestion = parseInt("${basicQuestion}");
-            var lowQuestion = parseInt("${lowQuestion}");
-            var highQuestion = parseInt("${highQuestion}");
-            var basicQuestionOfExercise = parseInt("${basicQuestionOfExercise}");
-            var lowQuestionOfExercise = parseInt("${lowQuestionOfExercise}");
-            var highQuestionOfExercise = parseInt("${highQuestionOfExercise}");
+            <%--var basicQuestionOfExercise = parseInt("${basicQuestionOfExercise}");--%>
+            <%--var lowQuestionOfExercise = parseInt("${lowQuestionOfExercise}");--%>
+            <%--var highQuestionOfExercise = parseInt("${highQuestionOfExercise}");--%>
             console.log(numMissQuestion);
             console.log('basic: ' + basicQuestion);
             console.log('low:' + lowQuestion);
@@ -764,10 +773,6 @@
             console.log('Basic questions selected: ' + countBasic);
             console.log('Low questions selected: ' + countLow);
             console.log('High questions selected: ' + countHigh);
-
-            console.log('Basic questions selected: ' + countBasic);
-            console.log('Low questions selected: ' + countLow);
-            console.log('High questions selected: ' + countHigh);
             if(selectedIds.length > numMissQuestion){
                 if(numMissQuestion == 1 || numMissQuestion == 0){
                     document.getElementById('messageContainer').innerText = 'You are missing ' + numMissQuestion +  ' question for your excercise';
@@ -777,20 +782,29 @@
                 document.getElementById('messageContainer').style.backgroundColor = '#f44336';
                 return;
             }
-            if (countBasic > (basicQuestion-basicQuestionOfExercise)){
-                document.getElementById('messageContainer').style.backgroundColor = '#f44336';
-                document.getElementById('messageContainer').innerText = 'Basic questions cannot be selected because your exercise has enough number of basic questions(You are missing basic question:' + (basicQuestion- basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion-lowQuestionOfExercise) + ' ,high question: ' + (highQuestion-highQuestionOfExercise) + ')';
-                return;
+            console.log("so luong basic question con lai:" + (basicQuestion-basicQuestionOfExercise));
+            if(countBasic !==0) {
+                if (countBasic > (basicQuestion - basicQuestionOfExercise)) {
+                    document.getElementById('messageContainer').style.backgroundColor = '#f44336';
+                    document.getElementById('messageContainer').innerText = 'Basic questions cannot be selected because your exercise has enough number of basic questions(You are missing basic question:' + (basicQuestion - basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion - lowQuestionOfExercise) + ' ,high question: ' + (highQuestion - highQuestionOfExercise) + ')';
+                    return;
+                }
             }
-            if (countLow > (lowQuestion - lowQuestionOfExercise) ) {
-                document.getElementById('messageContainer').style.backgroundColor = '#f44336';
-                document.getElementById('messageContainer').innerText = 'Low questions cannot be selected because your exercise has enough number of low questions (You are missing basic question:' + (basicQuestion- basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion-lowQuestionOfExercise) + ' ,high question: ' + (highQuestion-highQuestionOfExercise) + ')';
-                return;
+            console.log("so luong low con lai: " + (lowQuestion-lowQuestionOfExercise))
+            if(countLow !== 0) {
+                if (countLow > (lowQuestion - lowQuestionOfExercise)) {
+                    document.getElementById('messageContainer').style.backgroundColor = '#f44336';
+                    document.getElementById('messageContainer').innerText = 'Low questions cannot be selected because your exercise has enough number of low questions (You are missing basic question:' + (basicQuestion - basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion - lowQuestionOfExercise) + ' ,high question: ' + (highQuestion - highQuestionOfExercise) + ')';
+                    return;
+                }
             }
-            if (countHigh > (highQuestion - highQuestionOfExercise)) {
-                document.getElementById('messageContainer').style.backgroundColor = '#f44336';
-                document.getElementById('messageContainer').innerText = 'High questions cannot be selected because your exercise has enough number of high questions (You are missing basic question:' + (basicQuestion- basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion-lowQuestionOfExercise) + ' ,high question: ' + (highQuestion-highQuestionOfExercise) + ')';
-                return;
+            console.log("so luong high con lai: " + (highQuestion-highQuestionOfExercise))
+            if(countHigh !== 0) {
+                if (countHigh > (highQuestion - highQuestionOfExercise)) {
+                    document.getElementById('messageContainer').style.backgroundColor = '#f44336';
+                    document.getElementById('messageContainer').innerText = 'High questions cannot be selected because your exercise has enough number of high questions (You are missing basic question:' + (basicQuestion - basicQuestionOfExercise) + ' ,low question: ' + (lowQuestion - lowQuestionOfExercise) + ' ,high question: ' + (highQuestion - highQuestionOfExercise) + ')';
+                    return;
+                }
             }
 
 
@@ -824,6 +838,9 @@
                     console.log('Updated basicQuestionOfExercise: ' + basicQuestionOfExercise);
                     console.log('Updated lowQuestionOfExercise: ' + lowQuestionOfExercise);
                     console.log('Updated highQuestionOfExercise: ' + highQuestionOfExercise);
+                    $('#basicQuestionOfExercise').val(basicQuestionOfExercise);
+                    $('#lowQuestionOfExercise').val(lowQuestionOfExercise);
+                    $('#highQuestionOfExercise').val(highQuestionOfExercise);
                     // location.reload();
                     $('input[type="checkbox"][name="choose"]').each(function() {
                         if ($(this).is(':checked')) {
@@ -877,6 +894,7 @@
 
             // Get the application_id from the hidden input field
             var questionId = $(this).data('question-id');
+            var exerciseId = $("input[name='exercise_id']").val(); // Lấy giá trị của exercise_id từ input hidden
 
             // Send AJAX request to the servlet to get the response data
             $.ajax({
@@ -885,7 +903,8 @@
                 data: {
                     question_id: questionId,
                     status : 'view',
-                    numQuestion : numQuestion
+                    numQuestion : numQuestion,
+                    exercise_id : exerciseId
                 },
                 dataType: "json",
                 success: function(data) {
@@ -926,5 +945,6 @@
         });
     });
 </script>
+<jsp:include page="/views/common/footer.jsp"></jsp:include>
 </body>
 </html>
