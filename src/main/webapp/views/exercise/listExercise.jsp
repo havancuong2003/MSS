@@ -118,7 +118,7 @@
 
                 <c:if test="${exercise.getStatus() == 1  && exercise.getGet_score() == 1}">
                     <form action="test" method="get">
-                        <td><button type="submit">Start Exercise</button></td>
+                        <td><button type="submit">Start Test</button></td>
                         <input type="hidden" name="exerciseId" value="${exercise.getExerciseId()}">
                         <input type="hidden" name="courseId" value="${exercise.getCourse().getId()}">
                         <input type="hidden" name="getScore" value="${exercise.getGet_score()}">
