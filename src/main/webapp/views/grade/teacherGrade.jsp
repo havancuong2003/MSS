@@ -15,6 +15,8 @@
     <title>Grade Table</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -212,6 +214,145 @@
         .profile-actions a:hover {
             color: #0056b3;
         }
+        .header {
+            background-color: #fff;
+            box-shadow: none;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .dropdown-menu {
+            min-width: 150px;
+            display: none; /* Ẩn menu dropdown mặc định */
+        }
+        .dropdown-menu.show {
+            display: block; /* Hiện menu khi có lớp 'show' */
+        }
+        nav {
+            margin-bottom: 50px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+
+
+        footer {
+            width: 100%;
+            margin-top: 100px;
+        }
+
+        h3 {
+            font-size: 25px;
+        }
+
+        .footer-container {
+            position: relative;
+            bottom: 0;
+            background: #E8E8E8;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding: 15px 0;
+        }
+
+        .left-area ul {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px
+        }
+
+        .center-area, .right-area, .left-area {
+            height: 50%;
+            margin-bottom: 10px;
+        }
+
+
+        .center-area a {
+            position: relative;
+            text-decoration: none;
+            color: #333;
+
+        }
+
+        .center-area a::after {
+            content: "";
+
+            width: 100%;
+            height: 2px;
+            left: 0;
+            bottom: -5px;
+            background-color: #495464;
+            border-radius: 40px;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .center-area a:hover::after {
+            transform-origin: center;
+            transform: scaleX(1);
+        }
+
+
+        .center-area a, .right-area li {
+            font-size: 20px;
+            padding: 5px 0;
+        }
+
+        .center-area li, .right-area li {
+            padding: 5px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        .text {
+            width: 100%;
+            height: 50px;
+            background-color: #535C5F;
+            color: #FFFCEB;
+            margin-top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-area i:hover {
+            color: rgb(205, 127, 50);
+            transition: 0.3s;
+        }
+
+        @media screen and (max-width: 576px) {
+            .footer-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            a, li {
+                font-size: 14px;
+            }
+
+            .center-area a, .right-area li {
+                font-size: 18px;
+            }
+
+            ul {
+                margin-bottom: 14px;
+            }
+        }
     </style>
     <script>
         function toggleProfileDropdown() {
@@ -232,29 +373,39 @@
 <%--    </style>--%>
 </head>
 <body>
-<header>
-    <div>
-        <img src="logo.png" alt="">
-        <span class="sp">MyStudySpace</span>
-    </div>
-    <div class="profile-container">
-        <img src="data:image/jpeg;base64,${photoBase64}" alt="" class="profile-img" onclick="toggleProfileDropdown()">
-        <div id="profileDropdown" class="profile-dropdown">
-            <div class="profile-info">
-                <img src="data:image/jpeg;base64,${photoBase64}" alt="">
-                <div>
-                    <span id="profileFullName">${requestScope.account.fullname}</span>
-                    <span id="profileRole" class="role">${requestScope.roleName}</span>
-                </div>
-            </div>
-            <div class="profile-actions">
-                <a href="<%=request.getContextPath()%>/load-profile"><i class="fas fa-user"></i> My Profile</a>
-                <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+<nav class="navbar navbar-expand-lg header">
+    <button class="btn btn-light" onclick="window.location.href='dashboard';">
+        <i class="fas fa-arrow-left"></i> Home
+    </button>
+
+    <div class="ml-auto">
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                Profile
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="setting">Setting</a>
+                <a class="dropdown-item" href="../logout">Logout</a>
             </div>
         </div>
     </div>
-</header>
+</nav>
+<script>
+    document.getElementById('dropdownMenuButton').addEventListener('click', function () {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    });
+
+    // Đóng menu nếu nhấp ra ngoài
+    document.addEventListener('click', function (event) {
+        var menu = document.getElementById('dropdownMenu');
+        if (menu && !menu.contains(event.target) && !document.getElementById('dropdownMenuButton').contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+</script>
 <div class="container">
     <h2>Semester List</h2>
     <ul>
@@ -328,8 +479,10 @@
                 gid: gid
             },
             success: function (data) {
+                console.log(gid);
                 var marks = data.marks;
                 var locked = data.locked;
+                console.log(marks);
                 generateTable(marks, locked);
             }
         });
@@ -448,5 +601,36 @@
     }
 
 </script>
+<footer>
+    <section class="footer-container">
+        <div class="left-area">
+            <h3>FOLLOW US</h3>
+            <ul>
+                <li><a href="">
+                    <i class="fa-brands fa-square-instagram fa-2x"></i>
+                </a></li>
+                <li><a href="">
+                    <i class="fa-brands fa-square-facebook fa-2x"></i>
+                </a></li>
+                <li><a href="">
+                    <i class="fa-brands fa-linkedin fa-2x"></i>
+                </a></li>
+                <li><a href="">
+                    <i class="fa-brands fa-x-twitter fa-2x"></i>
+                </a></li>
+            </ul>
+        </div>
+
+        <div class="right-area">
+            <h3>CONTACT</h3>
+            <ul>
+                <li>Address: 123 FPT University Ha Noi</li>
+                <li><a href="#">Mail: mss@fpt.edu.vn</a></li>
+                <li><a href="#">Phone: 0123456789</a></li>
+            </ul>
+        </div>
+    </section>
+
+</footer>
 </body>
 </html>

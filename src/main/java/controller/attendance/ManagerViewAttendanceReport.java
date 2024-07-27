@@ -18,6 +18,9 @@ import java.util.Map;
 public class ManagerViewAttendanceReport extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Account account = (Account) req.getSession().getAttribute("account");
+        AccountDBContext adb = new AccountDBContext();
+        req.setAttribute("role", adb.getRoleByRoleID(account.getRole_id()));
         req.getRequestDispatcher("/views/attendance/managerViewAttendanceReport.jsp").forward(req,resp);
     }
 

@@ -55,6 +55,29 @@ public class TeacherTakeGradeController extends HttpServlet {
                         float grade = Float.parseFloat(graderaw);
                         if (mdb.checkMarkExist(studentId, itemId, gid)) {
                             mdb.updateMark(studentId, grade, itemId, gid);
+                            int numItem = tdb.count(gid);
+                            int markItem = mdb.countMarkOfStudent(gid, studentId);
+                            if (markItem == numItem) {
+                                ArrayList<Mark> marks = mdb.getMarkForStudent(studentId, gid, seDB.getSemesterByGid(gid));
+                                float total = 0;
+                                for (Mark mark : marks) {
+                                    if (mark.getGrade() == null) {
+                                        total += 0;
+                                    } else {
+                                        total += mark.getGrade() * mark.getGradeItem().getWeight() / 100;
+                                    }
+                                }
+                                String formattedTotal = String.format("%.2f", total);
+                                float roundedTotal = Float.parseFloat(formattedTotal);
+                                Total to = tdb.getTotalBySidAndGid(studentId, gid);
+                                if (!to.getReason().equals("absent > 20%")) {
+                                    if (roundedTotal >= 5.0) {
+                                        tdb.updateTotal(to.getId(), roundedTotal, true, "passed");
+                                    } else {
+                                        tdb.updateTotal(to.getId(), roundedTotal, false, "total < 5");
+                                    }
+                                }
+                            }
                         } else {
                             mdb.insertMark(studentId, grade, itemId, gid);
                             int numItem = tdb.count(gid);
