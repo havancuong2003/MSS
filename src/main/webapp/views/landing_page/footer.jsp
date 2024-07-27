@@ -18,7 +18,7 @@
     <div class="row pt-5">
         <div class="col-lg-7 col-md-12">
             <div class="row">
-                <div class="col-md-6 mb-5">
+                <div class="col-md-12 mb-5">
                     <h5
                             class="text-primary text-uppercase mb-4"
                             style="letter-spacing: 5px"
@@ -60,38 +60,7 @@
                         ></a>
                     </div>
                 </div>
-                <div class="col-md-6 mb-5">
-                    <h5
-                            class="text-primary text-uppercase mb-4"
-                            style="letter-spacing: 5px"
-                    >
-                        Our Majors
-                    </h5>
-                    <div
-                            class="d-flex flex-column justify-content-start"
-                    >
-                        <a class="text-white mb-2" href="#"
-                        ><i class="fa fa-angle-right mr-2"></i>Web
-                            Design</a
-                        >
-                        <a class="text-white mb-2" href="#"
-                        ><i class="fa fa-angle-right mr-2"></i>Apps
-                            Design</a
-                        >
-                        <a class="text-white mb-2" href="#"
-                        ><i class="fa fa-angle-right mr-2"></i
-                        >Marketing</a
-                        >
-                        <a class="text-white mb-2" href="#"
-                        ><i class="fa fa-angle-right mr-2"></i
-                        >Research</a
-                        >
-                        <a class="text-white" href="#"
-                        ><i class="fa fa-angle-right mr-2"></i
-                        >SEO</a
-                        >
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="col-lg-5 col-md-12 mb-5">
@@ -102,9 +71,8 @@
                 Newsletter
             </h5>
             <p>
-                Rebum labore lorem dolores kasd est, et ipsum amet et at
-                kasd, ipsum sea tempor magna tempor. Accu kasd sed ea
-                duo ipsum. Dolor duo eirmod sea justo no lorem est diam
+                <i class="fa fa-envelope mr-2"></i
+                >Subscribe to our newsletter for the latest updates
             </p>
             <div class="w-100">
                 <div class="input-group">
