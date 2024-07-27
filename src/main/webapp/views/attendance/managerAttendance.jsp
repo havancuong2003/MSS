@@ -15,10 +15,28 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/app-ajax.js"></script>
     <!-- Custom CSS -->
     <style>
+        .header {
+            background-color: #fff;
+            box-shadow: none;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
 
+        .dropdown-menu {
+            min-width: 150px;
+            display: none; /* Ẩn menu dropdown mặc định */
+        }
+        .dropdown-menu.show {
+            display: block; /* Hiện menu khi có lớp 'show' */
+        }
+        nav {
+            margin-bottom: 50px;
+        }
         
         body {
             font-family: Arial, sans-serif;
@@ -52,6 +70,10 @@
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            /*color: white;*/
+        }
+        th{
+            color: white;
         }
         tr:hover {
             /*background-color: #f1f1f1;*/
@@ -77,23 +99,7 @@
         input[type="radio"] {
             margin-left: 10px;
         }
-        .header {
-            background-color: #fff;
-            box-shadow: none;
-            border-bottom: 1px solid #ddd;
-            padding: 10px;
-        }
 
-        .dropdown-menu {
-            min-width: 150px;
-            display: none; /* Ẩn menu dropdown mặc định */
-        }
-        .dropdown-menu.show {
-            display: block; /* Hiện menu khi có lớp 'show' */
-        }
-        nav {
-            margin-bottom: 50px;
-        }
     </style>
     <script>
         function toggleProfileDropdown() {

@@ -111,7 +111,7 @@
     <div class="form-row">
         <div class="title-search">Course you want</div>
         <input id="searchCode" oninput="SearchItem()"  type="text" name="searchCode" placeholder="Search...">
-        <button type="submit">Submit</button>
+
     </div>
 </form>
 
@@ -142,7 +142,7 @@
 function SearchItem(){
     let code = $("#searchCode").val()
     $.ajax({
-        url: "/MyStudySpace_war_exploded/listCourse",
+        url: "listCourse",
         method: "POST",
         dataType: "JSON",
         data: {

@@ -251,7 +251,7 @@
                 Profile
             </button>
             <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="setting">Setting</a>
+                <a class="dropdown-item" href="../load-profile">Setting</a>
                 <a class="dropdown-item" href="../logout">Logout</a>
             </div>
         </div>

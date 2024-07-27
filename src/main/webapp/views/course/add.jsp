@@ -219,16 +219,7 @@
         }
 
 
-        .text {
-            width: 100%;
-            height: 50px;
-            background-color: #535C5F;
-            color: #FFFCEB;
-            margin-top: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+
 
         .left-area i:hover {
             color: rgb(205, 127, 50);
@@ -279,7 +270,7 @@
             var cateInputDiv = document.createElement("div");
             var newLabel = document.createElement("label");
             newLabel.innerText = "Name Assessment: ";
-            newLabel.className = "text";
+            newLabel.className = "abc";
             newLabel.htmlFor = "name";
             // Tạo một thẻ input mới cho Category
             var newInput = document.createElement("input");
@@ -329,7 +320,7 @@
             // Tạo nhãn mới cho Assessment
             var newLabel = document.createElement("label");
             newLabel.innerText = "Grade Item: ";
-            newLabel.className = "text";
+            newLabel.className = "abc";
             newLabel.htmlFor = "input";
             // Tạo một thẻ input mới cho Assessment
             var newInput = document.createElement("input");
@@ -340,7 +331,7 @@
 
             var weiLabel = document.createElement("label");
             weiLabel.innerText = "Weight (%): ";
-            weiLabel.className = "text";
+            weiLabel.className = "abc";
             weiLabel.htmlFor = "input";
 
             var newWeight = document.createElement("input")
@@ -400,9 +391,9 @@
     });
 </script>
 <form action="addCourse" method="POST">
-    <p>Code: <input type="text" style="width: calc(95% - 20px); margin-left: 1%" name="code"/></p>
+    <p>Code: <input type="text" style="width: calc(92% - 20px); margin-left: 1%" name="code"/></p>
     <p>Name: <input type="text" style="width: calc(95% - 20px);" name="detail"/></p>
-    <p>Description: <input type="text" style="width: calc(90% - 20px);" name="description"/></p>
+    <p>Description: <input type="text" style="width: calc(87% - 20px);" name="description"/></p>
     <p>Credit: <input type="number" style="width: calc(94% - 20px);" name="credit"/></p>
     <p>Prerequisite: <input oninput="searchCourse()" type="text" style="width: calc(87% - 20px);" name="codeCourse"/></p>
     <table>
@@ -434,37 +425,7 @@
     <button type="submit" style="background-color: cornflowerblue">Add Course</button>
     ${requestScope.ms}
 </form>
-<footer>
-    <section class="footer-container">
-        <div class="left-area">
-            <h3>FOLLOW US</h3>
-            <ul>
-                <li><a href="">
-                    <i class="fa-brands fa-square-instagram fa-2x"></i>
-                </a></li>
-                <li><a href="">
-                    <i class="fa-brands fa-square-facebook fa-2x"></i>
-                </a></li>
-                <li><a href="">
-                    <i class="fa-brands fa-linkedin fa-2x"></i>
-                </a></li>
-                <li><a href="">
-                    <i class="fa-brands fa-x-twitter fa-2x"></i>
-                </a></li>
-            </ul>
-        </div>
-
-        <div class="right-area">
-            <h3>CONTACT</h3>
-            <ul>
-                <li>Address: 123 FPT University Ha Noi</li>
-                <li><a href="#">Mail: mss@fpt.edu.vn</a></li>
-                <li><a href="#">Phone: 0123456789</a></li>
-            </ul>
-        </div>
-    </section>
-
-</footer>
+<jsp:include page="../common/footer.jsp" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     function searchCourse() {

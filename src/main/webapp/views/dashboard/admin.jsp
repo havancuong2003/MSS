@@ -342,7 +342,7 @@
     <div class="avatar-container" onclick="toggleProfileDropdown()">
         <img src="data:image/jpeg;base64,${photoBase64}" alt="Avatar" class="avatar" />
         <div id="profileDropdown" class="dropdown-menu">
-            <a href="#">Setting</a>
+            <a href="../load-profile">Setting</a>
             <a href="../logout" onclick="logout()">Logout</a>
         </div>
     </div>
