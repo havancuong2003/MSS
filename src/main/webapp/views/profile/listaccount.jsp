@@ -126,60 +126,43 @@
 <%--</div>--%>
 <%--</body>--%>
 <%--</html>--%>
-<style>
-    .form-container {
-        display: flex;
-        align-items: center;
-    }
-    .form-container select, .form-container button {
-        margin: 0 5px;
-        padding: 5px 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .form-container button {
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-    }
-    .form-container button:hover {
-        background-color: #45a049;
-    }
-</style>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>SCN | Admin</title>
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.jpg" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/fontawesome-all.min.css" />
-    <link rel="stylesheet" href="css/viewaccount.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/fontawesome-all.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/viewaccount.css" />
+    <style>
+        .form-container {
+            display: flex;
+            align-items: center;
+        }
+        .form-container select, .form-container button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
+<jsp:include page="../common/header.jsp"/>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-2 side-bar">
-            <div class="top-fixed">
-                <div class="content">
-                    <i class="fas fa-home" style="font-size: 20px"></i
-                    ><a href="admin?cp=1">Home</a>
-                </div>
-            </div>
-            <div class="bottom bottom-fixed">
-                <div class="img-info">
-                    <img src="img/fakeUserImage.jpg" alt="alt" />
-                </div>
-                <div style="margin: 0px 15px"></div>
-                <a href="logout"
-                ><i
-                        class="fas fa-sign-out-alt"
-                        style="font-size: 22px; padding-top: 5px"
-                ></i
-                ></a>
-            </div>
-        </div>
+
         <div class="col-lg-10">
             <div class="header">
                 <div>
@@ -188,7 +171,7 @@
                             style="margin-bottom: 5px"
                     >
                         <a
-                                href="addnewaccount"
+                                href="add-New-Account"
                                 style="text-decoration: none; color: white"
                         >New User <i class="fas fa-user-friends"></i
                         ></a>
@@ -265,22 +248,22 @@
                     <td>Not found!</td>
                     </c:otherwise>
                     </c:choose>
-<%--                    <td>--%>
-<%--                        <form action="list-account" method="post">--%>
-<%--                            <input type="hidden" name="aid" value="${user.getId()}">--%>
-<%--                            <select name="status">--%>
-<%--                                <c:if test="${user.status =='active'}">--%>
-<%--                                    <option value="0" selected="">Active</option>--%>
-<%--                                    <option value="1">Deactive</option>--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${user.status == 'deactive'}">--%>
-<%--                                    <option value="0">Active</option>--%>
-<%--                                    <option value="1" selected="">Deactive</option>--%>
-<%--                                </c:if>--%>
-<%--                            </select><button>Save</button>--%>
-<%--                        </form>--%>
+                    <td>
+                        <form action="list-account" method="post">
+                            <input type="hidden" name="aid" value="${user.getId()}">
+                            <select name="status">
+                                <c:if test="${user.status =='active'}">
+                                    <option value="0" selected="">Active</option>
+                                    <option value="1">Deactive</option>
+                                </c:if>
+                                <c:if test="${user.status == 'deactive'}">
+                                    <option value="0">Active</option>
+                                    <option value="1" selected="">Deactive</option>
+                                </c:if>
+                            </select><button>Save</button>
+                        </form>
 
-<%--                    </td>--%>
+                    </td>
                     <td>${user.phone}</td>
                     <td>${user.gender ? "Male" : "Female"}</td>
                     <td>${user.password}</td>
@@ -306,6 +289,7 @@
         }
     }
 </script> -->
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
 
