@@ -18,28 +18,7 @@
             padding: 0;
         }
 
-        .header {
-            background-color: #007bff;
-            color: #ffffff;
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .header {
-            background-color: #FF6600; /* Cam */
-            color: #FFFFFF; /* Trắng */
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-        }
+
         .header a {
             position: absolute;
             left: 20px;
@@ -75,8 +54,8 @@
         }
 
         th {
-            background-color: #FF6600; /* Cam */
-            color: #FFFFFF; /* Trắng */
+            background-color: #E8E8E8;
+            color: black;
         }
 
         tr:nth-child(even) {
@@ -95,15 +74,7 @@
             text-shadow: 0px 0px 5px rgba(0, 91, 187, 0.5);
         }
 
-        .footer {
-            background-color: #FF6600; /* Cam */
-            color: #FFFFFF; /* Trắng */
-            padding: 10px;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+
         .headerclass {
             display: flex;
             justify-content: center;
@@ -111,10 +82,7 @@
     </style>
 </head>
 <body>
-<div class="header">
-    <a href="groupList">Back</a>
-
-</div>
+<jsp:include page="../common/header.jsp"/>
 
 <div class="container">
     <div class="headerclass"> <h1>History list Of ${exName}</h1></div>
@@ -152,9 +120,6 @@
         <%--        </tr>--%>
     </table>
 </div>
-
-<div class="footer">
-
-</div>
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
