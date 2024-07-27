@@ -408,6 +408,16 @@
             </a>
         </div>
 
+        <!-- Slot -->
+        <a href="#" onclick="toggleSubMenu('slotSubMenu', event)">
+            <i class="fas fa-clock"></i> Slot
+        </a>
+        <div id="slotSubMenu" class="submenu">
+            <a href="viewslot">
+                <i class="fas fa-plus-circle"></i> Add Slot
+            </a>
+        </div>
+
         <!-- Curriculum Management -->
         <a href="#" onclick="toggleSubMenu('curSubMenu', event)">
             <i class="fas fa-book"></i> Curriculum Management

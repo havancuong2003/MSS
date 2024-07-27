@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Date;
 
-@WebServlet(name="test",value = "/test")
+@WebServlet(name="test",value = "/student/test")
 public class Test extends HttpServlet {
     private static ArrayList<QuestionDetail> questionDetail = new ArrayList<>();
     private static ArrayList<Integer> listanswer = new ArrayList<>();
@@ -35,7 +35,7 @@ public class Test extends HttpServlet {
         req.setAttribute("questionDetails",questionDetail);
         req.setAttribute("size", questionDetail.size());
         req.setAttribute("listanswer", listanswer);
-        req.getRequestDispatcher("views/exercise/taketest.jsp").forward(req, resp);
+        req.getRequestDispatcher("../views/exercise/taketest.jsp").forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -17,7 +17,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-@WebServlet(name="viewhistorytest",value = "/viewhistorytest")
+@WebServlet(name="viewhistorytest",value = "/student/viewhistorytest")
 public class ViewHistoryTest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,7 +33,7 @@ public class ViewHistoryTest extends HttpServlet {
         req.setAttribute("score", score);
         req.setAttribute("questionSubmissions",questionSubmissions);
         req.setAttribute("size", questionSubmissions.size());
-        req.getRequestDispatcher("views/exercise/viewhistorytest.jsp").forward(req, resp);
+        req.getRequestDispatcher("../views/exercise/viewhistorytest.jsp").forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

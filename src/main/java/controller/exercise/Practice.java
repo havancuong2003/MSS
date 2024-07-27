@@ -16,7 +16,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-@WebServlet(name="practice",value = "/practice")
+@WebServlet(name="practice",value = "/student/practice")
 public class Practice extends HttpServlet {
     private static ArrayList<QuestionDetail> questionDetail = new ArrayList<>();
     private static int indexquestion = 0;
@@ -52,7 +52,7 @@ public class Practice extends HttpServlet {
         req.setAttribute("question", questionDetail.get(indexquestion));
         req.setAttribute("size", questionDetail.size());
         req.setAttribute("current", indexquestion);
-        req.getRequestDispatcher("views/exercise/practice.jsp").forward(req, resp);
+        req.getRequestDispatcher("../views/exercise/practice.jsp").forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -104,7 +104,7 @@ public class Practice extends HttpServlet {
         request.setAttribute("current", indexquestion);
         request.setAttribute("question", questionDetail.get(indexquestion));
         request.setAttribute("listanswer", listanswer);
-        request.getRequestDispatcher("views/exercise/practice.jsp").forward(request, response);
+        request.getRequestDispatcher("../views/exercise/practice.jsp").forward(request, response);
 
     }
 
