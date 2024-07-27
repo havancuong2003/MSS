@@ -479,8 +479,10 @@
                 gid: gid
             },
             success: function (data) {
+                console.log(gid);
                 var marks = data.marks;
                 var locked = data.locked;
+                console.log(marks);
                 generateTable(marks, locked);
             }
         });

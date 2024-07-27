@@ -35,6 +35,9 @@ public class mangerViewAttendance extends HttpServlet {
         int sesid = Integer.parseInt(req.getParameter("sesid"));
         AttendanceDBContext attdb = new AttendanceDBContext();
         ArrayList<Attendance> attendances = attdb.getAttendancesForTeacher(sesid);
+        Account account = (Account) req.getSession().getAttribute("account");
+        AccountDBContext adb = new AccountDBContext();
+        req.setAttribute("role", adb.getRoleByRoleID(account.getRole_id()));
         SessionDBContext sesdb = new SessionDBContext();
         for (Attendance att : attendances) {
             String present = req.getParameter("present" + att.getStudent().getId());

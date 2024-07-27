@@ -16,7 +16,7 @@ public class MarkDBContext extends DBContext<Mark> {
                     "inner join course co on co.id = g.course_id\n" +
                     "inner join grade_category gc on gc.course_id = co.id\n" +
                     "inner join grade_item gi on gi.grade_categoryid = gc.id\n" +
-                    "left join mark m on m.grade_item_id = gi.id and m.student_id = en.student_id \n" +
+                    "left join mark m on m.grade_item_id = gi.id and m.student_id = en.student_id and m.group_id = g.id\n" +
                     "where en.student_id = ? and g.semester_id = ? and g.id = ? ";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, sid);
@@ -55,7 +55,7 @@ public class MarkDBContext extends DBContext<Mark> {
                     "inner join grade_category gc on gc.course_id = co.id\n" +
                     "inner join grade_item gi on gi.grade_categoryid = gc.id\n" +
                     "inner join student stu on stu.id = en.student_id\n" +
-                    "left join mark m on m.grade_item_id = gi.id and m.student_id = en.student_id \n" +
+                    "left join mark m on m.grade_item_id = gi.id and m.student_id = en.student_id and m.group_id = g.id\n" +
                     "inner join account acc on acc.account_id = stu.acc_id\n" +
                     "where g.PIC = ? and g.semester_id = ? and g.id = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
