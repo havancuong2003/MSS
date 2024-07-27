@@ -1,5 +1,6 @@
 package controller.admin.createSemester;
 import dal.SemesterDBContext;
+import dal.SlotDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -89,6 +90,12 @@ public class AddSemester extends HttpServlet {
                 errorMsg.append("Start date cannot be in the past. ");
                 hasErrors = true;
             }
+        }
+
+        SlotDBContext conSlot = new SlotDBContext();
+        if (!conSlot.checkDateRangeValid(start, end)) {
+            errorMsg.append("Date range is not valid. ");
+            hasErrors = true;
         }
 
         if (hasErrors) {
